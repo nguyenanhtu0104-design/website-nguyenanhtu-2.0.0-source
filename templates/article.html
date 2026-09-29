@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi" data-base="{{base}}" data-ver="{{version}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="{{themeColor}}">
+<title>{{pageTitle}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+{{robots}}<meta property="og:type" content="article">
+<meta property="og:site_name" content="{{siteName}}">
+<meta property="og:locale" content="{{locale}}">
+<meta property="og:title" content="{{ogTitle}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{ogImage}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="{{publishedDate}}">
+<meta property="article:modified_time" content="{{updatedDate}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{base}}assets/images/site/avatar-96.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="{{fonts}}" rel="stylesheet">
+<link rel="stylesheet" href="{{base}}assets/css/main.css?v={{version}}">
+<script type="application/ld+json">{{jsonld}}</script>
+</head>
+<body class="page-article">
+{{nav}}
+<main id="panel" class="on page" style="--pc:{{accent}}" data-slug="{{slug}}" data-title="{{titleAttr}}" data-accent="{{accent}}">
+  <div id="pStrip" style="background:{{accent}}"></div>
+  <div id="pHead">
+    <span id="pTag" style="color:{{accent}}">{{section}}</span>
+    <button type="button" id="copyArticleLink">Sao chép liên kết</button>
+    <button class="p-export-pdf" id="exportPdfBtn" title="Xuất PDF" onclick="exportPanelToPdf()">📥</button>
+    <a class="p-close" id="pClose" href="{{base}}" title="Về Cẩm Nang" aria-label="Đóng, về trang chủ Cẩm Nang">✕</a>
+  </div>
+  <div id="articleLinkStatus" role="status" aria-live="polite"></div>
+  <article id="pBody">
+{{content}}
+  </article>
+{{footer}}
+</main>
+<script src="{{base}}assets/js/article.js?v={{version}}" defer></script>
+</body>
+</html>

@@ -1,0 +1,521 @@
+[
+ {
+  "id": "phap-luat",
+  "ch": 1,
+  "num": "CH.01",
+  "icon": "⚖️",
+  "title": "Pháp Luật & Quy Định",
+  "tagline": "Hành lang pháp lý mới từ bộ ba Luật Đất đai · Kinh doanh BĐS · Nhà ở 2024",
+  "badge": "FAQ · 53 câu · NOXH 2024–2026",
+  "layout": "list",
+  "items": [
+   {
+    "article": "nha-o-xa-hoi-toan-canh-phap-ly-2024-2026"
+   },
+   {
+    "article": "phap-luat-bds"
+   },
+   {
+    "article": "luat-dat-dai-2024-to-chuc-kinh-te"
+   }
+  ]
+ },
+ {
+  "id": "chien-luoc-quy-hoach",
+  "ch": 2,
+  "num": "CH.02",
+  "icon": "🧭",
+  "title": "Chiến Lược & Quy Hoạch",
+  "tagline": "Chiến lược vùng Đông Nam Bộ · Trải nghiệm quy hoạch thế giới · Bài học từ các đô thị hàng đầu",
+  "badge": "2 chủ đề · 11 bài phân tích",
+  "layout": "list",
+  "items": [
+   {
+    "article": "chien-luoc-quy-hoach"
+   },
+   {
+    "article": "trai-nghiem-quy-hoach-the-gioi-hub_trainghi"
+   },
+   {
+    "article": "do-nen-do-thi-compact-city"
+   }
+  ]
+ },
+ {
+  "id": "tu-duy-dau-tu",
+  "ch": 3,
+  "num": "CH.03",
+  "icon": "💡",
+  "title": "Tư Duy Đầu Tư Bất Động Sản",
+  "tagline": "22 nguyên tắc · Dòng tiền · Tư duy nhà đầu tư chuyên nghiệp",
+  "badge": "3 bài phân tích",
+  "layout": "list",
+  "items": [
+   {
+    "article": "22-nguyen-tac-tu-duy-dau-tu-bds"
+   },
+   {
+    "article": "dong-tien-la-vua-nguyen-tac-so-2-trong-12-nguyen-tac-tu-duy-dau-tu"
+   },
+   {
+    "article": "thi-truong-dan-trai-nhung-rat-tap-trung"
+   }
+  ]
+ },
+ {
+  "id": "du-an-chon-loc",
+  "ch": 4,
+  "num": "CH.04",
+  "icon": "🏛️",
+  "title": "Dự Án Đã Chọn Lọc",
+  "tagline": "19 vùng chức năng · 79 dự án · ⭐ vùng & dự án tác giả đề xuất",
+  "badge": "19 vùng · 79 dự án",
+  "layout": "zones",
+  "items": [
+   {
+    "article": "old-money",
+    "num": "01",
+    "star": true,
+    "highlight": true,
+    "projects": [
+     {
+      "article": "the-marq",
+      "star": true
+     },
+     {
+      "article": "grand-marina-saigon",
+      "star": true
+     },
+     {
+      "article": "the-grand-manhattan"
+     },
+     {
+      "article": "one-central-saigon",
+      "star": true
+     },
+     {
+      "article": "lancaster-lincoln"
+     },
+     {
+      "article": "lancaster-legacy"
+     },
+     {
+      "article": "sunwah-pearl"
+     }
+    ]
+   },
+   {
+    "article": "vung-loi-thu-thiem",
+    "num": "02",
+    "star": true,
+    "highlight": true,
+    "projects": [
+     {
+      "article": "metropole-thu-thiem"
+     },
+     {
+      "article": "sun-thu-thiem-2c",
+      "star": true
+     },
+     {
+      "article": "thu-thiem-zeit-river"
+     },
+     {
+      "article": "the-empire-city"
+     },
+     {
+      "article": "the-river-thu-thiem"
+     },
+     {
+      "article": "eco-smart-city",
+      "star": true
+     },
+     {
+      "article": "the-petropolis",
+      "star": true
+     },
+     {
+      "article": "sala-dai-quang-minh"
+     }
+    ]
+   },
+   {
+    "article": "vung-khcn-cao-tpm-binh-duong",
+    "num": "03",
+    "star": true,
+    "highlight": true,
+    "projects": [
+     {
+      "article": "sycamore"
+     },
+     {
+      "article": "midori-park"
+     },
+     {
+      "article": "garden-city-tokyu",
+      "star": true
+     },
+     {
+      "article": "core-city-tokyu"
+     },
+     {
+      "article": "nam-mekong-grand-plaza",
+      "star": true
+     },
+     {
+      "article": "artisan-park",
+      "star": true
+     },
+     {
+      "article": "grand-habitat"
+     }
+    ]
+   },
+   {
+    "article": "vung-thuong-luu-thao-dien",
+    "num": "04",
+    "projects": [
+     {
+      "article": "thao-dien-green"
+     },
+     {
+      "article": "berkley-residences"
+     }
+    ]
+   },
+   {
+    "article": "vung-rach-chiec-truong-tho",
+    "num": "05",
+    "star": true,
+    "highlight": true,
+    "projects": [
+     {
+      "article": "eaton-park",
+      "star": true
+     },
+     {
+      "article": "global-city"
+     },
+     {
+      "article": "saigon-sports-city"
+     },
+     {
+      "article": "palm-city",
+      "star": true
+     },
+     {
+      "article": "senturia"
+     },
+     {
+      "article": "khu-do-thi-truong-tho"
+     }
+    ]
+   },
+   {
+    "article": "vung-khcn-hcm-ii-hub-icd",
+    "num": "06",
+    "projects": [
+     {
+      "article": "imperia-sensa-park",
+      "star": true
+     },
+     {
+      "article": "gladia-khang-dien-keppel-land"
+     },
+     {
+      "article": "elysian"
+     },
+     {
+      "article": "mt-eastmark-city"
+     }
+    ]
+   },
+   {
+    "article": "truc-metro-so-1-hcm",
+    "num": "07",
+    "projects": [
+     {
+      "article": "9-stella"
+     },
+     {
+      "article": "the-gs-city"
+     },
+     {
+      "article": "the-gio-riverside",
+      "star": true
+     }
+    ]
+   },
+   {
+    "article": "truc-quoc-lo-13",
+    "num": "08",
+    "projects": [
+     {
+      "article": "norton-park",
+      "star": true
+     },
+     {
+      "article": "the-solis",
+      "star": true
+     },
+     {
+      "article": "setia-edenia",
+      "star": true
+     },
+     {
+      "article": "habitat"
+     },
+     {
+      "article": "one-era"
+     },
+     {
+      "article": "ho-guom-xanh"
+     }
+    ]
+   },
+   {
+    "article": "do-thi-sinh-thai-phia-dong",
+    "num": "09",
+    "projects": [
+     {
+      "article": "vinhomes-grand-park"
+     },
+     {
+      "article": "dong-tang-long"
+     }
+    ]
+   },
+   {
+    "article": "vung-kinh-te-bien",
+    "num": "10",
+    "star": true,
+    "highlight": true,
+    "projects": [
+     {
+      "article": "blanca-city",
+      "star": true
+     },
+     {
+      "article": "vinhome-green-paradise",
+      "star": true
+     },
+     {
+      "article": "grand-ho-tram",
+      "star": true
+     },
+     {
+      "article": "hyatt-ho-tram"
+     }
+    ]
+   },
+   {
+    "article": "vung-ve-tinh-san-bay-long-thanh",
+    "num": "11",
+    "star": true,
+    "highlight": true,
+    "projects": [
+     {
+      "article": "izumi-city",
+      "star": true
+     },
+     {
+      "article": "id-junction"
+     },
+     {
+      "article": "aqua-city"
+     },
+     {
+      "article": "spring-ville"
+     },
+     {
+      "article": "fores-center-nhon-trach"
+     },
+     {
+      "article": "salasia-phu-my"
+     }
+    ]
+   },
+   {
+    "article": "ban-dao-thanh-da",
+    "num": "12",
+    "projects": [
+     {
+      "article": "sun-thanh-da",
+      "star": true
+     },
+     {
+      "article": "masterise-thanh-da"
+     }
+    ]
+   },
+   {
+    "article": "dao-ty-phu-dai-phuoc",
+    "num": "13",
+    "projects": [
+     {
+      "article": "swan-bay"
+     },
+     {
+      "article": "elyse-island",
+      "star": true
+     }
+    ]
+   },
+   {
+    "article": "dao-trung-tam-bien-hoa",
+    "num": "14",
+    "projects": [
+     {
+      "article": "sun-hiep-phuoc"
+     }
+    ]
+   },
+   {
+    "article": "truc-my-phuoc-tan-van",
+    "num": "15",
+    "projects": [
+     {
+      "article": "the-aspira",
+      "star": true
+     }
+    ]
+   },
+   {
+    "article": "vung-tri-thuc-khcn-tay-bac",
+    "num": "16",
+    "projects": [
+     {
+      "article": "vinhomes-hoc-mon"
+     },
+     {
+      "article": "celadon-city"
+     }
+    ]
+   },
+   {
+    "article": "vung-san-xuat-xanh-tay-nam",
+    "num": "17",
+    "projects": [
+     {
+      "article": "the-meadow"
+     },
+     {
+      "article": "westique"
+     }
+    ]
+   },
+   {
+    "article": "truc-nguyen-huu-tho-thuong-cang-hiep-phuoc",
+    "num": "18",
+    "projects": [
+     {
+      "article": "phu-my-hung"
+     },
+     {
+      "article": "kdt-phu-long"
+     },
+     {
+      "article": "gs-zeitgeist-city"
+     },
+     {
+      "article": "acadia-lavila"
+     },
+     {
+      "article": "vinhomes-phu-my-hung"
+     },
+     {
+      "article": "sun-phu-my-hung"
+     },
+     {
+      "article": "mui-den-do"
+     },
+     {
+      "article": "tt-millenium"
+     },
+     {
+      "article": "vinhomes-can-giuoc"
+     },
+     {
+      "article": "masterise-can-gio"
+     }
+    ]
+   },
+   {
+    "article": "truc-giao-thuong-mien-tay",
+    "num": "19",
+    "projects": [
+     {
+      "article": "water-point",
+      "star": true
+     },
+     {
+      "article": "eco-retreat"
+     },
+     {
+      "article": "la-home"
+     },
+     {
+      "article": "thanh-phu-city"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "id": "nha-phat-trien",
+  "ch": 5,
+  "num": "CH.05",
+  "icon": "🏗️",
+  "title": "Giá Trị Cốt Lõi Nhà Phát Triển BĐS",
+  "tagline": "Hiểu đúng DNA của từng chủ đầu tư — nền tảng để đưa ra quyết định đầu tư chuẩn xác và bền vững nhất",
+  "badge": "15 chủ đầu tư · DNA thị trường",
+  "layout": "list",
+  "items": [
+   {
+    "article": "gamuda-land"
+   },
+   {
+    "article": "vinhomes"
+   },
+   {
+    "article": "sun-group"
+   },
+   {
+    "article": "capitaland"
+   },
+   {
+    "article": "becamex-tokyu"
+   },
+   {
+    "article": "refico"
+   },
+   {
+    "article": "son-kim-land"
+   },
+   {
+    "article": "masterise-homes"
+   },
+   {
+    "article": "an-gia-group"
+   },
+   {
+    "article": "fusion"
+   },
+   {
+    "article": "gs-e-c"
+   },
+   {
+    "article": "trung-thuy-group"
+   },
+   {
+    "article": "keppel-land"
+   },
+   {
+    "article": "dai-quang-minh"
+   },
+   {
+    "article": "skyworld-development"
+   }
+  ]
+ }
+]

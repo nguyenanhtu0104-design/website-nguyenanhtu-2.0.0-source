@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi" data-base="{{base}}" data-ver="{{version}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="{{themeColor}}">
+<title>{{pageTitle}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+{{robots}}<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{siteName}}">
+<meta property="og:locale" content="{{locale}}">
+<meta property="og:title" content="{{pageTitle}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{ogImage}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{base}}assets/images/site/avatar-96.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="{{fonts}}" rel="stylesheet">
+<link rel="stylesheet" href="{{base}}assets/css/main.css?v={{version}}">
+</head>
+<body>
+{{nav}}
+<main class="publication-shell pub-issue">{{draft}}<div class="pub-label">{{label}}</div>
+<a class="pub-back" href="{{secUrl}}">← {{secTitle}}</a>
+<h1>{{title}}</h1><div class="pub-meta">{{meta}}</div><p>{{desc}}</p>
+{{cover}}
+<div class="pub-actions">{{actions}}</div>
+<div class="pub-pages">
+{{pages}}
+</div>
+<a href="{{base}}">← Trở về Cẩm nang bất động sản</a></main>{{footer}}
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "cam-nang-bds",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Cẩm Nang Bất Động Sản Vùng Đông Nam Bộ — Nguyễn Anh Tú (nguyenanhtu.vn)",
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/build.mjs --check",
+    "new": "node scripts/new-article.mjs",
+    "serve": "python3 -m http.server 8080 -d dist",
+    "test": "python3 tests/smoke.py"
+  }
+}

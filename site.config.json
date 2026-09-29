@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "siteName": "Cẩm Nang Bất Động Sản",
+  "siteTitle": "Nguyễn Anh Tú | Cẩm nang bất động sản Đông Nam Bộ",
+  "siteDescription": "Cẩm nang bất động sản của Nguyễn Anh Tú: kiến thức pháp lý, quy hoạch, tư duy đầu tư và dự án vùng Đông Nam Bộ.",
+  "siteUrl": "https://nguyenanhtu.vn",
+  "basePath": "/",
+  "lang": "vi",
+  "locale": "vi_VN",
+  "themeColor": "#12100d",
+  "author": {
+    "id": "nguyen-anh-tu",
+    "name": "Nguyễn Anh Tú",
+    "role": "Nguyễn Anh Tú · Tư vấn bất động sản",
+    "phone": "+84978618149",
+    "phoneDisplay": "0978 618 149",
+    "zalo": "https://zalo.me/0978618149",
+    "facebook": "https://www.facebook.com/nguyen.anh.tu.397787/",
+    "fanpage": "",
+    "youtube": "https://www.youtube.com/@nguyenanhtu.kienphat"
+  },
+  "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap",
+  "titleSuffix": "Nguyễn Anh Tú",
+  "publications": [
+    {
+      "id": "atlas",
+      "path": "atlas",
+      "navKey": "nav_atlas",
+      "title": "World Atlas",
+      "pageTitle": "World Atlas | Nguyễn Anh Tú",
+      "label": "KHÔNG GIAN · ĐÔ THỊ · BẤT ĐỘNG SẢN",
+      "description": "Bộ sưu tập ấn phẩm về không gian, đô thị và bất động sản. Mỗi kỳ được trình bày độc lập dưới dạng hình ảnh hoặc PDF."
+    },
+    {
+      "id": "nhat-san",
+      "path": "nhat-san",
+      "navKey": "nav_nhatsan",
+      "title": "Nhật san",
+      "pageTitle": "Nhật san | Nguyễn Anh Tú",
+      "label": "GÓC NHÌN · QUAN SÁT · THỊ TRƯỜNG",
+      "description": "Những ghi chép và góc nhìn về thị trường, được biên tập thành từng kỳ để đọc trực tuyến hoặc tải về."
+    }
+  ]
+}

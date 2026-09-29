@@ -1,0 +1,4 @@
+tieu-de: World Economic Atlas v1.5.16
+ngay: 2026-09-18
+mo-ta: Atlas kinh tế thế giới — FDI 2025, ETF & Active Fund. Bản No-JS cho điện thoại. Số liệu chốt ngày nghiên cứu 18/09/2026.
+trang-thai: nhap

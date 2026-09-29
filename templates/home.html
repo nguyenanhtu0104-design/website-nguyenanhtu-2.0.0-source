@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi" data-base="{{base}}" data-ver="{{version}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="{{themeColor}}">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<link rel="canonical" href="{{canonical}}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{siteName}}">
+<meta property="og:locale" content="{{locale}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{ogImage}}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{base}}assets/images/site/avatar-96.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="{{fonts}}" rel="stylesheet">
+<link rel="stylesheet" href="{{base}}assets/css/main.css?v={{version}}">
+<script type="application/ld+json">{{jsonld}}</script>
+</head>
+<body>
+{{nav}}
+
+{{header}}
+
+{{search}}
+
+<div class="chapters">
+{{chapters}}
+</div><!-- end chapters -->
+
+<div style="text-align:center;padding:20px 0 40px;opacity:.35;font-size:11px;color:var(--muted);letter-spacing:1px">
+  CẨM NANG BĐS v{{version}} · ERA REAL ESTATE · 2026
+</div>
+
+<script src="{{base}}assets/js/home.js?v={{version}}" defer></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+tieu-de: Nhật san đầu tuần — Số 00 (bản demo giao diện)
+so: 00
+ngay: 2026-09-20
+mo-ta: Bản demo giao diện Nhật san đầu tuần — HCMC Real Estate Intelligence. Nội dung minh họa, chưa phát hành.
+trang-thai: nhap
