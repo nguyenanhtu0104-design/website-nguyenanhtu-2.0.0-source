@@ -190,8 +190,23 @@ Tông ấm: multiply, điểm trắng kem RGB 245,238,226, tương phản ×1.18
 
 Các làn **không bao giờ làm song song trên hai bản khác nhau**. Mỗi phiên luôn bắt đầu từ `main` mới nhất. Nếu hết hạn mức, AI kia có thể làm thay bất kỳ làn nào, miễn tuân thủ file này.
 
+### 11.0 Vai trò của Tú — giữ đơn giản nhất
+
+Tú chỉ làm 2 việc: **(1) gửi nội dung, (2) thả gói cập nhật lên GitHub.** Mọi việc kỹ thuật còn lại là của AI.
+
+| Tú nói | AI làm | Tú nhận |
+|---|---|---|
+| "Thêm bài này vào Cẩm nang" + nội dung/ảnh/tài liệu | Viết bài theo §8, tích hợp theo §11.1, build 0 lỗi, chạy kiểm thử | `update-….zip` + 1–2 câu tóm tắt đã thay đổi gì |
+| "Sửa bài [tên bài]: …" | Sửa nội dung, cập nhật `updatedDate` | `update-….zip` |
+| "Đăng kỳ Atlas/Nhật san" + file bìa/PDF/HTML | Tạo thư mục kỳ trong `publications/`, viết `info.txt` (mặc định `nhap`) | `update-….zip` + link xem thử bản nháp |
+| "Công bố kỳ [tên kỳ]" | Đổi `trang-thai: cong-bo` | `update-….zip` |
+
+Sau khi nhận gói, Tú: giải nén **đè** vào thư mục kho trên máy → GitHub Desktop → Summary → **Commit to main** → **Push origin**. Khoảng 1–2 phút sau website cập nhật.
+
+AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ đưa vào gói các file đã đổi; nói rõ nếu có file cần **xóa** (kèm `DELETED_FILES.txt`); không bắt Tú chạy lệnh hay sửa file.
+
 ### 11.1 Quy trình "Thêm bài này vào Cẩm nang"
-1. Lấy source mới nhất: `git clone --depth 1 <URL repo>` (URL ghi trong README.md).
+1. Lấy source mới nhất: `git clone --depth 1 https://github.com/nguyenanhtu0104-design/website-nguyenanhtu-2.0.0-source.git`. Kho công khai, không cần mật khẩu.
 2. `node scripts/new-article.mjs --title … --category … [--parent …] [--nav] [--star]` để tạo slug, metadata và file khung.
 3. Viết nội dung vào `content/articles/<slug>.html` theo §4 và §8. Điền `description`, `seoDescription`, `searchKeywords`.
 4. Ảnh: xử lý tông màu, rồi `python3 scripts/images.py add <slug> …`, rồi dán các thẻ `data-img`.
@@ -225,4 +240,5 @@ Các làn **không bao giờ làm song song trên hai bản khác nhau**. Mỗi 
 
 ## 14. Nhật ký thay đổi nguyên tắc
 - 2026-09-28 — Ban hành 2.0.0 (migration từ v57). Tên miền nguyenanhtu.vn. Phân làn Claude (nội dung) / ChatGPT (kỹ thuật, tùy chọn).
+- 2026-09-29 — Lên GitHub + Cloudflare Pages. Vai trò của Tú rút gọn còn "gửi nội dung → thả gói cập nhật" (§11.0).
 - 2026-09-29 — Gộp phần vỏ website đang chạy (bản GPT): thanh menu NAT, nút Liên hệ, World Atlas, Nhật san, nút "Sao chép liên kết", dòng tác giả "Nguyễn Anh Tú · Tư vấn bất động sản". URL bài giữ `/cam-nang/<slug>/` như bản đang chạy. Thêm cơ chế đăng ấn phẩm theo kỳ bằng thư mục.

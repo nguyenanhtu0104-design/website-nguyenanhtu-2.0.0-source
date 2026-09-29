@@ -2,7 +2,9 @@
 
 Website: **https://nguyenanhtu.vn** — Cẩm nang `/cam-nang/…` · World Atlas `/atlas/` · Nhật san `/nhat-san/` · Tác giả: **Nguyễn Anh Tú** (ERA Vietnam) · Hotline/Zalo 0978 618 149
 
-Repo GitHub: `https://github.com/<username>/camnang-bds` ← *cập nhật sau khi tạo kho*
+Repo GitHub (công khai): `https://github.com/nguyenanhtu0104-design/website-nguyenanhtu-2.0.0-source`  
+Hosting: Cloudflare Pages, project `website-nguyenanhtu-2-0-0-source` (bản xem thử: https://website-nguyenanhtu-2-0-0-source.pages.dev) — tự build mỗi khi có commit lên `main`.  
+Tên miền: `nguyenanhtu.vn` đăng ký tại TenTen; DNS do Cloudflare quản lý.
 
 ## Bắt đầu
 1. **Đọc `PROJECT_RULES.md` trước khi sửa bất cứ thứ gì.**

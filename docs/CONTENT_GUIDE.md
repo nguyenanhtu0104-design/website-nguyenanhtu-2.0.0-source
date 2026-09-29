@@ -5,7 +5,7 @@ Tài liệu dành cho AI thực hiện (và cho Tú tham khảo). Nguyên tắc 
 ## 1. Thêm bài mới
 
 ```bash
-git clone --depth 1 <URL repo>  &&  cd camnang-bds
+git clone --depth 1 https://github.com/nguyenanhtu0104-design/website-nguyenanhtu-2.0.0-source.git  &&  cd website-nguyenanhtu-2.0.0-source
 
 # (a) Tạo slug + metadata + file khung, gắn vào menu
 node scripts/new-article.mjs --title "Eaton Park" --category du-an-chon-loc \
