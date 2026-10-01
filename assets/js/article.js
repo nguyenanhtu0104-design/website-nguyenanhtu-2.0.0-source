@@ -192,6 +192,7 @@ window.exportPanelToPdf=function(){
   [].forEach.call(document.querySelectorAll('#pBody .p-360'),function(box){
     var tabs=[].slice.call(box.querySelectorAll('.p-360-tab')).filter(function(t){ return ok(t.getAttribute('href')); });
     var stage=box.querySelector('.p-360-stage'), play=box.querySelector('.p-360-play'), full=box.querySelector('.p-360-full');
+    if(box.getAttribute('data-mode')==='link') return;   /* chế độ mở tab mới: không nhúng, các liên kết chạy như bình thường */
     if(!tabs.length||!stage) return;
     box.classList.add('is-js'); tabs[0].parentNode.setAttribute('role','tablist');
     var show=function(tab){
@@ -201,16 +202,15 @@ window.exportPanelToPdf=function(){
       var f=stage.querySelector('iframe');
       if(!f){
         f=document.createElement('iframe');
-        f.setAttribute('allow','fullscreen; accelerometer; gyroscope'); f.setAttribute('allowfullscreen','');
+        f.setAttribute('allow','fullscreen; autoplay; accelerometer; gyroscope; clipboard-write'); f.setAttribute('allowfullscreen','');
         f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
-        f.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups allow-forms');
         f.setAttribute('title',(box.getAttribute('data-title')||'Tham quan 360°')+' — '+tab.textContent);
         stage.appendChild(f); if(play) play.remove();
       }
       if(f.getAttribute('src')!==u){ f.setAttribute('src',u); f.setAttribute('title',(box.getAttribute('data-title')||'Tham quan 360°')+' — '+tab.textContent); }
     };
     tabs.forEach(function(t){ t.addEventListener('click',function(e){ e.preventDefault(); show(t); }); });
-    if(play) play.addEventListener('click',function(){ show(box.querySelector('.p-360-tab.on')||tabs[0]); });
+    if(play) play.addEventListener('click',function(e){ e.preventDefault(); show(box.querySelector('.p-360-tab.on')||tabs[0]); });
   });
 })();
 })();

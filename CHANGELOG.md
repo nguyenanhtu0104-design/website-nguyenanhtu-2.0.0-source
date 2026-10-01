@@ -2,12 +2,17 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## [2.3.1] — 2026-10-01 — Sửa khối 360° bị lỗi khi nhúng
+- **Sửa lỗi:** trang 3D của Tech3Art tự báo "This page couldn't load" khi chạy trong khung nhúng. Nam Mekong chuyển sang **chế độ mở tab mới** (`data-mode="link"`): ảnh nền + 4 liên kết, luôn chạy được. Cơ chế nhúng vẫn giữ sẵn; bật lại bằng cách xóa `data-mode="link"` khi bên Tech3Art xử lý xong.
+- Bỏ thuộc tính `sandbox` của iframe (host đã duyệt; sandbox dễ làm hỏng ứng dụng 3D). Build kiểm tra host cả với nút `p-360-play`.
+
 ## [2.3.0] — 2026-10-01 — Khối tham quan 360° / mặt bằng nhúng
 - **Khối `.p-360`**: tab (Tổng quan 3D · Mặt bằng tầng · Layout điển hình · Nội thất căn hộ) + ảnh nền + nút "Bắt đầu tham quan 360°". iframe chỉ được tạo khi người đọc bấm nên trang vẫn nhẹ; luôn có nút "Mở toàn màn hình ↗". Không có JS thì các tab là liên kết mở tab mới.
 - **Chốt chặn:** chỉ nhúng host trong `embedHosts` (`site.config.json`, hiện có `360nmkbd.tech3art.com`). Build báo lỗi nếu nội dung có host khác hoặc viết tay `<iframe>`. iframe có `sandbox`.
 - Xuất PDF và in ẩn khối này.
 
 ### Nội dung
+- 2026-10-01 — `nam-mekong-grand-plaza`: thêm thẻ "Website chủ đầu tư" (trang dự án trên nammekonggroup.vn, website chính thức của Tập đoàn Nam Mê Kông) trong mục 🏢 Nhà Phát Triển.
 - 2026-10-01 — `nam-mekong-grand-plaza`: thêm mục "🧭 Tham Quan 360° — Mặt Bằng Tầng & Layout Căn Hộ" trong mục 02 Chi tiết dự án (trước Chính Sách Nổi Bật).
 
 ## [2.2.0] — 2026-10-01 — Bố cục máy tính cho mọi bài

@@ -84,6 +84,8 @@ Mẫu chuẩn: `content/articles/nam-mekong-grand-plaza.html` (đầy đủ nh�
 
 **Thứ tự mục của bài dự án (khung §8.2):** 01 Tổng quan (📍 Vị Trí → 📐 Quy Mô → 🏢 Nhà Phát Triển → 🗓️ Giai Đoạn) · 02 Chi tiết (🎨 Phối Cảnh → 🌿 Tiện Ích → 🌐 Ngoại khu → 🏠 Loại Hình → 🎁 Chính Sách) · 03 Góc nhìn nhà tư vấn (💬 Vì Sao Tôi Chọn) · 04 Phân tích & đánh giá (📊 SWOT → ⭐ Thang điểm 1–5).
 
+**Liên kết chủ đầu tư:** trong mục 🏢 Nhà Phát Triển thêm một thẻ `<div class="p-card"><strong>Website chủ đầu tư</strong><p><a href="https://…" target="_blank" rel="noopener">Tên chủ đầu tư — trang dự án ↗</a></p></div>` dẫn tới trang dự án trên **website chính thức của chủ đầu tư** (nguồn bậc 1, PROJECT_RULES §8.1). Không dùng website của đại lý/sàn thứ cấp. Mẫu: Nam Mekong (nammekonggroup.vn).
+
 **Dải số liệu `facts`:** `{"n":"1.622","l":"căn hộ · 2 block"}`, tối đa 4 số, chọn số có sẵn trong bài (quy mô, số căn, số tầng/diện tích, mốc bàn giao hoặc khoảng cách ga metro). Khi thêm `facts` thì **xóa khối `.knums` đầu mục 01** để khỏi lặp. Khối `.knums` ở mục 🎁 Chính Sách giữ nguyên.
 
 **Khối vị trí theo phút:**
@@ -114,7 +116,7 @@ Dùng khi chủ đầu tư hoặc đơn vị dựng hình có trang 3D/360° tư
 - Ảnh nền: dùng ảnh phối cảnh 16:9 đã có trong bài (`scripts/images.py add`).
 - **Host mới:** thêm vào `embedHosts` trong `site.config.json` — **cần Tú duyệt** (PROJECT_RULES §4.7). Build báo lỗi nếu quên.
 - Tab đầu là `on`. Mỗi tab là một địa chỉ riêng của trang 3D. Luôn ghi nguồn trong `p-360-bar` (§8.1).
-- Một số trang không cho phép nhúng (khung báo lỗi): khi đó người đọc dùng nút "Mở toàn màn hình ↗" ở cuối khối.
+- **Hai chế độ.** *Nhúng* (mẫu trên): iframe nạp khi bấm. *Mở tab mới* (`data-mode="link"` trên `.p-360`): không nhúng, mọi tab và nút `a.p-360-play` là liên kết `target="_blank"`, bỏ nút `button` và dòng `p-360-full` (xem Nam Mekong). **Mặc định nên dùng chế độ tab mới**, chỉ chuyển sang nhúng sau khi thử nhúng trên trang thật và thấy chạy. Trang Tech3Art của Nam Mekong hiện báo lỗi khi bị nhúng nên đang dùng chế độ tab mới.
 
 ## 4. Lỗi build thường gặp
 

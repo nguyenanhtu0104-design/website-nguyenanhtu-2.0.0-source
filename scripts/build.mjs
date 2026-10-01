@@ -76,7 +76,7 @@ for (const a of articles) {
   if (/openPanel\(/.test(h)) errors.push(`[${a.slug}] còn openPanel() — dùng <a href="/cam-nang/slug/">`);
   if (/<script\b/i.test(h)) errors.push(`[${a.slug}] nội dung không được chứa <script>`);
   if (/<iframe\b/i.test(h)) errors.push(`[${a.slug}] không viết <iframe> trong nội dung — dùng khối .p-360 (docs/CONTENT_GUIDE.md §3B)`);
-  for (const m of h.matchAll(/<a class="p-360-tab[^"]*" href="([^"]*)"/g)) {
+  for (const m of h.matchAll(/<a class="p-360-(?:tab|play)[^"]*" href="([^"]*)"/g)) {
     let u = null; try { u = new URL(m[1]); } catch { /* lỗi bên dưới */ }
     if (!u || u.protocol !== 'https:' || !(cfg.embedHosts || []).includes(u.hostname)) errors.push(`[${a.slug}] khối 360: "${m[1]}" không phải https hoặc host chưa có trong embedHosts (site.config.json) — thêm host mới cần Tú duyệt`);
   }
