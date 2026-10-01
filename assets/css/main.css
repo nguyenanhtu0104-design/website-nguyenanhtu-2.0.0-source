@@ -646,3 +646,50 @@ a.p-close{text-decoration:none}
 .pub-pages{display:flex;flex-direction:column;gap:14px;margin-bottom:40px}
 .pub-page{display:block;width:100%;height:auto;border-radius:3px}
 .pub-draft{margin-bottom:26px;padding:12px 16px;border:1px dashed #c8993a;color:#e7c680;font-size:13px;border-radius:4px}
+
+/* ═══════════════════════════════════════════════════════════════
+   2.1.0 — TRANG DỰ ÁN: thanh điều hướng nổi · số liệu đầu trang ·
+   thanh cơ cấu sản phẩm · vị trí theo phút · CTA di động
+   (Chỉ bổ sung; không đổi quy tắc đã duyệt ở trên.)
+   ═══════════════════════════════════════════════════════════════ */
+/* Sửa lỗi có từ 2.0.0: hiệu ứng pageIn (trượt 28px) làm trang rộng thêm 28px → điện thoại thu nhỏ trang, thanh cố định lệch khỏi màn hình. clip không tạo vùng cuộn nên #pHead vẫn dính. */
+html.is-article,html.is-article body{overflow-x:clip}
+/* Thanh điều hướng nổi: nằm trong #pHead (đã dính đầu trang) nên luôn bám theo khi cuộn */
+#pHead #secNav{flex:0 0 100%;display:flex;gap:6px;overflow-x:auto;margin-top:2px;padding-top:8px;border-top:1px solid var(--border-2);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#secNav::-webkit-scrollbar{display:none}
+#secNav a{flex:0 0 auto;display:inline-flex;align-items:center;min-height:34px;padding:0 14px;border-radius:999px;border:1px solid transparent;font-size:12.5px;letter-spacing:.3px;color:var(--muted);text-decoration:none;white-space:nowrap;transition:color .18s,border-color .18s,background .18s}
+#secNav a:hover{color:var(--text)}
+#secNav a.on{color:var(--pc,var(--brand));border-color:var(--pc,var(--brand));background:rgba(255,255,255,.04)}
+#secNav a:focus-visible{outline:2px solid #e7c680;outline-offset:2px}
+.p-sec{scroll-margin-top:var(--head-h,124px)}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Số liệu lớn đầu trang (dùng lại khối .knums đã duyệt, to hơn) */
+.p-facts{grid-template-columns:repeat(2,1fr);margin:16px 0 22px}
+.p-facts .knum{padding:16px 10px}
+.p-facts .knum-n{font-size:32px}
+.p-facts .knum-l{font-size:11px}
+.p-facts .knum:last-child:nth-child(odd){grid-column:1/-1}
+@media (min-width:641px){.p-facts{grid-template-columns:repeat(auto-fit,minmax(110px,1fr))}.p-facts .knum:last-child:nth-child(odd){grid-column:auto}}
+/* Bảng cơ cấu sản phẩm: thanh tỷ lệ + số % dưới tên ở cột đầu (JS thêm; bảng gốc giữ nguyên) */
+.mix-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.mix-bar{display:block;flex:1;max-width:120px;height:4px;border-radius:2px;background:rgba(255,255,255,.09);overflow:hidden}
+.mix-bar i{display:block;height:100%;border-radius:2px;background:var(--pc,var(--brand))}
+.mix-row small{font-size:10.5px;line-height:1;color:var(--muted);white-space:nowrap}
+/* Vị trí theo thời gian di chuyển */
+.p-travel{list-style:none;margin:12px 0 18px;padding:0;border:1px solid var(--border-2);border-radius:9px;overflow:hidden}
+.p-travel li{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 14px;border-top:1px solid var(--border-2);font-size:13px;line-height:1.5;color:var(--text-2)}
+.p-travel li:first-child{border-top:0}
+.p-travel small{display:block;margin-top:2px;font-size:11px;color:var(--muted)}
+.p-travel b{flex:0 0 auto;font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--pc,var(--brand));white-space:nowrap;text-align:right}
+/* CTA cố định (chỉ điện thoại) */
+#ctaBar{display:none}
+@media (max-width:720px){
+  body.has-cta{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
+  #ctaBar{display:flex;gap:10px;position:fixed;left:0;right:0;bottom:0;z-index:210;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:rgba(20,18,14,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid #51452c}
+  #ctaBar a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px;border-radius:6px;font:600 14.5px "IBM Plex Sans",sans-serif;text-decoration:none}
+  #ctaBar .cta-call{background:#d9b467;color:#14120e}
+  #ctaBar .cta-zalo{flex:0 0 36%;background:transparent;color:#e7c680;border:1px solid #665333}
+  #ctaBar a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+}
+@media print{#ctaBar{display:none!important}}

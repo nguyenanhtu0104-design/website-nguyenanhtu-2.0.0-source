@@ -100,6 +100,7 @@ window.exportPanelToPdf=function(){
       +'#pdf-content .p-card,#pdf-content .p-call{background:#fafafa!important;border-left:3px solid '+P+'!important;page-break-inside:avoid}'
       +'#pdf-content .p-card strong,#pdf-content .p-call-lbl,#pdf-content .p-tl-yr,#pdf-content .knum-n{color:'+P+'!important}'
       +'#pdf-content .p-tl-dot{background:'+P+'!important;border-color:'+P+'!important;color:#fff!important}'
+      +'#pdf-content .p-facts .knum-n,#pdf-content .p-travel b{color:'+P+'!important}#pdf-content .mix-bar{background:#e4e4e4!important}#pdf-content .mix-row small{color:#555!important}#pdf-content .mix-bar i{background:'+P+'!important}'
       +'#pdf-content table{page-break-inside:avoid}#pdf-content th{background:#f0f0f0!important;color:#1a1a1a!important;border-color:#ccc!important}'
       +'#pdf-content img{max-width:100%;height:auto;page-break-inside:avoid}'
       +'button,[onclick],.p-close,.p-export-pdf,.faq-cluster-btn,#pdf-content .files-sec{display:none!important}'
@@ -119,4 +120,64 @@ window.exportPanelToPdf=function(){
     setTimeout(function(){ w.focus(); w.print(); setTimeout(function(){w.close();},500); },700);
   });
 };
+/* ─── 2.1: điều hướng nổi (đánh dấu mục đang đọc), chiều cao đầu trang, thanh cơ cấu sản phẩm ─── */
+(function(){
+  var head=document.getElementById('pHead'), nav=document.getElementById('secNav');
+  function setHeadH(){ if(head) document.documentElement.style.setProperty('--head-h',(head.offsetHeight+8)+'px'); }
+  setHeadH(); window.addEventListener('resize',setHeadH);
+  if(window.ResizeObserver&&head) new ResizeObserver(setHeadH).observe(head);
+
+  if(nav){
+    var links=[].slice.call(nav.querySelectorAll('a')), ids=[];
+    links.forEach(function(a){ var id=a.getAttribute('href').slice(1); if(document.getElementById(id)) ids.push(id); });
+    var mark=function(id){
+      links.forEach(function(a){
+        var on=a.getAttribute('href')==='#'+id; a.classList.toggle('on',on);
+        if(on){ a.setAttribute('aria-current','true');
+          var nr=nav.getBoundingClientRect(), ar=a.getBoundingClientRect();
+          if(ar.left<nr.left+8||ar.right>nr.right-8) nav.scrollLeft+=ar.left-nr.left-12;
+        } else a.removeAttribute('aria-current');
+      });
+    };
+    var ticking=false;
+    var spy=function(){
+      ticking=false;
+      var line=(head?head.offsetHeight:0)+40, cur=null;
+      ids.forEach(function(id){ if(document.getElementById(id).getBoundingClientRect().top<=line) cur=id; });
+      if(ids.length&&window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4) cur=ids[ids.length-1];
+      mark(cur);
+    };
+    window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } },{passive:true});
+    spy();
+    /* Bấm mục: cuộn mượt, không thêm lịch sử (nút Back vẫn thoát khỏi bài) */
+    nav.addEventListener('click',function(e){
+      var a=e.target.closest('a'); if(!a) return;
+      var el=document.getElementById(a.getAttribute('href').slice(1)); if(!el) return;
+      e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'});
+      if(history.replaceState) history.replaceState(null,'',a.getAttribute('href'));
+    });
+  }
+
+  /* Bảng có cột "Tỷ lệ" (vd cơ cấu sản phẩm): thêm thanh ngang + số % dưới tên ở cột đầu (luôn thấy được trên điện thoại,
+     không phải vuốt ngang tới cột Tỷ lệ). Bảng gốc giữ nguyên. */
+  [].forEach.call(document.querySelectorAll('#pBody table'),function(t){
+    var rows=t.rows; if(!rows.length) return;
+    var ci=-1; [].forEach.call(rows[0].cells,function(c,i){ if(ci<0&&/^\s*tỷ lệ\s*$/i.test(c.textContent)) ci=i; });
+    if(ci<0) return;
+    var vals=[];
+    for(var r=1;r<rows.length;r++){
+      var c=rows[r].cells[ci]; if(!c||!rows[r].cells[0]) continue;
+      var txt=c.textContent.replace(/\s/g,''), m=txt.match(/^(\d+(?:[.,]\d+)?)%$/);
+      if(m) vals.push({c:rows[r].cells[0],v:parseFloat(m[1].replace(',','.')),t:txt});
+    }
+    if(vals.length<2) return;
+    var max=Math.max.apply(null,vals.map(function(x){return x.v;}));
+    vals.forEach(function(x){
+      var row=document.createElement('span'), bar=document.createElement('span'), i=document.createElement('i'), lb=document.createElement('small');
+      row.className='mix-row'; row.setAttribute('aria-hidden','true'); bar.className='mix-bar';
+      i.style.width=Math.max(3,x.v/max*100).toFixed(1)+'%'; bar.appendChild(i); lb.textContent=x.t;
+      row.appendChild(bar); row.appendChild(lb); x.c.appendChild(row);
+    });
+  });
+})();
 })();

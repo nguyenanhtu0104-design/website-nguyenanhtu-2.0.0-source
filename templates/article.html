@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" data-base="{{base}}" data-ver="{{version}}">
+<html lang="vi" class="is-article" data-base="{{base}}" data-ver="{{version}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="{{base}}assets/css/main.css?v={{version}}">
 <script type="application/ld+json">{{jsonld}}</script>
 </head>
-<body class="page-article">
+<body class="page-article{{bodyClass}}">
 {{nav}}
 <main id="panel" class="on page" style="--pc:{{accent}}" data-slug="{{slug}}" data-title="{{titleAttr}}" data-accent="{{accent}}">
   <div id="pStrip" style="background:{{accent}}"></div>
@@ -36,6 +36,7 @@
     <button type="button" id="copyArticleLink">Sao chép liên kết</button>
     <button class="p-export-pdf" id="exportPdfBtn" title="Xuất PDF" onclick="exportPanelToPdf()">📥</button>
     <a class="p-close" id="pClose" href="{{base}}" title="Về Cẩm Nang" aria-label="Đóng, về trang chủ Cẩm Nang">✕</a>
+{{secNav}}
   </div>
   <div id="articleLinkStatus" role="status" aria-live="polite"></div>
   <article id="pBody">
@@ -43,6 +44,6 @@
   </article>
 {{footer}}
 </main>
-<script src="{{base}}assets/js/article.js?v={{version}}" defer></script>
+{{ctaBar}}<script src="{{base}}assets/js/article.js?v={{version}}" defer></script>
 </body>
 </html>

@@ -88,6 +88,7 @@ dist/                     ← SINH TỰ ĐỘNG, không commit, không sửa tay
 | `section` | ✔ | Nhãn ở đầu trang bài (vd `🏛️ Dự Án Chọn Lọc`). |
 | `accent` | ✔ | Màu nhấn hex của bài (xem §8.3). |
 | `searchKeywords` | | Từ khóa tìm kiếm, tối đa khoảng 700 ký tự, chỉ văn bản thuần. |
+| `facts` | | Chỉ cho bài dự án: mảng **2–4** phần tử `{"n":"1.622","l":"căn hộ · 2 block"}` (`n` = số lớn, ngắn, ≤ 8 ký tự; `l` = nhãn). Hiện thành dải số liệu ngay dưới tiêu đề. **Chỉ lấy số đã có trong bài**, không thêm số mới (§8.1). Bài có đủ mục 01–04 mà thiếu `facts` thì build cảnh báo. |
 | `legacy` | | `{source:"v57", panelId}` cho bài cũ; link `/#panelId` tự chuyển về URL mới. Bài mới để `null`. |
 
 ### 3.2 `data/categories.json`
@@ -110,8 +111,9 @@ Gồm version, tên miền (`siteUrl`), `basePath`, thông tin tác giả (đi�
 3. **Ảnh:** `<img data-img="<slug>/NN" alt="mô tả" style="width:100%;display:block;border-radius:6px">`. Build tự sinh `src/srcset/sizes/width/height/lazy`. Ảnh đầu tiên được tải ưu tiên. Chú thích ảnh viết bằng thẻ in nghiêng tiếng Việt ngay bên dưới.
 4. **Liên kết tới bài khác:** `<a href="/cam-nang/<slug>/" class="xl-b proj-row">…</a>` cho khối, `<a href="/cam-nang/<slug>/" class="xl-i">…</a>` cho chữ. Không dùng `onclick="openPanel()"` (đã bỏ từ 2.0). Build báo lỗi nếu link trỏ tới slug không tồn tại.
 5. Tương tác được phép gọi trực tiếp trong nội dung (định nghĩa trong `article.js`): `toggleFaq(this)`, `showCluster('id', this)`, `filterPrinciple('tag', this)`. Muốn thêm tương tác mới thì đó là việc kỹ thuật, xem §11.
-6. Chỉ dùng các class CSS đã có: `p-h1 p-lead p-h2 p-p p-card p-grid p-call p-call-lbl knums knum knum-n knum-l p-tl proj-row project-hub zone-badge p-warn`… Không tạo CSS mới trong nội dung. Inline style chỉ dùng cho màu hoặc khoảng cách nhỏ, giống cách v57 đang làm.
+6. Chỉ dùng các class CSS đã có: `p-h1 p-lead p-h2 p-p p-card p-grid p-call p-call-lbl knums knum knum-n knum-l p-tl proj-row project-hub zone-badge p-warn p-travel`… (`p-facts`, `p-sec`, `mix-row`, `mix-bar` do build/JS tự sinh, không viết tay). Không tạo CSS mới trong nội dung. Inline style chỉ dùng cho màu hoặc khoảng cách nhỏ, giống cách v57 đang làm.
 7. Tuyệt đối không Base64, không nhúng file, không iframe khi Tú chưa duyệt.
+8. **Trang dự án (cấu trúc 01–04):** bài dự án chuẩn có 4 vạch chia mục đúng mẫu `<div style="display:flex;align-items:center;gap:10px;margin:NNpx 0 6px"><span …>0N</span><span …>Nhãn</span></div>` với N = 01 Tổng quan dự án · 02 Chi tiết dự án · 03 Góc nhìn nhà tư vấn · 04 Phân tích & đánh giá. Build nhận diện đúng mẫu này để dựng thanh điều hướng nổi (Tổng quan · Chi tiết · Góc nhìn · SWOT; hiện khi có ≥ 3 vạch). **Sao chép nguyên vạch từ bài mẫu `nam-mekong-grand-plaza`, không tự chế lại.** Chi tiết và mẫu HTML: `docs/CONTENT_GUIDE.md` §3A.
 
 ## 5. Quy tắc ảnh
 
@@ -241,4 +243,5 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 ## 14. Nhật ký thay đổi nguyên tắc
 - 2026-09-28 — Ban hành 2.0.0 (migration từ v57). Tên miền nguyenanhtu.vn. Phân làn Claude (nội dung) / ChatGPT (kỹ thuật, tùy chọn).
 - 2026-09-29 — Lên GitHub + Cloudflare Pages. Vai trò của Tú rút gọn còn "gửi nội dung → thả gói cập nhật" (§11.0).
+- 2026-10-01 — **2.1.0** (Tú duyệt, nâng cấp bố cục trang dự án — ngoại lệ có chủ đích của §12.5): thanh CTA cố định trên điện thoại (nhóm Dự Án Chọn Lọc), thanh điều hướng nổi trong bài, dải số liệu `facts`, thanh tỷ lệ cho bảng có cột "Tỷ lệ", khối `p-travel` (vị trí theo phút), build cảnh báo SWOT "Chưa ghi nhận". Sửa lỗi 2.0.0: hiệu ứng `pageIn` làm trang rộng 418px trên điện thoại. Hoàn thiện mẫu cho Nam Mekong Grand Plaza và Artisan Park; các dự án khác set sau.
 - 2026-09-29 — Gộp phần vỏ website đang chạy (bản GPT): thanh menu NAT, nút Liên hệ, World Atlas, Nhật san, nút "Sao chép liên kết", dòng tác giả "Nguyễn Anh Tú · Tư vấn bất động sản". URL bài giữ `/cam-nang/<slug>/` như bản đang chạy. Thêm cơ chế đăng ấn phẩm theo kỳ bằng thư mục.

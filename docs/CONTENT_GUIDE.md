@@ -68,6 +68,34 @@ Trong đoạn văn: <a href="/cam-nang/vung-loi-thu-thiem/" class="xl-i"><strong
 
 Muốn tham khảo cách trình bày thực tế, mở các bài mẫu: `content/articles/the-marq.html` (dự án), `vung-loi-thu-thiem.html` (vùng), `gamuda-land.html` (chủ đầu tư), `phap-luat-bds.html` (FAQ tương tác).
 
+## 3A. Trang dự án — cấu trúc để áp dụng cho dự án khác
+
+Mẫu chuẩn: `content/articles/nam-mekong-grand-plaza.html` (đầy đủ nhất) và `artisan-park.html`. Hạ tầng (thanh điều hướng, CTA, thanh tỷ lệ) đã nằm sẵn trong template/JS: **bài nào có đúng cấu trúc thì tự hưởng, không cần sửa code.** Dự án nào thiếu phần nào thì phần đó tự ẩn.
+
+| Tính năng | Bài cần có | Nếu thiếu |
+|---|---|---|
+| CTA đáy màn hình (điện thoại) | `category: du-an-chon-loc` | không hiện |
+| Thanh điều hướng nổi | ≥ 3 vạch chia mục 01–04 đúng mẫu (xem PROJECT_RULES §4.8) | không hiện |
+| Dải số liệu đầu trang | trường `facts` (2–4 số) trong `data/articles.json` | không hiện; build cảnh báo nếu bài đã có mục 01–04 |
+| Thanh tỷ lệ | một `<table>` có cột tiêu đề **"Tỷ lệ"**, ô dạng `52,5%` (≥ 2 dòng) | bảng giữ nguyên |
+| Vị trí theo phút | khối `<ul class="p-travel">` trong mục 📍 Vị Trí | không hiện |
+| SWOT thật | ô Điểm Yếu có nội dung | build cảnh báo nếu còn "Chưa ghi nhận" |
+
+**Thứ tự mục của bài dự án (khung §8.2):** 01 Tổng quan (📍 Vị Trí → 📐 Quy Mô → 🏢 Nhà Phát Triển → 🗓️ Giai Đoạn) · 02 Chi tiết (🎨 Phối Cảnh → 🌿 Tiện Ích → 🌐 Ngoại khu → 🏠 Loại Hình → 🎁 Chính Sách) · 03 Góc nhìn nhà tư vấn (💬 Vì Sao Tôi Chọn) · 04 Phân tích & đánh giá (📊 SWOT → ⭐ Thang điểm 1–5).
+
+**Dải số liệu `facts`:** `{"n":"1.622","l":"căn hộ · 2 block"}`, tối đa 4 số, chọn số có sẵn trong bài (quy mô, số căn, số tầng/diện tích, mốc bàn giao hoặc khoảng cách ga metro). Khi thêm `facts` thì **xóa khối `.knums` đầu mục 01** để khỏi lặp. Khối `.knums` ở mục 🎁 Chính Sách giữ nguyên.
+
+**Khối vị trí theo phút:**
+```html
+<p class="p-p" style="margin:14px 0 0"><strong>Thời gian di chuyển</strong></p>
+<ul class="p-travel">
+  <li><span>Nhà ga metro Bình Dương<small>≈ 300 m theo tài liệu dự án</small></span><b>~4 phút đi bộ</b></li>
+</ul>
+```
+Quy tắc số liệu (§8.1): chỉ ghi khoảng cách/thời gian **có nguồn** (tài liệu dự án, hoặc số đo Google Maps ghi rõ giờ đo). Quy đổi từ mét sang phút đi bộ dùng ≈ 80 m/phút và ghi "mang tính tham khảo". Chưa có số thì ghi **"Đang cập nhật"**, không ước chừng.
+
+**Điểm yếu SWOT:** viết điểm yếu thật, dựa trên dữ kiện của chính bài (mật độ, tiến độ, thông tin còn thiếu, điểm thấp trong thang điểm 1–5, chi phí phát sinh cho chủ nhà…). Không để "Chưa ghi nhận điểm yếu".
+
 ## 4. Lỗi build thường gặp
 
 | Thông báo | Cách sửa |

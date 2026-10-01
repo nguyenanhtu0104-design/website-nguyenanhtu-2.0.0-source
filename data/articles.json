@@ -3864,7 +3864,7 @@
   "thumbnail": "artisan-park/01",
   "heroImage": "artisan-park/01",
   "publishedDate": "2026-09-28",
-  "updatedDate": "2026-09-28",
+  "updatedDate": "2026-10-01",
   "author": "nguyen-anh-tu",
   "content": "content/articles/artisan-park.html",
   "relatedArticles": [
@@ -3879,7 +3879,25 @@
   "legacy": {
    "source": "v57",
    "panelId": "artisan_park"
-  }
+  },
+  "facts": [
+   {
+    "n": "349",
+    "l": "căn nhà phố & shophouse"
+   },
+   {
+    "n": "5,6",
+    "l": "ha tổng diện tích"
+   },
+   {
+    "n": "2025",
+    "l": "đã bàn giao"
+   },
+   {
+    "n": "~300 m",
+    "l": "tới nhà ga metro"
+   }
+  ]
  },
  {
   "id": "berkley",
@@ -4618,7 +4636,7 @@
   "thumbnail": "nam-mekong-grand-plaza/01",
   "heroImage": "nam-mekong-grand-plaza/01",
   "publishedDate": "2026-09-28",
-  "updatedDate": "2026-09-28",
+  "updatedDate": "2026-10-01",
   "author": "nguyen-anh-tu",
   "content": "content/articles/nam-mekong-grand-plaza.html",
   "relatedArticles": [
@@ -4633,7 +4651,25 @@
   "legacy": {
    "source": "v57",
    "panelId": "nam_mekong"
-  }
+  },
+  "facts": [
+   {
+    "n": "1.622",
+    "l": "căn hộ · 2 block"
+   },
+   {
+    "n": "30",
+    "l": "tầng tối đa · FAR 11,91"
+   },
+   {
+    "n": "13.095",
+    "l": "m² tổng diện tích · Lô A4"
+   },
+   {
+    "n": "Q4/2028",
+    "l": "bàn giao dự kiến"
+   }
+  ]
  },
  {
   "id": "palm_city",

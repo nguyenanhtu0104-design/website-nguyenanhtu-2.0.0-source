@@ -43,6 +43,10 @@ for (const a of articles) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(a.publishedDate || '') || !/^\d{4}-\d{2}-\d{2}$/.test(a.updatedDate || '')) errors.push(`[${a.slug}] ngày phải dạng YYYY-MM-DD`);
   if (!fs.existsSync(path.join(ROOT, a.content || '_'))) errors.push(`[${a.slug}] không có file nội dung ${a.content}`);
   for (const k of ['thumbnail', 'heroImage']) if (a[k] && !images[a[k]]) errors.push(`[${a.slug}] ${k} "${a[k]}" không có trong data/images.json`);
+  if (a.facts !== undefined) {
+    if (!Array.isArray(a.facts) || a.facts.length < 2 || a.facts.length > 4) errors.push(`[${a.slug}] "facts" phải là mảng 2–4 phần tử {n, l}`);
+    else for (const f of a.facts) if (!f || !String(f.n || '').trim() || !String(f.l || '').trim()) errors.push(`[${a.slug}] mỗi phần tử "facts" cần "n" (số) và "l" (nhãn)`);
+  }
 }
 for (const a of articles) {
   if (a.parent && !bySlug.has(a.parent)) errors.push(`[${a.slug}] parent không tồn tại: ${a.parent}`);
@@ -61,6 +65,9 @@ for (const [k, v] of Object.entries(images)) for (const w of v.v) {
   if (!fs.existsSync(path.join(ROOT, 'assets/images/articles', slug, `${n}-${w}.webp`))) errors.push(`ảnh thiếu file: ${slug}/${n}-${w}.webp`);
 }
 // nội dung
+// Vạch chia mục 01–04 của bài dự án (xem docs/CONTENT_GUIDE.md): <div style="…margin:NNpx 0 6px"><span …>0N</span><span …>Nhãn</span></div>
+const SEC_RE = /<div style="(display:flex;align-items:center;gap:10px;margin:\d+px 0 6px)"><span style="[^"]*">(0\d)<\/span><span style="[^"]*">([^<]*)<\/span><\/div>/g;
+const SEC_SHORT = { '01': 'Tổng quan', '02': 'Chi tiết', '03': 'Góc nhìn', '04': 'SWOT' };
 const contents = new Map();
 for (const a of articles) {
   if (!a.content || !fs.existsSync(path.join(ROOT, a.content))) continue;
@@ -72,6 +79,9 @@ for (const a of articles) {
   for (const m of h.matchAll(/<img\b(?![^>]*data-img=)[^>]*src="([^"]+)"/g)) if (!/^https?:/.test(m[1])) warns.push(`[${a.slug}] <img src="${m[1]}"> nên dùng data-img`);
   for (const m of h.matchAll(/(?:href|data-href)="\/cam-nang\/([^"/#]+)\/?(#[^"]*)?"/g)) if (!bySlug.has(m[1])) errors.push(`[${a.slug}] link hỏng tới /cam-nang/${m[1]}/`);
   if (/(?:href|data-href)="\/bai\//.test(h)) errors.push(`[${a.slug}] link kiểu cũ /bai/ — dùng /cam-nang/<slug>/`);
+  if (a.status === 'published' && /class="swot-cell swot-w"[^>]*>(?:(?!<\/ul>)[\s\S])*?Chưa ghi nhận/.test(h)) warns.push(`[${a.slug}] SWOT: ô "Điểm yếu" còn ghi "Chưa ghi nhận" — cần nêu điểm yếu thật (PROJECT_RULES §8.2)`);
+  if (a.status === 'published' && SEC_RE.test(h) && !a.facts) warns.push(`[${a.slug}] bài dự án có mục 01–04 nhưng chưa có "facts" (số liệu lớn đầu trang)`);
+  SEC_RE.lastIndex = 0;
   if (!fs.existsSync(path.join(ROOT, a.ogImage || '_'))) warns.push(`[${a.slug}] thiếu ảnh OG ${a.ogImage} — dùng ảnh mặc định. Chạy: python3 scripts/images.py og ${a.slug}`);
 }
 for (const a of articles) if (a.status !== 'archived' && !navSlugs.has(a.slug) && !articles.some((b) => (b.relatedArticles || []).includes(a.slug)))
@@ -157,6 +167,25 @@ function renderContent(h) {
   if (BASE !== '/') h = h.replace(/(href|data-href)="\/cam-nang\//g, `$1="${BASE}cam-nang/`);
   return h;
 }
+/* Trang dự án: gắn id cho vạch chia mục, dựng thanh điều hướng nổi, chèn dải số liệu (facts) dưới tiêu đề. */
+function decorate(a, h) {
+  const secs = [];
+  h = h.replace(SEC_RE, (m, style, num, label) => {
+    secs.push({ id: `sec-${num}`, label: SEC_SHORT[num] || label.replace(/&amp;/g, '&').trim() });
+    return `<div class="p-sec" id="sec-${num}" style="${style}">${m.slice(m.indexOf('><span') + 1, -6)}</div>`;
+  });
+  SEC_RE.lastIndex = 0;
+  let secNav = '';
+  if (secs.length >= 3) secNav = `  <nav id="secNav" aria-label="Các phần của bài">${secs.map((x) => `<a href="#${x.id}">${esc(x.label)}</a>`).join('')}</nav>\n`;
+  if (a.facts && a.facts.length) {
+    const strip = `\n<div class="knums p-facts" role="list" aria-label="Số liệu chính">${a.facts.map((f) => `<div class="knum" role="listitem"><div class="knum-n">${esc(f.n)}</div><div class="knum-l">${esc(f.l)}</div></div>`).join('')}</div>\n`;
+    h = /<\/h1>/.test(h) ? h.replace(/<\/h1>/, `</h1>${strip}`) : strip + h;
+  }
+  return { html: h, secNav };
+}
+const ctaTpl = rd('templates/partials/cta-bar.html');
+const ctaCats = new Set(cfg.ctaCategories || []);
+const ctaHtml = fill(ctaTpl, { phone: au.phone.replace('+84', '0'), phoneDisplay: esc(au.phoneDisplay), zalo: esc(au.zalo) });
 const ogUrl = (a) => abs(fs.existsSync(path.join(ROOT, a.ogImage || '_')) ? a.ogImage : 'assets/images/og/trang-chu.jpg');
 const catById = Object.fromEntries(categories.map((c) => [c.id, c]));
 
@@ -184,11 +213,13 @@ for (const a of articles) {
     author: { '@type': 'Person', name: au.name, url: abs('') }, publisher: { '@type': 'Person', name: au.name },
     mainEntityOfPage: canonical, articleSection: catById[a.category].title,
   };
+  const dec = decorate(a, contents.get(a.slug));
+  const withCta = ctaCats.has(a.category);
   write(`${SECTION}/${a.slug}/index.html`, fill(tplArticle, {
-    ...common, slug: a.slug, pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
+    ...common, slug: a.slug, secNav: dec.secNav, ctaBar: withCta ? ctaHtml : '', bodyClass: withCta ? ' has-cta' : '', pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
-    accent: esc(a.accent), section: esc(a.section), content: renderContent(contents.get(a.slug)), footer,
+    accent: esc(a.accent), section: esc(a.section), content: renderContent(dec.html), footer,
     jsonld: JSON.stringify(ld).replace(/</g, '\\u003c'),
   }));
 }
