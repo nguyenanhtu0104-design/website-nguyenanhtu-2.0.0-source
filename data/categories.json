@@ -468,7 +468,7 @@
   "icon": "🏗️",
   "title": "Giá Trị Cốt Lõi Nhà Phát Triển BĐS",
   "tagline": "Hiểu đúng DNA của từng chủ đầu tư — nền tảng để đưa ra quyết định đầu tư chuẩn xác và bền vững nhất",
-  "badge": "15 chủ đầu tư · DNA thị trường",
+  "badge": "16 chủ đầu tư · DNA thị trường",
   "layout": "list",
   "items": [
    {
@@ -515,6 +515,9 @@
    },
    {
     "article": "skyworld-development"
+   },
+   {
+    "article": "huong-viet"
    }
   ]
  }

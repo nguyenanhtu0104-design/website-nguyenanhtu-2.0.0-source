@@ -243,6 +243,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 ## 14. Nhật ký thay đổi nguyên tắc
 - 2026-09-28 — Ban hành 2.0.0 (migration từ v57). Tên miền nguyenanhtu.vn. Phân làn Claude (nội dung) / ChatGPT (kỹ thuật, tùy chọn).
 - 2026-09-29 — Lên GitHub + Cloudflare Pages. Vai trò của Tú rút gọn còn "gửi nội dung → thả gói cập nhật" (§11.0).
+- 2026-10-01 — **Ngừng dùng CamNangBDS v64 làm nguồn nội dung.** Đã đồng bộ toàn bộ v64 vào kho (180 bài). Từ nay mọi thêm/sửa bài chỉ thực hiện trên kho GitHub `main` (§1, §11). Đồng bộ nhãn tác giả thành "ERA Vietnam · Project Director" (khối tác giả, theo bản v64 của Tú).
 - 2026-10-01 — **2.3.1**: Nam Mekong chuyển khối 360° sang chế độ mở tab mới vì trang Tech3Art lỗi khi nhúng; bỏ `sandbox`.
 - 2026-10-01 — **2.3.0** (Tú duyệt nhúng 360°): khối `.p-360` nhúng trang 3D của Tech3Art (360nmkbd.tech3art.com) vào mục 02 của Nam Mekong; ngoại lệ có kiểm soát của §4.7.
 - 2026-10-01 — **2.2.0** (Tú yêu cầu "áp dụng cho cả bài thường"): mọi bài rộng 860px trên laptop; bài có ≥ 3 tiêu đề `p-h2` có mục lục cột phải tự sinh (build gắn `id="h-N"`, không viết tay). Trang chủ giữ nguyên.

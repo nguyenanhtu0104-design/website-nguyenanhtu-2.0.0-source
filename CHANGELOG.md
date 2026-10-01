@@ -12,6 +12,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 - Xuất PDF và in ẩn khối này.
 
 ### Nội dung
+- 2026-10-01 — **Đồng bộ từ CamNangBDS v64** (đối chiếu từng bài, kho giờ khớp v64 ở cả 180 bài, trừ Nam Mekong và Artisan là bản nâng cấp mới hơn): thêm **16 bài khung** (Sora Gardens 1–3; Midori The View / The Glory / The Ten / The Nest; Palm Height / Residence / River; Blanca City: Casa Villa, Beacon Tower, Beachtro Tower, Cụm B1·B2·B3, Cụm B5·B6·B7; nhà phát triển Hướng Việt); cập nhật 4 bài hub (Garden City, Midori Park, Palm City — đổi chủ đầu tư thành Hướng Việt, Blanca City — thêm mục "Các Phân Khu") và trang Becamex Tokyu; sửa nhãn trên 2 trang vùng (Rạch Chiếc – Trường Thọ, KHCN cao TPM Bình Dương); menu Chương 5 thêm Hướng Việt (16 chủ đầu tư); trang chủ: đoạn giới thiệu "05 giá trị cốt lõi" và nhãn tác giả "ERA Vietnam · Project Director". Bài cũ `sora-gardens` v64 không còn dẫn tới, vẫn giữ nguyên trong kho.
 - 2026-10-01 — `nam-mekong-grand-plaza`: thêm thẻ "Website chủ đầu tư" (trang dự án trên nammekonggroup.vn, website chính thức của Tập đoàn Nam Mê Kông) trong mục 🏢 Nhà Phát Triển.
 - 2026-10-01 — `nam-mekong-grand-plaza`: thêm mục "🧭 Tham Quan 360° — Mặt Bằng Tầng & Layout Căn Hộ" trong mục 02 Chi tiết dự án (trước Chính Sách Nổi Bật).
 
