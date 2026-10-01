@@ -2,6 +2,25 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## [2.3.0] — 2026-10-01 — Khối tham quan 360° / mặt bằng nhúng
+- **Khối `.p-360`**: tab (Tổng quan 3D · Mặt bằng tầng · Layout điển hình · Nội thất căn hộ) + ảnh nền + nút "Bắt đầu tham quan 360°". iframe chỉ được tạo khi người đọc bấm nên trang vẫn nhẹ; luôn có nút "Mở toàn màn hình ↗". Không có JS thì các tab là liên kết mở tab mới.
+- **Chốt chặn:** chỉ nhúng host trong `embedHosts` (`site.config.json`, hiện có `360nmkbd.tech3art.com`). Build báo lỗi nếu nội dung có host khác hoặc viết tay `<iframe>`. iframe có `sandbox`.
+- Xuất PDF và in ẩn khối này.
+
+### Nội dung
+- 2026-10-01 — `nam-mekong-grand-plaza`: thêm mục "🧭 Tham Quan 360° — Mặt Bằng Tầng & Layout Căn Hộ" trong mục 02 Chi tiết dự án (trước Chính Sách Nổi Bật).
+
+## [2.2.0] — 2026-10-01 — Bố cục máy tính cho mọi bài
+- **Mọi trang bài** trên laptop (≥ 1100px) rộng hơn: một cột 860px (trước là 640px kiểu điện thoại).
+- **Mục lục tự sinh** cho bài thường có ≥ 3 tiêu đề `p-h2` (52 bài): cột phải 1180px, mục đang đọc sáng lên, mục lục dài tự cuộn trong khung. Build tự gắn `id="h-N"` cho tiêu đề; không phải sửa nội dung bài.
+- Trang dự án (Dự Án Chọn Lọc) luôn có cột phải: mục lục (nếu có) + khung liên hệ Gọi / Zalo.
+- Trang chủ giữ nguyên (đã là bố cục máy tính 1100px). Điện thoại không đổi.
+
+## [2.1.1] — 2026-10-01 — Bố cục máy tính cho trang dự án
+- **Sửa lỗi:** trên laptop trang bài vẫn là một cột hẹp 640px (kiểu ngăn kéo của bản gốc), hai bên trống. Từ 1100px trở lên, trang dự án (có đủ ≥ 3 mục 01–04) rộng 1180px: nội dung bên trái, **cột phải dính theo khi cuộn** gồm mục lục (đánh dấu mục đang đọc) và khung liên hệ Gọi / Zalo (nhóm Dự Án Chọn Lọc).
+- Trên máy tính: ẩn thanh mục dạng viên thuốc và thanh CTA đáy (chỉ dùng cho điện thoại). Điện thoại và bài thường không đổi.
+- Template bọc `#pBody` trong `.p-layout`; `build.mjs` sinh `<aside id="pAside">` và gắn `html.has-aside`.
+
 ## [2.1.0] — 2026-10-01 — Nâng cấp trang dự án
 - **Thanh CTA cố định** (Gọi 0978 618 149 / Nhắn Zalo) ở đáy màn hình điện thoại; chỉ trên nhóm Dự Án Chọn Lọc (`ctaCategories` trong `site.config.json`). Ẩn trên máy tính và khi in.
 - **Thanh điều hướng nổi** trong bài (Tổng quan · Chi tiết · Góc nhìn · SWOT) nằm trong thanh đầu trang đang dính, đánh dấu mục đang đọc khi cuộn; bấm mục không thêm lịch sử (nút Back vẫn thoát khỏi bài).

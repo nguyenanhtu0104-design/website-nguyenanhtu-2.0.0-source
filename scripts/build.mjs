@@ -75,6 +75,11 @@ for (const a of articles) {
   if (/data:image\//.test(h)) errors.push(`[${a.slug}] nội dung chứa ảnh Base64 — bị cấm, dùng scripts/images.py add`);
   if (/openPanel\(/.test(h)) errors.push(`[${a.slug}] còn openPanel() — dùng <a href="/cam-nang/slug/">`);
   if (/<script\b/i.test(h)) errors.push(`[${a.slug}] nội dung không được chứa <script>`);
+  if (/<iframe\b/i.test(h)) errors.push(`[${a.slug}] không viết <iframe> trong nội dung — dùng khối .p-360 (docs/CONTENT_GUIDE.md §3B)`);
+  for (const m of h.matchAll(/<a class="p-360-tab[^"]*" href="([^"]*)"/g)) {
+    let u = null; try { u = new URL(m[1]); } catch { /* lỗi bên dưới */ }
+    if (!u || u.protocol !== 'https:' || !(cfg.embedHosts || []).includes(u.hostname)) errors.push(`[${a.slug}] khối 360: "${m[1]}" không phải https hoặc host chưa có trong embedHosts (site.config.json) — thêm host mới cần Tú duyệt`);
+  }
   for (const m of h.matchAll(/data-img="([^"]+)"/g)) if (!images[m[1]]) errors.push(`[${a.slug}] ảnh "${m[1]}" không có trong data/images.json`);
   for (const m of h.matchAll(/<img\b(?![^>]*data-img=)[^>]*src="([^"]+)"/g)) if (!/^https?:/.test(m[1])) warns.push(`[${a.slug}] <img src="${m[1]}"> nên dùng data-img`);
   for (const m of h.matchAll(/(?:href|data-href)="\/cam-nang\/([^"/#]+)\/?(#[^"]*)?"/g)) if (!bySlug.has(m[1])) errors.push(`[${a.slug}] link hỏng tới /cam-nang/${m[1]}/`);
@@ -136,7 +141,7 @@ console.log(`✓ Kiểm tra OK — ${articles.length} bài, ${Object.keys(images
 if (CHECK_ONLY) process.exit(0);
 
 /* ───────────────────────── RENDER ───────────────────────── */
-const common = { authorRole: esc(cfg.author.role), base: BASE, version: cfg.version, themeColor: cfg.themeColor, siteName: esc(cfg.siteName), locale: cfg.locale, fonts: esc(cfg.fonts) };
+const common = { embedHosts: esc((cfg.embedHosts || []).join(',')), authorRole: esc(cfg.author.role), base: BASE, version: cfg.version, themeColor: cfg.themeColor, siteName: esc(cfg.siteName), locale: cfg.locale, fonts: esc(cfg.fonts) };
 const au = cfg.author;
 const fanHome = au.fanpage ? `\n        <a class="author-cr" href="${esc(au.fanpage)}" target="_blank" rel="noopener">
           <div class="author-cr-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.69.23 2.69.23v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.27h3.33l-.53 3.49h-2.8V24C19.61 23.1 24 18.1 24 12.07z"/></svg></div>
@@ -168,7 +173,7 @@ function renderContent(h) {
   return h;
 }
 /* Trang dự án: gắn id cho vạch chia mục, dựng thanh điều hướng nổi, chèn dải số liệu (facts) dưới tiêu đề. */
-function decorate(a, h) {
+function decorate(a, h, withCta) {
   const secs = [];
   h = h.replace(SEC_RE, (m, style, num, label) => {
     secs.push({ id: `sec-${num}`, label: SEC_SHORT[num] || label.replace(/&amp;/g, '&').trim() });
@@ -177,11 +182,31 @@ function decorate(a, h) {
   SEC_RE.lastIndex = 0;
   let secNav = '';
   if (secs.length >= 3) secNav = `  <nav id="secNav" aria-label="Các phần của bài">${secs.map((x) => `<a href="#${x.id}">${esc(x.label)}</a>`).join('')}</nav>\n`;
+  /* Mục lục cột phải (máy tính): ưu tiên vạch 01–04; bài khác tự lấy từ các tiêu đề .p-h2 (cần ≥ 3). */
+  let toc = null, tocCls = '';
+  if (secs.length >= 3) toc = secs.map((x) => `<a href="#${x.id}"><span>${x.id.slice(4)}</span>${esc(x.label)}</a>`).join('');
+  else {
+    const H2_RE = /<p class="p-h2"([^>]*)>([\s\S]*?)<\/p>/g;
+    if ([...h.matchAll(H2_RE)].length >= 3) {
+      let n = 0; const items = [];
+      h = h.replace(H2_RE, (m, attrs, inner) => {
+        const id = `h-${++n}`; items.push(`<a href="#${id}">${esc(inner.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim())}</a>`);
+        return `<p class="p-h2" id="${id}"${attrs}>${inner}</p>`;
+      });
+      toc = items.join(''); tocCls = ' is-heads';
+    }
+  }
+  let aside = '';
+  if (toc || withCta) {
+    const tocCard = toc ? `\n    <nav id="asideNav" class="aside-card${tocCls}" aria-label="Mục lục"><div class="aside-ttl">Nội dung bài</div>${toc}</nav>` : '';
+    const ctaCard = withCta ? `\n    <div class="aside-card aside-cta"><div class="aside-ttl">Tư vấn dự án</div><p>${esc(au.name)} · ERA Vietnam<br>Tư vấn trực tiếp, không áp lực.</p><a class="cta-call" href="tel:${au.phone.replace('+84', '0')}">Gọi ${esc(au.phoneDisplay)}</a><a class="cta-zalo" href="${esc(au.zalo)}" target="_blank" rel="noopener">Nhắn Zalo</a></div>` : '';
+    aside = `  <aside id="pAside" aria-label="Mục lục và liên hệ">${tocCard}${ctaCard}\n  </aside>\n`;
+  }
   if (a.facts && a.facts.length) {
     const strip = `\n<div class="knums p-facts" role="list" aria-label="Số liệu chính">${a.facts.map((f) => `<div class="knum" role="listitem"><div class="knum-n">${esc(f.n)}</div><div class="knum-l">${esc(f.l)}</div></div>`).join('')}</div>\n`;
     h = /<\/h1>/.test(h) ? h.replace(/<\/h1>/, `</h1>${strip}`) : strip + h;
   }
-  return { html: h, secNav };
+  return { html: h, secNav, aside };
 }
 const ctaTpl = rd('templates/partials/cta-bar.html');
 const ctaCats = new Set(cfg.ctaCategories || []);
@@ -213,10 +238,10 @@ for (const a of articles) {
     author: { '@type': 'Person', name: au.name, url: abs('') }, publisher: { '@type': 'Person', name: au.name },
     mainEntityOfPage: canonical, articleSection: catById[a.category].title,
   };
-  const dec = decorate(a, contents.get(a.slug));
   const withCta = ctaCats.has(a.category);
+  const dec = decorate(a, contents.get(a.slug), withCta);
   write(`${SECTION}/${a.slug}/index.html`, fill(tplArticle, {
-    ...common, slug: a.slug, secNav: dec.secNav, ctaBar: withCta ? ctaHtml : '', bodyClass: withCta ? ' has-cta' : '', pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
+    ...common, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: dec.aside ? ' has-aside' : '', ctaBar: withCta ? ctaHtml : '', bodyClass: withCta ? ' has-cta' : '', pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
     accent: esc(a.accent), section: esc(a.section), content: renderContent(dec.html), footer,

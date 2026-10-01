@@ -100,7 +100,7 @@ window.exportPanelToPdf=function(){
       +'#pdf-content .p-card,#pdf-content .p-call{background:#fafafa!important;border-left:3px solid '+P+'!important;page-break-inside:avoid}'
       +'#pdf-content .p-card strong,#pdf-content .p-call-lbl,#pdf-content .p-tl-yr,#pdf-content .knum-n{color:'+P+'!important}'
       +'#pdf-content .p-tl-dot{background:'+P+'!important;border-color:'+P+'!important;color:#fff!important}'
-      +'#pdf-content .p-facts .knum-n,#pdf-content .p-travel b{color:'+P+'!important}#pdf-content .mix-bar{background:#e4e4e4!important}#pdf-content .mix-row small{color:#555!important}#pdf-content .mix-bar i{background:'+P+'!important}'
+      +'#pdf-content .p-facts .knum-n,#pdf-content .p-travel b{color:'+P+'!important}#pdf-content .p-360{display:none!important}#pdf-content .mix-bar{background:#e4e4e4!important}#pdf-content .mix-row small{color:#555!important}#pdf-content .mix-bar i{background:'+P+'!important}'
       +'#pdf-content table{page-break-inside:avoid}#pdf-content th{background:#f0f0f0!important;color:#1a1a1a!important;border-color:#ccc!important}'
       +'#pdf-content img{max-width:100%;height:auto;page-break-inside:avoid}'
       +'button,[onclick],.p-close,.p-export-pdf,.faq-cluster-btn,#pdf-content .files-sec{display:none!important}'
@@ -127,15 +127,19 @@ window.exportPanelToPdf=function(){
   setHeadH(); window.addEventListener('resize',setHeadH);
   if(window.ResizeObserver&&head) new ResizeObserver(setHeadH).observe(head);
 
-  if(nav){
-    var links=[].slice.call(nav.querySelectorAll('a')), ids=[];
-    links.forEach(function(a){ var id=a.getAttribute('href').slice(1); if(document.getElementById(id)) ids.push(id); });
+  var navs=[].slice.call(document.querySelectorAll('#secNav,#asideNav'));
+  if(navs.length){
+    var links=[].slice.call(document.querySelectorAll('#secNav a,#asideNav a')), ids=[];
+    links.forEach(function(a){ var id=a.getAttribute('href').slice(1); if(document.getElementById(id)&&ids.indexOf(id)<0) ids.push(id); });
     var mark=function(id){
       links.forEach(function(a){
         var on=a.getAttribute('href')==='#'+id; a.classList.toggle('on',on);
         if(on){ a.setAttribute('aria-current','true');
-          var nr=nav.getBoundingClientRect(), ar=a.getBoundingClientRect();
-          if(ar.left<nr.left+8||ar.right>nr.right-8) nav.scrollLeft+=ar.left-nr.left-12;
+          var n=a.parentElement;
+          if(n&&n.id==='secNav'&&n.offsetParent){ var nr=n.getBoundingClientRect(), ar=a.getBoundingClientRect();
+            if(ar.left<nr.left+8||ar.right>nr.right-8) n.scrollLeft+=ar.left-nr.left-12; }
+          if(n&&n.id==='asideNav'&&n.offsetParent){ var mr=n.getBoundingClientRect(), br=a.getBoundingClientRect();
+            if(br.top<mr.top+6||br.bottom>mr.bottom-6) n.scrollTop+=br.top-mr.top-mr.height/3; }
         } else a.removeAttribute('aria-current');
       });
     };
@@ -148,14 +152,15 @@ window.exportPanelToPdf=function(){
       mark(cur);
     };
     window.addEventListener('scroll',function(){ if(!ticking){ ticking=true; requestAnimationFrame(spy); } },{passive:true});
+    window.addEventListener('resize',spy);
     spy();
     /* Bấm mục: cuộn mượt, không thêm lịch sử (nút Back vẫn thoát khỏi bài) */
-    nav.addEventListener('click',function(e){
+    navs.forEach(function(nav){ nav.addEventListener('click',function(e){
       var a=e.target.closest('a'); if(!a) return;
       var el=document.getElementById(a.getAttribute('href').slice(1)); if(!el) return;
       e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'});
       if(history.replaceState) history.replaceState(null,'',a.getAttribute('href'));
-    });
+    }); });
   }
 
   /* Bảng có cột "Tỷ lệ" (vd cơ cấu sản phẩm): thêm thanh ngang + số % dưới tên ở cột đầu (luôn thấy được trên điện thoại,
@@ -178,6 +183,34 @@ window.exportPanelToPdf=function(){
       i.style.width=Math.max(3,x.v/max*100).toFixed(1)+'%'; bar.appendChild(i); lb.textContent=x.t;
       row.appendChild(bar); row.appendChild(lb); x.c.appendChild(row);
     });
+  });
+})();
+/* ─── 2.3: khối 360° / mặt bằng nhúng (.p-360): iframe chỉ được tạo khi người đọc bấm; chỉ host đã duyệt (embedHosts) ─── */
+(function(){
+  var allow=(document.documentElement.getAttribute('data-embed')||'').split(',').filter(Boolean);
+  var ok=function(u){ try{ var x=new URL(u); return x.protocol==='https:'&&allow.indexOf(x.hostname)>-1; }catch(e){ return false; } };
+  [].forEach.call(document.querySelectorAll('#pBody .p-360'),function(box){
+    var tabs=[].slice.call(box.querySelectorAll('.p-360-tab')).filter(function(t){ return ok(t.getAttribute('href')); });
+    var stage=box.querySelector('.p-360-stage'), play=box.querySelector('.p-360-play'), full=box.querySelector('.p-360-full');
+    if(!tabs.length||!stage) return;
+    box.classList.add('is-js'); tabs[0].parentNode.setAttribute('role','tablist');
+    var show=function(tab){
+      var u=tab.getAttribute('href');
+      tabs.forEach(function(t){ var on=t===tab; t.classList.toggle('on',on); t.setAttribute('role','tab'); t.setAttribute('aria-selected',on?'true':'false'); });
+      if(full) full.setAttribute('href',u);
+      var f=stage.querySelector('iframe');
+      if(!f){
+        f=document.createElement('iframe');
+        f.setAttribute('allow','fullscreen; accelerometer; gyroscope'); f.setAttribute('allowfullscreen','');
+        f.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+        f.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups allow-forms');
+        f.setAttribute('title',(box.getAttribute('data-title')||'Tham quan 360°')+' — '+tab.textContent);
+        stage.appendChild(f); if(play) play.remove();
+      }
+      if(f.getAttribute('src')!==u){ f.setAttribute('src',u); f.setAttribute('title',(box.getAttribute('data-title')||'Tham quan 360°')+' — '+tab.textContent); }
+    };
+    tabs.forEach(function(t){ t.addEventListener('click',function(e){ e.preventDefault(); show(t); }); });
+    if(play) play.addEventListener('click',function(){ show(box.querySelector('.p-360-tab.on')||tabs[0]); });
   });
 })();
 })();

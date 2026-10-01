@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi" class="is-article" data-base="{{base}}" data-ver="{{version}}">
+<html lang="vi" class="is-article{{htmlClass}}" data-base="{{base}}" data-ver="{{version}}" data-embed="{{embedHosts}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -39,9 +39,11 @@
 {{secNav}}
   </div>
   <div id="articleLinkStatus" role="status" aria-live="polite"></div>
+  <div class="p-layout">
   <article id="pBody">
 {{content}}
   </article>
+{{aside}}  </div>
 {{footer}}
 </main>
 {{ctaBar}}<script src="{{base}}assets/js/article.js?v={{version}}" defer></script>

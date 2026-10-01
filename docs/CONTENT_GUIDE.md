@@ -75,7 +75,8 @@ Mẫu chuẩn: `content/articles/nam-mekong-grand-plaza.html` (đầy đủ nh�
 | Tính năng | Bài cần có | Nếu thiếu |
 |---|---|---|
 | CTA đáy màn hình (điện thoại) | `category: du-an-chon-loc` | không hiện |
-| Thanh điều hướng nổi | ≥ 3 vạch chia mục 01–04 đúng mẫu (xem PROJECT_RULES §4.8) | không hiện |
+| Thanh điều hướng nổi (điện thoại) + cột phải mục lục/liên hệ (laptop ≥ 1100px, khung rộng 1180px) | ≥ 3 vạch chia mục 01–04 đúng mẫu (xem PROJECT_RULES §4.8) | không hiện; bài giữ cột 640px |
+| Mục lục cột phải cho bài thường (laptop) | ≥ 3 tiêu đề `<p class="p-h2">` (build tự gắn id `h-N`) | bài một cột 860px |
 | Dải số liệu đầu trang | trường `facts` (2–4 số) trong `data/articles.json` | không hiện; build cảnh báo nếu bài đã có mục 01–04 |
 | Thanh tỷ lệ | một `<table>` có cột tiêu đề **"Tỷ lệ"**, ô dạng `52,5%` (≥ 2 dòng) | bảng giữ nguyên |
 | Vị trí theo phút | khối `<ul class="p-travel">` trong mục 📍 Vị Trí | không hiện |
@@ -95,6 +96,25 @@ Mẫu chuẩn: `content/articles/nam-mekong-grand-plaza.html` (đầy đủ nh�
 Quy tắc số liệu (§8.1): chỉ ghi khoảng cách/thời gian **có nguồn** (tài liệu dự án, hoặc số đo Google Maps ghi rõ giờ đo). Quy đổi từ mét sang phút đi bộ dùng ≈ 80 m/phút và ghi "mang tính tham khảo". Chưa có số thì ghi **"Đang cập nhật"**, không ước chừng.
 
 **Điểm yếu SWOT:** viết điểm yếu thật, dựa trên dữ kiện của chính bài (mật độ, tiến độ, thông tin còn thiếu, điểm thấp trong thang điểm 1–5, chi phí phát sinh cho chủ nhà…). Không để "Chưa ghi nhận điểm yếu".
+
+## 3B. Khối tham quan 360° / mặt bằng nhúng (`.p-360`)
+
+Dùng khi chủ đầu tư hoặc đơn vị dựng hình có trang 3D/360° tương tác. Mẫu: mục "🧭 Tham Quan 360°…" trong `nam-mekong-grand-plaza.html`. **Chỉ chép mẫu bên dưới, không viết `<iframe>` hay `<script>`**; JS tự tạo iframe khi người đọc bấm.
+
+```html
+<div class="p-360" data-title="Tên dự án">
+  <div class="p-360-tabs">
+    <a class="p-360-tab on" href="https://HOST/" target="_blank" rel="noopener">Tổng quan 3D</a>
+    <a class="p-360-tab" href="https://HOST/floor-plan" target="_blank" rel="noopener">Mặt bằng tầng</a>
+  </div>
+  <div class="p-360-stage"><img data-img="slug-du-an/03" alt="…"><button type="button" class="p-360-play">▶ Bắt đầu tham quan 360°</button></div>
+  <div class="p-360-bar"><span>Nguồn: …</span><a class="p-360-full" href="https://HOST/" target="_blank" rel="noopener">Mở toàn màn hình ↗</a></div>
+</div>
+```
+- Ảnh nền: dùng ảnh phối cảnh 16:9 đã có trong bài (`scripts/images.py add`).
+- **Host mới:** thêm vào `embedHosts` trong `site.config.json` — **cần Tú duyệt** (PROJECT_RULES §4.7). Build báo lỗi nếu quên.
+- Tab đầu là `on`. Mỗi tab là một địa chỉ riêng của trang 3D. Luôn ghi nguồn trong `p-360-bar` (§8.1).
+- Một số trang không cho phép nhúng (khung báo lỗi): khi đó người đọc dùng nút "Mở toàn màn hình ↗" ở cuối khối.
 
 ## 4. Lỗi build thường gặp
 
