@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>SkySOLIS – Bảng Tính Chiết Khấu & 3 Phương Thức Thanh Toán</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+:root{
+  --gold:#C9A84C;--gold-l:#E8C96A;
+  --navy:#0B1F3A;--navy-m:#152D50;--navy-l:#1E3F6E;
+  --org:#E86A1A;--org-l:#F5956A;
+  --ph1:#2E7D9B;--ph2:#1B6B4A;--ph3:#7B3F10;--ph4:#5B3A8B;
+  --pur:#7B4DB8;--pur-l:#BEA0E8;
+  --grn:#1B6B4A;--grn-l:#5DD4A0;
+  --red:#C0392B;--red-l:#F1948A;
+  --mut:#8A9BB5;--wht:#FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--navy);font-family:'Be Vietnam Pro',sans-serif;color:var(--wht);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 15% 15%,rgba(201,168,76,.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 85% 85%,rgba(30,63,110,.6) 0%,transparent 50%),
+  repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.01) 40px,rgba(255,255,255,.01) 41px);
+  pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:40px 20px 60px}
+
+/* HEADER */
+.hdr{text-align:center;margin-bottom:40px;animation:fadeD .8s ease both}
+.hdr-badge{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:var(--navy);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:6px 20px;border-radius:2px;margin-bottom:16px}
+.hdr h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4.5vw,42px);font-weight:900;
+  background:linear-gradient(135deg,#FFF 0%,var(--gold-l) 60%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.hdr-sub{color:var(--mut);font-size:13px;letter-spacing:1px}
+.div-gold{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0}
+
+/* CARDS */
+.card{background:linear-gradient(135deg,var(--navy-m),var(--navy-l));
+  border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:22px 24px;margin-bottom:20px;
+  box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.card-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* PROPERTY INPUT */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:600px){.prop-grid{grid-template-columns:1fr}}
+.input-group label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.price-inp{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.4);border-radius:8px;
+  padding:11px 16px;font-family:'Be Vietnam Pro',sans-serif;font-size:17px;font-weight:700;
+  color:var(--gold-l);width:100%;outline:none;transition:border-color .2s;text-align:right}
+.price-inp:focus{border-color:var(--gold)}
+.inp-note{font-size:11px;color:var(--mut);margin-top:5px}
+.prop-info{display:flex;flex-direction:column;gap:8px}
+.pi-row{display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+.pi-lbl{color:var(--mut);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.pi-val{font-weight:700}
+
+/* DISCOUNT TABLE */
+.ck-table{width:100%;border-collapse:collapse;font-size:13px}
+.ck-table thead th{background:rgba(255,255,255,.04);color:var(--gold);font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;padding:10px 14px;text-align:left}
+.ck-table thead th:last-child{text-align:right}
+.ck-table tbody tr{border-top:1px solid rgba(255,255,255,.05)}
+.ck-table tbody tr:hover{background:rgba(255,255,255,.02)}
+.ck-table td{padding:12px 14px;vertical-align:middle}
+.stt-cell{width:36px;color:var(--mut);font-size:12px;font-weight:700;text-align:center}
+.name-cell{font-weight:600;font-size:13px;min-width:180px}
+.name-sub{font-size:11px;color:var(--mut);font-weight:400;margin-top:3px}
+.opt-cell{min-width:260px}
+.val-cell{text-align:right;font-weight:700;font-size:14px;min-width:160px;white-space:nowrap}
+.val-fixed{color:var(--red-l)}
+.val-pct{color:#6EC6E8}
+.val-none{color:var(--mut);font-size:12px;font-weight:400}
+
+/* OPTIONS */
+.radio-group,.check-group{display:flex;flex-direction:column;gap:6px}
+.radio-group.horizontal,.check-group.horizontal{flex-direction:row;flex-wrap:wrap;gap:8px}
+.opt-btn{padding:5px 14px;border-radius:6px;border:1px solid rgba(201,168,76,.25);
+  background:rgba(255,255,255,.03);color:rgba(255,255,255,.55);
+  font-family:'Be Vietnam Pro',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.opt-btn:hover{border-color:var(--gold);color:var(--gold-l)}
+.opt-btn.active-ck{background:linear-gradient(135deg,rgba(46,125,155,.4),rgba(46,125,155,.2));
+  border-color:#6EC6E8;color:#6EC6E8}
+.opt-btn.active-fixed{background:linear-gradient(135deg,rgba(192,57,43,.3),rgba(192,57,43,.15));
+  border-color:var(--red-l);color:var(--red-l)}
+.opt-btn.active-none{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:var(--mut)}
+.opt-btn.disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+
+/* SUMMARY BOX */
+.sum-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:18px 20px;margin-top:16px}
+.sum-row{display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;font-size:13px}
+.sum-row+.sum-row{border-top:1px solid rgba(255,255,255,.05)}
+.sum-lbl{color:var(--mut)}
+.sum-val{font-weight:700;font-variant-numeric:tabular-nums}
+.sum-row.deduct .sum-val{color:var(--red-l)}
+.sum-row.pct-ck .sum-val{color:#6EC6E8}
+.sum-row.final-pre{padding-top:12px;margin-top:6px;border-top:2px solid rgba(201,168,76,.3)!important}
+.sum-row.final-pre .sum-lbl{font-size:14px;font-weight:700;color:rgba(255,255,255,.9)}
+.sum-row.final-pre .sum-val{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold-l)}
+.sum-row.vat-row .sum-val{color:var(--mut)}
+.sum-row.total-row .sum-lbl{font-size:15px;font-weight:700;color:var(--gold-l)}
+.sum-row.total-row .sum-val{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold-l)}
+.sum-row.savings-row .sum-lbl{color:var(--grn-l);font-weight:600}
+.sum-row.savings-row .sum-val{color:var(--grn-l)}
+
+/* TOTAL BAR */
+.total-bar{background:linear-gradient(135deg,var(--gold),var(--gold-l));border-radius:10px;
+  padding:20px 24px;display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.total-bar .tb-label{color:var(--navy);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.total-bar .tb-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--navy)}
+.total-bar .tb-note{font-size:11px;color:rgba(11,31,58,.55);font-style:italic;margin-top:2px}
+.total-bar .tb-parts{display:flex;gap:24px;flex-wrap:wrap;align-items:baseline}
+.total-bar .tb-sub{font-size:13px;color:rgba(11,31,58,.65)}
+
+/* PT TABS */
+.pt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.pt-tab{padding:10px 16px;border-radius:8px;border:1px solid rgba(201,168,76,.25);
+  background:rgba(255,255,255,.03);color:rgba(255,255,255,.5);
+  font-family:'Be Vietnam Pro',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:left;min-width:170px}
+.pt-tab:hover{border-color:var(--gold);color:var(--gold)}
+.pt-tab.pt-disabled{opacity:.28;pointer-events:none;filter:grayscale(1)}
+.opt-btn.pt-disabled{opacity:.28;pointer-events:none;filter:grayscale(1)}
+.pt-lock-note{font-size:11px;color:var(--gold-l);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:6px;padding:6px 12px;margin-bottom:14px;display:none}
+.pt-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border-color:transparent}
+.pt-tab .tn{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;display:block;line-height:1}
+.pt-tab .tx{display:block;font-size:11px;margin-top:2px;opacity:.85}
+.pt-tab .tb{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px;margin-top:4px}
+.pt-tab.active .tb{background:rgba(11,31,58,.25);color:var(--navy)}
+.pt-tab:not(.active) .tb{background:rgba(201,168,76,.15);color:var(--gold)}
+
+/* PT PANEL */
+.pt-panel{display:none;animation:fadeU .4s ease both}
+.pt-panel.active{display:block}
+
+/* PT INFO GRID */
+.pt-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;
+  margin-bottom:20px;padding:18px 20px;background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);border-radius:10px}
+.pi-item label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.pi-item .piv{font-size:14px;font-weight:600}
+.pi-item.big .piv{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold-l)}
+
+/* YIELD BLOCK */
+.yield-blk{background:linear-gradient(135deg,rgba(27,107,74,.15),rgba(27,107,74,.05));
+  border:1px solid rgba(93,212,160,.2);border-radius:10px;padding:16px 20px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.yi-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--grn-l);margin-bottom:4px}
+.yi-val{font-family:'Playfair Display',serif;font-size:22px;color:var(--grn-l);font-weight:900}
+.yi-sub{font-size:12px;color:var(--mut);margin-top:3px}
+.yi-calcs{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
+.yi-item label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mut);display:block;margin-bottom:3px}
+.yi-item .yiv{font-size:14px;font-weight:700;color:var(--grn-l)}
+
+/* PHASE */
+.phase{margin-bottom:24px}
+.ph-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ph-num{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:15px;flex-shrink:0}
+.ph1 .ph-num{background:var(--ph1)}.ph2 .ph-num{background:var(--ph2)}
+.ph3 .ph-num{background:var(--ph3)}.ph4 .ph-num{background:var(--ph4)}
+.ph-title{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.ph-sub{font-size:11px;color:var(--mut);margin-top:2px}
+
+/* TABLE */
+.tbl-wrap{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+table.sched{width:100%;border-collapse:collapse;font-size:13px}
+table.sched thead th{background:rgba(255,255,255,.04);color:var(--gold);font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;padding:9px 12px;text-align:left}
+table.sched thead th:not(:first-child){text-align:right}
+table.sched tbody tr{border-top:1px solid rgba(255,255,255,.05);transition:background .2s}
+table.sched tbody tr:hover{background:rgba(255,255,255,.025)}
+table.sched tbody td{padding:10px 12px;color:rgba(255,255,255,.85);vertical-align:middle}
+table.sched tbody td:not(:first-child):not(:nth-child(3)){text-align:right}
+.dot-n{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.ph1 .dot-n{background:rgba(46,125,155,.3);color:#6EC6E8}
+.ph2 .dot-n{background:rgba(27,107,74,.3);color:#5DD4A0}
+.ph3 .dot-n{background:rgba(123,63,16,.3);color:#E8A06E}
+.ph4 .dot-n{background:rgba(91,58,139,.3);color:#BEA0E8}
+.pct-b{display:inline-block;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:700}
+.ph1 .pct-b{background:rgba(46,125,155,.2);color:#6EC6E8}
+.ph2 .pct-b{background:rgba(27,107,74,.2);color:#5DD4A0}
+.ph3 .pct-b{background:rgba(123,63,16,.2);color:#E8A06E}
+.ph4 .pct-b{background:rgba(91,58,139,.2);color:#BEA0E8}
+.mile-row td{background:rgba(201,168,76,.07)!important}
+.mile-tag{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:var(--navy);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  padding:2px 8px;border-radius:3px;margin-left:6px;vertical-align:middle}
+.amt{font-weight:600;font-variant-numeric:tabular-nums}
+.cum{color:var(--mut);font-size:12px}
+.vat-c{color:rgba(255,255,255,.4);font-size:11px}
+
+/* PROG BAR */
+.prog-wrap{margin-bottom:22px}
+.prog-ttl{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:10px;text-align:center}
+.prog-bar{background:rgba(255,255,255,.05);border-radius:100px;height:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.prog-fill{height:100%;border-radius:100px;display:flex}
+.prog-labels{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;justify-content:center}
+.prog-lbl{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)}
+.prog-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* PT TOTAL BAR */
+.pt-total{background:linear-gradient(135deg,var(--gold),var(--gold-l));border-radius:10px;
+  padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:24px;flex-wrap:wrap;gap:10px}
+.pt-tl{color:var(--navy);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.pt-tv{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--navy)}
+.pt-tn{font-size:11px;color:rgba(11,31,58,.55);font-style:italic;margin-top:2px}
+
+.dd-tab{background:transparent;border:none;color:var(--mut);font-family:'Be Vietnam Pro',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px 6px;
+  cursor:pointer;transition:all .2s;border-bottom:2px solid transparent}
+.dd-tab:hover{color:var(--gold)}
+.dd-tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,168,76,.06)}
+.dd-item{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s}
+.dd-item:hover{background:rgba(201,168,76,.1)}
+.dd-item.is-coc{opacity:.4;cursor:not-allowed}
+.dd-item .di-code{font-size:13px;font-weight:700;color:var(--gold-l);min-width:100px}
+.dd-item .di-info{font-size:11px;color:var(--mut);flex:1}
+.dd-item .di-price{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);text-align:right;white-space:nowrap}
+.dd-item .di-badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;
+  letter-spacing:.5px;white-space:nowrap;flex-shrink:0}
+
+/* INFRA */
+.infra{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
+.infra-item{flex:1;min-width:160px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.ii-yr{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px}
+.ii-nm{font-size:12px;font-weight:600;margin-top:2px}
+
+/* SECTION DIVIDER */
+.sec-div{display:flex;align-items:center;gap:14px;margin:28px 0 18px}
+.sec-div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
+.sec-div-text{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+
+.badge-green{display:inline-block;background:rgba(27,107,74,.25);color:var(--grn-l);
+  font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px}
+.badge-orange{display:inline-block;background:rgba(232,106,26,.2);color:var(--org-l);
+  font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px}
+.badge-pur{display:inline-block;background:rgba(123,77,184,.25);color:var(--pur-l);
+  font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px}
+
+.footer-note{text-align:center;color:var(--mut);font-size:11px;margin-top:36px;
+  padding-top:20px;border-top:1px solid rgba(255,255,255,.06);line-height:1.8}
+
+@keyframes fadeD{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+@keyframes fadeU{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* ══ PRINT / EXPORT PDF ══ */
+#print-sheet{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff!important;color:#111!important}
+  body::before{display:none!important}
+  .wrap{display:none!important}
+  #print-sheet{display:block!important;position:static;color:#111;font-family:'Be Vietnam Pro',sans-serif}
+  #print-sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+/* Print sheet component styles (scoped) */
+#print-sheet .ps-hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2.5px solid #C9A84C;padding-bottom:12px;margin-bottom:16px}
+#print-sheet .ps-brand{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#0B1F3A}
+#print-sheet .ps-badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#8a6d1f;font-weight:700;margin-top:2px}
+#print-sheet .ps-meta{text-align:right;font-size:11px;color:#555;line-height:1.6}
+#print-sheet h2{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#8a6d1f;margin:18px 0 8px;border-bottom:1px solid #e5d9b6;padding-bottom:4px}
+#print-sheet .ps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 20px;font-size:12px}
+#print-sheet .ps-grid div span{color:#666}
+#print-sheet .ps-grid div b{color:#111;float:right}
+#print-sheet table{width:100%;border-collapse:collapse;font-size:11px;margin-top:4px}
+#print-sheet th{background:#f3ecd6;color:#5a4a15;text-align:left;padding:6px 8px;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+#print-sheet td{padding:5px 8px;border-bottom:1px solid #eee;vertical-align:top}
+#print-sheet td.r,#print-sheet th.r{text-align:right}
+#print-sheet .ps-ded{color:#b23b2e}
+#print-sheet .ps-final{background:#0B1F3A;color:#fff;border-radius:8px;padding:12px 16px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+#print-sheet .ps-final .l{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.85}
+#print-sheet .ps-final .v{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#E8C96A}
+#print-sheet .ps-foot{margin-top:22px;display:flex;justify-content:space-between;font-size:10px;color:#777;border-top:1px solid #ddd;padding-top:10px}
+#print-sheet .ps-note{font-size:10px;color:#888;margin-top:6px;line-height:1.5}
+
+/* ── SkySOLIS additions ── */
+.dot-n.k1{background:rgba(46,125,155,.3);color:#6EC6E8}
+.dot-n.k2{background:rgba(27,107,74,.3);color:#5DD4A0}
+.dot-n.k3{background:rgba(123,63,16,.3);color:#E8A06E}
+.dot-n.k4{background:rgba(91,58,139,.3);color:#BEA0E8}
+.dot-n.kx{background:rgba(201,168,76,.22);color:var(--gold-l)}
+.pct-b.k1{background:rgba(46,125,155,.2);color:#6EC6E8}
+.pct-b.k2{background:rgba(27,107,74,.2);color:#5DD4A0}
+.pct-b.k3{background:rgba(123,63,16,.2);color:#E8A06E}
+.pct-b.k4{background:rgba(91,58,139,.2);color:#BEA0E8}
+.pct-b.kx{background:rgba(201,168,76,.15);color:var(--gold-l)}
+.pt-tab{min-width:190px}
+.mini-inp{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.3);border-radius:6px;padding:7px 12px;
+  font-family:'Be Vietnam Pro',sans-serif;font-size:13px;color:var(--gold-l);width:100%;outline:none}
+.mini-inp:focus{border-color:var(--gold)}
+.who-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media(max-width:600px){.who-grid{grid-template-columns:1fr}}
+.type-chip{display:inline-block;font-size:10px;font-weight:800;padding:2px 9px;border-radius:100px;letter-spacing:.5px;margin-left:6px;vertical-align:middle}
+.t-Studio{background:rgba(60,170,80,.25);color:#7fe08f}
+.t-2PN1WC{background:rgba(170,205,80,.22);color:#c8e67a}
+.t-2PN2WC{background:rgba(250,220,40,.2);color:#f5df5a}
+.t-3PN2WC{background:rgba(165,110,75,.3);color:#e8b08a}
+.t-SkyVilla{background:rgba(235,120,170,.25);color:#f3a1c6}
+.t-Mixed{background:rgba(66,170,225,.25);color:#7fcdf2}
+.t-Dual{background:rgba(70,70,170,.4);color:#aab0ff}
+.legend-dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.refund-note{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  background:rgba(201,168,76,.08);border:1px dashed rgba(201,168,76,.35);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px}
+.refund-note b{color:var(--gold-l);font-variant-numeric:tabular-nums}
+.warn-box{background:rgba(192,57,43,.14);border:1px solid rgba(241,148,138,.35);color:var(--red-l);border-radius:8px;
+  padding:9px 14px;font-size:12px;font-weight:600;margin-bottom:14px}
+table.sched{table-layout:fixed;min-width:760px}
+.tbl-wrap{overflow-x:auto}
+table.sched thead th:nth-child(2),table.sched thead th:nth-child(3){text-align:left!important}
+table.sched tbody td:nth-child(2),table.sched tbody td:nth-child(3){text-align:left!important}
+table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
+.chk-ok{color:var(--grn-l)}.chk-diff{color:var(--mut)}
+.terms{font-size:11px;color:var(--mut);line-height:1.7;margin-top:20px;padding:14px 18px;background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.06);border-radius:10px}
+.terms b{color:var(--gold-l)}
+.sec-note{font-size:11px;color:var(--mut);margin-top:5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-badge">SkySOLIS · Exclusive Preview Event</div>
+  <h1>Bảng Tính Chiết Khấu &amp; Phương Thức Thanh Toán</h1>
+  <div class="hdr-sub">Căn hộ · 3 PTTT: Chuẩn · Nhanh · Vay Ngân Hàng<br>Bảng tạm tính 14/09/2026 · Booking 01–23/10/2026</div>
+  <div class="div-gold"></div>
+</div>
+
+<!-- SECTION 1: THÔNG TIN CĂN -->
+<div class="card">
+  <div class="card-title">🏢 Thông Tin Căn Hộ</div>
+  <div style="margin-bottom:18px">
+    <div class="input-group" style="position:relative">
+      <label>Mã Căn / Unit No.</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="price-inp" id="unitInp" type="text" placeholder="Gõ mã căn (vd: C.07.08) hoặc bấm ▼"
+          style="font-size:15px;text-transform:uppercase;flex:1;text-align:left" oninput="onUnitInput(this)" autocomplete="off">
+        <button onclick="toggleFullList()" id="listBtn"
+          style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;border-radius:8px;padding:0 16px;
+          font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;cursor:pointer;height:46px;white-space:nowrap;flex-shrink:0">▼ Danh Sách</button>
+      </div>
+      <div id="unit-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;width:100%;z-index:200;background:#0D2440;
+        border:1px solid rgba(201,168,76,.45);border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.55);overflow:hidden">
+        <div id="dd-tabs" style="display:flex;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.08)">
+          <button class="dd-tab active" data-f="all" onclick="setDDTab('all')" style="flex:1">Tất Cả</button>
+          <button class="dd-tab" data-f="Studio" onclick="setDDTab('Studio')" style="flex:1">Studio</button>
+          <button class="dd-tab" data-f="2PN1WC" onclick="setDDTab('2PN1WC')" style="flex:1">2PN1WC</button>
+          <button class="dd-tab" data-f="2PN2WC" onclick="setDDTab('2PN2WC')" style="flex:1">2PN2WC</button>
+          <button class="dd-tab" data-f="3PN2WC" onclick="setDDTab('3PN2WC')" style="flex:1">3PN2WC</button>
+          <button class="dd-tab" data-f="other" onclick="setDDTab('other')" style="flex:1">Khác</button>
+        </div>
+        <div style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;gap:8px">
+          <input id="dd-search" type="text" placeholder="🔍  Tìm mã căn / layout..." oninput="renderDDList()"
+            style="flex:1;background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.25);border-radius:6px;padding:7px 12px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;color:#fff;outline:none">
+          <select id="dd-floor" onchange="renderDDList()"
+            style="background:#0D2440;border:1px solid rgba(201,168,76,.25);border-radius:6px;padding:6px 8px;font-family:'Be Vietnam Pro',sans-serif;font-size:12px;color:#fff;outline:none">
+            <option value="all">Mọi tầng</option>
+          </select>
+        </div>
+        <div id="dd-list" style="max-height:320px;overflow-y:auto"></div>
+      </div>
+      <div class="inp-note" style="margin-top:6px">Nhập mã căn hoặc bấm <b>▼ Danh Sách</b> để chọn · Mã căn = Block.Tầng.Vị trí (vd: <b>C.07.08</b>, <b>A.12.10</b>)</div>
+    </div>
+  </div>
+
+  <div id="unit-warn"></div>
+  <div class="prop-grid">
+    <div>
+      <div class="input-group" style="margin-bottom:12px">
+        <label>Block · Tầng · Loại Căn</label>
+        <div id="unit-meta" style="font-size:14px;font-weight:700;color:var(--gold-l);padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)">—</div>
+      </div>
+      <div class="input-group" style="margin-bottom:12px">
+        <label>DT Tim Tường NFA · Thông Thủy NSA (m²)</label>
+        <div id="unit-area" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.8);padding:8px 0">—</div>
+      </div>
+      <div class="input-group">
+        <label>Điều Kiện Bàn Giao</label>
+        <div id="unit-hand" style="font-size:13px;font-weight:600;color:rgba(255,255,255,.8);padding:8px 0">—</div>
+      </div>
+    </div>
+    <div>
+      <div class="input-group" style="margin-bottom:12px">
+        <label>Giá Tư Vấn / m² — áp dụng cho căn này (VND) <span id="ppm-badge"></span></label>
+        <div style="display:flex;gap:8px">
+          <input class="price-inp" id="ppmInp" type="text" inputmode="numeric" oninput="onPPM(this)" style="font-size:16px;flex:1">
+          <button class="opt-btn" id="ppm-reset" onclick="resetUnitPPM()" title="Bỏ giá riêng, quay về giá tự động" style="display:none;white-space:nowrap">↺ Tự động</button>
+        </div>
+        <div class="inp-note" id="ppm-note">Sửa trực tiếp = đặt giá riêng cho căn này · giá chung chỉnh ở mục ⚙️ bên dưới</div>
+      </div>
+      <div class="input-group">
+        <label>Giá Niêm Yết Tạm Tính — chưa VAT &amp; KPBT (VND)</label>
+        <input class="price-inp" id="priceInp" type="text" oninput="onPrice(this)" style="font-size:16px">
+        <div class="inp-note" id="price-note">= Giá/m² × DT tim tường · sửa tay để ghi đè, xoá trống để tính lại</div>
+      </div>
+    </div>
+  </div>
+  <div class="who-grid">
+    <div class="input-group"><label>Khách Hàng</label><input class="mini-inp" id="custInp" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
+    <div class="input-group"><label>Chuyên Viên Kinh Doanh</label><input class="mini-inp" id="agentInp" type="text" placeholder="Tên chuyên viên (hiện trên bản PDF)"></div>
+  </div>
+</div>
+
+
+<!-- CẤU HÌNH GIÁ -->
+<div class="card" id="cfg-card">
+  <div class="card-title" style="justify-content:space-between;cursor:pointer" onclick="toggleCfg()">
+    <span>⚙️ Cấu Hình Bảng Giá — Giá Linh Động</span><span id="cfg-arrow" style="font-size:12px;color:var(--mut)">▼ Mở</span>
+  </div>
+  <div id="cfg-body" style="display:none">
+    <div class="inp-note" style="margin-bottom:14px;font-size:12px">Giá/m² áp dụng cho một căn = <b style="color:var(--gold-l)">(giá theo loại căn, nếu trống thì giá chung) + phụ thu tầng</b>, sau đó <b style="color:var(--gold-l)">± điều chỉnh %</b>. Muốn chốt giá riêng cho một căn, sửa trực tiếp ô “Giá tư vấn/m²” ở mục Thông Tin Căn Hộ.</div>
+    <div class="prop-grid">
+      <div class="input-group"><label>Giá chung / m² (VND)</label>
+        <input class="price-inp" id="cfgBase" type="text" inputmode="numeric" oninput="onCfgNum(this,'ppm')" style="font-size:16px"></div>
+      <div class="input-group"><label>Điều chỉnh toàn bảng giá (%)</label>
+        <input class="price-inp" id="cfgAdj" type="text" inputmode="decimal" placeholder="VD: 2 hoặc -1.5" oninput="onCfgPct(this)" style="font-size:16px"></div>
+      <div class="input-group"><label>Phụ thu theo tầng (VND/m² mỗi tầng)</label>
+        <input class="price-inp" id="cfgStep" type="text" inputmode="numeric" placeholder="VD: 300.000 (âm = giảm)" oninput="onCfgNum(this,'floorStep',true)" style="font-size:16px">
+        <div class="inp-note">Cộng/trừ cho mỗi tầng cao hơn/thấp hơn tầng chuẩn</div></div>
+      <div class="input-group"><label>Tầng chuẩn (phụ thu = 0)</label>
+        <input class="price-inp" id="cfgFloorBase" type="text" inputmode="numeric" oninput="onCfgNum(this,'floorBase')" style="font-size:16px">
+        <div class="inp-note">Mặc định tầng 7 (tầng điển hình đầu tiên)</div></div>
+    </div>
+    <div style="margin-top:16px"><label style="display:block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px">Giá / m² theo loại căn (để trống = dùng giá chung)</label>
+      <div id="cfg-types" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px"></div></div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;align-items:center">
+      <button class="opt-btn" onclick="resetAllPrice()">↺ Về mặc định (55.000.000, xoá mọi giá riêng)</button>
+      <span id="cfg-saved" class="sec-note"></span>
+    </div>
+    <div id="cfg-over" class="sec-note" style="margin-top:8px"></div>
+  </div>
+</div>
+
+<!-- MAP -->
+<div class="card" id="map-card">
+  <div class="card-title">📍 Vị Trí Căn Trên Mặt Bằng</div>
+  <div id="map-hint" style="font-size:12px;color:var(--mut);margin-bottom:10px;text-align:center">← Chọn mã căn ở trên để xem vị trí trên mặt bằng</div>
+  <div id="map-selected-label" style="display:none;text-align:center;margin-bottom:10px;background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;color:var(--gold-l)"></div>
+  <div style="position:relative;width:100%;border-radius:8px;overflow:hidden;border:1px solid rgba(201,168,76,.2)">
+    <img id="mapImg" src="" style="width:100%;display:block;opacity:.95" alt="Mặt bằng SkySOLIS" onload="syncCanvas()">
+    <canvas id="mapCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></canvas>
+  </div>
+  <div style="margin-top:8px;display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--mut)">
+    <span><i class="legend-dot" style="background:#E8C96A"></i>Vị trí căn đang chọn</span>
+    <span><i class="legend-dot" style="background:#C8E67A"></i>2PN1WC</span><span><i class="legend-dot" style="background:#F5DF5A"></i>2PN2WC</span>
+    <span><i class="legend-dot" style="background:#E8B08A"></i>3PN2WC</span><span><i class="legend-dot" style="background:#7FE08F"></i>Studio</span>
+    <span><i class="legend-dot" style="background:#F3A1C6"></i>Sky Villa</span><span><i class="legend-dot" style="background:#7FCDF2"></i>Mixed-used</span>
+    <span><i class="legend-dot" style="background:#AAB0FF"></i>Dual Key</span>
+  </div>
+  <div class="sec-note" id="map-src"></div>
+</div>
+
+<!-- SECTION 2: CHƯƠNG TRÌNH ƯU ĐÃI -->
+<div class="card">
+  <div class="card-title">🎯 Chương Trình Ưu Đãi — Áp Dụng Theo Thứ Tự</div>
+  <div class="inp-note" style="margin-bottom:14px;font-size:12px">⚠️ Tất cả ưu đãi tính trên <strong>giá chưa VAT &amp; KPBT</strong> — cascading: mỗi CK tính trên giá còn lại sau bước trước.</div>
+  <div style="overflow-x:auto">
+  <table class="ck-table">
+    <thead><tr><th style="text-align:center">STT</th><th>Nội Dung Ưu Đãi</th><th>Lựa Chọn</th><th style="text-align:right">Giá Trị Áp Dụng</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="stt-cell">1</td>
+        <td class="name-cell">CK Khách Hàng Booking<div class="name-sub">Discount for customers booking<br>Tính % trên giá niêm yết</div></td>
+        <td class="opt-cell"><div class="radio-group horizontal" id="grp-bk">
+          <button class="opt-btn" onclick="setBK('before')">Trước 01/10/2026<br><span style="font-size:10px;opacity:.7">CK 2%</span></button>
+          <button class="opt-btn active-ck" onclick="setBK('oct')">01/10 – 23/10/2026<br><span style="font-size:10px;opacity:.7">CK 1%</span></button>
+          <button class="opt-btn" onclick="setBK('none')">Không áp dụng</button></div></td>
+        <td class="val-cell"><span id="val-bk" class="val-none">—</span></td>
+      </tr>
+      <tr style="background:rgba(255,255,255,.015)">
+        <td class="stt-cell">2</td>
+        <td class="name-cell">CK Không Nhận Bảo Lãnh Ngân Hàng<div class="name-sub">Non-Bank Guarantee Option<br>Tính 1% trên giá sau ƯĐ 1</div></td>
+        <td class="opt-cell"><div class="radio-group horizontal" id="grp-ng">
+          <button class="opt-btn active-ck" onclick="setNG(true)">Áp dụng 1%</button>
+          <button class="opt-btn" onclick="setNG(false)">Không áp dụng</button></div></td>
+        <td class="val-cell"><span id="val-ng" class="val-none">—</span></td>
+      </tr>
+      <tr>
+        <td class="stt-cell">3</td>
+        <td class="name-cell">CK Phương Thức Thanh Toán<div class="name-sub">Chuẩn 3% · Nhanh 8% · Vay NH 0%<br>Tính % trên giá sau ƯĐ 1 &amp; 2</div></td>
+        <td class="opt-cell">
+          <div class="radio-group horizontal" id="grp-pt">
+            <button class="opt-btn active-ck" onclick="setPT(0)">PTTT Chuẩn<br><span style="font-size:10px">CK 3%</span></button>
+            <button class="opt-btn" onclick="setPT(1)">PTTT Nhanh<br><span style="font-size:10px">CK 8%</span></button>
+            <button class="opt-btn" onclick="setPT(2)">Vay Ngân Hàng<br><span style="font-size:10px">CK 0%</span></button>
+          </div>
+          <div class="radio-group horizontal" id="grp-ptck" style="margin-top:8px">
+            <button class="opt-btn active-ck" onclick="setPTCK(true)">Áp dụng CK PTTT</button>
+            <button class="opt-btn" onclick="setPTCK(false)">Không áp dụng (0%)</button>
+          </div>
+        </td>
+        <td class="val-cell"><span id="val-pt" class="val-none">—</span></td>
+      </tr>
+      <tr style="background:rgba(255,255,255,.015)">
+        <td class="stt-cell">4</td>
+        <td class="name-cell">Chiết Khấu Khác<div class="name-sub">Others (Đặc biệt · Đại sứ · VVIP...)<br>Tính % trên giá sau ƯĐ 1→3</div></td>
+        <td class="opt-cell">
+          <input id="ck-khac-input" class="mini-inp" type="text" inputmode="decimal" placeholder="Nhập % (VD: 1.5)" style="width:160px" oninput="onCKKhac(this)">
+          <div style="font-size:11px;color:var(--mut);margin-top:4px">Để trống nếu không có · bản Excel gốc đang ẩn các dòng CK này</div>
+        </td>
+        <td class="val-cell"><span id="val-kh" class="val-none">—</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="sum-box" id="sum-box"></div>
+</div>
+
+<!-- TOTAL BAR -->
+<div class="total-bar">
+  <div>
+    <div class="tb-label">Tổng Giá Bán Căn Hộ (Gồm VAT &amp; KPBT)</div>
+    <div class="tb-note" id="tb-note">Chưa chọn ưu đãi</div>
+  </div>
+  <div class="tb-parts"><div>
+    <div class="tb-sub">Giá bán sau CK (chưa VAT): <span id="tb-pre">—</span></div>
+    <div class="tb-val" id="tb-total">—</div>
+  </div></div>
+</div>
+
+<div style="text-align:center;margin:-8px 0 28px">
+  <button onclick="exportPDF()"
+    style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;
+    letter-spacing:1px;text-transform:uppercase;padding:12px 32px;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px rgba(201,168,76,.3)">⬇ Xuất PDF Báo Giá</button>
+  <div style="font-size:11px;color:var(--mut);margin-top:8px">Bản in theo PTTT đang chọn — chọn “Save as PDF” trong hộp thoại in</div>
+</div>
+
+<!-- SECTION 3: LỊCH THANH TOÁN -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Lịch Thanh Toán</div><div class="sec-div-line"></div></div>
+<div class="pt-tabs" id="pt-tabs">
+  <button class="pt-tab active" onclick="setPT(0)"><span class="tn">01</span><span class="tx">Thanh Toán Chuẩn</span><span class="tb">CK 3%</span></button>
+  <button class="pt-tab" onclick="setPT(1)"><span class="tn">02</span><span class="tx">Thanh Toán Nhanh</span><span class="tb">CK 8%</span></button>
+  <button class="pt-tab" onclick="setPT(2)"><span class="tn">03</span><span class="tx">Vay Ngân Hàng</span><span class="tb">CK 0%</span></button>
+</div>
+<div id="pt-panels"></div>
+
+<div class="terms">
+  <b>(*) Điều kiện &amp; điều khoản:</b> Bảng tiến độ thanh toán dự kiến chỉ dùng cho mục đích tham khảo; tiến độ chính thức sẽ nêu cụ thể tại TTKQ/HĐMB.<br>
+  <b>(**)</b> VAT và Phí bảo trì có thể điều chỉnh theo quy định pháp luật và/hoặc văn bản của cơ quan Nhà nước có thẩm quyền tại thời điểm ký TTKQ/HĐMB.<br>
+  <b>Khoản quan tâm 50.000.000 đ</b> (Interest Expression Form) là khoản có hoàn lại, không tính vào tổng thanh toán.<br>
+  <b>Vay ngân hàng:</b> hỗ trợ tài chính cho đợt 1 &amp; 2 do ngân hàng khách hàng chọn quyết định theo chính sách tín dụng; Chủ đầu tư không cam kết khách hàng được chấp thuận cấp tín dụng.
+</div>
+<div class="footer-note">SkySOLIS · Bảng tính theo mã căn · Dữ liệu căn lập từ mặt bằng tầng 4-5, 6, 7-20 / 22-40 và 21 · Giá/m² và chiết khấu theo bảng tính tạm tính 14/09/2026</div>
+</div>
+
+<div id="print-sheet"></div>
+
+<script>
+const PLANS={"f45":{"src":"Mặt bằng tầng 4-5 (tr.40)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-4-5.webp","units":[{"p":"Cx.03A","l":"Y8.1","t":"Dual Key","nsa":82.8,"nfa":92.5,"xy":[12.52,12.14]},{"p":"Cx.03","l":"Z5.1","t":"Dual Key","nsa":108.4,"nfa":119.0,"xy":[12.56,24.07]},{"p":"Cx.02","l":"Z5.1c","t":"Dual Key","nsa":110.1,"nfa":122.0,"xy":[12.56,39.71]},{"p":"Cx.01","l":"Z5.1d","t":"Dual Key","nsa":108.9,"nfa":120.8,"xy":[12.56,54.5]},{"p":"Cx.05","l":"Y7.1","t":"Dual Key","nsa":70.6,"nfa":78.8,"xy":[23.26,12.07]},{"p":"Cx.06","l":"Y6.1","t":"Dual Key","nsa":71.0,"nfa":78.1,"xy":[23.26,25.86]},{"p":"Cx.07","l":"Y5.1","t":"Dual Key","nsa":80.6,"nfa":89.1,"xy":[23.26,35.5]},{"p":"Cx.08","l":"X2.1a","t":"Mixed-used","nsa":85.0,"nfa":92.8,"xy":[28.8,49.36]},{"p":"Bx.03A","l":"Z1.1","t":"Dual Key","nsa":170.5,"nfa":181.7,"xy":[35.7,49.29]},{"p":"Bx.05","l":"X2.1b","t":"Mixed-used","nsa":87.2,"nfa":93.8,"xy":[41.28,49.29]},{"p":"Bx.06","l":"X2.1c","t":"Mixed-used","nsa":87.6,"nfa":94.8,"xy":[44.53,49.29]},{"p":"Ax.10","l":"Z2.1","t":"Dual Key","nsa":188.8,"nfa":202.2,"xy":[55.12,49.29]},{"p":"Ax.11","l":"Z3.1","t":"Dual Key","nsa":178.7,"nfa":192.4,"xy":[61.86,49.29]},{"p":"Ax.02","l":"Y9.1","t":"Dual Key","nsa":93.0,"nfa":102.7,"xy":[70.54,21.71]},{"p":"Ax.01","l":"Y4.1","t":"Dual Key","nsa":94.0,"nfa":103.3,"xy":[70.54,35.79]},{"p":"Ax.03","l":"Z5.1b","t":"Dual Key","nsa":110.9,"nfa":123.2,"xy":[81.28,23.57]},{"p":"Ax.03A","l":"Z5.1a","t":"Dual Key","nsa":107.0,"nfa":118.7,"xy":[81.28,38.21]},{"p":"Ax.05","l":"Z5.1e","t":"Dual Key","nsa":107.1,"nfa":118.8,"xy":[81.28,53.29]},{"p":"Cx.10","l":"Z9.1a","t":"Dual Key","nsa":124.9,"nfa":137.2,"xy":[14.69,69.43]},{"p":"Cx.09","l":"Z9.1","t":"Dual Key","nsa":107.4,"nfa":119.4,"xy":[24.19,69.43]},{"p":"Bx.03","l":"Z7.1c","t":"Dual Key","nsa":104.2,"nfa":113.1,"xy":[33.57,67.07]},{"p":"Bx.02","l":"Z7.1b","t":"Dual Key","nsa":105.5,"nfa":116.0,"xy":[42.29,67.07]},{"p":"Bx.01","l":"Z10.1a","t":"Dual Key","nsa":96.3,"nfa":105.3,"xy":[48.14,67.07]},{"p":"Ax.09","l":"Y3.1a","t":"Dual Key","nsa":84.9,"nfa":94.1,"xy":[57.25,68.93]},{"p":"Ax.08","l":"Y3.1","t":"Dual Key","nsa":85.2,"nfa":93.9,"xy":[65.0,68.93]},{"p":"Ax.07","l":"Z11.1","t":"Dual Key","nsa":101.6,"nfa":113.7,"xy":[73.49,69.0]},{"p":"Ax.06","l":"Y2.1","t":"Dual Key","nsa":86.6,"nfa":97.7,"xy":[82.13,68.93]}]},"f6":{"src":"Mặt bằng tầng 6 – tiện ích (tr.42)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-6.webp","units":[{"p":"Cx.03A","l":"C1.1a","t":"2PN2WC","nsa":86.2,"nfa":94.3,"pes":12.6,"xy":[12.04,12.93]},{"p":"Cx.03","l":"D1.1f","t":"3PN2WC","nsa":114.7,"nfa":124.5,"pes":26.6,"xy":[12.08,26.35]},{"p":"Cx.02","l":"D1.1d(M)","t":"3PN2WC","nsa":114.6,"nfa":124.6,"pes":26.6,"xy":[12.15,40.48]},{"p":"Cx.01","l":"D1.1e(M)","t":"3PN2WC","nsa":114.3,"nfa":125.4,"pes":26.6,"xy":[12.15,54.95]},{"p":"Cx.05","l":"C1.1d","t":"2PN2WC","nsa":71.5,"nfa":79.2,"pes":8.6,"xy":[21.08,15.53]},{"p":"Cx.06","l":"B2.1a","t":"2PN1WC","nsa":71.9,"nfa":78.8,"pes":8.6,"xy":[20.84,25.09]},{"p":"Cx.07","l":"B1.1b","t":"2PN1WC","nsa":72.5,"nfa":80.3,"pes":8.7,"xy":[20.92,36.12]},{"p":"Cx.10","l":"C3.1b","t":"2PN2WC","nsa":74.4,"nfa":82.5,"pes":null,"xy":[11.38,72.8]},{"p":"Cx.09","l":"C3.1c","t":"2PN2WC","nsa":74.4,"nfa":81.6,"pes":null,"xy":[19.83,72.8]},{"p":"Cx.08","l":"C3.1d","t":"2PN2WC","nsa":81.2,"nfa":89.1,"pes":null,"xy":[27.97,72.73]},{"p":"Ax.05","l":"B3.1b","t":"2PN1WC","nsa":64.0,"nfa":70.8,"pes":null,"xy":[70.0,72.59]},{"p":"Ax.03A","l":"B3.2","t":"2PN1WC","nsa":60.7,"nfa":67.4,"pes":null,"xy":[79.51,72.52]},{"p":"Ax.03","l":"C3.1f","t":"2PN2WC","nsa":68.5,"nfa":77.1,"pes":null,"xy":[85.43,72.59]},{"p":"Ax.01","l":"D1.1d","t":"3PN2WC","nsa":111.6,"nfa":121.6,"pes":23.9,"xy":[82.74,41.46]},{"p":"Ax.02","l":"D1.1e","t":"3PN2WC","nsa":111.9,"nfa":122.0,"pes":23.4,"xy":[82.74,56.22]}]},"ftyp":{"src":"Mặt bằng điển hình tầng 7-20 / 22-40 (tr.44)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-dien-hinh.webp","units":[{"p":"Cx.03A","l":"C1.1","t":"2PN2WC","nsa":74.3,"nfa":82.8,"nsa2":74.7,"nfa2":82.9,"xy":[13.61,10.88]},{"p":"Cx.05","l":"C1.1b","t":"2PN2WC","nsa":62.6,"nfa":69.9,"nsa2":62.6,"nfa2":69.9,"xy":[22.32,11.43]},{"p":"Cx.03","l":"D1.1c","t":"3PN2WC","nsa":93.8,"nfa":103.0,"nsa2":94.1,"nfa2":103.0,"xy":[13.61,25.0]},{"p":"Cx.06","l":"B2.1","t":"2PN1WC","nsa":63.7,"nfa":70.3,"nsa2":63.9,"nfa2":70.3,"xy":[22.32,27.69]},{"p":"Cx.02","l":"D1.1a(M)","t":"3PN2WC","nsa":93.5,"nfa":103.1,"nsa2":94.1,"nfa2":103.1,"xy":[13.61,38.71]},{"p":"Cx.07","l":"B1.1","t":"2PN1WC","nsa":64.2,"nfa":70.6,"nsa2":64.4,"nfa2":70.6,"xy":[22.32,36.02]},{"p":"Cx.08","l":"A1.1","t":"Studio","nsa":30.1,"nfa":34.0,"nsa2":30.1,"nfa2":34.0,"xy":[22.32,44.63]},{"p":"Cx.01","l":"D1.1b(M)","t":"3PN2WC","nsa":93.4,"nfa":103.2,"nsa2":93.9,"nfa2":103.2,"xy":[13.61,53.31]},{"p":"Cx.09","l":"E1.1","t":"Sky Villa","nsa":121.6,"nfa":131.9,"nsa2":121.7,"nfa2":131.9,"xy":[33.31,51.72]},{"p":"Bx.03A","l":"X1.1a","t":"Mixed-used","nsa":54.7,"nfa":59.8,"nsa2":55.2,"nfa2":59.9,"xy":[40.94,50.07]},{"p":"Bx.05","l":"X1.1b","t":"Mixed-used","nsa":54.7,"nfa":59.5,"nsa2":55.2,"nfa2":59.7,"xy":[46.41,50.07]},{"p":"Ax.12A","l":"C4.1","t":"2PN2WC","nsa":74.4,"nfa":82.4,"nsa2":74.9,"nfa2":82.4,"xy":[57.21,52.2]},{"p":"Ax.12","l":"C4.1a","t":"2PN2WC","nsa":74.5,"nfa":82.4,"nsa2":74.7,"nfa2":82.4,"xy":[62.41,52.2]},{"p":"Ax.03","l":"C1.1c","t":"2PN2WC","nsa":75.5,"nfa":83.6,"nsa2":75.7,"nfa2":83.6,"xy":[73.25,21.83]},{"p":"Ax.02","l":"C2.1","t":"2PN2WC","nsa":79.4,"nfa":86.7,"nsa2":79.6,"nfa2":86.7,"xy":[73.25,35.67]},{"p":"Ax.01","l":"A1.2","t":"Studio","nsa":30.6,"nfa":35.5,"nsa2":30.7,"nfa2":35.5,"xy":[73.25,44.7]},{"p":"Ax.03A","l":"D1.1","t":"3PN2WC","nsa":92.1,"nfa":102.8,"nsa2":92.6,"nfa2":102.8,"xy":[82.88,24.45]},{"p":"Ax.05","l":"D1.1a","t":"3PN2WC","nsa":93.2,"nfa":102.8,"nsa2":93.8,"nfa2":102.8,"xy":[82.85,39.33]},{"p":"Ax.06","l":"D1.1b","t":"3PN2WC","nsa":94.2,"nfa":103.7,"nsa2":94.7,"nfa2":103.7,"xy":[82.85,53.51]},{"p":"Cx.12","l":"C3.1b","t":"2PN2WC","nsa":74.4,"nfa":82.5,"nsa2":74.7,"nfa2":82.5,"xy":[11.41,68.46]},{"p":"Cx.11","l":"C3.1c","t":"2PN2WC","nsa":74.4,"nfa":81.6,"nsa2":74.8,"nfa2":81.6,"xy":[18.77,68.46]},{"p":"Cx.10","l":"C3.1d","t":"2PN2WC","nsa":77.5,"nfa":85.3,"nsa2":78.1,"nfa2":85.4,"xy":[28.49,68.39]},{"p":"Bx.03","l":"Z7.1a","t":"Dual Key","nsa":111.4,"nfa":121.4,"nsa2":111.8,"nfa2":121.3,"xy":[32.11,67.7]},{"p":"Bx.02","l":"Z7.1b","t":"Dual Key","nsa":106.2,"nfa":116.0,"nsa2":106.7,"nfa2":116.0,"xy":[41.09,67.7]},{"p":"Bx.01","l":"Z10.1","t":"Dual Key","nsa":107.4,"nfa":116.0,"nsa2":107.7,"nfa2":115.8,"xy":[48.34,67.7]},{"p":"Ax.11","l":"C3.1a","t":"2PN2WC","nsa":83.3,"nfa":91.2,"nsa2":84.0,"nfa2":91.4,"xy":[57.25,69.56]},{"p":"Ax.10","l":"C3.1","t":"2PN2WC","nsa":73.9,"nfa":81.2,"nsa2":74.5,"nfa2":81.3,"xy":[65.03,69.49]},{"p":"Ax.09","l":"B3.1b","t":"2PN1WC","nsa":63.6,"nfa":70.4,"nsa2":63.9,"nfa2":70.3,"xy":[71.36,68.11]},{"p":"Ax.08","l":"B3.2","t":"2PN1WC","nsa":60.7,"nfa":67.4,"nsa2":61.2,"nfa2":67.4,"xy":[78.03,69.56]},{"p":"Ax.07","l":"C3.1f","t":"2PN2WC","nsa":68.5,"nfa":77.1,"nsa2":68.8,"nfa2":77.1,"xy":[85.74,68.11]}]},"f21":{"src":"Mặt bằng tầng 21 (tr.46)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-21.webp","units":[{"p":"Cx.03A","l":"C1.1","t":"2PN2WC","nsa":74.3,"nfa":82.8,"xy":[11.68,13.61]},{"p":"Cx.03","l":"D1.1c","t":"3PN2WC","nsa":93.8,"nfa":103.0,"xy":[11.68,27.5]},{"p":"Cx.02","l":"D1.1a(M)","t":"3PN2WC","nsa":93.5,"nfa":103.1,"xy":[11.68,41.89]},{"p":"Cx.01","l":"D1.1b(M)","t":"3PN2WC","nsa":93.4,"nfa":103.2,"xy":[11.68,56.98]},{"p":"Cx.05","l":"B1.1","t":"2PN1WC","nsa":64.2,"nfa":70.6,"xy":[19.76,40.82]},{"p":"Cx.06","l":"A1.1","t":"Studio","nsa":30.1,"nfa":34.0,"xy":[19.76,49.04]},{"p":"Cx.09","l":"C3.1b","t":"2PN2WC","nsa":74.4,"nfa":82.5,"xy":[10.99,73.78]},{"p":"Cx.08","l":"C3.1c","t":"2PN2WC","nsa":74.4,"nfa":81.6,"xy":[18.94,73.78]},{"p":"Cx.07","l":"C3.1d","t":"2PN2WC","nsa":77.5,"nfa":85.3,"xy":[26.79,73.78]},{"p":"Bx.03","l":"Z7.1a","t":"Dual Key","nsa":111.4,"nfa":121.4,"xy":[32.14,70.87]},{"p":"Bx.02","l":"Z7.1b","t":"Dual Key","nsa":106.2,"nfa":116.0,"xy":[40.37,70.87]},{"p":"Bx.01","l":"Z10.1","t":"Dual Key","nsa":107.4,"nfa":116.0,"xy":[48.29,70.8]},{"p":"Ax.10","l":"C3.1e","t":"2PN2WC","nsa":83.3,"nfa":91.2,"xy":[57.34,70.8]},{"p":"Ax.09","l":"C3.1","t":"2PN2WC","nsa":73.9,"nfa":81.2,"xy":[65.3,70.8]},{"p":"Ax.08","l":"B3.1b","t":"2PN1WC","nsa":63.6,"nfa":70.4,"xy":[69.76,71.44]},{"p":"Ax.07","l":"B3.2","t":"2PN1WC","nsa":60.7,"nfa":67.4,"xy":[78.18,71.51]},{"p":"Ax.06","l":"C3.1f","t":"2PN2WC","nsa":68.5,"nfa":77.1,"xy":[83.42,70.87]},{"p":"Ax.02","l":"C2.1","t":"2PN2WC","nsa":79.4,"nfa":86.7,"xy":[73.52,40.33]},{"p":"Ax.01","l":"A1.2","t":"Studio","nsa":30.6,"nfa":35.5,"xy":[73.52,48.55]},{"p":"Ax.03","l":"D1.1","t":"3PN2WC","nsa":92.1,"nfa":102.8,"xy":[81.91,27.57]},{"p":"Ax.03A","l":"D1.1a","t":"3PN2WC","nsa":93.2,"nfa":102.8,"xy":[81.91,42.38]},{"p":"Ax.05","l":"D1.1b","t":"3PN2WC","nsa":94.2,"nfa":103.7,"xy":[81.91,57.76]}]}};
+</script>
+<script>
+const VAT=0.10, KPBT=0.02, BOOKING_FEE=50_000_000;
+const TYPE_CLS={'Studio':'t-Studio','2PN1WC':'t-2PN1WC','2PN2WC':'t-2PN2WC','3PN2WC':'t-3PN2WC','Sky Villa':'t-SkyVilla','Mixed-used':'t-Mixed','Dual Key':'t-Dual'};
+const TYPE_COL={'Studio':'#7FE08F','2PN1WC':'#C8E67A','2PN2WC':'#F5DF5A','3PN2WC':'#E8B08A','Sky Villa':'#F3A1C6','Mixed-used':'#7FCDF2','Dual Key':'#AAB0FF'};
+const r=Math.round;
+const fmt=n=>r(n).toLocaleString('vi-VN')+' đ';
+const fmtS=n=>r(n).toLocaleString('vi-VN');
+const $=id=>document.getElementById(id);
+
+function handover(t){
+  if(['Studio','2PN1WC','2PN2WC'].includes(t)) return 'Hoàn thiện cơ bản cao cấp';
+  if(['3PN2WC','Sky Villa'].includes(t)) return 'Hoàn thiện KHÔNG có bếp';
+  if(['Mixed-used','Dual Key'].includes(t)) return 'Giao thô';
+  return '';
+}
+
+// ── Build UNIT LIST (mã căn = Block.Tầng.Vị trí) ──
+const UNITS=[]; const UNIT_MAP={};
+function addUnit(floor,u,plan,grp,src,nsa,nfa){
+  const code=`${u.p[0]}.${String(floor).padStart(2,'0')}.${u.p.slice(3)}`;
+  const o={code,floor,block:u.p[0],pos:u.p,layout:u.l,type:u.t,nsa,nfa,pes:u.pes||null,plan,xy:u.xy,grp,src};
+  UNITS.push(o); UNIT_MAP[code.replace(/[^A-Z0-9]/g,'')]=o;
+}
+for(let f=4;f<=5;f++) PLANS.f45.units.forEach(u=>addUnit(f,u,'f45','4-5',PLANS.f45.src,u.nsa,u.nfa));
+PLANS.f6.units.forEach(u=>addUnit(6,u,'f6','6',PLANS.f6.src,u.nsa,u.nfa));
+for(let f=7;f<=20;f++) PLANS.ftyp.units.forEach(u=>addUnit(f,u,'ftyp','7-20',PLANS.ftyp.src,u.nsa,u.nfa));
+PLANS.f21.units.forEach(u=>addUnit(21,u,'f21','21',PLANS.f21.src,u.nsa,u.nfa));
+for(let f=22;f<=40;f++) PLANS.ftyp.units.forEach(u=>addUnit(f,u,'ftyp','22-40',PLANS.ftyp.src,u.nsa2,u.nfa2));
+
+// ── STATE ──
+const DEFAULT_PPM=55_000_000;
+const st={code:'',ppm:DEFAULT_PPM,typePpm:{},floorStep:0,floorBase:7,adj:0,unitPpm:{},price:0,priceManual:false,bk:'oct',ng:true,pt:0,ptck:true,kh:0};
+const PT_META=[
+  {name:'PTTT Chuẩn',full:'Thanh Toán Chuẩn',ck:0.03},
+  {name:'PTTT Nhanh',full:'Thanh Toán Nhanh',ck:0.08},
+  {name:'Vay Ngân Hàng',full:'Thanh Toán Vay Ngân Hàng',ck:0}
+];
+const BK={before:{pct:.02,label:'CK Booking trước 01/10/2026 (2%)'},oct:{pct:.01,label:'CK Booking 01/10–23/10/2026 (1%)'},none:{pct:0}};
+
+function curUnit(){return UNIT_MAP[st.code.replace(/[^A-Z0-9]/g,'')]||null}
+function parseNum(s){return parseInt(String(s).replace(/\D/g,''))||0}
+
+// ── INPUTS ──
+function autoPPM(u){
+  if(!u) return st.ppm;
+  const base=st.typePpm[u.type]||st.ppm;
+  return r((base+st.floorStep*(u.floor-st.floorBase))*(1+st.adj));
+}
+function effPPM(u){
+  if(u && st.unitPpm[u.code]) return st.unitPpm[u.code];
+  return autoPPM(u);
+}
+function ppmSource(u){
+  if(!u) return 'Chưa chọn căn — dùng giá chung';
+  if(st.unitPpm[u.code]) return `Giá riêng của căn ${u.code} (tự động sẽ là ${fmtS(autoPPM(u))})`;
+  const typed=st.typePpm[u.type]; let s=typed?`Giá loại ${u.type} ${fmtS(typed)}`:`Giá chung ${fmtS(st.ppm)}`;
+  if(st.floorStep) s+=` ${st.floorStep>0?'+':'−'} ${fmtS(Math.abs(st.floorStep))} × ${Math.abs(u.floor-st.floorBase)} tầng ${u.floor>=st.floorBase?'trên':'dưới'} tầng ${st.floorBase}`;
+  if(st.adj) s+=` · điều chỉnh ${st.adj>0?'+':''}${(st.adj*100).toFixed(2).replace(/\.?0+$/,'')}%`;
+  return s;
+}
+function onPPM(el){
+  const v=parseNum(el.value); const u=curUnit();
+  el.value=v?v.toLocaleString('vi-VN'):'';
+  if(u){ if(v && v!==autoPPM(u)) st.unitPpm[u.code]=v; else delete st.unitPpm[u.code]; }
+  else { st.ppm=v||DEFAULT_PPM; $('cfgBase').value=st.ppm.toLocaleString('vi-VN'); }
+  st.priceManual=false; syncPrice(true); recalc(); saveCfg();
+}
+function resetUnitPPM(){const u=curUnit(); if(!u)return; delete st.unitPpm[u.code]; st.priceManual=false; syncPrice(); recalc(); saveCfg();}
+function onPrice(el){
+  const v=parseNum(el.value);
+  if(!v){st.priceManual=false; syncPrice(); recalc(); return;}
+  st.price=v; st.priceManual=true; el.value=v.toLocaleString('vi-VN');
+  $('price-note').textContent='Đang ghi đè thủ công — xoá trống ô này để tính lại tự động';
+  recalc();
+}
+function syncPrice(keepPPMField){
+  const u=curUnit(), ppm=effPPM(u);
+  if(!keepPPMField) $('ppmInp').value=ppm?ppm.toLocaleString('vi-VN'):'';
+  const own=u&&st.unitPpm[u.code];
+  $('ppm-badge').innerHTML=own?'<span class="type-chip t-Dual">GIÁ RIÊNG</span>':'';
+  $('ppm-reset').style.display=own?'':'none';
+  $('ppm-note').textContent=ppmSource(u);
+  if(!st.priceManual){
+    st.price=u?r(ppm*u.nfa):0; $('priceInp').value=st.price?st.price.toLocaleString('vi-VN'):'';
+    $('price-note').textContent=u?`= ${fmtS(ppm)} × ${u.nfa.toLocaleString('vi-VN')} m² (DT tim tường) · sửa tay để ghi đè, xoá trống để tính lại`:'= Giá/m² × DT tim tường · sửa tay để ghi đè, xoá trống để tính lại';
+  }
+}
+
+// ── CẤU HÌNH GIÁ ──
+const LS_KEY='skysolis_price_cfg_v1';
+function saveCfg(){
+  try{localStorage.setItem(LS_KEY,JSON.stringify({ppm:st.ppm,typePpm:st.typePpm,floorStep:st.floorStep,floorBase:st.floorBase,adj:st.adj,unitPpm:st.unitPpm}));
+    $('cfg-saved').textContent='✓ Đã lưu cấu hình giá trên trình duyệt này';}catch(e){$('cfg-saved').textContent='(Trình duyệt không cho lưu — cấu hình chỉ giữ trong phiên này)';}
+  const n=Object.keys(st.unitPpm).length;
+  $('cfg-over').innerHTML=n?`Đang có <b style="color:var(--gold-l)">${n}</b> căn chốt giá riêng: ${Object.entries(st.unitPpm).slice(0,12).map(([c,v])=>`${c} (${fmtS(v)})`).join(' · ')}${n>12?' …':''}`:'';
+}
+function loadCfg(){
+  try{const o=JSON.parse(localStorage.getItem(LS_KEY)||'null'); if(o){
+    st.ppm=o.ppm>0?o.ppm:DEFAULT_PPM; st.typePpm=o.typePpm||{}; st.floorStep=+o.floorStep||0; st.floorBase=+o.floorBase||7; st.adj=+o.adj||0; st.unitPpm=o.unitPpm||{};}}catch(e){}
+}
+function buildCfg(){
+  $('cfg-types').innerHTML=Object.keys(TYPE_CLS).map(t=>`<div><div style="font-size:11px;margin-bottom:4px"><span class="type-chip ${TYPE_CLS[t]}" style="margin:0">${t}</span></div>
+    <input class="mini-inp" data-type="${t}" type="text" inputmode="numeric" placeholder="= giá chung" oninput="onCfgType(this)"></div>`).join('');
+  fillCfg();
+}
+function fillCfg(){
+  $('cfgBase').value=st.ppm.toLocaleString('vi-VN');
+  $('cfgStep').value=st.floorStep?st.floorStep.toLocaleString('vi-VN'):'';
+  $('cfgFloorBase').value=st.floorBase;
+  $('cfgAdj').value=st.adj?(st.adj*100).toFixed(2).replace(/\.?0+$/,''):'';
+  document.querySelectorAll('#cfg-types input').forEach(i=>{const v=st.typePpm[i.dataset.type];i.value=v?v.toLocaleString('vi-VN'):'';});
+}
+function onCfgNum(el,key,signed){
+  let raw=String(el.value); const neg=signed&&raw.trim().startsWith('-'); let v=parseNum(raw); if(neg) v=-v;
+  if(key==='ppm') v=v||DEFAULT_PPM; if(key==='floorBase') v=v||7;
+  st[key]=v; if(key!=='floorBase') el.value=(neg&&v===0)?'-':(v?v.toLocaleString('vi-VN'):''); else el.value=v;
+  st.priceManual=false; syncPrice(); recalc(); saveCfg();
+}
+function onCfgPct(el){const v=parseFloat(String(el.value).replace(',','.')); st.adj=isFinite(v)?Math.max(-50,Math.min(100,v))/100:0; st.priceManual=false; syncPrice(); recalc(); saveCfg();}
+function onCfgType(el){const v=parseNum(el.value); if(v) st.typePpm[el.dataset.type]=v; else delete st.typePpm[el.dataset.type]; el.value=v?v.toLocaleString('vi-VN'):''; st.priceManual=false; syncPrice(); recalc(); saveCfg();}
+function resetAllPrice(){st.ppm=DEFAULT_PPM;st.typePpm={};st.floorStep=0;st.floorBase=7;st.adj=0;st.unitPpm={};st.priceManual=false;fillCfg();syncPrice();recalc();saveCfg();}
+function toggleCfg(){const b=$('cfg-body'),open=b.style.display==='none';b.style.display=open?'block':'none';$('cfg-arrow').textContent=open?'▲ Thu gọn':'▼ Mở';}
+
+function onCKKhac(el){const v=parseFloat(String(el.value).replace(',','.'));st.kh=(isFinite(v)&&v>0)?Math.min(v,100)/100:0;recalc();}
+function setBK(k){st.bk=k;const b=$('grp-bk').querySelectorAll('.opt-btn');['before','oct','none'].forEach((x,i)=>{b[i].classList.remove('active-ck','active-none');if(x===k)b[i].classList.add(k==='none'?'active-none':'active-ck')});recalc();}
+function setNG(on){st.ng=on;const b=$('grp-ng').querySelectorAll('.opt-btn');b.forEach(x=>x.classList.remove('active-ck','active-none'));b[on?0:1].classList.add(on?'active-ck':'active-none');recalc();}
+function setPTCK(on){st.ptck=on;const b=$('grp-ptck').querySelectorAll('.opt-btn');b.forEach(x=>x.classList.remove('active-ck','active-none'));b[on?0:1].classList.add(on?'active-ck':'active-none');recalc();}
+function setPT(i){
+  st.pt=i;
+  $('grp-pt').querySelectorAll('.opt-btn').forEach((b,j)=>{b.classList.remove('active-ck','active-none');if(j===i)b.classList.add(PT_META[i].ck>0?'active-ck':'active-none')});
+  document.querySelectorAll('.pt-tab').forEach((t,j)=>t.classList.toggle('active',j===i));
+  document.querySelectorAll('.pt-panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+  $('grp-ptck').style.display=PT_META[i].ck>0?'':'none';
+  recalc();
+}
+
+// ── CASCADE (khớp Excel: mỗi CK = ROUND(giá còn lại × %)) ──
+function compute(pt){
+  const list=st.price, steps=[]; let run=list;
+  function pctStep(id,label,p){ if(p<=0) return; const amt=r(run*p); steps.push({id,label,pct:p,amt,before:run,after:run-amt}); run-=amt; }
+  pctStep('bk',BK[st.bk].label||'',BK[st.bk].pct);
+  if(st.ng) pctStep('ng','CK Không nhận bảo lãnh ngân hàng (1%)',0.01);
+  const ptp=st.ptck?PT_META[pt].ck:0;
+  if(ptp>0) pctStep('pt',`CK ${PT_META[pt].name} (${(ptp*100).toFixed(0)}%)`,ptp);
+  if(st.kh>0) pctStep('kh',`Chiết khấu khác (${(st.kh*100).toFixed(2).replace(/\.?0+$/,'')}%)`,st.kh);
+  const A=r(list-steps.reduce((s,x)=>s+x.amt,0));
+  const B=r(A*KPBT), C=r(A*VAT), D=A+B+C;
+  return {list,steps,A,B,C,D,totalDisc:list-A};
+}
+
+// ── SCHEDULES (công thức theo 3 sheet PTTT gốc) ──
+function schedule(pt,R){
+  const {A,B,C,D}=R, rows=[];
+  const mk=(n,when,desc,pct,pre,vat,tot,k,tag)=>({n,when,desc,pct,pre,vat,tot,k,tag});
+  if(pt===0||pt===1){
+    const i1=r(.05*A), i2=r(.05*A), i11=r(.05*A);
+    const first=pt===0?.10:.40;
+    const i3=r(first*A*1.1)+r((i1+i2)*VAT);
+    rows.push(mk(1,'Dự kiến T10/2026','Ký thỏa thuận ký quỹ',.05,i1,0,i1,'k1'));
+    rows.push(mk(2,'T03/2027','Đợt 2 — ký quỹ',.05,i2,0,i2,'k1'));
+    rows.push(mk(3,'Dự kiến T06/2027',`Thông báo ký HĐMB — ${first*100}% (gồm VAT) + VAT đợt 1 & 2`,first,r(first*A),i3-r(first*A),i3,'k1','📝 Ký HĐMB'));
+    if(pt===0){
+      ['T09/2027','T12/2027','T03/2028','T06/2028','T09/2028','T12/2028'].forEach((w,j)=>{
+        const t=r(.05*A*1.1); rows.push(mk(4+j,w,'5% Giá bán (gồm VAT)',.05,r(.05*A),t-r(.05*A),t,'k2')); });
+      var hn=10, cn=11;
+    } else { var hn=4, cn=5; }
+    const hand=r((D-B)*.45+i11*VAT);
+    rows.push(mk(hn,'Dự kiến Q2/2029','Thông báo bàn giao — 45% (gồm VAT) + VAT đợt CNQSH',.45,r(.45*A),hand-r(.45*A),hand,'k3','🏠 Nhận Nhà'));
+    rows.push(mk('+','Cùng đợt bàn giao','Phí bảo trì 2%',.02,B,0,B,'k3'));
+    rows.push(mk(cn,'Khi nhận giấy CNQSH','5% Giá bán (chưa VAT)',.05,i11,0,i11,'k4','📄 CNQSH'));
+    return {rows,total:rows.reduce((s,x)=>s+x.tot,0)};
+  }
+  // Vay ngân hàng: own / bank
+  const i1=r(.05*A), i2=r(.05*A), i5=r(.05*A);
+  const own3=r(.10*A*1.1)+r((i1+i2)*VAT), bank3=r(.30*A*1.1);
+  const own4=B+r(.05*A*VAT), bank4=r((A+C)*.45);
+  rows.push({n:1,when:'Dự kiến T10/2026',desc:'Ký thỏa thuận ký quỹ',pct:.05,own:i1,bank:0,tot:i1,k:'k1'});
+  rows.push({n:2,when:'T03/2027',desc:'Đợt 2 — ký quỹ',pct:.05,own:i2,bank:0,tot:i2,k:'k1'});
+  rows.push({n:3,when:'Dự kiến T06/2027',desc:'Thông báo ký HĐMB — vốn tự có 10% (gồm VAT) + VAT đợt 1 & 2 · NH giải ngân 30% (gồm VAT)',pct:.40,own:own3,bank:bank3,tot:own3+bank3,k:'k1',tag:'📝 Ký HĐMB'});
+  rows.push({n:4,when:'Dự kiến Q2/2029',desc:'Thông báo bàn giao — vốn tự có: KPBT 2% + VAT đợt 5 · NH giải ngân 45% (gồm VAT)',pct:.45,own:own4,bank:bank4,tot:own4+bank4,k:'k3',tag:'🏠 Nhận Nhà'});
+  rows.push({n:5,when:'Khi nhận giấy CNQSH',desc:'5% Giá bán (chưa VAT)',pct:.05,own:i5,bank:0,tot:i5,k:'k4',tag:'📄 CNQSH'});
+  return {rows,total:rows.reduce((s,x)=>s+x.tot,0),ownTotal:rows.reduce((s,x)=>s+x.own,0),bankTotal:rows.reduce((s,x)=>s+x.bank,0)};
+}
+
+// ── RENDER ──
+const PHASES=[
+  [ // chuẩn
+   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · 3 đợt',k:'ph1',idx:[0,1,2]},
+   {t:'Thanh Toán Theo Tiến Độ',s:'T09/2027 → T12/2028 · mỗi 3 tháng',k:'ph2',idx:[3,4,5,6,7,8]},
+   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[9,10,11]}],
+  [ // nhanh
+   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · 3 đợt',k:'ph1',idx:[0,1,2]},
+   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[3,4,5]}],
+  [ // bank
+   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · vay ngân hàng từ đợt 3',k:'ph1',idx:[0,1,2]},
+   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[3,4]}]
+];
+const PH_COL={ph1:'var(--ph1)',ph2:'var(--ph2)',ph3:'var(--ph3)',ph4:'var(--ph4)'};
+const PROG=[
+ [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1,2]},{k:'ph2',t:'Theo tiến độ',idx:[3,4,5,6,7,8]},{k:'ph3',t:'Bàn giao',idx:[9,10]},{k:'ph4',t:'CNQSH',idx:[11]}],
+ [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1,2]},{k:'ph3',t:'Bàn giao',idx:[3,4]},{k:'ph4',t:'CNQSH',idx:[5]}],
+ [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1,2]},{k:'ph3',t:'Bàn giao',idx:[3]},{k:'ph4',t:'CNQSH',idx:[4]}]];
+
+function buildPanels(){
+  $('pt-panels').innerHTML=[0,1,2].map(i=>`
+  <div class="pt-panel${i===0?' active':''}" id="pp${i}">
+    <div class="pt-info">
+      <div class="pi-item"><label>Loại Sản Phẩm</label><div class="piv">Căn Hộ SkySOLIS</div></div>
+      <div class="pi-item"><label>Bàn Giao Dự Kiến</label><div class="piv">Q2 / 2029</div></div>
+      <div class="pi-item"><label>CK Phương Thức</label><div class="piv" id="pt${i}-ckbadge"></div></div>
+      <div class="pi-item big"><label>Tổng Giá Bán (VAT + KPBT)</label><div class="piv" id="pt${i}-total-info">—</div></div>
+    </div>
+    <div class="refund-note"><span>💳 Ký phiếu quan tâm — khoản có hoàn lại (không tính vào tổng)</span><b>${fmtS(BOOKING_FEE)} đ</b></div>
+    <div class="prog-wrap"><div class="prog-ttl">Tiến Độ Thanh Toán</div>
+      <div class="prog-bar"><div class="prog-fill" id="pt${i}-prog"></div></div>
+      <div class="prog-labels" id="pt${i}-proglbl"></div></div>
+    <div id="pt${i}-phases"></div>
+    <div class="pt-total"><div><div class="pt-tl">Tổng Thanh Toán</div><div class="pt-tn" id="pt${i}-tn"></div></div><div class="pt-tv" id="pt${i}-grand">—</div></div>
+  </div>`).join('');
+}
+
+function rowHTML(x,pt,cum){
+  if(pt<2){
+    cum.v+=x.tot;
+    return `<tr class="${x.tag?'mile-row':''}"><td><span class="dot-n ${x.k}">${x.n}</span></td><td>${x.when}</td>
+      <td>${x.desc}${x.tag?`<span class="mile-tag">${x.tag}</span>`:''}</td><td><span class="pct-b ${x.k}">${(x.pct*100).toFixed(0)}%</span></td>
+      <td class="amt">${fmtS(x.pre)}</td><td class="vat-c">${x.vat?'+'+fmtS(x.vat):'—'}</td><td class="amt">${fmtS(x.tot)}</td><td class="cum">${fmtS(cum.v)}</td></tr>`;
+  }
+  cum.v+=x.own;
+  return `<tr class="${x.tag?'mile-row':''}"><td><span class="dot-n ${x.k}">${x.n}</span></td><td>${x.when}</td>
+    <td>${x.desc}${x.tag?`<span class="mile-tag">${x.tag}</span>`:''}</td><td><span class="pct-b ${x.k}">${(x.pct*100).toFixed(0)}%</span></td>
+    <td class="amt">${fmtS(x.own)}</td><td class="amt" style="color:#6EC6E8">${x.bank?fmtS(x.bank):'—'}</td><td class="amt">${fmtS(x.tot)}</td><td class="cum">${fmtS(cum.v)}</td></tr>`;
+}
+
+const LAST={};
+function renderPanel(i){
+  const R=compute(i), S=schedule(i,R); LAST[i]={R,S};
+  const ckp=st.ptck?PT_META[i].ck:0;
+  $(`pt${i}-ckbadge`).innerHTML=ckp>0?`<span class="badge-green">CK ${(ckp*100).toFixed(0)}%</span>`:`<span class="badge-orange">CK 0%</span>`;
+  $(`pt${i}-total-info`).textContent=fmt(R.D);
+  const head=i<2?'<th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th>'
+               :'<th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Vốn Tự Có</th><th>NH Giải Ngân</th><th>Tổng Đợt</th><th>Cộng Dồn (vốn tự có)</th>';
+  const cum={v:0};
+  const tot=S.total||1;
+  $(`pt${i}-phases`).innerHTML=PHASES[i].map((ph,pi)=>`
+    <div class="phase ${ph.k}"><div class="ph-hdr"><div class="ph-num">${['I','II','III'][pi]}</div><div><div class="ph-title">${ph.t}</div><div class="ph-sub">${ph.s}</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><colgroup><col style="width:44px"><col style="width:132px"><col><col style="width:56px"><col style="width:112px"><col style="width:104px"><col style="width:116px"><col style="width:116px"></colgroup><thead><tr>${head}</tr></thead><tbody>${ph.idx.map(j=>rowHTML(S.rows[j],i,cum)).join('')}</tbody></table></div></div>`).join('');
+  // progress
+  const groups=PROG[i].map(ph=>({k:ph.k,v:ph.idx.reduce((s,j)=>s+S.rows[j].tot,0),t:ph.t}));
+  $(`pt${i}-prog`).innerHTML=groups.map(g=>`<div style="background:${PH_COL[g.k]};flex:${g.v/tot*100}"></div>`).join('');
+  $(`pt${i}-proglbl`).innerHTML=groups.map(g=>`<div class="prog-lbl"><div class="prog-dot" style="background:${PH_COL[g.k]}"></div>${g.t} — ${(g.v/tot*100).toFixed(0)}%</div>`).join('');
+  $(`pt${i}-grand`).textContent=fmt(S.total);
+  let note=`${PT_META[i].name} · ${S.rows.length} đợt · 2026–2029`;
+  const diff=S.total-R.D;
+  note+=Math.abs(diff)<=5?' · khớp tổng giá bán':` · chênh làm tròn ${diff>0?'+':''}${diff} đ`;
+  if(i===2) note+=` · NH giải ngân ${fmtS(S.bankTotal)} đ (${(S.bankTotal/R.D*100).toFixed(1)}% tổng giá)`;
+  $(`pt${i}-tn`).textContent=note;
+}
+
+function summaryHTML(R){
+  let h=`<div class="sum-row"><span class="sum-lbl" style="font-weight:700;color:rgba(255,255,255,.9)">Giá niêm yết tạm tính (chưa VAT &amp; KPBT)</span>
+    <span class="sum-val" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--gold-l)">${fmt(R.list)}</span></div>`;
+  if(!R.steps.length) h+=`<div class="sum-row"><span class="sum-lbl" style="font-style:italic">— Chưa áp dụng ưu đãi nào —</span></div>`;
+  R.steps.forEach(s=>{h+=`<div class="sum-row pct-ck" style="flex-direction:column;align-items:flex-start;gap:2px;padding:8px 0">
+    <div style="display:flex;justify-content:space-between;width:100%;align-items:center"><span class="sum-lbl" style="font-weight:600;color:#6EC6E8">${s.label}</span><span class="sum-val" style="color:#6EC6E8;font-size:14px">- ${fmt(s.amt)}</span></div>
+    <div style="display:flex;justify-content:space-between;width:100%;font-size:11px;color:var(--mut)"><span>${(s.pct*100).toFixed(2)}% × ${fmtS(s.before)} đ</span><span>→ Còn lại: <strong style="color:rgba(255,255,255,.75)">${fmt(s.after)}</strong></span></div></div>`;});
+  h+=`<div class="sum-row final-pre" style="margin-top:8px"><span class="sum-lbl">Giá bán sau chiết khấu (A)</span><span class="sum-val">${fmt(R.A)}</span></div>
+   <div class="sum-row vat-row"><span class="sum-lbl">Phí bảo trì (B) = 2% × A</span><span class="sum-val">+ ${fmt(R.B)}</span></div>
+   <div class="sum-row vat-row"><span class="sum-lbl">VAT tạm tính (C) = 10% × A</span><span class="sum-val">+ ${fmt(R.C)}</span></div>
+   <div class="sum-row total-row"><span class="sum-lbl">Tổng giá bán căn hộ (D) = A + B + C</span><span class="sum-val">${fmt(R.D)}</span></div>`;
+  if(R.totalDisc>0) h+=`<div class="sum-row savings-row"><span class="sum-lbl">💰 Tổng chiết khấu</span><span class="sum-val">- ${fmt(R.totalDisc)}</span></div>`;
+  return h;
+}
+
+function updateValCells(R){
+  ['bk','ng','pt','kh'].forEach(id=>{const e=$('val-'+id);e.textContent='—';e.className='val-none';});
+  R.steps.forEach(s=>{const e=$('val-'+s.id);if(!e)return;e.textContent=`${(s.pct*100).toFixed(2).replace(/\.?0+$/,'')}% → - ${fmt(s.amt)}`;e.className='val-pct';});
+}
+
+function recalc(){
+  const R=compute(st.pt);
+  $('sum-box').innerHTML=summaryHTML(R);
+  updateValCells(R);
+  $('tb-pre').textContent=fmt(R.A); $('tb-total').textContent=fmt(R.D);
+  $('tb-note').textContent=(R.steps.length?R.steps.map(s=>s.label.replace(/\s*\(.*\)/,'')).join(' · '):'Chưa áp dụng ưu đãi')+` · ${PT_META[st.pt].name}`;
+  [0,1,2].forEach(renderPanel);
+}
+
+// ── UNIT DROPDOWN ──
+let ddTab='all', ddOpen=false;
+function floorOptions(){const s=$('dd-floor');const fl=[...new Set(UNITS.map(u=>u.floor))].sort((a,b)=>a-b);fl.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent='Tầng '+f;s.appendChild(o);});}
+function renderDDList(){
+  const q=($('dd-search').value||'').toUpperCase().replace(/[^A-Z0-9.]/g,''), fl=$('dd-floor').value;
+  let list=UNITS.filter(u=>{
+    if(ddTab==='other'){ if(['Studio','2PN1WC','2PN2WC','3PN2WC'].includes(u.type)) return false; }
+    else if(ddTab!=='all' && u.type!==ddTab) return false;
+    if(fl!=='all' && u.floor!==+fl) return false;
+    if(q && !(u.code.includes(q)||u.layout.toUpperCase().includes(q)||u.type.toUpperCase().includes(q))) return false;
+    return true;});
+  const total=list.length; list=list.slice(0,150);
+  $('dd-list').innerHTML=list.map(u=>`<div class="dd-item" onclick="selectUnit('${u.code}');closeDD()">
+    <span class="di-code">${u.code}</span><span class="di-info">T${u.floor} · ${u.layout} · NFA ${u.nfa} m²</span>
+    <span class="di-badge ${TYPE_CLS[u.type]}">${u.type.toUpperCase()}</span></div>`).join('')
+    +(total>150?`<div style="padding:8px 14px;font-size:11px;color:var(--mut)">Hiển thị 150/${total} căn — gõ thêm để lọc</div>`:'')
+    +(total===0?`<div style="padding:12px 14px;font-size:12px;color:var(--mut)">Không có căn phù hợp</div>`:'');
+}
+function setDDTab(t){ddTab=t;document.querySelectorAll('.dd-tab').forEach(b=>b.classList.toggle('active',b.dataset.f===t));renderDDList();}
+function toggleFullList(){ddOpen?closeDD():(ddOpen=true,$('unit-dropdown').style.display='block',renderDDList(),$('dd-search').focus());}
+function closeDD(){ddOpen=false;$('unit-dropdown').style.display='none';}
+function onUnitInput(el){
+  st.code=el.value.toUpperCase(); const u=curUnit();
+  if(u) selectUnit(u.code,true); else {clearUnit(); }
+}
+document.addEventListener('click',e=>{if(!e.target.closest('#unit-dropdown')&&e.target.id!=='unitInp'&&!e.target.closest('#listBtn'))closeDD();});
+
+function selectUnit(code,fromInput){
+  const u=UNIT_MAP[code.replace(/[^A-Z0-9]/g,'')]; if(!u) return;
+  st.code=u.code; if(!fromInput) $('unitInp').value=u.code;
+  st.priceManual=false;
+  $('unit-meta').innerHTML=`Block ${u.block} · Tầng ${u.floor} · ${u.type}<span class="type-chip ${TYPE_CLS[u.type]}">${u.layout}</span>`;
+  $('unit-area').textContent=`${u.nfa.toLocaleString('vi-VN')} m²  ·  ${u.nsa.toLocaleString('vi-VN')} m²`+(u.pes?`  ·  sân vườn ${u.pes.toLocaleString('vi-VN')} m²`:'');
+  $('unit-hand').textContent=handover(u.type);
+  syncPrice(); recalc(); highlightUnit(u);
+}
+function clearUnit(){
+  $('unit-meta').textContent='—';$('unit-area').textContent='—';$('unit-hand').textContent='—';
+  syncPrice(); recalc(); highlightUnit(null);
+}
+
+// ── MAP ──
+let mapAnim=null,mapPulse=0,curPlan=null;
+function syncCanvas(){const i=$('mapImg'),c=$('mapCanvas');if(i&&c){c.width=i.offsetWidth;c.height=i.offsetHeight;}}
+function highlightUnit(u){
+  const img=$('mapImg'),cv=$('mapCanvas'),hint=$('map-hint'),lbl=$('map-selected-label');
+  if(mapAnim) cancelAnimationFrame(mapAnim);
+  if(!u){cv.getContext('2d').clearRect(0,0,cv.width,cv.height);hint.style.display='';lbl.style.display='none';return;}
+  hint.style.display='none'; lbl.style.display='';
+  lbl.textContent=`📍 ${u.code}  ·  Tầng ${u.floor}  ·  ${u.layout}  ·  ${u.type}`;
+  $('map-src').textContent='Nguồn: '+u.src;
+  if(curPlan!==u.plan){curPlan=u.plan;img.src=PLANS[u.plan].img;}
+  const col=TYPE_COL[u.type]||'#E8C96A';
+  function draw(){
+    cv.width=img.offsetWidth; cv.height=img.offsetHeight;
+    const ctx=cv.getContext('2d'),w=cv.width,h=cv.height; ctx.clearRect(0,0,w,h);
+    if(!w) {mapAnim=requestAnimationFrame(draw);return;}
+    const cx=u.xy[0]/100*w, cy=u.xy[1]/100*h;
+    mapPulse=(mapPulse+.06)%(Math.PI*2);
+    const base=Math.max(w,h)*.011, rr=base+Math.sin(mapPulse)*base*.35;
+    ctx.beginPath();ctx.arc(cx,cy,rr*2.6,0,7);ctx.fillStyle='rgba(232,201,106,.28)';ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,rr*1.6,0,7);ctx.fillStyle='rgba(232,201,106,.5)';ctx.fill();
+    ctx.beginPath();ctx.arc(cx,cy,rr,0,7);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=Math.max(1.5,w*.002);ctx.stroke();
+    const fs=Math.max(10,w*.014); ctx.font=`bold ${fs}px 'Be Vietnam Pro',sans-serif`;
+    const t=u.code, tw=ctx.measureText(t).width, pad=fs*.55, bw=tw+pad*2, bh=fs*1.7;
+    let bx=Math.min(Math.max(cx-bw/2,2),w-bw-2), by=cy-rr*3-bh; if(by<2) by=cy+rr*3;
+    ctx.fillStyle='rgba(11,31,58,.92)';ctx.strokeStyle='#E8C96A';ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.roundRect(bx,by,bw,bh,5);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#fff';ctx.fillText(t,bx+pad,by+bh*.7);
+    mapAnim=requestAnimationFrame(draw);
+  }
+  mapAnim=requestAnimationFrame(draw);
+}
+window.addEventListener('resize',syncCanvas);
+
+// ── EXPORT PDF ──
+function exportPDF(){
+  const u=curUnit(), R=LAST[st.pt].R, S=LAST[st.pt].S, today=new Date().toLocaleDateString('vi-VN');
+  const cust=$('custInp').value.trim(), agent=$('agentInp').value.trim();
+  const dc=R.steps.map(s=>`<tr><td>${s.label}</td><td class="r">${(s.pct*100).toFixed(2).replace(/\.?0+$/,'')}%</td><td class="r ps-ded">- ${fmtS(s.amt)} đ</td></tr>`).join('')
+    ||`<tr><td colspan="3" style="color:#999">Chưa áp dụng ưu đãi nào (giá niêm yết)</td></tr>`;
+  const own=st.pt===2;
+  const sched=S.rows.map(x=>own
+    ?`<tr><td>${x.n}</td><td>${x.when} — ${x.desc}</td><td class="r">${(x.pct*100).toFixed(0)}%</td><td class="r">${fmtS(x.own)}</td><td class="r">${x.bank?fmtS(x.bank):'—'}</td><td class="r">${fmtS(x.tot)}</td></tr>`
+    :`<tr><td>${x.n}</td><td>${x.when} — ${x.desc}</td><td class="r">${(x.pct*100).toFixed(0)}%</td><td class="r">${fmtS(x.tot)}</td></tr>`).join('');
+  const sh=own?'<th>Đợt</th><th>Mốc / Mô tả</th><th class="r">%</th><th class="r">Vốn tự có</th><th class="r">NH giải ngân</th><th class="r">Tổng đợt</th>'
+              :'<th>Đợt</th><th>Mốc / Mô tả</th><th class="r">%</th><th class="r">Số tiền đợt (có VAT)</th>';
+  const info=u?`<div class="ps-grid"><div><span>Mã căn</span><b>${u.code}</b></div><div><span>Loại căn</span><b>${u.type}</b></div><div><span>Layout</span><b>${u.layout}</b></div>
+    <div><span>Tầng</span><b>${u.floor}</b></div><div><span>DT tim tường (NFA)</span><b>${u.nfa} m²</b></div><div><span>DT thông thủy (NSA)</span><b>${u.nsa} m²</b></div>
+    <div><span>Bàn giao</span><b>${handover(u.type)}</b></div><div><span>Giá tư vấn/m²</span><b>${fmtS(effPPM(u))} đ</b></div><div><span>Bàn giao dự kiến</span><b>Q2/2029</b></div></div>`
+    :`<div class="ps-note">Không chọn mã căn — báo giá theo giá nhập tay: <b>${fmtS(st.price)} đ</b></div>`;
+  $('print-sheet').innerHTML=`
+  <div class="ps-hd"><div><div class="ps-brand">SkySOLIS</div><div class="ps-badge">Bảng Tiến Độ Thanh Toán Dự Kiến · Exclusive Preview</div></div>
+   <div class="ps-meta">Ngày lập: <b>${today}</b><br>Phương thức: <b>${PT_META[st.pt].full}</b><br>Khách hàng: <b>${cust||'______________'}</b><br>Chuyên viên: <b>${agent||'______________'}</b></div></div>
+  <h2>Thông Tin Căn Hộ</h2>${info}
+  <h2>Chi Tiết Chiết Khấu (áp dụng tuần tự)</h2>
+  <table><thead><tr><th>Ưu đãi</th><th class="r">Mức</th><th class="r">Số tiền trừ</th></tr></thead><tbody>${dc}</tbody></table>
+  <h2>Chi Tiết Báo Giá</h2>
+  <div class="ps-grid" style="grid-template-columns:1fr 1fr">
+    <div><span>Giá niêm yết (chưa VAT &amp; KPBT)</span><b>${fmtS(R.list)} đ</b></div><div><span>Tổng chiết khấu</span><b style="color:#b23b2e">- ${fmtS(R.totalDisc)} đ</b></div>
+    <div><span>Giá bán sau CK (A)</span><b>${fmtS(R.A)} đ</b></div><div><span>Phí bảo trì (B) 2%</span><b>+ ${fmtS(R.B)} đ</b></div>
+    <div><span>VAT tạm tính (C) 10%</span><b>+ ${fmtS(R.C)} đ</b></div><div><span>Khoản quan tâm (hoàn lại)</span><b>${fmtS(BOOKING_FEE)} đ</b></div></div>
+  <div class="ps-final"><div class="l">Tổng giá bán căn hộ (gồm VAT &amp; KPBT)</div><div class="v">${fmtS(R.D)} đ</div></div>
+  <h2>Lịch Thanh Toán — ${PT_META[st.pt].full}</h2>
+  <table><thead><tr>${sh}</tr></thead><tbody>${sched}
+   <tr><td></td><td><b>Tổng</b></td><td></td>${own?`<td class="r"><b>${fmtS(S.ownTotal)}</b></td><td class="r"><b>${fmtS(S.bankTotal)}</b></td>`:''}<td class="r"><b>${fmtS(S.total)}</b></td></tr></tbody></table>
+  <div class="ps-note">(*) Bảng tiến độ dùng cho mục đích tham khảo; tiến độ chính thức nêu tại TTKQ/HĐMB. (**) VAT và Phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký TTKQ/HĐMB.
+  Khoản quan tâm ${fmtS(BOOKING_FEE)} đ có hoàn lại, không tính vào tổng. ${own?'Hỗ trợ vay do ngân hàng khách hàng chọn quyết định; Chủ đầu tư không cam kết khách hàng được cấp tín dụng.':''}</div>
+  <div class="ps-foot"><div>SkySOLIS · Bảng tính theo mã căn</div><div>Xuất ngày ${today}</div></div>`;
+  window.print();
+}
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded',()=>{
+  loadCfg(); buildPanels(); floorOptions(); buildCfg();
+  $('unitInp').value='C.07.08'; selectUnit('C.07.08');
+  setPT(0);
+});
+
+</script>
+</body>
+</html>

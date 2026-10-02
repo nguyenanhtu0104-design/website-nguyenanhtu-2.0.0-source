@@ -1230,7 +1230,7 @@
   "content": "content/articles/truc-quoc-lo-13.html",
   "relatedArticles": [
    "norton-park",
-   "the-solis",
+   "skysolis",
    "setia-edenia",
    "habitat",
    "one-era",
@@ -1722,36 +1722,56 @@
  },
  {
   "id": "the_solis",
-  "slug": "the-solis",
-  "status": "stub",
-  "title": "The Solis",
-  "subtitle": "Trục Quốc Lộ 13 · Đang cập nhật",
+  "slug": "skysolis",
+  "status": "published",
+  "title": "SkySOLIS",
+  "subtitle": "SkyWorld · Lái Thiêu · Đại lộ Bình Dương · 1.101 sản phẩm · Mở bán 10/2026",
   "icon": "🏢",
   "category": "du-an-chon-loc",
   "parent": "truc-quoc-lo-13",
   "tags": [
    "du-an-chon-loc",
-   "truc-quoc-lo-13",
-   "dang-cap-nhat"
+   "truc-quoc-lo-13"
   ],
-  "description": "Phân tích chi tiết về dự án The Solis đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
-  "thumbnail": null,
-  "heroImage": null,
-  "publishedDate": "2026-09-28",
-  "updatedDate": "2026-09-28",
+  "description": "Dự án đầu tiên của SkyWorld tại Việt Nam, nằm ngay trục Đại lộ Bình Dương, cách trạm metro và Lotte Mart khoảng 2 phút đi bộ.",
+  "thumbnail": "skysolis/01",
+  "heroImage": "skysolis/01",
+  "publishedDate": "2026-10-02",
+  "updatedDate": "2026-10-02",
   "author": "nguyen-anh-tu",
-  "content": "content/articles/the-solis.html",
-  "relatedArticles": [],
-  "seoTitle": "The Solis — Trục Quốc Lộ 13",
-  "seoDescription": "Phân tích chi tiết về dự án The Solis đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
-  "ogImage": "assets/images/og/the-solis.jpg",
+  "content": "content/articles/skysolis.html",
+  "relatedArticles": [
+   "truc-quoc-lo-13",
+   "skyworld-development"
+  ],
+  "seoTitle": "SkySOLIS — Một tiêu chuẩn quốc tế nữa đến Việt Nam, ngay trục Đại lộ Bình Dương",
+  "seoDescription": "Dự án đầu tiên của SkyWorld tại Việt Nam, nằm ngay trục Đại lộ Bình Dương, cách trạm metro và Lotte Mart khoảng 2 phút đi bộ.",
+  "ogImage": "assets/images/og/skysolis.jpg",
   "section": "🏛️ Dự Án Chọn Lọc",
   "accent": "#b05040",
-  "searchKeywords": "The Solis Trục Quốc Lộ 13",
+  "searchKeywords": "SkySOLIS SkyWorld Vietnam Lái Thiêu Đại lộ Bình Dương Quốc lộ 13 Thuận An 1101 sản phẩm 859 căn hộ 222 mixed use 20 shophouse 3 tháp Alba Helio Lyra 40 tầng FAR 12.98 mật độ 43.94% Vina An Thuận Phát Coteccons Savills QLASSIC Healthy Home metro Bình Dương trạm metro Lotte Mart bệnh viện quốc tế Becamex Sông Bé Golf Aeon Mall TOD Studio 2PN 3PN Sky Villa Dual Key chiết khấu booking PTTT hỗ trợ lãi suất 9,9% phí quản lý 12.000 bàn giao Q2/2029 SWOT thang điểm",
   "legacy": {
    "source": "v57",
    "panelId": "the_solis"
-  }
+  },
+  "facts": [
+   {
+    "n": "1.101",
+    "l": "sản phẩm · 3 tháp"
+   },
+   {
+    "n": "40",
+    "l": "tầng · FAR 12,98"
+   },
+   {
+    "n": "~1 ha",
+    "l": "tổng diện tích"
+   },
+   {
+    "n": "Q2/2029",
+    "l": "bàn giao dự kiến"
+   }
+  ]
  },
  {
   "id": "setia_edenia",

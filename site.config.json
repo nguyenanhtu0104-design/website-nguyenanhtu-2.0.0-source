@@ -1,7 +1,12 @@
 {
   "version": "2.5.0",
-  "ctaCategories": ["du-an-chon-loc"],
-  "embedHosts": ["360nmkbd.tech3art.com"],
+  "ctaCategories": [
+    "du-an-chon-loc"
+  ],
+  "embedHosts": [
+    "360nmkbd.tech3art.com",
+    "360.skysolis.my"
+  ],
   "siteName": "Cẩm Nang Bất Động Sản",
   "siteTitle": "Nguyễn Anh Tú | Cẩm nang bất động sản Đông Nam Bộ",
   "siteDescription": "Cẩm nang bất động sản của Nguyễn Anh Tú: kiến thức pháp lý, quy hoạch, tư duy đầu tư và dự án vùng Đông Nam Bộ.",

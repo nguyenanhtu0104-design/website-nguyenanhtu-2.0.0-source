@@ -2,6 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## Nội dung — 2026-10-02 — SkySOLIS
+- **`skysolis`** (trước là bài khung `the-solis`): viết đầy đủ theo khung dự án 01–04 của Nam Mekong/Artisan Park (Prologue, Tổng quan, Chi tiết, Góc nhìn, SWOT + thang điểm 19 chỉ số, TB 4,11), 27 ảnh (tông ấm theo §8.4), dải `facts`, vị trí theo phút, thanh tỷ lệ cơ cấu sản phẩm, khối 360° chế độ mở tab mới. Chuyển `published`, thêm vào nhóm Trục Quốc Lộ 13.
+- Đổi slug `the-solis` → `skysolis` (bài khung chưa có nội dung, noindex); đã thêm redirect 301 trong `data/redirects.json` và cập nhật menu/bài vùng `truc-quoc-lo-13`.
+- `site.config.json` → `embedHosts`: thêm `360.skysolis.my` (Tú duyệt 2026-10-02; bài dùng chế độ mở tab mới).
+- Trang công cụ `assets/tools/skysolis-bang-tinh/`: bảng tính chiết khấu & phương thức thanh toán của SkySOLIS (HTML tĩnh do Tú cung cấp; tách 4 ảnh Base64 thành WebP, gắn `noindex`). Bài dẫn tới trang này bằng liên kết mở tab mới.
+
 ## [2.3.1] — 2026-10-01 — Sửa khối 360° bị lỗi khi nhúng
 - **Sửa lỗi:** trang 3D của Tech3Art tự báo "This page couldn't load" khi chạy trong khung nhúng. Nam Mekong chuyển sang **chế độ mở tab mới** (`data-mode="link"`): ảnh nền + 4 liên kết, luôn chạy được. Cơ chế nhúng vẫn giữ sẵn; bật lại bằng cách xóa `data-mode="link"` khi bên Tech3Art xử lý xong.
 - Bỏ thuộc tính `sandbox` của iframe (host đã duyệt; sandbox dễ làm hỏng ứng dụng 3D). Build kiểm tra host cả với nút `p-360-play`.
