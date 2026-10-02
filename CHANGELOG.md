@@ -9,6 +9,9 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 - Tăng `version` lên 2.7.0.
 
 ### Nội dung
+- 2026-10-02 — `skysolis`, `artisan-park` (SEO, theo khuôn Nam Mekong): H1 bỏ emoji; mục 02 đưa "Giá Bán & Chính Sách" lên đầu, rồi Cơ cấu/Loại hình sản phẩm, Phối cảnh, Tiện ích (SkySOLIS: Ngoại khu, 360° ở cuối); ưu đãi chuyển sang khối `.p-offers`, SkySOLIS thêm khối giá `.p-price` (55 triệu/m²); thêm mục "❓ Hỏi & Đáp" 6 câu, mọi câu trả lời lấy từ chính dữ liệu trong bài; `seoTitle` "Tên dự án: Giá, Pháp Lý, Tiến Độ 2026" và `seoDescription` mới. Không bớt ý, không mất link nào (đã đối chiếu tự động với bản cũ).
+- 2026-10-02 — **Tiêu đề SEO:** rút gọn `seoTitle` của 52 bài đã xuất bản (60/78 bài trước đó dài hơn 62 ký tự gồm hậu tố nên bị Google cắt): luật đất đai, chiến lược quy hoạch, các vùng, chủ đầu tư, các tác giả quy hoạch, bài dự án. Giữ nguyên `title` (menu, tìm kiếm), `description` và URL. Sửa luôn tiêu đề "Dòng Tiền Là Vua" bị thừa dấu ngoặc kép.
+- Bài khung `stub` (89 bài dự án) giữ nguyên: đang `noindex`, chưa có nội dung nên chưa áp dụng Hỏi & Đáp.
 - 2026-10-02 — `nam-mekong-grand-plaza`: mục "Giá Bán & Chính Sách" làm lại bằng khối `.p-price` + `.p-offers`, giữ nguyên số liệu (55 triệu/m², 1,5%, 9,5%, 24 tháng, phí quản lý đang cập nhật) và nút bảng tính.
 
 ## [2.6.0] — 2026-10-02 — Phóng to ảnh, nút mở công cụ nổi bật, bảng tính rộng hơn trên máy tính
