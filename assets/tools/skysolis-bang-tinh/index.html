@@ -25,7 +25,7 @@ body::before{content:'';position:fixed;inset:0;
   radial-gradient(ellipse at 85% 85%,rgba(30,63,110,.6) 0%,transparent 50%),
   repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.01) 40px,rgba(255,255,255,.01) 41px);
   pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:40px 20px 60px}
+.wrap{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:40px 28px 60px}
 
 /* HEADER */
 .hdr{text-align:center;margin-bottom:40px;animation:fadeD .8s ease both}
@@ -325,6 +325,9 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   border:1px solid rgba(255,255,255,.06);border-radius:10px}
 .terms b{color:var(--gold-l)}
 .sec-note{font-size:11px;color:var(--mut);margin-top:5px}
+
+@media(min-width:1100px){.hdr h1{font-size:44px}.card{padding:26px 30px}.card-title{font-size:12px}.input-group label{font-size:11px}.price-inp{font-size:18px}}
+@media(max-width:600px){.wrap{padding:28px 14px 48px}}
 </style>
 </head>
 <body>
@@ -895,6 +898,7 @@ function syncCanvas(){const i=$('mapImg'),c=$('mapCanvas');if(i&&c){c.width=i.of
 function highlightUnit(u){
   const img=$('mapImg'),cv=$('mapCanvas'),hint=$('map-hint'),lbl=$('map-selected-label');
   if(mapAnim) cancelAnimationFrame(mapAnim);
+  window._nzUnit=u||null;
   if(!u){cv.getContext('2d').clearRect(0,0,cv.width,cv.height);hint.style.display='';lbl.style.display='none';return;}
   hint.style.display='none'; lbl.style.display='';
   lbl.textContent=`📍 ${u.code}  ·  Tầng ${u.floor}  ·  ${u.layout}  ·  ${u.type}`;
@@ -967,6 +971,16 @@ window.addEventListener('DOMContentLoaded',()=>{
   setPT(0);
 });
 
+</script>
+<script src="/assets/js/zoom.js"></script>
+<script>
+(function(){
+  if(!window.NATZoom) return;
+  NATZoom.attach(document.getElementById("mapImg"),function(){
+    var i=document.getElementById("mapImg"),u=window._nzUnit;
+    return{src:i.src,cap:u?("Vị trí căn "+u.code+" · Tầng "+u.floor+" · "+u.layout+" · "+u.type):"Mặt bằng SkySOLIS",mark:(u&&u.xy)?{x:u.xy[0]+"%",y:u.xy[1]+"%",label:u.code}:null};
+  });
+})();
 </script>
 </body>
 </html>

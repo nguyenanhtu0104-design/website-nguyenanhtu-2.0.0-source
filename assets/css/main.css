@@ -777,3 +777,17 @@ h2.p-sec{font:inherit}
 .p-who img{border-radius:50%;flex-shrink:0}
 @media print{.p-hubline{display:none}}
 
+
+/* ─── 2.6: khối nút kêu gọi mở công cụ (bảng tính) ─── */
+.p-cta-box{margin:20px 0;padding:20px 20px 18px;border:1px solid rgba(200,153,58,.5);border-radius:14px;background:linear-gradient(135deg,rgba(200,153,58,.16),rgba(176,80,64,.09));box-shadow:0 8px 28px rgba(0,0,0,.28)}
+.p-cta-t{margin:0 0 8px;font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;line-height:1.25;color:#f4eee2}
+.p-cta-d{margin:0 0 16px;font-size:14px;line-height:1.7;color:var(--text-2)}
+.p-cta-n{margin:12px 0 0;font-size:11px;line-height:1.5;font-style:italic;color:var(--muted)}
+.p-cta{display:flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:0 28px;border-radius:12px;background:linear-gradient(135deg,#e8bd5c,#c8993a);color:#1a140a!important;font-size:17px;font-weight:700;letter-spacing:.2px;text-decoration:none!important;box-shadow:0 8px 24px rgba(200,153,58,.32);transition:transform .15s,box-shadow .15s}
+.p-cta:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(200,153,58,.45)}
+.p-cta .arr{display:inline-block;font-size:22px;line-height:1;transition:transform .15s}
+.p-cta:hover .arr{transform:translateX(5px)}
+.p-cta:focus-visible{outline:3px solid #f3d58d;outline-offset:3px}
+@media(min-width:700px){.p-cta{display:inline-flex;min-width:340px}}
+@media(prefers-reduced-motion:reduce){.p-cta,.p-cta .arr{transition:none}}
+@media print{.p-cta-box{display:none}}

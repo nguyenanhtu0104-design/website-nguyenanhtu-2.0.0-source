@@ -2,11 +2,21 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## [2.6.0] — 2026-10-02 — Phóng to ảnh, nút mở công cụ nổi bật, bảng tính rộng hơn trên máy tính
+- **Phóng to ảnh (mới):** file `assets/js/zoom.js` (tự chứa CSS, chỉ tải ở trang bài). Mọi ảnh nội dung trong bài có nút "🔍 Phóng to"; bấm ảnh hoặc nút để mở ảnh lớn bản chất lượng cao nhất, bấm lần nữa để phóng hết cỡ và kéo xem chi tiết, ← → hoặc vuốt để đổi ảnh, Esc/✕ để đóng. Không áp dụng cho ảnh nằm trong liên kết hoặc khối 360°. Ẩn khi in.
+- **Khối nút kêu gọi `.p-cta-box` / `.p-cta` (mới, CSS):** nút vàng lớn "Mở bảng tính ngay →" (cao 58px, toàn chiều rộng trên điện thoại). Thay thẻ nhỏ cũ trong SkySOLIS và Nam Mekong.
+- **Trang bảng tính SkySOLIS và Nam Mekong:** khung rộng 1440–1500px (trước 1060/960), Nam Mekong chia 2 cột trên máy tính (nhập liệu + mặt bằng bên trái, số liệu + lịch thanh toán bên phải), chữ và ô nhập lớn hơn. Ảnh mặt bằng có nút phóng to kèm chấm đánh dấu vị trí căn đang chọn.
+- Template `article.html` nạp thêm `zoom.js`. Tăng `version` lên 2.6.0.
+
+### Nội dung
+- 2026-10-02 — `skysolis`: thay toàn bộ 27 ảnh bằng bản độ phân giải gốc (tới 1.865–2.048 px) để phóng to đọc được chữ trên mặt bằng; ảnh cũ 01–27 được thay bằng 28–54 (theo §5, không ghi đè ảnh đã xuất bản).
+
 ## Nội dung — 2026-10-02 — SkySOLIS
 - **`skysolis`** (trước là bài khung `the-solis`): viết đầy đủ theo khung dự án 01–04 của Nam Mekong/Artisan Park (Prologue, Tổng quan, Chi tiết, Góc nhìn, SWOT + thang điểm 19 chỉ số, TB 4,11), 27 ảnh (tông ấm theo §8.4), dải `facts`, vị trí theo phút, thanh tỷ lệ cơ cấu sản phẩm, khối 360° chế độ mở tab mới. Chuyển `published`, thêm vào nhóm Trục Quốc Lộ 13.
 - Đổi slug `the-solis` → `skysolis` (bài khung chưa có nội dung, noindex); đã thêm redirect 301 trong `data/redirects.json` và cập nhật menu/bài vùng `truc-quoc-lo-13`.
 - `site.config.json` → `embedHosts`: thêm `360.skysolis.my` (Tú duyệt 2026-10-02; bài dùng chế độ mở tab mới).
 - Trang công cụ `assets/tools/skysolis-bang-tinh/`: bảng tính chiết khấu & phương thức thanh toán của SkySOLIS (HTML tĩnh do Tú cung cấp; tách 4 ảnh Base64 thành WebP, gắn `noindex`). Bài dẫn tới trang này bằng liên kết mở tab mới.
+- `nam-mekong-grand-plaza`: thêm thẻ "Bảng tính thanh toán" trong mục 🎁 Chính Sách Nổi Bật, dẫn tới trang công cụ `assets/tools/nam-mekong-bang-tinh/` (HTML tĩnh do Tú cung cấp: chọn tòa/tầng/căn, 5 phương thức thanh toán; tách 26 ảnh Base64 thành WebP, file từ 5,1 MB còn khoảng 76 KB + ảnh tải khi cần, gắn `noindex`).
 
 ## [2.3.1] — 2026-10-01 — Sửa khối 360° bị lỗi khi nhúng
 - **Sửa lỗi:** trang 3D của Tech3Art tự báo "This page couldn't load" khi chạy trong khung nhúng. Nam Mekong chuyển sang **chế độ mở tab mới** (`data-mode="link"`): ảnh nền + 4 liên kết, luôn chạy được. Cơ chế nhúng vẫn giữ sẵn; bật lại bằng cách xóa `data-mode="link"` khi bên Tech3Art xử lý xong.
