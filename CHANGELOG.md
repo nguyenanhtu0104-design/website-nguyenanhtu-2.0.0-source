@@ -9,6 +9,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 - Template `article.html` nạp thêm `zoom.js`. Tăng `version` lên 2.6.0.
 
 ### Nội dung
+- 2026-10-02 — `nam-mekong-grand-plaza` (SEO, Tú duyệt bản mẫu): `seoTitle` rút gọn còn "Nam Mekong Grand Plaza: Giá, Pháp Lý, Tiến Độ 2026" (trước đó dài ~90 ký tự, bị Google cắt), `seoDescription` viết lại có giá/pháp lý/bàn giao; H1 bỏ emoji; trong mục 02 đưa "Giá Bán & Chính Sách Nổi Bật" (kèm bảng tính) lên đầu rồi đến Loại Hình, Phối Cảnh, Tiện Ích, Ngoại khu, Tham quan 360°; thêm mục "❓ Hỏi & Đáp" 5 câu cuối mục 04 (khối FAQ có sẵn, dữ liệu lấy từ chính bài, có link nội bộ về bài vùng). Không bớt ý nào, giữ nguyên clip giới thiệu, 360°, bảng tính, link chủ đầu tư, 4 vạch 01–04 và URL.
 - 2026-10-02 — `skysolis`: thay toàn bộ 27 ảnh bằng bản độ phân giải gốc (tới 1.865–2.048 px) để phóng to đọc được chữ trên mặt bằng; ảnh cũ 01–27 được thay bằng 28–54 (theo §5, không ghi đè ảnh đã xuất bản).
 
 ## Nội dung — 2026-10-02 — SkySOLIS
