@@ -2,26 +2,6 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
-## [2.5.0] — 2026-10-02 — SEO Phase 2: trang hồ sơ tác giả + trang chủ đề (không đổi URL cũ)
-- **`/nguyen-anh-tu/`**: trang hồ sơ tác giả (`ProfilePage`, thực thể `Person` dùng chung bằng `@id`, kênh chính thức, liên hệ). `Person.url` trên toàn site nay trỏ về trang này.
-- **`/bat-dong-san/tphcm/`**: trang chủ đề (pillar) gom 27 bài đã published thành 6 nhóm (quy hoạch, metro/TOD, tài chính–Thủ Thiêm, các vùng, pháp lý, tư duy đầu tư); `CollectionPage` + `ItemList`. Mô tả lấy tự động từ `description` của từng bài.
-- Bài thuộc hub có dòng "Thuộc chủ đề: Bất Động Sản TP.HCM" ở cuối (link ngược về pillar); tên tác giả ở footer bài và trang chủ link về hồ sơ; trang chủ có thêm một dòng dẫn tới hai trang mới.
-- **Build:** `data/pages.json` (kiểm tra path, trùng, bài tồn tại và published); sitemap thêm 2 URL; `check-dist` kiểm cả hai trang (h1, canonical, breadcrumb, JSON-LD). CSS +0,28 KB gzip.
-
-## [2.4.0] — 2026-10-01 — SEO Phase 1: nền kỹ thuật (không đổi URL)
-- **Tiêu đề ngữ nghĩa:** build tự đổi `<p class="p-h2">` → `<h2>`/`<h3>` (bài dự án: vạch 01–04 là `<h2>`, `p-h2` là `<h3>`); giữ nguyên class nên hiển thị không đổi. Mỗi trang đúng 1 `<h1>` (build kiểm tra).
-- **Breadcrumb** ở đầu mọi trang bài + JSON-LD `BreadcrumbList` (chỉ URL canonical thật; ẩn khi in/xuất PDF).
-- **JSON-LD nền:** `WebSite` + `Person` (có `sameAs`, cấu hình thêm ở `author.sameAs`) + `WebPage` + `Article` nối bằng `@id`; Article có `author`/`publisher` tham chiếu Person. Không tạo `Organization`.
-- **Metadata:** build cảnh báo `description` bị cắt "…"/> 160 ký tự, `<title>` trùng, thiếu `alt`, `<h1>` ≠ 1.
-- **Hiệu năng:** Google Fonts không chặn hiển thị (preload + onload, có noscript). CSS +0,15 KB gzip, JS không đổi.
-- **Redirect:** `data/redirects.json` nay sinh `_redirects` 301 thật (chỉ khi có mục; hỗ trợ cả đường dẫn đầy đủ); kiểm tra chuỗi/vòng/trùng.
-- **Công cụ:** `scripts/check-dist.mjs` (kiểm thử hồi quy: khóa URL, canonical, noindex, sitemap, JSON-LD, link/asset hỏng, dung lượng) + `tests/published-urls.json` (80 URL); `scripts/audit-links.mjs` (inbound/outbound, trang mồ côi, CSV).
-
-### Nội dung
-- 2026-10-01 — Viết lại **72 meta description** của bài published bị cắt cơ học bằng "…" thành câu hoàn chỉnh ≤ 160 ký tự (chỉ dùng ý có sẵn trong bài; sửa lỗi lặp cụm từ ở `phap-luat-bds`). Không đổi `updatedDate` (không phải thay đổi nội dung bài).
-- 2026-10-01 — Thêm `alt` mô tả cho **47 ảnh** bản đồ/sơ đồ/phối cảnh ở 15 bài (trước đó không có alt). Không có ảnh nào thuần trang trí nên không dùng `alt=""`.
-- 2026-10-01 — `trai-nghiem-quy-hoach-the-gioi` (archived): `seoTitle` thêm "(bản lưu trữ)" để không trùng `<title>` với bài hub đang published.
-
 ## [2.3.1] — 2026-10-01 — Sửa khối 360° bị lỗi khi nhúng
 - **Sửa lỗi:** trang 3D của Tech3Art tự báo "This page couldn't load" khi chạy trong khung nhúng. Nam Mekong chuyển sang **chế độ mở tab mới** (`data-mode="link"`): ảnh nền + 4 liên kết, luôn chạy được. Cơ chế nhúng vẫn giữ sẵn; bật lại bằng cách xóa `data-mode="link"` khi bên Tech3Art xử lý xong.
 - Bỏ thuộc tính `sandbox` của iframe (host đã duyệt; sandbox dễ làm hỏng ứng dụng 3D). Build kiểm tra host cả với nút `p-360-play`.
@@ -32,6 +12,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 - Xuất PDF và in ẩn khối này.
 
 ### Nội dung
+- 2026-10-01 — `nam-mekong-grand-plaza`: thêm ảnh bản đồ vị trí dự án (vòng xoay WTC) vào mục 📍 Vị Trí; ảnh được làm nét 2x, tông ấm 70% theo §8.4.
 - 2026-10-01 — **Đồng bộ từ CamNangBDS v64** (đối chiếu từng bài, kho giờ khớp v64 ở cả 180 bài, trừ Nam Mekong và Artisan là bản nâng cấp mới hơn): thêm **16 bài khung** (Sora Gardens 1–3; Midori The View / The Glory / The Ten / The Nest; Palm Height / Residence / River; Blanca City: Casa Villa, Beacon Tower, Beachtro Tower, Cụm B1·B2·B3, Cụm B5·B6·B7; nhà phát triển Hướng Việt); cập nhật 4 bài hub (Garden City, Midori Park, Palm City — đổi chủ đầu tư thành Hướng Việt, Blanca City — thêm mục "Các Phân Khu") và trang Becamex Tokyu; sửa nhãn trên 2 trang vùng (Rạch Chiếc – Trường Thọ, KHCN cao TPM Bình Dương); menu Chương 5 thêm Hướng Việt (16 chủ đầu tư); trang chủ: đoạn giới thiệu "05 giá trị cốt lõi" và nhãn tác giả "ERA Vietnam · Project Director". Bài cũ `sora-gardens` v64 không còn dẫn tới, vẫn giữ nguyên trong kho.
 - 2026-10-01 — `nam-mekong-grand-plaza`: thêm thẻ "Website chủ đầu tư" (trang dự án trên nammekonggroup.vn, website chính thức của Tập đoàn Nam Mê Kông) trong mục 🏢 Nhà Phát Triển.
 - 2026-10-01 — `nam-mekong-grand-plaza`: thêm mục "🧭 Tham Quan 360° — Mặt Bằng Tầng & Layout Căn Hộ" trong mục 02 Chi tiết dự án (trước Chính Sách Nổi Bật).
