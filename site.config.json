@@ -1,5 +1,5 @@
 {
-  "version": "2.3.1",
+  "version": "2.5.0",
   "ctaCategories": ["du-an-chon-loc"],
   "embedHosts": ["360nmkbd.tech3art.com"],
   "siteName": "Cẩm Nang Bất Động Sản",
@@ -19,7 +19,8 @@
     "zalo": "https://zalo.me/0978618149",
     "facebook": "https://www.facebook.com/nguyen.anh.tu.397787/",
     "fanpage": "",
-    "youtube": "https://www.youtube.com/@nguyenanhtu.kienphat"
+    "youtube": "https://www.youtube.com/@nguyenanhtu.kienphat",
+    "sameAs": []
   },
   "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap",
   "titleSuffix": "Nguyễn Anh Tú",

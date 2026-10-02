@@ -1,0 +1,28 @@
+[
+ {
+  "type": "profile",
+  "path": "nguyen-anh-tu",
+  "h1": "Nguyễn Anh Tú",
+  "seoTitle": "Nguyễn Anh Tú — Tư vấn bất động sản, ERA Vietnam",
+  "description": "Nguyễn Anh Tú, tư vấn bất động sản và Project Director tại ERA Vietnam, hơn 10 năm kinh nghiệm, chuyên thị trường Đông Nam Bộ.",
+  "updatedDate": "2026-10-02"
+ },
+ {
+  "type": "hub",
+  "path": "bat-dong-san/tphcm",
+  "h1": "Bất Động Sản TP.HCM",
+  "seoTitle": "Bất động sản TP.HCM: quy hoạch, metro, pháp lý",
+  "description": "Tổng hợp phân tích thị trường bất động sản TP.HCM: quy hoạch 100 năm, metro và TOD, Thủ Thiêm, các vùng phát triển, pháp lý và tư duy đầu tư.",
+  "updatedDate": "2026-10-02",
+  "lead": "Trang tổng hợp các phân tích về bất động sản TP.HCM trong Cẩm Nang, đi từ quy hoạch và hạ tầng đến pháp lý và tư duy đầu tư. Mỗi bài có địa chỉ riêng; trang này là điểm bắt đầu để đọc theo trình tự.",
+  "context": "Theo phân tích trong Cẩm Nang, sau sáp nhập có hiệu lực từ 1/7/2025, TP.HCM mới có diện tích 6.772 km² và khoảng 14 triệu dân. Quy hoạch, hạ tầng và pháp lý là ba lớp quyết định nơi nhu cầu bất động sản hình thành.",
+  "groups": [
+   { "title": "Quy hoạch và tầm nhìn", "items": ["quy-hoach-100-nam-tp-hcm", "phuong-an-bcg-cho-quy-hoach-100-nam", "bds-viet-nam-dang-o-giai-doan-nao", "ban-do-dau-tu-cong-2026-2030", "do-nen-do-thi-compact-city"] },
+   { "title": "Metro và TOD", "items": ["mo-hinh-tod-hanh-lang-metro", "tod-5-0-mat-do-hoat-dong", "truc-metro-so-1-hcm"] },
+   { "title": "Tài chính và Thủ Thiêm", "items": ["vifc-hcm-dac-khu-tai-chinh", "mice-hub-thu-thiem", "vung-loi-thu-thiem", "cang-dong-von-imfe-cuc-tang-truong-bien", "old-money"] },
+   { "title": "Các vùng phát triển", "items": ["vung-rach-chiec-truong-tho", "vung-thuong-luu-thao-dien", "ban-dao-thanh-da", "vung-kinh-te-bien", "tu-giac-kinh-te-bien-1-650km", "vung-ve-tinh-san-bay-long-thanh", "thanh-pho-moi-binh-duong", "vung-khcn-cao-tpm-binh-duong", "vung-tri-thuc-khcn-tay-bac"] },
+   { "title": "Pháp lý", "items": ["luat-dat-dai-2024-to-chuc-kinh-te", "nha-o-xa-hoi-toan-canh-phap-ly-2024-2026", "phap-luat-bds"] },
+   { "title": "Tư duy đầu tư", "items": ["22-nguyen-tac-tu-duy-dau-tu-bds", "thi-truong-dan-trai-nhung-rat-tap-trung"] }
+  ]
+ }
+]

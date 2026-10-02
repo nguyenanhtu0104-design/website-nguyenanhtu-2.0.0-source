@@ -751,3 +751,29 @@ a.p-360-play{text-decoration:none}
 .p-card p a{color:var(--pc,var(--brand));font-weight:600;text-decoration:none}
 .p-card p a:hover{text-decoration:underline}
 .p-card p a:focus-visible{outline:2px solid #e7c680;outline-offset:2px}
+
+/* ─── 2.4: breadcrumb + tiêu đề ngữ nghĩa ─── */
+.p-crumb{margin:0 0 14px;font-size:12px;line-height:1.5;color:var(--muted)}
+.p-crumb ol{list-style:none;display:flex;flex-wrap:wrap;align-items:center}
+.p-crumb li{display:inline;min-width:0;overflow-wrap:anywhere}
+.p-crumb li+li::before{content:'›';margin:0 7px;opacity:.55}
+.p-crumb a{color:var(--text-2);text-decoration:none}
+.p-crumb a:hover{color:var(--pc,var(--brand));text-decoration:underline}
+.p-crumb [aria-current]{color:var(--muted)}
+h2.p-sec{font:inherit}
+@media print{.p-crumb{display:none}}
+
+/* ─── 2.5: trang hồ sơ + trang chủ đề ─── */
+.p-card a{color:var(--pc,var(--brand));text-decoration:none;font-weight:700}
+.p-card a:hover{text-decoration:underline}
+.p-hubline{margin:28px 0 0;padding-top:14px;border-top:1px solid var(--border);font-size:13px;color:var(--muted)}
+.p-hubline a{color:var(--pc,var(--brand));text-decoration:none}
+.p-hubline a:hover{text-decoration:underline}
+.p-linklist{list-style:none;margin:0 0 16px}
+.p-linklist li{margin-bottom:8px;font-size:14px;line-height:1.7}
+.p-linklist a{color:var(--pc,var(--brand));text-decoration:none}
+.p-linklist a:hover{text-decoration:underline}
+.p-who{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.p-who img{border-radius:50%;flex-shrink:0}
+@media print{.p-hubline{display:none}}
+

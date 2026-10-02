@@ -101,6 +101,7 @@ window.exportPanelToPdf=function(){
       +'#pdf-content .p-card strong,#pdf-content .p-call-lbl,#pdf-content .p-tl-yr,#pdf-content .knum-n{color:'+P+'!important}'
       +'#pdf-content .p-tl-dot{background:'+P+'!important;border-color:'+P+'!important;color:#fff!important}'
       +'#pdf-content .p-facts .knum-n,#pdf-content .p-travel b{color:'+P+'!important}#pdf-content .p-360{display:none!important}#pdf-content .mix-bar{background:#e4e4e4!important}#pdf-content .mix-row small{color:#555!important}#pdf-content .mix-bar i{background:'+P+'!important}'
+      +'#pdf-content .p-crumb,#pdf-content .p-hubline{display:none!important}'
       +'#pdf-content table{page-break-inside:avoid}#pdf-content th{background:#f0f0f0!important;color:#1a1a1a!important;border-color:#ccc!important}'
       +'#pdf-content img{max-width:100%;height:auto;page-break-inside:avoid}'
       +'button,[onclick],.p-close,.p-export-pdf,.faq-cluster-btn,#pdf-content .files-sec{display:none!important}'

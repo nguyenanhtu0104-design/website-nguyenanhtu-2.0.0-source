@@ -56,8 +56,11 @@ scripts/
   new-article.mjs         ← tạo bài mới
   images.py               ← xử lý ảnh, tạo ảnh OG (Python + Pillow)
   make-update.sh          ← đóng gói các file đã đổi thành update-*.zip
+  check-dist.mjs          ← kiểm thử hồi quy SEO sau build (khóa URL, canonical, noindex, JSON-LD, link hỏng)
+  audit-links.mjs         ← kiểm kê liên kết nội bộ (inbound/outbound, trang mồ côi), xuất CSV
   migration/              ← lưu trữ script chuyển đổi v57 → 2.0 (không dùng nữa)
 tests/smoke.py            ← kiểm thử trình duyệt (Playwright)
+tests/published-urls.json ← KHÓA URL đã xuất bản (chỉ cập nhật khi Tú duyệt đổi URL, kèm redirect)
 docs/                     ← DEPLOY.md, CONTENT_GUIDE.md, MIGRATION_REPORT.md
 dist/                     ← SINH TỰ ĐỘNG, không commit, không sửa tay
 ```
@@ -77,7 +80,7 @@ dist/                     ← SINH TỰ ĐỘNG, không commit, không sửa tay
 | `category` | ✔ | Một trong: `phap-luat`, `chien-luoc-quy-hoach`, `tu-duy-dau-tu`, `du-an-chon-loc`, `nha-phat-trien`. |
 | `parent` | | Slug bài cha (vd dự án thuộc vùng, bài con thuộc hub). |
 | `tags` | | Mảng chuỗi không dấu. |
-| `description` | ✔ | 1–2 câu, ≤ 160 ký tự. |
+| `description` | ✔ | 1–2 câu **hoàn chỉnh**, ≤ 160 ký tự, không cắt giữa câu, không kết thúc bằng "…" (build cảnh báo). |
 | `seoTitle` / `seoDescription` | | Dùng cho `<title>`, `og:title`, `og:description`. Nếu trống thì lấy `title` / `description`. |
 | `thumbnail` / `heroImage` | | Khóa ảnh trong `images.json`, vd `the-marq/01`. |
 | `ogImage` | ✔ | `assets/images/og/<slug>.jpg`. Nếu thiếu file, build cảnh báo và dùng ảnh trang chủ. |
@@ -108,7 +111,7 @@ Gồm version, tên miền (`siteUrl`), `basePath`, thông tin tác giả (đi�
 
 1. Chỉ chứa **thân bài**: không có `<html>`, `<head>`, `<body>`, `<script>`, `<style>`.
 2. Bắt đầu bằng đúng **một** `<h1 class="p-h1">Tiêu đề<br><em ...>— phụ đề</em></h1>`. Bài vùng/dự án có thể đặt ảnh hoặc badge phía trước h1.
-3. **Ảnh:** `<img data-img="<slug>/NN" alt="mô tả" style="width:100%;display:block;border-radius:6px">`. Build tự sinh `src/srcset/sizes/width/height/lazy`. Ảnh đầu tiên được tải ưu tiên. Chú thích ảnh viết bằng thẻ in nghiêng tiếng Việt ngay bên dưới.
+3. **Ảnh:** `<img data-img="<slug>/NN" alt="mô tả" style="width:100%;display:block;border-radius:6px">`. Build tự sinh `src/srcset/sizes/width/height/lazy`. Ảnh đầu tiên được tải ưu tiên. Chú thích ảnh viết bằng thẻ in nghiêng tiếng Việt ngay bên dưới. **Mọi `<img>` phải có thuộc tính `alt`**: ảnh mang thông tin (bản đồ, sơ đồ, phối cảnh, biểu đồ) → alt mô tả ngắn nội dung ảnh, không nhồi từ khóa; ảnh thuần trang trí → `alt=""` ghi tường minh (build cảnh báo khi thiếu hẳn thuộc tính). Alt mô tả **đúng điều ảnh đang hiển thị**.
 4. **Liên kết tới bài khác:** `<a href="/cam-nang/<slug>/" class="xl-b proj-row">…</a>` cho khối, `<a href="/cam-nang/<slug>/" class="xl-i">…</a>` cho chữ. Không dùng `onclick="openPanel()"` (đã bỏ từ 2.0). Build báo lỗi nếu link trỏ tới slug không tồn tại.
 5. Tương tác được phép gọi trực tiếp trong nội dung (định nghĩa trong `article.js`): `toggleFaq(this)`, `showCluster('id', this)`, `filterPrinciple('tag', this)`. Muốn thêm tương tác mới thì đó là việc kỹ thuật, xem §11.
 6. Chỉ dùng các class CSS đã có: `p-h1 p-lead p-h2 p-p p-card p-grid p-call p-call-lbl knums knum knum-n knum-l p-tl proj-row project-hub zone-badge p-warn p-travel p-360 p-360-tabs p-360-tab p-360-stage p-360-play p-360-bar p-360-full`… (`p-facts`, `p-sec`, `mix-row`, `mix-bar` do build/JS tự sinh, không viết tay). Không tạo CSS mới trong nội dung. Inline style chỉ dùng cho màu hoặc khoảng cách nhỏ, giống cách v57 đang làm.
@@ -126,7 +129,13 @@ Gồm version, tên miền (`siteUrl`), `basePath`, thông tin tác giả (đi�
 ## 6. Routing & URL
 
 - Bài: `/cam-nang/<slug>/` (có dấu `/` cuối). Mở trực tiếp, refresh, Back/Forward và chia sẻ đều hoạt động vì mỗi bài là một file thật.
-- **Slug đã xuất bản là vĩnh viễn.** Nếu bắt buộc phải đổi: đổi slug trong `articles.json`, đổi tên file nội dung, đổi thư mục ảnh, cập nhật mọi link, **thêm** `{"from":"slug-cu","to":"slug-moi"}` vào `data/redirects.json` (build sẽ sinh `_redirects` 301).
+- **Slug đã xuất bản là vĩnh viễn.** Nếu bắt buộc phải đổi: đổi slug trong `articles.json`, đổi tên file nội dung, đổi thư mục ảnh, cập nhật mọi link, **thêm** `{"from":"slug-cu","to":"slug-moi"}` vào `data/redirects.json` (build sinh `_redirects` 301 + trang chuyển hướng dự phòng).
+### 6B. Redirect registry (`data/redirects.json`)
+- **Mọi thay đổi URL phải được ghi vào đây**; build sinh `_redirects` (301). Danh sách rỗng `[]` là bình thường — khi chưa có URL nào đổi thì **không sinh redirect** (không tạo redirect giả).
+- Hai dạng mục: bài Cẩm nang theo slug `{"from":"slug-cu","to":"slug-moi"}`; hoặc đường dẫn đầy đủ `{"from":"/cam-nang/slug-cu/","to":"/bat-dong-san/trang-moi/"}` (dùng khi chuyển bài sang kiến trúc URL mới, Phase 2+).
+- Build báo lỗi nếu: đích không tồn tại, nguồn vẫn là trang thật, trùng nguồn, chuỗi/vòng chuyển hướng (luôn trỏ thẳng tới đích cuối).
+- Trước khi giao: `node scripts/check-dist.mjs` — URL trong `tests/published-urls.json` không được biến mất hay đổi canonical, trừ khi đã có redirect.
+
 - Link cũ (`/#marq`, `/?p=marq` từ v57, `/?bai=marq` từ bản trước) tự chuyển sang URL mới qua bảng `legacy` trong search index.
 - Ấn phẩm: `/atlas/`, `/atlas/<kỳ>/`, `/atlas/<kỳ>/doc/` (bản đọc HTML) — tương tự với `/nhat-san/`.
 - Nút ✕ trên trang bài: quay lại trang trước nếu người đọc đến từ Cẩm nang, ngược lại về trang chủ.
@@ -141,7 +150,15 @@ Gồm version, tên miền (`siteUrl`), `basePath`, thông tin tác giả (đi�
 
 ## 7. SEO & chia sẻ mạng xã hội
 
-Mỗi trang bài được build với: `<title>`, `description`, `canonical`, `og:title`, `og:description`, `og:image` (1200×630, URL tuyệt đối), `og:url`, `og:type=article`, `twitter:card` và JSON-LD `Article`. Tất cả nằm sẵn trong HTML, **không phụ thuộc JavaScript**. Bài có status `stub` hoặc `archived` được gắn `noindex, follow` và không có trong `sitemap.xml`. Build cũng sinh `robots.txt` và `sitemap.xml`.
+Mỗi trang bài được build với: `<title>`, `description`, `canonical`, `og:title`, `og:description`, `og:image` (1200×630, URL tuyệt đối), `og:url`, `og:type=article`, `twitter:card` và JSON-LD. Tất cả nằm sẵn trong HTML, **không phụ thuộc JavaScript**. Bài có status `stub` hoặc `archived` được gắn `noindex, follow` và không có trong `sitemap.xml`. Build cũng sinh `robots.txt` và `sitemap.xml`.
+
+**Trang riêng (từ 2.5.0)** — khai báo trong `data/pages.json` (lane Nội dung): `profile` = hồ sơ tác giả `/nguyen-anh-tu/` (`ProfilePage`, trỏ tới `Person` bằng `@id`; mọi bài và trang chủ đều link tới đây qua tên tác giả); `hub` = trang chủ đề/pillar, hiện `/bat-dong-san/tphcm/` (`CollectionPage` + `ItemList`). Mô tả từng bài trong hub lấy tự động từ `description` của bài, chỉ bài `published` được đưa vào; bài nằm trong hub tự có dòng "Thuộc chủ đề: …" cuối bài để trỏ ngược về pillar. Thêm hub mới = thêm một mục vào `pages.json`, không sửa code. Địa chỉ trang riêng là vĩnh viễn (§6B nếu đổi).
+
+**JSON-LD (từ 2.4.0)** — một `@graph` mỗi trang bài: `WebSite` + `Person` (Nguyễn Anh Tú, có `sameAs`) + `WebPage` + `Article` + `BreadcrumbList`, nối với nhau bằng `@id` (`https://nguyenanhtu.vn/#website`, `…/#person`). Trang chủ: `WebSite` + `Person`. **Không tạo `Organization`** cho tới khi có tổ chức xuất bản thật được Tú xác nhận. Muốn thêm hồ sơ chính thức (TikTok, LinkedIn, Zalo OA…): thêm URL https vào `author.sameAs` trong `site.config.json` — mọi trang tự cập nhật.
+
+**Tiêu đề ngữ nghĩa (từ 2.4.0)** — mỗi trang chỉ có 1 `<h1>`. Build tự đổi `<p class="p-h2">` thành `<h2 class="p-h2">` (không sửa file nội dung, hiển thị không đổi); bài dự án có vạch 01–04 thì vạch là `<h2 class="p-sec">` còn `p-h2` là `<h3>`; `p-h2` cỡ 13px (tiểu mục) là `<h3>`. Build báo lỗi nếu bài không có đúng 1 `<h1>`.
+
+**Breadcrumb (từ 2.4.0)** — đầu mỗi trang bài: Trang chủ › chương › các bài cha đã `published` (theo `parent`) › bài hiện tại, kèm `BreadcrumbList`. Chương chỉ hiện chữ vì chưa có URL riêng; JSON-LD chỉ gồm URL canonical thật.
 
 Sau khi đăng bài quan trọng: dán URL vào Facebook Sharing Debugger rồi bấm "Scrape Again" để Facebook lấy ảnh và tiêu đề mới.
 
@@ -170,6 +187,7 @@ Tông ấm: multiply, điểm trắng kem RGB 245,238,226, tương phản ×1.18
 
 - Trang chủ hiện tải khoảng **62 KB gzip** (HTML + CSS + JS + chân dung, chưa tính font). Con số này **không được tăng theo số bài**, trừ phần menu (khoảng 0,3 KB mỗi bài).
 - Không thêm thư viện JS/CSS nếu Tú chưa duyệt. Không nhân bản CSS/JS: chỉ có 1 file CSS và 2 file JS.
+- Google Fonts tải không chặn hiển thị (`rel=preload as=style` + `onload`, có `<noscript>`); tạo ở `fontsLink` trong `build.mjs`. Ảnh LCP của bài đã được phát hiện sớm nhờ `fetchpriority="high"` ở ảnh đầu tiên — **không preload hàng loạt ảnh**.
 - JS luôn dùng `defer`. Search index tải lười. Ảnh luôn `lazy` (trừ ảnh đầu bài).
 - Cache: `/assets/css|js/*` 1 năm (cache-bust bằng `?v=<version>`), ảnh 30 ngày, HTML không cache (`dist/_headers`).
 - **Tăng `version` trong `site.config.json` mỗi khi sửa CSS/JS**, nếu không người đọc sẽ thấy CSS/JS cũ trong cache.
@@ -231,16 +249,20 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 10. Nội dung pháp lý và quy hoạch phải tuân thủ phân tầng nguồn (§8.1).
 11. Không deploy thẳng lên hosting bằng bất kỳ đường nào khác ngoài GitHub `main`.
 12. Không xóa hay đổi địa chỉ `/cam-nang/`, `/atlas/`, `/nhat-san/`.
+13. Không làm mất URL đã xuất bản hay đổi canonical của chúng mà không có mục trong `data/redirects.json` (§6B) và sự đồng ý của Tú.
 
 ## 13. Checklist trước khi giao
 
 - [ ] `node scripts/build.mjs` → 0 lỗi, đã đọc các cảnh báo
+- [ ] `node scripts/check-dist.mjs` → ĐẠT (khóa URL, canonical, noindex, JSON-LD, link hỏng)
 - [ ] Bài mới có `description`, ảnh OG, link từ menu hoặc từ bài cha
 - [ ] Nếu sửa CSS/JS: đã tăng `version`
 - [ ] Đã ghi `CHANGELOG.md`
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-10-02 — **2.5.0** (Tú: "tự làm" SEO, ủy quyền Claude): SEO Phase 2 — trang `/nguyen-anh-tu/` (hồ sơ tác giả, `ProfilePage`) và `/bat-dong-san/tphcm/` (pillar, `CollectionPage`, 27 bài chia 6 nhóm), `data/pages.json`, dòng "Thuộc chủ đề" cuối bài trong hub, link tên tác giả ở footer bài và trang chủ, thêm một dòng giới thiệu hai trang mới ở đầu trang chủ (ngoại lệ có chủ đích của §12.5). Không đổi URL nào đã xuất bản.
+- 2026-10-01 — **2.4.0** (Tú yêu cầu SEO Phase 1, không đổi URL, không migrate `/cam-nang/`): tiêu đề ngữ nghĩa h2/h3 (ngoại lệ có chủ đích của §12.5: thêm breadcrumb đầu bài), breadcrumb + `BreadcrumbList`, JSON-LD `WebSite`/`Person`/`WebPage`/`Article` nối bằng `@id` + `sameAs`, Google Fonts không chặn hiển thị, `_redirects` 301 thật từ `data/redirects.json` (§6B), `scripts/check-dist.mjs` + `tests/published-urls.json` (khóa 80 URL), `scripts/audit-links.mjs`. Nội dung: viết lại 72 meta description bị cắt "…", thêm `alt` cho 47 ảnh, đổi `<title>` bản lưu trữ bị trùng.
 - 2026-09-28 — Ban hành 2.0.0 (migration từ v57). Tên miền nguyenanhtu.vn. Phân làn Claude (nội dung) / ChatGPT (kỹ thuật, tùy chọn).
 - 2026-09-29 — Lên GitHub + Cloudflare Pages. Vai trò của Tú rút gọn còn "gửi nội dung → thả gói cập nhật" (§11.0).
 - 2026-10-01 — **Ngừng dùng CamNangBDS v64 làm nguồn nội dung.** Đã đồng bộ toàn bộ v64 vào kho (180 bài). Từ nay mọi thêm/sửa bài chỉ thực hiện trên kho GitHub `main` (§1, §11). Đồng bộ nhãn tác giả thành "ERA Vietnam · Project Director" (khối tác giả, theo bản v64 của Tú).
