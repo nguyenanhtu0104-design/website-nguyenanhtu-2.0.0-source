@@ -2,6 +2,15 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## [2.7.0] — 2026-10-02 — Chữ lớn hơn, khối giá/ưu đãi, hiệu ứng hiện dần khi lướt
+- **Chữ trang bài lớn hơn (Tú duyệt):** đoạn văn 14→16px, nội dung thẻ 12,5→15px, hỏi đáp 12,5→15px, nhãn nhỏ nhất 9–10→12px (bỏ in hoa ở tiêu đề thẻ), tiêu đề mục `p-h2` 19→22px, `p-h1` tới 28px trên điện thoại. Chữ viết inline trong bài cũ được nâng theo thang mới bằng bộ chọn thuộc tính, không phải sửa 180 file nội dung. Chỉ áp dụng trong `#pBody`; trang chủ, menu, thanh bên không đổi. Đo trên Nam Mekong (điện thoại): chữ dưới 12px từ 20% xuống 1%; chữ từ 14px trở lên từ 26% lên 77%.
+- **Khối giá và ưu đãi (mới, CSS):** `.p-price` (giá tham chiếu cỡ lớn) và `.p-offers` (3 ưu đãi một hàng). Dùng cho mục Giá Bán & Chính Sách của các dự án; có định dạng riêng khi xuất PDF.
+- **Hiệu ứng hiện dần khi lướt tới (mới, JS trong `article.js`, tắt bằng `REVEAL=false`):** khối nằm dưới màn hình lúc mở trang mới được ẩn rồi hiện dần (mờ → rõ, trượt lên 16px, 0,55 giây; các thẻ cùng hàng so le tối đa 280 ms). Chỉ dùng opacity và transform nên không gây xô lệch bố cục (CLS đo được 0). Không JS, chọn "giảm chuyển động" hoặc in/xuất PDF thì nội dung hiện đủ ngay. Khối 360° và nội dung hỏi đáp không bị ảnh hưởng.
+- Tăng `version` lên 2.7.0.
+
+### Nội dung
+- 2026-10-02 — `nam-mekong-grand-plaza`: mục "Giá Bán & Chính Sách" làm lại bằng khối `.p-price` + `.p-offers`, giữ nguyên số liệu (55 triệu/m², 1,5%, 9,5%, 24 tháng, phí quản lý đang cập nhật) và nút bảng tính.
+
 ## [2.6.0] — 2026-10-02 — Phóng to ảnh, nút mở công cụ nổi bật, bảng tính rộng hơn trên máy tính
 - **Phóng to ảnh (mới):** file `assets/js/zoom.js` (tự chứa CSS, chỉ tải ở trang bài). Mọi ảnh nội dung trong bài có nút "🔍 Phóng to"; bấm ảnh hoặc nút để mở ảnh lớn bản chất lượng cao nhất, bấm lần nữa để phóng hết cỡ và kéo xem chi tiết, ← → hoặc vuốt để đổi ảnh, Esc/✕ để đóng. Không áp dụng cho ảnh nằm trong liên kết hoặc khối 360°. Ẩn khi in.
 - **Khối nút kêu gọi `.p-cta-box` / `.p-cta` (mới, CSS):** nút vàng lớn "Mở bảng tính ngay →" (cao 58px, toàn chiều rộng trên điện thoại). Thay thẻ nhỏ cũ trong SkySOLIS và Nam Mekong.

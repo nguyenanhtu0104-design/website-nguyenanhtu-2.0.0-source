@@ -101,6 +101,9 @@ window.exportPanelToPdf=function(){
       +'#pdf-content .p-card strong,#pdf-content .p-call-lbl,#pdf-content .p-tl-yr,#pdf-content .knum-n{color:'+P+'!important}'
       +'#pdf-content .p-tl-dot{background:'+P+'!important;border-color:'+P+'!important;color:#fff!important}'
       +'#pdf-content .p-facts .knum-n,#pdf-content .p-travel b{color:'+P+'!important}#pdf-content .p-360{display:none!important}#pdf-content .mix-bar{background:#e4e4e4!important}#pdf-content .mix-row small{color:#555!important}#pdf-content .mix-bar i{background:'+P+'!important}'
+      +'#pdf-content .p-price,#pdf-content .p-offers{background:#fafafa!important;border:1px solid #ccc!important;border-radius:6px;text-align:center;margin:10px 0;page-break-inside:avoid}'
+      +'#pdf-content .p-price{padding:12px}#pdf-content .p-price-n{font-size:30px;font-weight:700;color:'+P+'!important}#pdf-content .p-price-n span{font-size:14px;color:#444!important}#pdf-content .p-price-l,#pdf-content .p-price-d{font-size:11px;color:#555!important}'
+      +'#pdf-content .p-offers{display:flex}#pdf-content .p-offers>div{flex:1;padding:10px 6px}#pdf-content .p-offers b{display:block;font-size:20px;color:'+P+'!important}#pdf-content .p-offers span{font-size:11px;color:#333!important}'
       +'#pdf-content .p-crumb,#pdf-content .p-hubline{display:none!important}'
       +'#pdf-content table{page-break-inside:avoid}#pdf-content th{background:#f0f0f0!important;color:#1a1a1a!important;border-color:#ccc!important}'
       +'#pdf-content img{max-width:100%;height:auto;page-break-inside:avoid}'
@@ -214,4 +217,27 @@ window.exportPanelToPdf=function(){
     if(play) play.addEventListener('click',function(e){ e.preventDefault(); show(box.querySelector('.p-360-tab.on')||tabs[0]); });
   });
 })();
+
+/* ─── Hiện dần khi lướt tới (cải tiến dần: không JS / giảm chuyển động / công cụ tìm kiếm thì nội dung hiện đủ ngay) ─── */
+(function(){
+var REVEAL=true; /* đặt false để tắt toàn bộ hiệu ứng */
+if(!REVEAL||!('IntersectionObserver' in window)||!window.matchMedia||!matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+var body=document.getElementById('pBody'); if(!body) return;
+var SEL='.p-h2,.p-p,.p-lead,.p-card,.p-call,.p-price,.p-offers,.p-tl-row,.p-travel,.knum,.swot-cell,.faq-item,.p-cta-box,.proj-row,figure,table';
+var STAG='.p-grid,.knums,.swot-grid';
+var vh=window.innerHeight||800;
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
+},{rootMargin:'0px 0px -6% 0px',threshold:0.06});
+var seen=new Map();
+Array.prototype.forEach.call(body.querySelectorAll(SEL),function(el){
+  if(el.closest('.p-360,.faq-a,#pAside')) return;
+  var r=el.getBoundingClientRect();
+  if(r.top<vh||r.bottom<0) return;                 /* đã ở trong/trên khung nhìn lúc mở trang: giữ nguyên, không ẩn */
+  var par=el.parentElement;
+  if(par&&par.matches&&par.matches(STAG)){ var i=seen.get(par)||0; seen.set(par,i+1); el.style.setProperty('--rv-d',Math.min(i*70,280)+'ms'); }
+  el.classList.add('rv'); io.observe(el);
+});
+})();
+
 })();

@@ -791,3 +791,61 @@ h2.p-sec{font:inherit}
 @media(min-width:700px){.p-cta{display:inline-flex;min-width:340px}}
 @media(prefers-reduced-motion:reduce){.p-cta,.p-cta .arr{transition:none}}
 @media print{.p-cta-box{display:none}}
+
+/* ═══ 2.7.0 — Chữ lớn hơn trên trang bài, khối giá/ưu đãi, hiệu ứng hiện dần ═══
+   Chỉ áp dụng trong thân bài (#pBody). Trang chủ, menu, thanh bên giữ nguyên. */
+#pBody .p-p{font-size:16px;line-height:1.8}
+#pBody .p-lead{font-size:16.5px;line-height:1.8;color:#b4aea6}
+#pBody .p-h1{font-size:clamp(28px,6vw,42px)}
+#pBody .p-h2{font-size:22px;line-height:1.3}
+#pBody .p-card strong{font-size:12.5px;text-transform:none;letter-spacing:.3px}
+#pBody .p-card p{font-size:15px;line-height:1.7}
+#pBody .p-call-lbl{font-size:12px;letter-spacing:1.2px}
+#pBody .p-call p{font-size:15.5px}
+#pBody .p-warn{font-size:15px}
+#pBody .knum-n{font-size:32px}
+#pBody .knum-l{font-size:13px}
+#pBody .p-facts .knum-n{font-size:36px}
+#pBody .p-facts .knum-l{font-size:13px}
+#pBody .p-tl-yr{font-size:12px}
+#pBody .p-tl-ti{font-size:16px}
+#pBody .p-tl-ds{font-size:14.5px}
+#pBody .p-travel li{font-size:15px}
+#pBody .p-travel small{font-size:13px}
+#pBody .p-travel b{font-size:22px}
+#pBody .swot-label{font-size:12.5px;letter-spacing:1px}
+#pBody .swot-cell ul,#pBody .swot-cell p{font-size:14.5px;line-height:1.75}
+#pBody .faq-q{font-size:15.5px}
+#pBody .faq-a{font-size:15px;line-height:1.8}
+#pBody .faq-num{font-size:19px}
+#pBody .proj-row-name{font-size:17px}
+#pBody .proj-row-tag{font-size:11.5px}
+#pBody .p-cta-d{font-size:15.5px}
+#pBody .p-cta-n{font-size:13px}
+#pBody figcaption{font-size:13px!important}
+/* Chữ viết inline trong bài cũ: nâng theo thang mới mà không phải sửa 180 file nội dung */
+#pBody [style*="font-size:9px"],#pBody [style*="font-size:9.5px"],#pBody [style*="font-size:10px"]{font-size:12px!important}
+#pBody [style*="font-size:10.5px"],#pBody [style*="font-size:11px"],#pBody [style*="font-size:11.5px"]{font-size:13px!important}
+#pBody [style*="font-size:12px"],#pBody [style*="font-size:12.5px"]{font-size:14.5px!important}
+#pBody [style*="font-size:13px"],#pBody [style*="font-size:13.5px"]{font-size:15px!important}
+
+/* Khối giá + ưu đãi (dùng lại cho các dự án khác) */
+.p-price{margin:14px 0 10px;padding:22px 20px;text-align:center;border:1px solid rgba(200,153,58,.38);border-radius:12px;background:linear-gradient(135deg,rgba(200,153,58,.14),rgba(176,80,64,.08))}
+.p-price-l{font-size:13px;color:var(--muted)}
+.p-price-n{margin:4px 0;font-family:'Cormorant Garamond',serif;font-size:clamp(54px,17vw,76px);font-weight:700;line-height:1.05;color:#f4eee2}
+.p-price-n span{margin-left:6px;font-size:.34em;font-weight:600;color:var(--brand)}
+.p-price-d{font-size:14.5px;color:var(--text-2)}
+.p-offers{display:grid;grid-template-columns:repeat(3,1fr);margin:10px 0 12px;overflow:hidden;border:1px solid var(--border-2);border-radius:12px;background:rgba(255,255,255,.03)}
+.p-offers>div{padding:18px 8px;text-align:center}
+.p-offers>div+div{border-left:1px solid var(--border-2)}
+.p-offers b{display:block;font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:700;line-height:1;color:var(--pc,var(--brand))}
+.p-offers span{display:block;margin-top:8px;font-size:13px;line-height:1.35;color:var(--text-2)}
+
+/* Hiện dần khi lướt tới: lớp .rv do JS gắn, chỉ gắn cho khối nằm dưới màn hình lúc mở trang.
+   Không có JS hoặc chọn "giảm chuyển động" thì không có gì bị ẩn. Chỉ dùng opacity + transform (không gây xô lệch bố cục). */
+@media (prefers-reduced-motion:no-preference){
+  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;transition-delay:var(--rv-d,0ms)}
+  figure.rv{transform:translateY(12px) scale(.985)}
+  .rv.rv-in{opacity:1;transform:none}
+}
+@media print{.rv{opacity:1!important;transform:none!important}}
