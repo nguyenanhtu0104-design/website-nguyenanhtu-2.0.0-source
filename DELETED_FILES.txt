@@ -1,2 +1,3 @@
-assets/images/og/dong-tien-la-vua-nguyen-tac-so-2-trong-12-nguyen-tac-tu-duy-dau-tu.jpg
-content/articles/dong-tien-la-vua-nguyen-tac-so-2-trong-12-nguyen-tac-tu-duy-dau-tu.html
+publications/nhat-san/2026-10-05-so-03/bia.jpg
+publications/nhat-san/2026-10-05-so-03/info.txt
+publications/nhat-san/2026-10-05-so-03/nhat-san-so-03.html

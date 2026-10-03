@@ -479,7 +479,7 @@ for (const sec of pubSections) {
       desc: esc(is.desc), cover: is.cover ? `<img class="pub-cover" src="${url}${encodeURI(is.cover)}" alt="Bìa ${esc(is.title)}" decoding="async">` : '',
       draft: is.published ? '' : '<div class="pub-draft">BẢN NHÁP — chỉ bạn có đường dẫn này mới xem được. Đổi <b>trang-thai: cong-bo</b> trong info.txt để công bố.</div>',
       actions, pages: pagesHtml, footer: pubFooter }));
-    if (is.published) pubUrls.push({ loc: SITE + url, lastmod: is.date });
+    if (is.published) { pubUrls.push({ loc: SITE + url, lastmod: is.date }); if (is.html) pubUrls.push({ loc: SITE + url + 'doc/', lastmod: is.date }); }
   }
   const cards = listed.map((is) => `<a class="pub-card" href="${BASE}${sec.path}/${is.slug}/">${is.cover ? `<img src="${BASE}${sec.path}/${is.slug}/${encodeURI(is.cover)}" alt="" loading="lazy" decoding="async">` : '<div class="pub-card-nocover">' + esc(sec.title) + '</div>'}<div class="pub-card-body"><div class="pub-card-meta">${esc([is.number ? 'Số ' + is.number : '', fmtDate(is.date)].filter(Boolean).join(' · '))}</div><div class="pub-card-title">${esc(is.title)}</div></div></a>`).join('\n');
   const library = listed.length
