@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## [2.8.0] — 2026-10-03 — Nhật san: thẻ chữ thay ảnh bìa
+- **Nhật san không hiện ảnh bìa trên web (Tú yêu cầu):** ảnh bìa bị cắt khung trên thư viện (máy tính) và tràn trên điện thoại. Thư viện giờ là thẻ chữ: số kỳ · ngày, tiêu đề, đoạn trích hấp dẫn và nút "Đọc nhật san →"; đầu trang kỳ hiện đoạn trích thay ảnh. Bật/tắt bằng `cover` của từng mục trong `site.config.json` (Nhật san `false`; World Atlas giữ ảnh bìa). Thêm dòng `trich-doan:` (không bắt buộc) trong `info.txt`, bỏ trống thì dùng `mo-ta`; ghi trong `publications/README.md`. `bia.jpg` vẫn giữ làm ảnh chia sẻ Facebook/Zalo (og:image). Tăng `version` lên 2.8.0.
+- Sửa ảnh chia sẻ `bia.jpg` kỳ 05/10: ghi đúng "SỐ 02" (trước đó còn "SỐ 03").
+
 ## [2.7.1] — 2026-10-03 — Sơ đồ trang (sitemap) có trang đọc của ấn phẩm
 - Kỳ ấn phẩm công bố có file HTML: `sitemap.xml` nay liệt kê cả trang đọc `/<mục>/<kỳ>/doc/` (trước chỉ có trang giới thiệu kỳ), để Google thấy nội dung bài. Tăng `version` lên 2.7.1.
 

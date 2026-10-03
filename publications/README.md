@@ -21,9 +21,12 @@ tieu-de: World Atlas — Kỳ 01: Dòng vốn FDI 2026
 so: 01
 ngay: 2026-10-05
 mo-ta: Một đến hai câu mô tả, hiện dưới tiêu đề và khi chia sẻ.
+trich-doan: (không bắt buộc) Đoạn trích hấp dẫn 2–3 câu về nội dung kỳ, hiện trong thư viện và đầu trang kỳ. Bỏ trống thì dùng mo-ta.
 trang-thai: nhap
 ```
 
 - `trang-thai: nhap` nghĩa là bản nháp. Trang vẫn được tạo để anh xem thử qua đường dẫn, nhưng **không hiện trong thư viện**, không vào Google, và có dải báo "BẢN NHÁP".
 - `trang-thai: cong-bo` nghĩa là công bố. Kỳ hiện trong thư viện, vào sitemap, và chia sẻ được đầy đủ.
 - Mỗi file không vượt quá 24 MB.
+
+- Nhật san không hiện ảnh bìa trên web (`cover: false` trong `site.config.json`): thư viện hiện số kỳ, tiêu đề và `trich-doan`. File `bia.jpg` vẫn nên có vì dùng làm ảnh khi chia sẻ Facebook/Zalo.

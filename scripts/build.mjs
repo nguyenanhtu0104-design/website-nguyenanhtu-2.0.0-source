@@ -178,7 +178,7 @@ for (const sec of pubSections) {
     if (htmls.length > 1) errors.push(`${where}: chỉ đặt 1 file .html cho mỗi kỳ`);
     for (const f of files) { const sz = fs.statSync(path.join(d, f)).size; if (sz > 24 * 1024 * 1024) errors.push(`${where}/${f}: ${(sz / 1048576).toFixed(1)} MB — vượt giới hạn 25 MB/file của hosting`); }
     if (status === 'cong-bo' && !cover) warns.push(`${where}: nên có ảnh bìa bia.jpg (dùng cho thư viện và khi chia sẻ Facebook/Zalo)`);
-    sec.issues.push({ slug, dir: d, title: info['tieu-de'] || slug, date: info['ngay'] || '', desc: info['mo-ta'] || '', number: info['so'] || '',
+    sec.issues.push({ slug, dir: d, title: info['tieu-de'] || slug, date: info['ngay'] || '', desc: info['mo-ta'] || '', teaser: info['trich-doan'] || '', number: info['so'] || '',
       published: status === 'cong-bo', cover, pdfs, pages, html: htmls[0], files });
   }
   sec.issues.sort((a, b) => b.date.localeCompare(a.date));
@@ -457,6 +457,7 @@ function externalizeBase64(html, outDir, urlBase) {
 }
 for (const sec of pubSections) {
   const secUrl = `${BASE}${sec.path}/`;
+  const showCover = sec.cover !== false; // site.config.json → publications[].cover=false: không hiện ảnh bìa trên web (ảnh vẫn dùng làm ảnh chia sẻ Facebook/Zalo)
   const listed = sec.issues.filter((i) => i.published);
   for (const is of sec.issues) {
     const rel = `${sec.path}/${is.slug}/`, url = BASE + rel, out = path.join(DIST, rel);
@@ -476,14 +477,17 @@ for (const sec of pubSections) {
     write(`${rel}index.html`, fill(tplPubIssue, { ...common, nav: navHtml(sec.navKey), pageTitle: esc(`${is.title} — ${sec.title} | ${cfg.titleSuffix}`),
       description: esc(desc), canonical: SITE + url, ogImage: og, robots: is.published ? '' : '<meta name="robots" content="noindex, nofollow">\n',
       label: esc(sec.label), secTitle: esc(sec.title), secUrl, title: esc(is.title), meta: esc([is.number ? 'Số ' + is.number : '', fmtDate(is.date)].filter(Boolean).join(' · ')),
-      desc: esc(is.desc), cover: is.cover ? `<img class="pub-cover" src="${url}${encodeURI(is.cover)}" alt="Bìa ${esc(is.title)}" decoding="async">` : '',
+      desc: esc(is.teaser || is.desc), cover: is.cover && showCover ? `<img class="pub-cover" src="${url}${encodeURI(is.cover)}" alt="Bìa ${esc(is.title)}" decoding="async">` : '',
       draft: is.published ? '' : '<div class="pub-draft">BẢN NHÁP — chỉ bạn có đường dẫn này mới xem được. Đổi <b>trang-thai: cong-bo</b> trong info.txt để công bố.</div>',
       actions, pages: pagesHtml, footer: pubFooter }));
     if (is.published) { pubUrls.push({ loc: SITE + url, lastmod: is.date }); if (is.html) pubUrls.push({ loc: SITE + url + 'doc/', lastmod: is.date }); }
   }
-  const cards = listed.map((is) => `<a class="pub-card" href="${BASE}${sec.path}/${is.slug}/">${is.cover ? `<img src="${BASE}${sec.path}/${is.slug}/${encodeURI(is.cover)}" alt="" loading="lazy" decoding="async">` : '<div class="pub-card-nocover">' + esc(sec.title) + '</div>'}<div class="pub-card-body"><div class="pub-card-meta">${esc([is.number ? 'Số ' + is.number : '', fmtDate(is.date)].filter(Boolean).join(' · '))}</div><div class="pub-card-title">${esc(is.title)}</div></div></a>`).join('\n');
+  const metaOf = (is) => esc([is.number ? 'Số ' + is.number : '', fmtDate(is.date)].filter(Boolean).join(' · '));
+  const cards = listed.map((is) => showCover
+    ? `<a class="pub-card" href="${BASE}${sec.path}/${is.slug}/">${is.cover ? `<img src="${BASE}${sec.path}/${is.slug}/${encodeURI(is.cover)}" alt="" loading="lazy" decoding="async">` : '<div class="pub-card-nocover">' + esc(sec.title) + '</div>'}<div class="pub-card-body"><div class="pub-card-meta">${metaOf(is)}</div><div class="pub-card-title">${esc(is.title)}</div></div></a>`
+    : `<a class="pub-card pub-card-text" href="${BASE}${sec.path}/${is.slug}/"><div class="pub-card-body"><div class="pub-card-meta">${metaOf(is)}</div><h2 class="pub-card-title">${esc(is.title)}</h2>${(is.teaser || is.desc) ? `<p class="pub-card-excerpt">${esc(is.teaser || is.desc)}</p>` : ''}<span class="pub-card-more">Đọc ${esc(sec.title.toLowerCase())} →</span></div></a>`).join('\n');
   const library = listed.length
-    ? `<section class="edition-list"><div class="pub-label">THƯ VIỆN ẤN PHẨM</div><div class="pub-grid">${cards}</div></section>`
+    ? `<section class="edition-list"><div class="pub-label">THƯ VIỆN ẤN PHẨM</div><div class="pub-grid${showCover ? '' : ' pub-list'}">${cards}</div></section>`
     : `<section class="edition-empty"><div class="pub-label">THƯ VIỆN ẤN PHẨM</div><h2>Chưa có ấn phẩm được công bố</h2><p>Các kỳ phát hành sẽ xuất hiện tại đây cùng ảnh bìa, ngày phát hành và đường dẫn đọc hoặc tải về.</p></section>`;
   write(`${sec.path}/index.html`, fill(tplPubIndex, { ...common, nav: navHtml(sec.navKey), pageTitle: esc(sec.pageTitle), description: esc(sec.description),
     canonical: SITE + secUrl, ogImage: abs('assets/images/og/trang-chu.jpg'), label: esc(sec.label), title: esc(sec.title), intro: esc(sec.description), library, footer: pubFooter }));

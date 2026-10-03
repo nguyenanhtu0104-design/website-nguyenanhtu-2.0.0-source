@@ -853,3 +853,10 @@ h2.p-sec{font:inherit}
 /* Chữ nhỏ màu đỏ đất: sáng hơn một chút để đạt độ tương phản 4,5:1 (trước đó 3,4–3,7:1). Chữ lớn giữ nguyên màu. */
 #pBody .p-card strong,#pBody .p-tl-yr{color:#c9604d;color:color-mix(in srgb,var(--pc,var(--brand)) 78%,#fff)}
 #pTag[style*="#b05040"],#pBody [style*="color:#b05040"]{color:#d4705d!important}
+
+/* 2.8.0 — Ấn phẩm không hiện ảnh bìa trên web (cover:false): thẻ chữ gồm số kỳ, tiêu đề, đoạn trích */
+.pub-grid.pub-list{grid-template-columns:1fr;max-width:760px}
+.pub-card-text .pub-card-body{padding:22px 24px 24px}
+.pub-card-text .pub-card-title{font-size:clamp(22px,4.2vw,30px);margin:0;font-weight:400;overflow-wrap:anywhere}
+.pub-card-excerpt{margin:12px 0 16px;font-size:15px;line-height:1.75;color:#a9a9a9;max-width:none}
+.pub-card-more{font-size:13px;font-weight:600;color:#d9b467;letter-spacing:.3px}

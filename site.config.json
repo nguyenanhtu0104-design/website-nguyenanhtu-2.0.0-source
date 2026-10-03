@@ -1,5 +1,5 @@
 {
-  "version": "2.7.1",
+  "version": "2.8.0",
   "ctaCategories": [
     "du-an-chon-loc"
   ],
@@ -42,6 +42,7 @@
     {
       "id": "nhat-san",
       "path": "nhat-san",
+      "cover": false,
       "navKey": "nav_nhatsan",
       "title": "Nhật san",
       "pageTitle": "Nhật san | Nguyễn Anh Tú",
