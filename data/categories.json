@@ -27,7 +27,7 @@
   "icon": "🧭",
   "title": "Chiến Lược & Quy Hoạch",
   "tagline": "Chiến lược vùng Đông Nam Bộ · Trải nghiệm quy hoạch thế giới · Bài học từ các đô thị hàng đầu",
-  "badge": "2 chủ đề · 11 bài phân tích",
+  "badge": "3 chủ đề · 20 bài phân tích",
   "layout": "list",
   "items": [
    {
@@ -48,14 +48,11 @@
   "icon": "💡",
   "title": "Tư Duy Đầu Tư Bất Động Sản",
   "tagline": "22 nguyên tắc · Dòng tiền · Tư duy nhà đầu tư chuyên nghiệp",
-  "badge": "3 bài phân tích",
+  "badge": "2 bài phân tích",
   "layout": "list",
   "items": [
    {
     "article": "22-nguyen-tac-tu-duy-dau-tu-bds"
-   },
-   {
-    "article": "dong-tien-la-vua-nguyen-tac-so-2-trong-12-nguyen-tac-tu-duy-dau-tu"
    },
    {
     "article": "thi-truong-dan-trai-nhung-rat-tap-trung"

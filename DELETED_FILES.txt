@@ -1,1 +1,2 @@
-content/articles/the-solis.html
+assets/images/og/dong-tien-la-vua-nguyen-tac-so-2-trong-12-nguyen-tac-tu-duy-dau-tu.jpg
+content/articles/dong-tien-la-vua-nguyen-tac-so-2-trong-12-nguyen-tac-tu-duy-dau-tu.html
