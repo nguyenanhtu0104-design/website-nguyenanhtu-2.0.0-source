@@ -27,7 +27,7 @@
   "icon": "🧭",
   "title": "Chiến Lược & Quy Hoạch",
   "tagline": "Chiến lược vùng Đông Nam Bộ · Trải nghiệm quy hoạch thế giới · Bài học từ các đô thị hàng đầu",
-  "badge": "3 chủ đề · 20 bài phân tích",
+  "badge": "4 chủ đề · 20 bài phân tích",
   "layout": "list",
   "items": [
    {
@@ -38,6 +38,9 @@
    },
    {
     "article": "do-nen-do-thi-compact-city"
+   },
+   {
+    "article": "tod-5-0-mat-do-hoat-dong"
    }
   ]
  },
