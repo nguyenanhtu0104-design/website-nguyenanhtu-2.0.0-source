@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Artisan Park – Bảng Tính Chiết Khấu & 5 Phương Thức Thanh Toán</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#C9A84C;--gold-l:#E8C96A;
+  --navy:#0B1F3A;--navy-m:#152D50;--navy-l:#1E3F6E;
+  --org:#E86A1A;--org-l:#F5956A;
+  --ph1:#2E7D9B;--ph2:#1B6B4A;--ph3:#7B3F10;--ph4:#5B3A8B;
+  --pur:#7B4DB8;--pur-l:#BEA0E8;
+  --grn:#1B6B4A;--grn-l:#5DD4A0;
+  --red:#C0392B;--red-l:#F1948A;
+  --mut:#8A9BB5;--wht:#FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--navy);font-family:'Be Vietnam Pro',sans-serif;color:var(--wht);min-height:100vh}
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 15% 15%,rgba(201,168,76,.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 85% 85%,rgba(30,63,110,.6) 0%,transparent 50%),
+  repeating-linear-gradient(45deg,transparent,transparent 40px,rgba(255,255,255,.01) 40px,rgba(255,255,255,.01) 41px);
+  pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:40px 20px 60px}
+
+/* HEADER */
+.hdr{text-align:center;margin-bottom:40px;animation:fadeD .8s ease both}
+.hdr-badge{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:var(--navy);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
+  padding:6px 20px;border-radius:2px;margin-bottom:16px}
+.hdr h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4.5vw,42px);font-weight:900;
+  background:linear-gradient(135deg,#FFF 0%,var(--gold-l) 60%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.hdr-sub{color:var(--mut);font-size:13px;letter-spacing:1px}
+.div-gold{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:14px auto 0}
+
+/* CARDS */
+.card{background:linear-gradient(135deg,var(--navy-m),var(--navy-l));
+  border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:22px 24px;margin-bottom:20px;
+  box-shadow:0 16px 48px rgba(0,0,0,.3)}
+.card-title{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* PROPERTY INPUT */
+.prop-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:600px){.prop-grid{grid-template-columns:1fr}}
+.input-group label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.price-inp{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.4);border-radius:8px;
+  padding:11px 16px;font-family:'Be Vietnam Pro',sans-serif;font-size:17px;font-weight:700;
+  color:var(--gold-l);width:100%;outline:none;transition:border-color .2s;text-align:right}
+.price-inp:focus{border-color:var(--gold)}
+.inp-note{font-size:11px;color:var(--mut);margin-top:5px}
+.prop-info{display:flex;flex-direction:column;gap:8px}
+.pi-row{display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px}
+.pi-lbl{color:var(--mut);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.pi-val{font-weight:700}
+
+/* DISCOUNT TABLE */
+.ck-table{width:100%;border-collapse:collapse;font-size:13px}
+.ck-table thead th{background:rgba(255,255,255,.04);color:var(--gold);font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;padding:10px 14px;text-align:left}
+.ck-table thead th:last-child{text-align:right}
+.ck-table tbody tr{border-top:1px solid rgba(255,255,255,.05)}
+.ck-table tbody tr:hover{background:rgba(255,255,255,.02)}
+.ck-table td{padding:12px 14px;vertical-align:middle}
+.stt-cell{width:36px;color:var(--mut);font-size:12px;font-weight:700;text-align:center}
+.name-cell{font-weight:600;font-size:13px;min-width:180px}
+.name-sub{font-size:11px;color:var(--mut);font-weight:400;margin-top:3px}
+.opt-cell{min-width:260px}
+.val-cell{text-align:right;font-weight:700;font-size:14px;min-width:160px;white-space:nowrap}
+.val-fixed{color:var(--red-l)}
+.val-pct{color:#6EC6E8}
+.val-none{color:var(--mut);font-size:12px;font-weight:400}
+
+/* OPTIONS */
+.radio-group,.check-group{display:flex;flex-direction:column;gap:6px}
+.radio-group.horizontal,.check-group.horizontal{flex-direction:row;flex-wrap:wrap;gap:8px}
+.opt-btn{padding:5px 14px;border-radius:6px;border:1px solid rgba(201,168,76,.25);
+  background:rgba(255,255,255,.03);color:rgba(255,255,255,.55);
+  font-family:'Be Vietnam Pro',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.opt-btn:hover{border-color:var(--gold);color:var(--gold-l)}
+.opt-btn.active-ck{background:linear-gradient(135deg,rgba(46,125,155,.4),rgba(46,125,155,.2));
+  border-color:#6EC6E8;color:#6EC6E8}
+.opt-btn.active-fixed{background:linear-gradient(135deg,rgba(192,57,43,.3),rgba(192,57,43,.15));
+  border-color:var(--red-l);color:var(--red-l)}
+.opt-btn.active-none{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.2);color:var(--mut)}
+.opt-btn.disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+
+/* SUMMARY BOX */
+.sum-box{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+  border-radius:10px;padding:18px 20px;margin-top:16px}
+.sum-row{display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;font-size:13px}
+.sum-row+.sum-row{border-top:1px solid rgba(255,255,255,.05)}
+.sum-lbl{color:var(--mut)}
+.sum-val{font-weight:700;font-variant-numeric:tabular-nums}
+.sum-row.deduct .sum-val{color:var(--red-l)}
+.sum-row.pct-ck .sum-val{color:#6EC6E8}
+.sum-row.final-pre{padding-top:12px;margin-top:6px;border-top:2px solid rgba(201,168,76,.3)!important}
+.sum-row.final-pre .sum-lbl{font-size:14px;font-weight:700;color:rgba(255,255,255,.9)}
+.sum-row.final-pre .sum-val{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold-l)}
+.sum-row.vat-row .sum-val{color:var(--mut)}
+.sum-row.total-row .sum-lbl{font-size:15px;font-weight:700;color:var(--gold-l)}
+.sum-row.total-row .sum-val{font-family:'Playfair Display',serif;font-size:26px;color:var(--gold-l)}
+.sum-row.savings-row .sum-lbl{color:var(--grn-l);font-weight:600}
+.sum-row.savings-row .sum-val{color:var(--grn-l)}
+
+/* TOTAL BAR */
+.total-bar{background:linear-gradient(135deg,var(--gold),var(--gold-l));border-radius:10px;
+  padding:20px 24px;display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.total-bar .tb-label{color:var(--navy);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.total-bar .tb-val{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--navy)}
+.total-bar .tb-note{font-size:11px;color:rgba(11,31,58,.55);font-style:italic;margin-top:2px}
+.total-bar .tb-parts{display:flex;gap:24px;flex-wrap:wrap;align-items:baseline}
+.total-bar .tb-sub{font-size:13px;color:rgba(11,31,58,.65)}
+
+/* PT TABS */
+.pt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.pt-tab{padding:10px 16px;border-radius:8px;border:1px solid rgba(201,168,76,.25);
+  background:rgba(255,255,255,.03);color:rgba(255,255,255,.5);
+  font-family:'Be Vietnam Pro',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-align:left;min-width:170px}
+.pt-tab:hover{border-color:var(--gold);color:var(--gold)}
+.pt-tab.pt-disabled{opacity:.28;pointer-events:none;filter:grayscale(1)}
+.opt-btn.pt-disabled{opacity:.28;pointer-events:none;filter:grayscale(1)}
+.pt-lock-note{font-size:11px;color:var(--gold-l);background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);border-radius:6px;padding:6px 12px;margin-bottom:14px;display:none}
+.pt-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border-color:transparent}
+.pt-tab .tn{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;display:block;line-height:1}
+.pt-tab .tx{display:block;font-size:11px;margin-top:2px;opacity:.85}
+.pt-tab .tb{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px;margin-top:4px}
+.pt-tab.active .tb{background:rgba(11,31,58,.25);color:var(--navy)}
+.pt-tab:not(.active) .tb{background:rgba(201,168,76,.15);color:var(--gold)}
+
+/* PT PANEL */
+.pt-panel{display:none;animation:fadeU .4s ease both}
+.pt-panel.active{display:block}
+
+/* PT INFO GRID */
+.pt-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;
+  margin-bottom:20px;padding:18px 20px;background:rgba(255,255,255,.03);
+  border:1px solid rgba(255,255,255,.07);border-radius:10px}
+.pi-item label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.pi-item .piv{font-size:14px;font-weight:600}
+.pi-item.big .piv{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold-l)}
+
+/* YIELD BLOCK */
+.yield-blk{background:linear-gradient(135deg,rgba(27,107,74,.15),rgba(27,107,74,.05));
+  border:1px solid rgba(93,212,160,.2);border-radius:10px;padding:16px 20px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.yi-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--grn-l);margin-bottom:4px}
+.yi-val{font-family:'Playfair Display',serif;font-size:22px;color:var(--grn-l);font-weight:900}
+.yi-sub{font-size:12px;color:var(--mut);margin-top:3px}
+.yi-calcs{margin-left:auto;display:flex;gap:20px;flex-wrap:wrap}
+.yi-item label{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--mut);display:block;margin-bottom:3px}
+.yi-item .yiv{font-size:14px;font-weight:700;color:var(--grn-l)}
+
+/* PHASE */
+.phase{margin-bottom:24px}
+.ph-hdr{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.ph-num{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:900;font-size:15px;flex-shrink:0}
+.ph1 .ph-num{background:var(--ph1)}.ph2 .ph-num{background:var(--ph2)}
+.ph3 .ph-num{background:var(--ph3)}.ph4 .ph-num{background:var(--ph4)}
+.ph-title{font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.ph-sub{font-size:11px;color:var(--mut);margin-top:2px}
+
+/* TABLE */
+.tbl-wrap{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+table.sched{width:100%;border-collapse:collapse;font-size:13px}
+table.sched thead th{background:rgba(255,255,255,.04);color:var(--gold);font-size:10px;font-weight:700;
+  letter-spacing:1.5px;text-transform:uppercase;padding:9px 12px;text-align:left}
+table.sched thead th:not(:first-child){text-align:right}
+table.sched tbody tr{border-top:1px solid rgba(255,255,255,.05);transition:background .2s}
+table.sched tbody tr:hover{background:rgba(255,255,255,.025)}
+table.sched tbody td{padding:10px 12px;color:rgba(255,255,255,.85);vertical-align:middle}
+table.sched tbody td:not(:first-child):not(:nth-child(3)){text-align:right}
+.dot-n{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.ph1 .dot-n{background:rgba(46,125,155,.3);color:#6EC6E8}
+.ph2 .dot-n{background:rgba(27,107,74,.3);color:#5DD4A0}
+.ph3 .dot-n{background:rgba(123,63,16,.3);color:#E8A06E}
+.ph4 .dot-n{background:rgba(91,58,139,.3);color:#BEA0E8}
+.pct-b{display:inline-block;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:700}
+.ph1 .pct-b{background:rgba(46,125,155,.2);color:#6EC6E8}
+.ph2 .pct-b{background:rgba(27,107,74,.2);color:#5DD4A0}
+.ph3 .pct-b{background:rgba(123,63,16,.2);color:#E8A06E}
+.ph4 .pct-b{background:rgba(91,58,139,.2);color:#BEA0E8}
+.mile-row td{background:rgba(201,168,76,.07)!important}
+.mile-tag{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-l));
+  color:var(--navy);font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;
+  padding:2px 8px;border-radius:3px;margin-left:6px;vertical-align:middle}
+.amt{font-weight:600;font-variant-numeric:tabular-nums}
+.cum{color:var(--mut);font-size:12px}
+.vat-c{color:rgba(255,255,255,.4);font-size:11px}
+
+/* PROG BAR */
+.prog-wrap{margin-bottom:22px}
+.prog-ttl{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--mut);margin-bottom:10px;text-align:center}
+.prog-bar{background:rgba(255,255,255,.05);border-radius:100px;height:10px;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.prog-fill{height:100%;border-radius:100px;display:flex}
+.prog-labels{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;justify-content:center}
+.prog-lbl{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--mut)}
+.prog-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* PT TOTAL BAR */
+.pt-total{background:linear-gradient(135deg,var(--gold),var(--gold-l));border-radius:10px;
+  padding:18px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:24px;flex-wrap:wrap;gap:10px}
+.pt-tl{color:var(--navy);font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.pt-tv{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--navy)}
+.pt-tn{font-size:11px;color:rgba(11,31,58,.55);font-style:italic;margin-top:2px}
+
+.dd-tab{background:transparent;border:none;color:var(--mut);font-family:'Be Vietnam Pro',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:9px 6px;
+  cursor:pointer;transition:all .2s;border-bottom:2px solid transparent}
+.dd-tab:hover{color:var(--gold)}
+.dd-tab.active{color:var(--gold);border-bottom-color:var(--gold);background:rgba(201,168,76,.06)}
+.dd-item{display:flex;align-items:center;gap:10px;padding:9px 14px;cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s}
+.dd-item:hover{background:rgba(201,168,76,.1)}
+.dd-item.is-coc{opacity:.4;cursor:not-allowed}
+.dd-item .di-code{font-size:13px;font-weight:700;color:var(--gold-l);min-width:100px}
+.dd-item .di-info{font-size:11px;color:var(--mut);flex:1}
+.dd-item .di-price{font-size:12px;font-weight:700;color:rgba(255,255,255,.8);text-align:right;white-space:nowrap}
+.dd-item .di-badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;
+  letter-spacing:.5px;white-space:nowrap;flex-shrink:0}
+
+/* INFRA */
+.infra{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
+.infra-item{flex:1;min-width:160px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px}
+.ii-yr{font-size:11px;color:var(--gold);font-weight:700;letter-spacing:1px}
+.ii-nm{font-size:12px;font-weight:600;margin-top:2px}
+
+/* SECTION DIVIDER */
+.sec-div{display:flex;align-items:center;gap:14px;margin:28px 0 18px}
+.sec-div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.3),transparent)}
+.sec-div-text{font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+
+.badge-green{display:inline-block;background:rgba(27,107,74,.25);color:var(--grn-l);
+  font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px}
+.badge-orange{display:inline-block;background:rgba(232,106,26,.2);color:var(--org-l);
+  font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px}
+.badge-pur{display:inline-block;background:rgba(123,77,184,.25);color:var(--pur-l);
+  font-size:11px;font-weight:700;padding:2px 10px;border-radius:100px}
+
+.footer-note{text-align:center;color:var(--mut);font-size:11px;margin-top:36px;
+  padding-top:20px;border-top:1px solid rgba(255,255,255,.06);line-height:1.8}
+
+@keyframes fadeD{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:none}}
+@keyframes fadeU{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* ══ PRINT / EXPORT PDF ══ */
+#print-sheet{display:none}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff!important;color:#111!important}
+  body::before{display:none!important}
+  .wrap{display:none!important}
+  #print-sheet{display:block!important;position:static;color:#111;font-family:'Be Vietnam Pro',sans-serif}
+  #print-sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+/* Print sheet component styles (scoped) */
+#print-sheet .ps-hd{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2.5px solid #C9A84C;padding-bottom:12px;margin-bottom:16px}
+#print-sheet .ps-brand{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:#0B1F3A}
+#print-sheet .ps-badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#8a6d1f;font-weight:700;margin-top:2px}
+#print-sheet .ps-meta{text-align:right;font-size:11px;color:#555;line-height:1.6}
+#print-sheet h2{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:#8a6d1f;margin:18px 0 8px;border-bottom:1px solid #e5d9b6;padding-bottom:4px}
+#print-sheet .ps-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 20px;font-size:12px}
+#print-sheet .ps-grid div span{color:#666}
+#print-sheet .ps-grid div b{color:#111;float:right}
+#print-sheet table{width:100%;border-collapse:collapse;font-size:11px;margin-top:4px}
+#print-sheet th{background:#f3ecd6;color:#5a4a15;text-align:left;padding:6px 8px;font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+#print-sheet td{padding:5px 8px;border-bottom:1px solid #eee;vertical-align:top}
+#print-sheet td.r,#print-sheet th.r{text-align:right}
+#print-sheet .ps-ded{color:#b23b2e}
+#print-sheet .ps-final{background:#0B1F3A;color:#fff;border-radius:8px;padding:12px 16px;margin-top:10px;display:flex;justify-content:space-between;align-items:center}
+#print-sheet .ps-final .l{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.85}
+#print-sheet .ps-final .v{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;color:#E8C96A}
+#print-sheet .ps-foot{margin-top:22px;display:flex;justify-content:space-between;font-size:10px;color:#777;border-top:1px solid #ddd;padding-top:10px}
+#print-sheet .ps-note{font-size:10px;color:#888;margin-top:6px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-badge">Artisan Park · A Gamuda Land Community</div>
+  <h1>Bảng Tính Chiết Khấu &amp; Phương Thức Thanh Toán</h1>
+  <div class="hdr-sub">Nhà Phố Thương Mại · Phân Khu G · Bình Dương<br>CTBH số 15.2 · Áp dụng 01–31/07/2026</div>
+  <div class="div-gold"></div>
+</div>
+
+<!-- SECTION 1: THÔNG TIN CĂN NHÀ -->
+<div class="card">
+  <div class="card-title">🏠 Thông Tin Căn Nhà</div>
+
+  <!-- Mã căn search -->
+  <div style="margin-bottom:18px">
+    <div class="input-group" style="position:relative">
+      <label>Mã Căn / Unit No.</label>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input class="price-inp" id="unitInp" type="text" placeholder="Gõ để tìm hoặc bấm ▼"
+          style="font-size:15px;text-transform:uppercase;flex:1"
+          oninput="onUnitInput(this)" autocomplete="off">
+        <button onclick="toggleFullList()" id="listBtn"
+          style="background:linear-gradient(135deg,var(--gold),var(--gold-l));
+          color:var(--navy);border:none;border-radius:8px;padding:0 16px;
+          font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;
+          cursor:pointer;height:46px;white-space:nowrap;flex-shrink:0;transition:opacity .2s"
+          onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+          ▼ Danh Sách
+        </button>
+      </div>
+      <!-- Dropdown panel -->
+      <div id="unit-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;
+        width:100%;z-index:200;background:#0D2440;border:1px solid rgba(201,168,76,.45);
+        border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.55);overflow:hidden">
+        <!-- Filter tabs -->
+        <div id="dd-tabs" style="display:flex;gap:0;border-bottom:1px solid rgba(255,255,255,.08)">
+          <button class="dd-tab active" onclick="setDDTab('all')"   style="flex:1">Tất Cả</button>
+          <button class="dd-tab"        onclick="setDDTab('60t')"   style="flex:1">60 Tháng</button>
+          <button class="dd-tab"        onclick="setDDTab('usual')" style="flex:1">Thường</button>
+          <button class="dd-tab"        onclick="setDDTab('avail')" style="flex:1">Còn Hàng</button>
+        </div>
+        <div id="dd-search-wrap" style="padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.06)">
+          <input id="dd-search" type="text" placeholder="🔍  Tìm mã căn..."
+            oninput="filterDD(this.value)"
+            style="width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(201,168,76,.25);
+            border-radius:6px;padding:7px 12px;font-family:'Be Vietnam Pro',sans-serif;
+            font-size:13px;color:#fff;outline:none">
+        </div>
+        <div id="dd-list" style="max-height:320px;overflow-y:auto"></div>
+      </div>
+      <div class="inp-note" style="margin-top:6px">Nhập mã căn hoặc bấm <b>▼ Danh Sách</b> để chọn</div>
+    </div>
+  </div>
+
+  <div id="sold-banner"></div>
+  <!-- Info grid — tự động điền khi chọn mã căn -->
+  <div class="prop-grid">
+    <div>
+      <div class="input-group" style="margin-bottom:12px">
+        <label>Phân Khu · Loại · Tầng</label>
+        <div id="unit-meta" style="font-size:14px;font-weight:700;color:var(--gold-l);
+          padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)">—</div>
+      </div>
+      <div class="input-group">
+        <label>Tổng DT Sàn XD (m²)</label>
+        <div id="unit-gfa" style="font-size:14px;font-weight:700;color:rgba(255,255,255,.8);padding:8px 0">—</div>
+      </div>
+    </div>
+    <div>
+      <div class="input-group" style="margin-bottom:12px">
+        <label>Giá Bán Trước VAT (VND)</label>
+        <input class="price-inp" id="priceInp" type="text" value=""
+          placeholder="Tự động hoặc nhập tay"
+          oninput="onPrice(this)" style="font-size:16px">
+        <div class="inp-note" id="price-note">← Chọn mã căn để tự động điền</div>
+      </div>
+      <div class="input-group">
+        <label>Phí Sử Dụng Đất – LUR Fee (VND)</label>
+        <input class="price-inp" id="lurInp" type="text" value=""
+          placeholder="Tự động hoặc nhập tay"
+          oninput="onLUR(this)" style="font-size:16px">
+        <div class="inp-note">VAT = (Giá sau CK − Phí SD đất) × 10%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE: fix subtitle -->
+<script>
+// ── PRICE LIST — Artisan Park (cập nhật 03/07/2026 — theo BẢNG GIÁ AP_-QUOTATION_-_020726.xlsx + CTBH 15.2) ──
+// Giỏ hàng (ảnh CẬP NHẬT GIỎ HÀNG 09:45 03/07/2026 — chỉ ĐỎ = đã bán): 49 đã bán · 45 còn hàng · 11 cam kết cho thuê · 3 LOCK. pt = 'GRR'|'CN'|'60'|'ALL'
+// LUR = Giá Bán − Giá Nhà Thuần (từ phiếu báo giá CĐT)
+// status: '' (còn hàng) | 'đã bán' | 'cam kết cho thuê' | 'lock'
+const PRICE_LIST = {
+  // ━━ G1a ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1A.01': { subPlot:'G1a', type:'TH1a1', floors:3, landArea:190.0, gfa:285.0, price:19658932154, lurFee:6583535720, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'01 TH1al' },
+  'G1A.02': { subPlot:'G1a', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:10197171586, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'02 TH2aM' },
+  'G1A.03': { subPlot:'G1a', type:'TH3a', floors:3, landArea:100.0, gfa:216.1, price:10197171586, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'03 TH3a' },
+  'G1A.04': { subPlot:'G1a', type:'TH1bM', floors:3, landArea:100.0, gfa:216.2, price:10049933376, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'04 TH1bM' },
+  'G1A.06': { subPlot:'G1a', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:10049933376, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'06 TH3aM' },
+  'G1A.07': { subPlot:'G1a', type:'TH1b', floors:3, landArea:100.0, gfa:216.2, price:10197171586, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'07 TH1lb' },
+  'G1A.11': { subPlot:'G1a', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:10049933376, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'11 TH2a' },
+  'G1A.12': { subPlot:'G1a', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:10049933376, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'12 TH3aM' },
+  'G1A.13': { subPlot:'G1a', type:'TH1b', floors:3, landArea:100.0, gfa:216.2, price:10197171586, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'13 TH1b' },
+  'G1A.15': { subPlot:'G1a', type:'TH1c1', floors:3, landArea:163.0, gfa:277.7, price:16497913578, lurFee:5683878786, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'15 TH1c1' },
+  // ━━ G1b ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1B.22': { subPlot:'G1b', type:'TH1bM', floors:3, landArea:100.0, gfa:216.2, price:10197171586, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'22 TH1bM' },
+  'G1B.23': { subPlot:'G1b', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:10049933376, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'23 TH2a' },
+  'G1B.24': { subPlot:'G1b', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:10049933376, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'24 TH3aM' },
+  'G1B.26': { subPlot:'G1b', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:10189621326, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'26 TH2aM' },
+  'G1B.27': { subPlot:'G1b', type:'TH1d2', floors:3, landArea:220.0, gfa:291.3, price:22605182067, lurFee:7671492840, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'27 TH1d2' },
+  // ━━ G1c ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1C.28': { subPlot:'G1c', type:'SH1a', floors:4, landArea:141.0, gfa:419.7, price:17113530007, lurFee:5064231435, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'28 SH1a' },
+  'G1C.29': { subPlot:'G1c', type:'SH2aM', floors:4, landArea:100.0, gfa:348.3, price:12222425018, lurFee:3591653500, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'29 SH2aM' },
+  'G1C.31': { subPlot:'G1c', type:'SH1bM', floors:4, landArea:100.0, gfa:348.3, price:12222425018, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'31 SH1bM' },
+  'G1C.33': { subPlot:'G1c', type:'SH1cM', floors:4, landArea:133.0, gfa:402.7, price:16102123197, lurFee:4776899155, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'33 SH1cM' },
+  // ━━ G1d ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1D.34': { subPlot:'G1d', type:'TH1e', floors:3, landArea:141.0, gfa:277.2, price:10272152095, lurFee:5064231435, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'34 TH1e' },
+  // ━━ G1e ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1E.40': { subPlot:'G1e', type:'TH1eM', floors:3, landArea:141.0, gfa:277.2, price:10272152095, lurFee:5064231435, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'40 TH1eM' },
+  // ━━ G1g ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1G.52': { subPlot:'G1g', type:'TH1fM', floors:3, landArea:118.5, gfa:245.8, price:8556378673, lurFee:4256109398, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'52 TH1fM' },
+  // ━━ G1h1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1H1.59': { subPlot:'G1h1', type:'SH3bM', floors:4, landArea:85.0, gfa:295.0, price:11097340709, lurFee:2945265980, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'59 SH3bM' },
+  'G1H1.61': { subPlot:'G1h1', type:'SH1eM', floors:4, landArea:85.0, gfa:295.0, price:11097340709, lurFee:2945265980, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'61 SH1eM' },
+  'G1H1.62': { subPlot:'G1h1', type:'SH3b', floors:4, landArea:85.0, gfa:295.0, price:11097340709, lurFee:2945265980, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'62 SH3b' },
+  'G1H1.63': { subPlot:'G1h1', type:'SH2bM', floors:4, landArea:85.0, gfa:295.0, price:11097340709, lurFee:2945265980, group:'Group 2', gioHang:'Thường', pt:'CN', status:'đã bán', unitCode:'63 SH2bM' },
+  // ━━ G1i ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1I.90': { subPlot:'G1i', type:'SH1dM', floors:4, landArea:118.5, gfa:354.0, price:15469097631, lurFee:4132145007, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'90 SH1dM' },
+  // ━━ G1j1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1J1.91': { subPlot:'G1j1', type:'SH1dM', floors:4, landArea:118.5, gfa:354.0, price:15245596911, lurFee:4106047278, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'91 SH1dM' },
+  // ━━ G1m ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1M.139': { subPlot:'G1m', type:'SH1jM', floors:4, landArea:114.0, gfa:344.3, price:17122655319, lurFee:3950121432, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'139 SH1jM' },
+  // ━━ G1n ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1N.154': { subPlot:'G1n', type:'SH1jM', floors:4, landArea:114.0, gfa:344.3, price:17681407119, lurFee:3950121432, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'154 SH1jM' },
+  'G1N.156': { subPlot:'G1n', type:'SH2cM', floors:4, landArea:95.0, gfa:335.1, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'156 SH2cM' },
+  'G1N.157': { subPlot:'G1n', type:'SH1i', floors:4, landArea:95.0, gfa:335.2, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'157 SH1i' },
+  'G1N.158': { subPlot:'G1n', type:'SH3cM', floors:4, landArea:95.0, gfa:335.2, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'158 SH3cM' },
+  'G1N.159': { subPlot:'G1n', type:'SH2c', floors:4, landArea:95.0, gfa:335.1, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'159 SH2c' },
+  'G1N.160': { subPlot:'G1n', type:'SH1iM', floors:4, landArea:95.0, gfa:335.2, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'160 SH1iM' },
+  'G1N.161': { subPlot:'G1n', type:'SH3c', floors:4, landArea:95.0, gfa:335.2, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'161 SH3c' },
+  'G1N.162': { subPlot:'G1n', type:'SH2cM', floors:4, landArea:95.0, gfa:335.1, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'162 SH2cM' },
+  'G1N.163': { subPlot:'G1n', type:'SH1i', floors:4, landArea:95.0, gfa:335.2, price:15010257560, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'163 SH1i' },
+  'G1N.164': { subPlot:'G1n', type:'SH3cM', floors:4, landArea:95.0, gfa:335.2, price:23472553571, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'164 SH3cM' },
+  'G1N.165': { subPlot:'G1n', type:'SH2c', floors:4, landArea:95.0, gfa:335.1, price:21405171911, lurFee:3291767860, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'165 SH2c' },
+  'G1N.166': { subPlot:'G1n', type:'Sh1h', floors:4, landArea:138.0, gfa:405.2, price:30840547388, lurFee:4781725944, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'166 Sh1h' },
+  // ━━ G1o ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G1O.169': { subPlot:'G1o', type:'SH1b', floors:4, landArea:100.0, gfa:348.3, price:15423912491, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'169 SH1b' },
+  'G1O.172': { subPlot:'G1o', type:'SH1bM', floors:4, landArea:100.0, gfa:348.3, price:15423912491, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'172 SH1bM' },
+  'G1O.173': { subPlot:'G1o', type:'SH3a', floors:4, landArea:100.0, gfa:348.5, price:15423912491, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'GRR', status:'cam kết cho thuê', unitCode:'173 SH3a' },
+  // ━━ G9a1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9A1.179': { subPlot:'G9a1', type:'SH1c', floors:4, landArea:133.0, gfa:402.7, price:17553046815, lurFee:4776899155, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'179 SH1c' },
+  'G9A1.184': { subPlot:'G9a1', type:'SH2aM', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'184 SH2aM' },
+  'G9A1.185': { subPlot:'G9a1', type:'SH1b', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3591653500, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'185 SH1b' },
+  'G9A1.186': { subPlot:'G9a1', type:'SH3aM', floors:4, landArea:100.0, gfa:348.5, price:13317054710, lurFee:3591653500, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'186 SH3aM' },
+  'G9A1.187': { subPlot:'G9a1', type:'SH2a', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3591653500, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'187 SH2a' },
+  'G9A1.188': { subPlot:'G9a1', type:'SH1lM', floors:4, landArea:100.0, gfa:348.5, price:13680243380, lurFee:3591653500, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'188 SH1lM' },
+  // ━━ G9a2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9A2.190': { subPlot:'G9a2', type:'SH3aM', floors:4, landArea:100.0, gfa:348.5, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'190 SH3aM' },
+  'G9A2.191': { subPlot:'G9a2', type:'SH2a', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'191 SH2a' },
+  'G9A2.192': { subPlot:'G9a2', type:'SH1bM', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'192 SH1bM' },
+  'G9A2.193': { subPlot:'G9a2', type:'SH3a', floors:4, landArea:100.0, gfa:348.5, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'193 SH3a' },
+  'G9A2.194': { subPlot:'G9a2', type:'SH2aM', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'194 SH2aM' },
+  'G9A2.197': { subPlot:'G9a2', type:'SH2a', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'lock', unitCode:'197 SH2a' },
+  'G9A2.198': { subPlot:'G9a2', type:'SH1mM', floors:4, landArea:120.0, gfa:357.5, price:15915250580, lurFee:4158022560, group:'Group 2', gioHang:'Thường', pt:'CN', status:'lock', unitCode:'198 SH1mM' },
+  // ━━ G9b ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9B.199': { subPlot:'G9b', type:'SH1m', floors:4, landArea:120.0, gfa:357.5, price:15915250580, lurFee:4184450640, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'199 SH1m' },
+  'G9B.201': { subPlot:'G9b', type:'SH2a', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'201 SH2a' },
+  'G9B.203': { subPlot:'G9b', type:'SH3a', floors:4, landArea:100.0, gfa:348.5, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'203 SH3a' },
+  'G9B.204': { subPlot:'G9b', type:'SH2aM', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'204 SH2aM' },
+  'G9B.207': { subPlot:'G9b', type:'SH2a', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'207 SH2a' },
+  'G9B.209': { subPlot:'G9b', type:'SH2a', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'209 SH2a' },
+  'G9B.210': { subPlot:'G9b', type:'SH2aM', floors:4, landArea:100.0, gfa:348.3, price:13317054710, lurFee:3487042200, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'210 SH2aM' },
+  // ━━ G9c1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9C1.212': { subPlot:'G9c1', type:'TH1e', floors:3, landArea:141.0, gfa:277.2, price:13804715983, lurFee:5064231435, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'212 TH1e' },
+  'G9C1.213': { subPlot:'G9c1', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3591653500, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'213 TH2aM' },
+  'G9C1.214': { subPlot:'G9c1', type:'TH3a', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'214 TH3a' },
+  'G9C1.215': { subPlot:'G9c1', type:'TH1bM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'215 TH1bM' },
+  'G9C1.216': { subPlot:'G9c1', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3591653500, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'216 TH2a' },
+  'G9C1.217': { subPlot:'G9c1', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'217 TH3aM' },
+  'G9C1.218': { subPlot:'G9c1', type:'TH1b', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'218 TH1b' },
+  'G9C1.219': { subPlot:'G9c1', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'219 TH2aM' },
+  'G9C1.220': { subPlot:'G9c1', type:'TH3a', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'220 TH3a' },
+  // ━━ G9c2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9C2.222': { subPlot:'G9c2', type:'TH1h', floors:3, landArea:100.0, gfa:216.2, price:10180827588, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'222 TH1h' },
+  'G9C2.223': { subPlot:'G9c2', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'223 TH2aM' },
+  'G9C2.224': { subPlot:'G9c2', type:'TH3a', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'224 TH3a' },
+  'G9C2.225': { subPlot:'G9c2', type:'TH1bM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'225 TH1bM' },
+  'G9C2.226': { subPlot:'G9c2', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'226 TH2a' },
+  'G9C2.227': { subPlot:'G9c2', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'227 TH3aM' },
+  'G9C2.228': { subPlot:'G9c2', type:'TH1b', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'228 TH1b' },
+  'G9C2.229': { subPlot:'G9c2', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'229 TH2aM' },
+  'G9C2.230': { subPlot:'G9c2', type:'TH3a', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'230 TH3a' },
+  'G9C2.231': { subPlot:'G9c2', type:'TH1iM', floors:3, landArea:120.0, gfa:226.4, price:12220271658, lurFee:4158022560, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'231 TH1iM' },
+  // ━━ G9d ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9D.235': { subPlot:'G9d', type:'TH1bM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'235 TH1bM' },
+  'G9D.236': { subPlot:'G9d', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3487042200, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'236 TH2a' },
+  'G9D.237': { subPlot:'G9d', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3487042200, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'237 TH3aM' },
+  'G9D.238': { subPlot:'G9d', type:'TH1b', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'238 TH1b' },
+  'G9D.239': { subPlot:'G9d', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'239 TH2aM' },
+  'G9D.240': { subPlot:'G9d', type:'TH3a', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'240 TH3a' },
+  'G9D.241': { subPlot:'G9d', type:'TH1bM', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'241 TH1bM' },
+  'G9D.242': { subPlot:'G9d', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'242 TH2a' },
+  'G9D.243': { subPlot:'G9d', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:9979510330, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'243 TH3aM' },
+  'G9D.244': { subPlot:'G9d', type:'TH1eM', floors:3, landArea:141.0, gfa:277.2, price:13804715983, lurFee:4885676508, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'244 TH1eM' },
+  // ━━ G9e1 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9E1.245': { subPlot:'G9e1', type:'TH1j', floors:3, landArea:133.0, gfa:275.7, price:13497402493, lurFee:4776899155, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'245 TH1j' },
+  'G9E1.249': { subPlot:'G9e1', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'249 TH2aM' },
+  'G9E1.251': { subPlot:'G9e1', type:'TH1bM', floors:3, landArea:100.0, gfa:216.2, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'251 TH1bM' },
+  // ━━ G9e2 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9E2.256': { subPlot:'G9e2', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'256 TH2a' },
+  'G9E2.257': { subPlot:'G9e2', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'257 TH3aM' },
+  'G9E2.259': { subPlot:'G9e2', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'259 TH2aM' },
+  'G9E2.260': { subPlot:'G9e2', type:'TH3a', floors:3, landArea:100.0, gfa:216.1, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'', unitCode:'260 TH3a' },
+  'G9E2.263': { subPlot:'G9e2', type:'TH3aM', floors:3, landArea:100.0, gfa:216.1, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'263 TH3aM' },
+  'G9E2.264': { subPlot:'G9e2', type:'TH1i', floors:3, landArea:120.0, gfa:226.4, price:12454947414, lurFee:4158022560, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'đã bán', unitCode:'264 TH1i' },
+  // ━━ G9f ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9F.266': { subPlot:'G9f', type:'TH2a', floors:3, landArea:100.0, gfa:216.2, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'ALL', status:'đã bán', unitCode:'266 TH2a' },
+  'G9F.269': { subPlot:'G9f', type:'TH2aM', floors:3, landArea:100.0, gfa:216.2, price:10203011050, lurFee:3465018800, group:'Group 1', gioHang:'60 tháng', pt:'60', status:'lock', unitCode:'269 TH2aM' },
+  'G9F.277': { subPlot:'G9f', type:'TH1e', floors:3, landArea:141.0, gfa:277.2, price:14112029473, lurFee:4916729502, group:'Group 1', gioHang:'Thường', pt:'ALL', status:'đã bán', unitCode:'277 TH1e' },
+  // ━━ G9g ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  'G9G.282': { subPlot:'G9g', type:'SH2aM', floors:4, landArea:100.0, gfa:348.3, price:14585784791, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'282 SH2aM' },
+  'G9G.283': { subPlot:'G9g', type:'SH1b', floors:4, landArea:100.0, gfa:348.3, price:14585784791, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'283 SH1b' },
+  'G9G.288': { subPlot:'G9g', type:'SH2aM', floors:4, landArea:100.0, gfa:348.3, price:14585784791, lurFee:3465018800, group:'Group 2', gioHang:'Thường', pt:'CN', status:'', unitCode:'288 SH2aM' },
+};
+
+</script>
+
+
+
+<!-- SECTION MAP: BẢN ĐỒ VỊ TRÍ CĂN -->
+<div class="card" id="map-card">
+  <div class="card-title">📍 Vị Trí Căn Trên Mặt Bằng</div>
+  <div id="map-hint" style="font-size:12px;color:var(--mut);margin-bottom:10px;text-align:center">
+    ← Chọn mã căn ở trên để xem vị trí trên mặt bằng
+  </div>
+  <div id="map-selected-label" style="display:none;text-align:center;margin-bottom:10px;
+    background:rgba(201,168,76,.12);border:1px solid rgba(201,168,76,.3);border-radius:8px;
+    padding:8px 16px;font-size:13px;font-weight:700;color:var(--gold-l)"></div>
+  <div style="position:relative;width:100%;border-radius:8px;overflow:hidden;
+    border:1px solid rgba(201,168,76,.2)">
+    <img id="mapImg" src="/assets/tools/artisan-park-bang-tinh/mat-bang-tong-the.webp"
+      style="width:100%;display:block;opacity:0.92" alt="Artisan Park Floor Plan">
+    <canvas id="mapCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;
+      pointer-events:none"></canvas>
+  </div>
+  <div style="margin-top:8px;display:flex;gap:16px;flex-wrap:wrap;font-size:11px;color:var(--mut)">
+    <span>🟡 Vị trí căn đang chọn</span>
+    <span style="color:#5DD4A0">■ Townhouse (TH)</span>
+    <span style="color:#F5956A">■ Shophouse (SH)</span>
+  </div>
+</div>
+
+<!-- SECTION 2: CHÍNH SÁCH ƯU ĐÃI -->
+<div class="card">
+  <div class="card-title">🎯 Chương Trình Ưu Đãi — Áp Dụng Theo Thứ Tự</div>
+  <div class="inp-note" style="margin-bottom:14px;font-size:12px">⚠️ Tất cả ưu đãi được <strong>tính trên Giá Bán chưa bao gồm thuế GTGT</strong> — cascading: mỗi CK tính trên giá còn lại sau bước trước.</div>
+
+  <div style="overflow-x:auto">
+  <table class="ck-table">
+    <thead>
+      <tr>
+        <th style="text-align:center">STT</th>
+        <th>Nội Dung Ưu Đãi</th>
+        <th>Lựa Chọn</th>
+        <th style="text-align:right">Giá Trị Áp Dụng</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <!-- ROW 1: CK Đặt Cọc Booking (fixed) -->
+      <tr>
+        <td class="stt-cell">1</td>
+        <td class="name-cell">CK Đặt Cọc (Booking)<div class="name-sub">Booking Discount · CTBH 15.2<br>Trừ thẳng vào giá trước VAT · cả 2 nhóm</div></td>
+        <td class="opt-cell">
+          <div class="radio-group horizontal" id="grp-dcs">
+            <button class="opt-btn" onclick="setRadio('dcs','80m')">Áp dụng −80 tr<br><span style="font-size:10px;opacity:.7">01–31/07/2026</span></button>
+            <button class="opt-btn active-none" onclick="setRadio('dcs','none')">Không áp dụng</button>
+          </div>
+        </td>
+        <td class="val-cell"><span id="val-dcs" class="val-none">—</span></td>
+      </tr>
+
+      <!-- ROW 2: Nội Thất (fixed) — luôn đứng thứ 2 -->
+      <tr style="background:rgba(255,255,255,.015)">
+        <td class="stt-cell">2</td>
+        <td class="name-cell">Tặng Gói Nội Thất<div class="name-sub">ID Package Discount<br>Trừ thẳng vào giá sau ƯĐ 1</div></td>
+        <td class="opt-cell">
+          <div class="radio-group horizontal" id="grp-nt">
+            <button class="opt-btn" onclick="setRadio('nt','yes')">Gói nội thất −200 tr</button>
+            <button class="opt-btn active-none" onclick="setRadio('nt','no')">Không áp dụng</button>
+          </div>
+        </td>
+        <td class="val-cell"><span id="val-nt" class="val-none">—</span></td>
+      </tr>
+
+      <!-- ROW 3: CK Chuyển Đổi Booking/Đặt Cọc (%) -->
+      <tr>
+        <td class="stt-cell">3</td>
+        <td class="name-cell">CK Đặc Biệt<div class="name-sub">Special Discount · CTBH 15.2<br>Tính % trên giá sau ƯĐ 1 & 2</div></td>
+        <td class="opt-cell">
+          <div class="radio-group horizontal" id="grp-dc">
+            <button class="opt-btn" onclick="setRadio('dc','nhom1')">Nhóm 1 — 14%</button>
+            <button class="opt-btn" onclick="setRadio('dc','nhom2')">Nhóm 2 — 7%</button>
+            <button class="opt-btn active-none" onclick="setRadio('dc','none')">Không áp dụng</button>
+          </div>
+          <div style="font-size:10px;color:var(--mut);margin-top:6px">Quota: Nhóm 1 — 67 căn đầu · Nhóm 2 — 36 căn đầu</div>
+        </td>
+        <td class="val-cell"><span id="val-dc" class="val-none">—</span></td>
+      </tr>
+
+      <!-- ROW 4: CK Ký HĐMB & TT Đợt 1 (%) -->
+      <tr style="background:rgba(255,255,255,.015)">
+        <td class="stt-cell">4</td>
+        <td class="name-cell">CK Ký HĐMB & TT Đợt 1<div class="name-sub">1.5% tính trên giá sau ƯĐ 1, 2, 3<br>Theo thông báo của CĐT</div></td>
+        <td class="opt-cell">
+          <div class="radio-group horizontal" id="grp-hdmb">
+            <button class="opt-btn" onclick="setRadio('hdmb','yes')">Áp dụng 1.5%</button>
+            <button class="opt-btn active-none" onclick="setRadio('hdmb','no')">Không áp dụng</button>
+          </div>
+        </td>
+        <td class="val-cell"><span id="val-hdmb" class="val-none">—</span></td>
+      </tr>
+
+      <!-- ROW 5: CK Phương Thức TT (%) -->
+      <tr>
+        <td class="stt-cell">5</td>
+        <td class="name-cell">CK Phương Thức Thanh Toán<div class="name-sub">Tính % trên giá sau ƯĐ 1, 2, 3, 4<br>Tự động theo PT chọn bên dưới</div></td>
+        <td class="opt-cell">
+          <div class="radio-group horizontal" id="grp-pt">
+            <button class="opt-btn" onclick="setPT(0)">PT01 Cam kết thuê<br><span style="font-size:10px">0%</span></button>
+            <button class="opt-btn" onclick="setPT(1)">PT02 Chuẩn<br><span style="font-size:10px">CK 2%</span></button>
+            <button class="opt-btn active-ck" onclick="setPT(2)">PT03 Nhanh<br><span style="font-size:10px">CK 5%</span></button>
+            <button class="opt-btn" onclick="setPT(3)">PT04 Linh hoạt 36T<br><span style="font-size:10px">0%</span></button>
+            <button class="opt-btn" onclick="setPT(4)">PT05 Nhàn rỗi 60T<br><span style="font-size:10px">0%</span></button>
+          </div>
+        </td>
+        <td class="val-cell"><span id="val-pt" class="val-pct">5% (PT03)</span></td>
+      </tr>
+
+      <!-- ROW 6: Tri Ân / Mua Sỉ (%) -->
+      <tr style="background:rgba(255,255,255,.015)">
+        <td class="stt-cell">6</td>
+        <td class="name-cell">Tri Ân & Mua Sỉ<div class="name-sub">Tính % trên giá sau ƯĐ 1, 2, 3, 4, 5</div></td>
+        <td class="opt-cell">
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <div>
+              <div style="font-size:10px;color:var(--mut);margin-bottom:5px;letter-spacing:1px;text-transform:uppercase">Tri Ân KH</div>
+              <div class="radio-group horizontal" id="grp-ta">
+                <button class="opt-btn" onclick="setRadio('ta','yes')">Áp dụng 0.9%</button>
+                <button class="opt-btn active-none" onclick="setRadio('ta','no')">Không áp dụng</button>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:10px;color:var(--mut);margin-bottom:5px;letter-spacing:1px;text-transform:uppercase">Mua Sỉ</div>
+              <div class="radio-group horizontal" id="grp-ms">
+                <button class="opt-btn" onclick="setRadio('ms','1')">2–3 căn — 1%</button>
+                <button class="opt-btn" onclick="setRadio('ms','2')">4–5 căn — 2%</button>
+                <button class="opt-btn" onclick="setRadio('ms','3')">Từ 6 căn — 3%</button>
+                <button class="opt-btn active-none" onclick="setRadio('ms','0')">Không áp dụng</button>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="val-cell"><span id="val-ta" class="val-none">—</span><br><span id="val-ms" class="val-none" style="margin-top:4px;display:inline-block">—</span></td>
+      </tr>
+
+      <!-- ROW 7: CK Khác -->
+      <tr>
+        <td class="stt-cell">7</td>
+        <td class="name-cell">Chiết Khấu Khác<div class="name-sub">Other discounts (if any)<br>Tính trên giá sau ƯĐ 1→6</div></td>
+        <td class="opt-cell">
+          <input id="ck-khac-input" type="text" placeholder="Nhập số tiền (VD: 50000000)"
+            style="background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.3);border-radius:6px;
+            padding:7px 12px;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;color:var(--gold-l);
+            width:200px;outline:none" oninput="onCKKhac(this)">
+          <div style="font-size:11px;color:var(--mut);margin-top:4px">Nhập 0 nếu không có</div>
+        </td>
+        <td class="val-cell"><span id="val-ck-khac" class="val-none">—</span></td>
+      </tr>
+
+    </tbody>
+  </table>
+  </div>
+
+  <!-- SUMMARY BOX — dynamically generated -->
+  <div class="sum-box" id="sum-box" style="margin-top:16px">
+    <!-- generated by recalc() -->
+  </div>
+</div>
+
+<!-- TOTAL BAR (floating summary) -->
+<div class="total-bar" id="main-total-bar">
+  <div>
+    <div class="tb-label">Tổng Thanh Toán (Có VAT)</div>
+    <div class="tb-note" id="tb-note">Chưa chọn ưu đãi</div>
+  </div>
+  <div class="tb-parts">
+    <div>
+      <div class="tb-sub">Trước VAT: <span id="tb-pre">—</span></div>
+      <div class="tb-val" id="tb-total">—</div>
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;margin:-8px 0 28px">
+  <button id="export-pdf-btn" onclick="exportPDF()"
+    style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;
+    font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    padding:12px 32px;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px rgba(201,168,76,.3);transition:transform .15s">
+    ⬇ Xuất PDF Báo Giá
+  </button>
+  <div style="font-size:11px;color:var(--mut);margin-top:8px">Bản in báo giá theo PTTT đang chọn — chọn “Save as PDF” trong hộp thoại in</div>
+</div>
+
+<!-- SECTION 3: PHƯƠNG THỨC THANH TOÁN -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Lịch Thanh Toán</div><div class="sec-div-line"></div></div>
+
+<!-- PT TABS -->
+<div class="pt-lock-note" id="pt-lock-note"></div>
+<div class="pt-tabs" id="pt-tabs">
+  <button class="pt-tab" onclick="selectPT(0)"><span class="tn">01</span><span class="tx">Cam Kết Cho Thuê</span><span class="tb">4%/năm × 4 năm</span></button>
+  <button class="pt-tab" onclick="selectPT(1)"><span class="tn">02</span><span class="tx">Thanh Toán Chuẩn</span><span class="tb">CK 2%</span></button>
+  <button class="pt-tab active" onclick="selectPT(2)"><span class="tn">03</span><span class="tx">Thanh Toán Nhanh</span><span class="tb">CK 5%</span></button>
+  <button class="pt-tab" onclick="selectPT(3)"><span class="tn">04</span><span class="tx">Linh Hoạt 36 Tháng</span><span class="tb">CK 0%</span></button>
+  <button class="pt-tab" onclick="selectPT(4)"><span class="tn">05</span><span class="tx">Nhàn Rỗi 60 Tháng</span><span class="tb">CK 0%</span></button>
+</div>
+
+<!-- PT01 -->
+<div class="pt-panel" id="pp0">
+  <div class="pt-info">
+    <div class="pi-item"><label>Loại Sản Phẩm</label><div class="piv">Nhà Phố Thương Mại</div></div>
+    <div class="pi-item"><label>Bàn Giao</label><div class="piv">Q4 / 2026</div></div>
+    <div class="pi-item"><label>Chương Trình</label><div class="piv"><span class="badge-green">Cam kết cho thuê 4 năm</span></div></div>
+    <div class="pi-item big"><label>Tổng TT Có VAT</label><div class="piv" id="pt0-total-info">—</div></div>
+  </div>
+  <div class="yield-blk">
+    <div style="font-size:28px">💰</div>
+    <div><div class="yi-lbl">Cam Kết Thu Nhập Cho Thuê</div><div class="yi-val">4% / năm × 4 năm</div><div class="yi-sub">Tính trên Giá Bán chưa VAT trong HĐMB · Nhận mỗi năm sau BG Q4/2026</div></div>
+    <div class="yi-calcs"><div class="yi-item"><label>Thu Nhập / Năm</label><div class="yiv" id="pt0-yield-yr">—</div></div><div class="yi-item"><label>Tổng 4 Năm</label><div class="yiv" id="pt0-yield-4yr">—</div></div></div>
+  </div>
+  <div class="prog-wrap"><div class="prog-ttl">Tiến Độ Thanh Toán</div>
+    <div class="prog-bar"><div class="prog-fill"><div style="background:var(--ph1);flex:10"></div><div style="background:var(--ph2);flex:30"></div><div style="background:var(--ph3);flex:55"></div><div style="background:var(--ph4);flex:5"></div></div></div>
+    <div class="prog-labels"><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph1)"></div>Ký HĐMB 10%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph2)"></div>Đợt 3→5 — 10%×3</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph3)"></div>BG Q4/2026 — 55%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph4)"></div>Sổ Hồng — 5%</div></div>
+  </div>
+  <div class="phase ph1"><div class="ph-hdr"><div class="ph-num">I</div><div><div class="ph-title">Giai Đoạn Ký Kết & Xây Dựng</div><div class="ph-sub">2026 · 5 đợt</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt0-ph1"></tbody></table></div></div>
+  <div class="phase ph3"><div class="ph-hdr"><div class="ph-num">II</div><div><div class="ph-title">Bàn Giao & Sổ Hồng</div><div class="ph-sub">Q4/2026 → 2027</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt0-ph2"></tbody></table></div></div>
+  <div class="pt-total"><div><div class="pt-tl">Tổng Thanh Toán</div><div class="pt-tn">PT01 · 6 đợt · 2026–2027 · Nhận thuê 4%/năm sau BG</div></div><div class="pt-tv" id="pt0-grand">—</div></div>
+  <div class="infra"><div class="infra-item"><div>🛣️</div><div><div class="ii-yr">2026</div><div class="ii-nm">Vành Đai 3 Hoàn Thiện</div></div></div><div class="infra-item"><div>🚗</div><div><div class="ii-yr">2027</div><div class="ii-nm">CT TP.HCM – Thủ Dầu Một – Chơn Thành / Vành Đai 4</div></div></div><div class="infra-item"><div>🚇</div><div><div class="ii-yr">2030</div><div class="ii-nm">Tuyến Metro Kết Nối Trung Tâm</div></div></div></div>
+</div>
+
+<!-- PT02 -->
+<div class="pt-panel" id="pp1">
+  <div class="pt-info">
+    <div class="pi-item"><label>Loại Sản Phẩm</label><div class="piv">Nhà Phố Thương Mại</div></div>
+    <div class="pi-item"><label>Bàn Giao</label><div class="piv">Q4 / 2026</div></div>
+    <div class="pi-item"><label>CK Phương Thức</label><div class="piv"><span class="badge-green">CK 2% (tính trên giá gốc)</span></div></div>
+    <div class="pi-item big"><label>Tổng TT Có VAT</label><div class="piv" id="pt1-total-info">—</div></div>
+  </div>
+  <div class="prog-wrap"><div class="prog-ttl">Tiến Độ Thanh Toán</div>
+    <div class="prog-bar"><div class="prog-fill"><div style="background:var(--ph1);flex:10"></div><div style="background:var(--ph2);flex:30"></div><div style="background:var(--ph3);flex:55"></div><div style="background:var(--ph4);flex:5"></div></div></div>
+    <div class="prog-labels"><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph1)"></div>Ký HĐMB 10%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph2)"></div>Đợt 3→5 — 10%×3</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph3)"></div>BG Q4/2026 — 55%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph4)"></div>Sổ Hồng — 5%</div></div>
+  </div>
+  <div class="phase ph1"><div class="ph-hdr"><div class="ph-num">I</div><div><div class="ph-title">Giai Đoạn Ký Kết & Xây Dựng</div><div class="ph-sub">2026 · 5 đợt</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt1-ph1"></tbody></table></div></div>
+  <div class="phase ph3"><div class="ph-hdr"><div class="ph-num">II</div><div><div class="ph-title">Bàn Giao & Sổ Hồng</div><div class="ph-sub">Q4/2026 → 2027</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt1-ph2"></tbody></table></div></div>
+  <div class="pt-total"><div><div class="pt-tl">Tổng Thanh Toán</div><div class="pt-tn">PT02 · 6 đợt · 2026–2027 · CK 2% đã tính vào giá</div></div><div class="pt-tv" id="pt1-grand">—</div></div>
+  <div class="infra"><div class="infra-item"><div>🛣️</div><div><div class="ii-yr">2026</div><div class="ii-nm">Vành Đai 3 Hoàn Thiện</div></div></div><div class="infra-item"><div>🚗</div><div><div class="ii-yr">2027</div><div class="ii-nm">CT TP.HCM – Thủ Dầu Một – Chơn Thành / Vành Đai 4</div></div></div><div class="infra-item"><div>🚇</div><div><div class="ii-yr">2030</div><div class="ii-nm">Tuyến Metro Kết Nối Trung Tâm</div></div></div></div>
+</div>
+
+<!-- PT03 -->
+<div class="pt-panel active" id="pp2">
+  <div class="pt-info">
+    <div class="pi-item"><label>Loại Sản Phẩm</label><div class="piv">Nhà Phố Thương Mại</div></div>
+    <div class="pi-item"><label>Bàn Giao</label><div class="piv">Q4 / 2026</div></div>
+    <div class="pi-item"><label>CK Phương Thức</label><div class="piv"><span class="badge-green">CK 5% (tính trên giá gốc)</span></div></div>
+    <div class="pi-item big"><label>Tổng TT Có VAT</label><div class="piv" id="pt2-total-info">—</div></div>
+  </div>
+  <div class="prog-wrap"><div class="prog-ttl">Tiến Độ Thanh Toán</div>
+    <div class="prog-bar"><div class="prog-fill"><div style="background:var(--ph1);flex:20"></div><div style="background:var(--ph2);flex:20"></div><div style="background:var(--ph3);flex:55"></div><div style="background:var(--ph4);flex:5"></div></div></div>
+    <div class="prog-labels"><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph1)"></div>Ký HĐMB 20%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph2)"></div>Đợt 3 — 20%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph3)"></div>BG Q4/2026 — 55%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph4)"></div>Sổ Hồng — 5%</div></div>
+  </div>
+  <div class="phase ph1"><div class="ph-hdr"><div class="ph-num">I</div><div><div class="ph-title">Giai Đoạn Ký Kết</div><div class="ph-sub">2026 · 3 đợt</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt2-ph1"></tbody></table></div></div>
+  <div class="phase ph3"><div class="ph-hdr"><div class="ph-num">II</div><div><div class="ph-title">Bàn Giao & Sổ Hồng</div><div class="ph-sub">Q4/2026 → 2027</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt2-ph2"></tbody></table></div></div>
+  <div class="pt-total"><div><div class="pt-tl">Tổng Thanh Toán</div><div class="pt-tn">PT03 · 4 đợt · 2026–2027 · CK 5% đã tính vào giá</div></div><div class="pt-tv" id="pt2-grand">—</div></div>
+  <div class="infra"><div class="infra-item"><div>🛣️</div><div><div class="ii-yr">2026</div><div class="ii-nm">Vành Đai 3 Hoàn Thiện</div></div></div><div class="infra-item"><div>🚗</div><div><div class="ii-yr">2027</div><div class="ii-nm">CT TP.HCM – Thủ Dầu Một – Chơn Thành / Vành Đai 4</div></div></div><div class="infra-item"><div>🚇</div><div><div class="ii-yr">2030</div><div class="ii-nm">Tuyến Metro Kết Nối Trung Tâm</div></div></div></div>
+</div>
+
+<!-- PT04 -->
+<div class="pt-panel" id="pp3">
+  <div class="pt-info">
+    <div class="pi-item"><label>Hình Thức</label><div class="piv">Thanh Toán Linh Hoạt</div></div>
+    <div class="pi-item"><label>Thời Hạn Giãn</label><div class="piv" style="color:var(--org-l)">36 Tháng</div></div>
+    <div class="pi-item"><label>Nhận Nhà TT</label><div class="piv"><span class="badge-orange">30% – Q2/2027</span></div></div>
+    <div class="pi-item big"><label>Tổng TT Có VAT</label><div class="piv" id="pt3-total-info">—</div></div>
+  </div>
+  <div class="prog-wrap"><div class="prog-ttl">Tiến Độ Thanh Toán 2026–2029</div>
+    <div class="prog-bar"><div class="prog-fill"><div style="background:var(--ph1);flex:20"></div><div style="background:var(--ph2);flex:34"></div><div style="background:var(--ph3);flex:41"></div><div style="background:var(--ph4);flex:5"></div></div></div>
+    <div class="prog-labels"><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph1)"></div>KK + Đợt 3 — 20%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph2)"></div>BG TT + 8%×3 — 34%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph3)"></div>BG CT Q2/2029 — 41%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph4)"></div>Sổ Hồng — 5%</div></div>
+  </div>
+  <div class="phase ph1"><div class="ph-hdr"><div class="ph-num">I</div><div><div class="ph-title">Giai Đoạn Ký Kết 2026</div><div class="ph-sub">3 đợt</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt3-ph1"></tbody></table></div></div>
+  <div class="phase ph2"><div class="ph-hdr"><div class="ph-num">II</div><div><div class="ph-title">BG Tạm Thời & Thanh Toán Dần</div><div class="ph-sub">Q2/2027 → Q4/2028 · Mỗi 6 tháng</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt3-ph2"></tbody></table></div></div>
+  <div class="phase ph3"><div class="ph-hdr"><div class="ph-num">III</div><div><div class="ph-title">Bàn Giao Chính Thức & Sổ Hồng</div><div class="ph-sub">Q2/2029</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt3-ph3"></tbody></table></div></div>
+  <div class="pt-total"><div><div class="pt-tl">Tổng Thanh Toán</div><div class="pt-tn">PT04 · 9 đợt · 2026–2029 · Chỉ 30% nhận nhà tạm thời Q2/2027</div></div><div class="pt-tv" id="pt3-grand">—</div></div>
+  <div class="infra"><div class="infra-item"><div>🛣️</div><div><div class="ii-yr">2026</div><div class="ii-nm">Vành Đai 3 Hoàn Thiện</div></div></div><div class="infra-item"><div>🚗</div><div><div class="ii-yr">2027</div><div class="ii-nm">CT TP.HCM – Thủ Dầu Một / Vành Đai 4</div></div></div><div class="infra-item"><div>🚇</div><div><div class="ii-yr">2030</div><div class="ii-nm">Tuyến Metro Kết Nối Trung Tâm</div></div></div></div>
+</div>
+
+<!-- PT05 -->
+<div class="pt-panel" id="pp4">
+  <div class="pt-info">
+    <div class="pi-item"><label>Áp Dụng</label><div class="piv">Shophouse 3T Khu G</div></div>
+    <div class="pi-item"><label>Số Lượng GH</label><div class="piv" style="color:var(--org-l)">53 Căn</div></div>
+    <div class="pi-item"><label>Nhận Nhà TT</label><div class="piv"><span class="badge-orange">30% – Q2/2027</span></div></div>
+    <div class="pi-item big"><label>Tổng TT Có VAT</label><div class="piv" id="pt4-total-info">—</div></div>
+  </div>
+  <div class="prog-wrap"><div class="prog-ttl">Tiến Độ Thanh Toán 2026–2031</div>
+    <div class="prog-bar"><div class="prog-fill"><div style="background:var(--ph1);flex:20"></div><div style="background:var(--ph2);flex:45"></div><div style="background:var(--ph3);flex:30"></div><div style="background:var(--ph4);flex:5"></div></div></div>
+    <div class="prog-labels"><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph1)"></div>KK + Đợt 3 — 20%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph2)"></div>BG TT + 5%×7 — 45%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph3)"></div>BG CT Q2/2031 — 30%</div><div class="prog-lbl"><div class="prog-dot" style="background:var(--ph4)"></div>Sổ Hồng — 5%</div></div>
+  </div>
+  <div class="phase ph1"><div class="ph-hdr"><div class="ph-num">I</div><div><div class="ph-title">Giai Đoạn Ký Kết 2026</div><div class="ph-sub">3 đợt</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt4-ph1"></tbody></table></div></div>
+  <div class="phase ph2"><div class="ph-hdr"><div class="ph-num">II</div><div><div class="ph-title">BG Tạm Thời & Thanh Toán Dần</div><div class="ph-sub">Q2/2027 → Q2/2030 · 7 đợt × 5%</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt4-ph2"></tbody></table></div></div>
+  <div class="phase ph3"><div class="ph-hdr"><div class="ph-num">III</div><div><div class="ph-title">Bàn Giao Chính Thức & Sổ Hồng</div><div class="ph-sub">Q2/2031</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><thead><tr><th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT 10%</th><th>Có VAT</th><th>Cộng Dồn</th></tr></thead><tbody id="pt4-ph3"></tbody></table></div></div>
+  <div class="pt-total"><div><div class="pt-tl">Tổng Thanh Toán</div><div class="pt-tn">PT05 · 13 đợt · 2026–2031 · Shophouse 3 tầng khu G</div></div><div class="pt-tv" id="pt4-grand">—</div></div>
+  <div class="infra"><div class="infra-item"><div>🛣️</div><div><div class="ii-yr">2026</div><div class="ii-nm">Vành Đai 3 Hoàn Thiện</div></div></div><div class="infra-item"><div>🚗</div><div><div class="ii-yr">2027</div><div class="ii-nm">CT TP.HCM – Thủ Dầu Một / Vành Đai 4</div></div></div><div class="infra-item"><div>🚇</div><div><div class="ii-yr">2030</div><div class="ii-nm">Tuyến Metro Kết Nối Trung Tâm</div></div></div></div>
+</div>
+
+<div class="footer-note">
+  * Tất cả ưu đãi tính trên Giá Bán chưa bao gồm thuế GTGT (giá gốc) theo quy định tại Phiếu Đăng Ký.<br>
+  * Thuế GTGT 10% áp dụng trên giá cuối sau toàn bộ chiết khấu.<br>
+  * Chương trình cam kết cho thuê 4%/năm trong 4 năm tính trên Giá Bán trong HĐMB (không bao gồm VAT).<br>
+  * Các chương trình ưu đãi có thể thay đổi theo thông báo của Chủ Đầu Tư. Tăng trưởng giá khu vực lân cận: +5%/năm.
+</div>
+
+</div><!-- /wrap -->
+
+<!-- ══ BẢN IN BÁO GIÁ (ẩn trên màn hình, chỉ hiện khi in/xuất PDF) ══ -->
+<div id="print-sheet"></div>
+
+<script>
+const VAT = 0.10;
+let price  = 7_549_251_018;
+let lurFee = 3_052_905_475;   // Phí sử dụng đất — VAT = (finalPre - lurFee) × 10%
+
+const st = {
+  dcs:    'none',   // '80m' | 'none'
+  nt:     'no',     // ƯĐ2: nội thất fixed 200tr
+  dc:     'none',   // ƯĐ3: đặt cọc %
+  hdmb:   'no',     // ƯĐ4: HĐMB 1.5%
+  ptIdx:  2,        // ƯĐ5: PT01-05
+  ta:     'no',     // ƯĐ6a: tri ân 0.9%
+  ms:     '0',      // ƯĐ6b: mua sỉ %
+  ckKhac: 0,        // ƯĐ7: khác
+};
+const PT_CK = [0, 0.02, 0.05, 0, 0];
+
+function fmt(n)  { return Math.round(n).toLocaleString('vi-VN') + ' đ'; }
+function fmtS(n) { return Math.round(n).toLocaleString('vi-VN'); }
+
+function onPrice(el) {
+  price = parseInt(el.value.replace(/\D/g,'')) || 0;
+  el.value = price.toLocaleString('vi-VN');
+  recalc();
+}
+
+function onLUR(el) {
+  lurFee = parseInt(el.value.replace(/\D/g,'')) || 0;
+  el.value = lurFee.toLocaleString('vi-VN');
+  recalc();
+}
+
+function setRadio(key, val) {
+  st[key] = val;
+  document.getElementById('grp-' + key).querySelectorAll('.opt-btn')
+    .forEach(b => b.classList.remove('active-ck','active-fixed','active-none'));
+  const isNone  = (val==='none'||val==='no'||val==='0');
+  const isFixed = (key==='dcs'||key==='nt');
+  event.target.classList.add(isNone ? 'active-none' : isFixed ? 'active-fixed' : 'active-ck');
+  recalc();
+}
+
+function setPT(idx) {
+  st.ptIdx = idx;
+  document.getElementById('grp-pt').querySelectorAll('.opt-btn').forEach((b,i) => {
+    b.classList.remove('active-ck','active-none');
+    if (i===idx) b.classList.add(PT_CK[idx]>0 ? 'active-ck' : 'active-none');
+  });
+  const el = document.getElementById('val-pt');
+  el.textContent = PT_CK[idx]>0 ? `${PT_CK[idx]*100}% (PT0${idx+1})` : `0% (PT0${idx+1})`;
+  el.className   = PT_CK[idx]>0 ? 'val-pct' : 'val-none';
+  recalc();
+  selectPT(idx);
+}
+
+function selectPT(idx) {
+  document.querySelectorAll('.pt-tab').forEach((t,i)   => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.pt-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+
+// ── PTTT LOCK theo giỏ hàng (col K bảng giá CĐT) ──
+const PT_BUCKET = { GRR:[0], CN:[1,2,3], '60':[4], ALL:[0,1,2,3,4] };
+const PT_SHORT = ['PT01 Cam Kết Thuê','PT02 Chuẩn','PT03 Nhanh','PT04 Linh Hoạt 36T','PT05 Nhàn Rỗi 60T'];
+
+// Chính sách hiện hành: MỌI CĂN TRỐNG (còn hàng) đều được hưởng thêm PTTT 60 tháng (PT05).
+// Chính sách mới: PT04 (Linh Hoạt 36 Tháng) được mở cho TẤT CẢ các căn, không phân biệt giỏ hàng.
+function allowedPT(bucket, status) {
+  let a = (PT_BUCKET[bucket] || PT_BUCKET.ALL).slice();
+  const isAvail = (status === '' || status === undefined || status === null);
+  if (isAvail && !a.includes(4)) a.push(4);   // thêm PT05 cho căn trống
+  if (!a.includes(3)) a.push(3);              // mở PT04 (36 tháng) cho tất cả căn
+  return a.sort((x,y)=>x-y);
+}
+
+function applyUnitPT(bucket, status) {
+  const allowed = allowedPT(bucket, status);
+  document.querySelectorAll('#pt-tabs .pt-tab').forEach((t,i) => t.classList.toggle('pt-disabled', !allowed.includes(i)));
+  document.querySelectorAll('#grp-pt .opt-btn').forEach((b,i) => b.classList.toggle('pt-disabled', !allowed.includes(i)));
+  const note = document.getElementById('pt-lock-note');
+  if (note) {
+    const full = allowed.length === 5;
+    note.textContent = full ? '' : '🔒 PTTT áp dụng cho căn này: ' + allowed.map(i => PT_SHORT[i]).join(' · ');
+    note.style.display = full ? 'none' : 'block';
+  }
+  setPT(allowed.includes(st.ptIdx) ? st.ptIdx : allowed[0]);
+}
+
+function resetPTLock() {
+  document.querySelectorAll('#pt-tabs .pt-tab, #grp-pt .opt-btn').forEach(el => el.classList.remove('pt-disabled'));
+  const note = document.getElementById('pt-lock-note');
+  if (note) note.style.display = 'none';
+}
+
+function onCKKhac(el) {
+  st.ckKhac = parseInt(el.value.replace(/\D/g,'')) || 0;
+  const e = document.getElementById('val-ck-khac');
+  e.textContent = st.ckKhac>0 ? `- ${fmt(st.ckKhac)}` : '—';
+  e.className   = st.ckKhac>0 ? 'val-fixed' : 'val-none';
+  recalc();
+}
+
+// ══════════════════════════════════════════════════════
+//  CASCADING — thứ tự đúng theo file Excel quotation
+//  ƯĐ1: CK booking (fixed) → trên giá gốc
+//  ƯĐ2: Nội thất (fixed)   → trên giá sau ƯĐ1
+//  ƯĐ3: Đặt cọc %          → trên giá sau ƯĐ1+2
+//  ƯĐ4: HĐMB %             → trên giá sau ƯĐ1+2+3
+//  ƯĐ5: PTTT %             → trên giá sau ƯĐ1+2+3+4
+//  ƯĐ6: Tri ân/Mua sỉ %   → trên giá sau ƯĐ1+2+3+4+5
+//  ƯĐ7: CK khác (fixed)   → trên giá sau ƯĐ1+2+3+4+5+6
+//
+//  VAT = (giá cuối sau tất cả CK − Phí SD đất) × 10%
+// ══════════════════════════════════════════════════════
+function computeSteps() {
+  let running = price;
+  const steps = [];
+
+  function applyFixed(id, label, amount) {
+    if (amount <= 0) return;
+    const before = running;
+    running -= amount;
+    steps.push({ id, label, type:'fixed', amount, before, after:running });
+  }
+  function applyPct(id, label, pct) {
+    if (pct <= 0) return;
+    const before = running;
+    const amount = running * pct;
+    running -= amount;
+    steps.push({ id, label, type:'pct', pct, amount, before, after:running });
+  }
+
+  // ƯĐ1
+  const dcsAmt = st.dcs==='80m' ? 80_000_000 : 0;
+  applyFixed('dcs', 'ƯĐ1 · CK Đặt Cọc Booking (80.000.000đ)', dcsAmt);
+
+  // ƯĐ2
+  if (st.nt==='yes') applyFixed('nt', 'ƯĐ2 · Tặng Gói Nội Thất', 200_000_000);
+
+  // ƯĐ3
+  const dcMap   = { nhom1:.14, nhom2:.07 };
+  const dcLabel = { nhom1:'ƯĐ3 · CK Đặc Biệt – Nhóm 1 (14%)', nhom2:'ƯĐ3 · CK Đặc Biệt – Nhóm 2 (7%)' };
+  if (st.dc in dcMap) applyPct('dc', dcLabel[st.dc], dcMap[st.dc]);
+
+  // ƯĐ4
+  if (st.hdmb==='yes') applyPct('hdmb', 'ƯĐ4 · CK Ký HĐMB & Thanh Toán Đợt 1 (1.5%)', 0.015);
+
+  // ƯĐ5
+  const ptPct = PT_CK[st.ptIdx];
+  if (ptPct>0) applyPct('pt', `ƯĐ5 · CK PT0${st.ptIdx+1} – ${ptPct===0.02?'Thanh Toán Chuẩn (2%)':'Thanh Toán Nhanh (5%)'}`, ptPct);
+
+  // ƯĐ6a: Tri ân
+  if (st.ta==='yes') applyPct('ta', 'ƯĐ6 · Chương Trình Tri Ân KH (0.9%)', 0.009);
+
+  // ƯĐ6b: Mua sỉ (không cộng với tri ân — theo ghi chú (*))
+  const msPct = parseFloat(st.ms)/100;
+  if (msPct>0) {
+    const msLbl = { '1':'ƯĐ6 · Mua Sỉ 2–3 căn (1%)','2':'ƯĐ6 · Mua Sỉ 4–5 căn (2%)','3':'ƯĐ6 · Mua Sỉ từ 6 căn (3%)' };
+    applyPct('ms', msLbl[st.ms], msPct);
+  }
+
+  // ƯĐ7
+  if (st.ckKhac>0) applyFixed('ck-khac', 'ƯĐ7 · Chiết Khấu Khác', st.ckKhac);
+
+  const finalPre  = running;
+  const vatBase   = Math.max(0, finalPre - lurFee);   // VAT chỉ tính trên phần nhà, không tính đất
+  const vatAmt    = vatBase * VAT;
+  const total     = finalPre + vatAmt;
+  const origTotal = price + Math.max(0, price - lurFee) * VAT;
+  const savings   = origTotal - total;
+
+  return { steps, finalPre, vatBase, vatAmt, total, origTotal, savings };
+}
+
+function buildSummaryHTML(r) {
+  const { steps, finalPre, vatBase, vatAmt, total, origTotal, savings } = r;
+  let html = `<div class="sum-row"><span class="sum-lbl" style="font-weight:700;color:rgba(255,255,255,.9)">Giá bán trước VAT (gốc)</span>
+    <span class="sum-val" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--gold-l)">${fmt(price)}</span></div>`;
+
+  if (!steps.length) html += `<div class="sum-row"><span class="sum-lbl" style="font-style:italic">— Chưa áp dụng ưu đãi nào —</span></div>`;
+
+  steps.forEach(s => {
+    const isFixed = s.type==='fixed';
+    const detail  = isFixed
+      ? `Giảm cố định`
+      : `${(s.pct*100).toFixed(2)}% × ${fmtS(s.before)} đ = ${fmt(s.amount)}`;
+    html += `<div class="sum-row ${isFixed?'deduct':'pct-ck'}" style="flex-direction:column;align-items:flex-start;gap:2px;padding:8px 0">
+      <div style="display:flex;justify-content:space-between;width:100%;align-items:center">
+        <span class="sum-lbl" style="font-weight:600;color:${isFixed?'#F1948A':'#6EC6E8'}">${s.label}</span>
+        <span class="sum-val" style="color:${isFixed?'#F1948A':'#6EC6E8'};font-size:14px">- ${fmt(s.amount)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;font-size:11px;color:var(--mut)">
+        <span>${detail}</span>
+        <span>→ Còn lại: <strong style="color:rgba(255,255,255,.75)">${fmt(s.after)}</strong></span>
+      </div>
+    </div>`;
+  });
+
+  html += `<div class="sum-row final-pre" style="margin-top:8px">
+    <span class="sum-lbl">Giá cuối trước VAT</span>
+    <span class="sum-val">${fmt(finalPre)}</span>
+  </div>
+  <div class="sum-row" style="font-size:12px">
+    <span class="sum-lbl" style="color:var(--mut)">Phí sử dụng đất (không chịu VAT)</span>
+    <span style="color:var(--mut);font-weight:600">- ${fmt(lurFee)}</span>
+  </div>
+  <div class="sum-row vat-row">
+    <span class="sum-lbl">VAT 10% × (${fmt(finalPre)} − ${fmt(lurFee)}) = ${fmt(vatBase)}</span>
+    <span class="sum-val">+ ${fmt(vatAmt)}</span>
+  </div>
+  <div class="sum-row total-row">
+    <span class="sum-lbl">Tổng Thanh Toán Có VAT</span>
+    <span class="sum-val">${fmt(total)}</span>
+  </div>`;
+
+  if (savings>0) html += `<div class="sum-row savings-row">
+    <span class="sum-lbl">💰 Tiết kiệm so với giá gốc có VAT</span>
+    <span class="sum-val">- ${fmt(savings)}</span>
+  </div>`;
+
+  return html;
+}
+
+function updateValCells(steps) {
+  const ids = ['dcs','nt','dc','hdmb','pt','ta','ms','ck-khac'];
+  ids.forEach(id => {
+    const e = document.getElementById('val-'+id);
+    if (e) { e.textContent='—'; e.className='val-none'; }
+  });
+  steps.forEach(s => {
+    const e = document.getElementById('val-'+s.id);
+    if (!e) return;
+    const txt = s.type==='fixed' ? `- ${fmt(s.amount)}` : `${(s.pct*100).toFixed(2)}% → - ${fmt(s.amount)}`;
+    e.textContent = txt;
+    e.className   = s.type==='fixed' ? 'val-fixed' : 'val-pct';
+  });
+}
+
+function recalc() {
+  const r = computeSteps();
+  document.getElementById('sum-box').innerHTML = buildSummaryHTML(r);
+  updateValCells(r.steps);
+  document.getElementById('tb-pre').textContent   = fmt(r.finalPre);
+  document.getElementById('tb-total').textContent = fmt(r.total);
+  const tags = r.steps.map(s => s.label.split('·')[1]?.trim() || s.label);
+  document.getElementById('tb-note').textContent  = tags.length ? tags.join(' · ') : 'Chưa áp dụng ưu đãi';
+  renderAllPT(r.finalPre);
+}
+
+const DEPOSIT = 100_000_000; // Tiền cọc cố định
+
+// Tính tổng số tiền thanh toán (có VAT) cho 1 đợt
+// VAT chỉ tính trên phần giá nhà (không tính đất)
+function installAmt(base, pct) {
+  const pre      = base * pct;
+  const lurPart  = lurFee * pct;           // phần phí SD đất của đợt này
+  const vatAmt   = (pre - lurPart) * VAT;  // VAT chỉ trên giá nhà
+  return { pre, lurPart, vatAmt, total: pre + vatAmt };
+}
+
+// Hàng đặt cọc + ký HĐMB (luôn là đợt đầu tiên, gộp 2 dòng)
+function rowsDeposit(base, pct, cum, ph, dotStart) {
+  const inst = installAmt(base, pct);
+  const balance = inst.total - DEPOSIT;    // tiền còn lại sau khi trừ cọc
+  cum.v += DEPOSIT;                        // cộng dồn: đặt cọc trước
+  const cumAfterDeposit = cum.v;
+  cum.v += balance;                        // cộng dồn: sau ký HĐMB = đợt 1 đầy đủ
+
+  return `
+    <tr>
+      <td><span class="dot-n ${ph}">${dotStart}</span></td>
+      <td>Ký Phiếu Đặt Cọc</td>
+      <td>Trả ngay khi đặt cọc<span class="mile-tag">💰 Đặt Cọc</span></td>
+      <td><span class="pct-b ${ph}">—</span></td>
+      <td class="amt">—</td>
+      <td class="vat-c">—</td>
+      <td class="amt" style="color:var(--gold-l);font-weight:700">${fmtS(DEPOSIT)}</td>
+      <td class="cum">${fmtS(cumAfterDeposit)}</td>
+    </tr>
+    <tr class="mile-row">
+      <td><span class="dot-n ${ph}">${dotStart+1}</span></td>
+      <td>Ký HĐMB (trong 14 ngày)</td>
+      <td>Đợt 1 — số còn lại sau khi trừ tiền cọc
+        <span style="font-size:11px;color:var(--mut);display:block;margin-top:2px">
+          (${fmtS(inst.pre)} + VAT ${fmtS(inst.vatAmt)} − cọc ${fmtS(DEPOSIT)})
+        </span>
+      </td>
+      <td><span class="pct-b ${ph}">${(pct*100).toFixed(0)}%</span></td>
+      <td class="amt">${fmtS(inst.pre)}</td>
+      <td class="vat-c">+${fmtS(inst.vatAmt)}</td>
+      <td class="amt">${fmtS(balance)}</td>
+      <td class="cum">${fmtS(cum.v)}</td>
+    </tr>`;
+}
+
+// Hàng thanh toán thông thường
+function row(dot, date, desc, pct, base, cum, ph, mile) {
+  const inst = installAmt(base, pct);
+  cum.v += inst.total;
+  return `<tr class="${mile?'mile-row':''}">
+    <td><span class="dot-n ${ph}">${dot}</span></td>
+    <td>${date}</td>
+    <td>${desc}${mile?`<span class="mile-tag">${mile}</span>`:''}</td>
+    <td><span class="pct-b ${ph}">${(pct*100).toFixed(0)}%</span></td>
+    <td class="amt">${fmtS(inst.pre)}</td>
+    <td class="vat-c">+${fmtS(inst.vatAmt)}</td>
+    <td class="amt">${fmtS(inst.total)}</td>
+    <td class="cum">${fmtS(cum.v)}</td>
+  </tr>`;
+}
+
+// Tính tổng có VAT đúng công thức: finalPre + (finalPre - lurFee) × VAT
+function totalWithVAT(base) {
+  return base + Math.max(0, base - lurFee) * VAT;
+}
+
+function renderAllPT(base) {
+  renderPT0(base); renderPT1(base); renderPT2(base); renderPT3(base); renderPT4(base);
+}
+
+// PT01 — Cam kết cho thuê
+function renderPT0(base) {
+  const tot = totalWithVAT(base);
+  document.getElementById('pt0-total-info').textContent = fmt(tot);
+  document.getElementById('pt0-yield-yr').textContent   = fmt(base * 0.04);
+  document.getElementById('pt0-yield-4yr').textContent  = fmt(base * 0.04 * 4);
+  let c={v:0}, ph1='', ph2='';
+  ph1 += rowsDeposit(base, 0.10, c, 'ph1', 1);
+  ph1 += row(3,'1 tháng sau HĐMB','Đợt 2',0.10,base,c,'ph1');
+  ph1 += row(4,'2 tháng sau Đợt 2','Đợt 3',0.10,base,c,'ph1');
+  ph1 += row(5,'2 tháng sau Đợt 3','Đợt 4',0.10,base,c,'ph1');
+  ph2 += row(6,'Q4/2026 (DK 12/2026) / 2T sau Đợt 4','Bàn Giao Chính Thức – Nhận tiền thuê',0.55,base,c,'ph3','🏠 Nhận Nhà');
+  ph2 += row(7,'Trong năm 2027','Sổ Hồng + Nhận thuê năm 1',0.05,base,c,'ph4','📄 Sổ Hồng');
+  document.getElementById('pt0-ph1').innerHTML = ph1;
+  document.getElementById('pt0-ph2').innerHTML = ph2;
+  document.getElementById('pt0-grand').textContent = fmt(c.v);
+}
+
+// PT02 — Chuẩn (CK 2%)
+function renderPT1(base) {
+  document.getElementById('pt1-total-info').textContent = fmt(totalWithVAT(base));
+  let c={v:0}, ph1='', ph2='';
+  ph1 += rowsDeposit(base, 0.10, c, 'ph1', 1);
+  ph1 += row(3,'1 tháng sau HĐMB','Đợt 2',0.10,base,c,'ph1');
+  ph1 += row(4,'2 tháng sau Đợt 2','Đợt 3',0.10,base,c,'ph1');
+  ph1 += row(5,'2 tháng sau Đợt 3','Đợt 4',0.10,base,c,'ph1');
+  ph2 += row(6,'Q4/2026 (DK 12/2026) / 2T sau Đợt 4','Bàn Giao Chính Thức',0.55,base,c,'ph3','🏠 Nhận Nhà');
+  ph2 += row(7,'2027','Sổ Hồng',0.05,base,c,'ph4','📄 Sổ Hồng');
+  document.getElementById('pt1-ph1').innerHTML = ph1;
+  document.getElementById('pt1-ph2').innerHTML = ph2;
+  document.getElementById('pt1-grand').textContent = fmt(c.v);
+}
+
+// PT03 — Nhanh (CK 5%)
+function renderPT2(base) {
+  document.getElementById('pt2-total-info').textContent = fmt(totalWithVAT(base));
+  let c={v:0}, ph1='', ph2='';
+  ph1 += rowsDeposit(base, 0.20, c, 'ph1', 1);       // Đặt cọc + Ký HĐMB 20%
+  ph1 += row(3,'1 tháng sau HĐMB','Đợt 2',0.20,base,c,'ph1');
+  ph2 += row(4,'Q4/2026 (dự kiến 12/2026)','Bàn Giao Chính Thức',0.55,base,c,'ph3','🏠 Nhận Nhà');
+  ph2 += row(5,'2027','Sổ Hồng',0.05,base,c,'ph4','📄 Sổ Hồng');
+  document.getElementById('pt2-ph1').innerHTML = ph1;
+  document.getElementById('pt2-ph2').innerHTML = ph2;
+  document.getElementById('pt2-grand').textContent = fmt(c.v);
+}
+
+// PT04 — Linh hoạt 36T
+function renderPT3(base) {
+  document.getElementById('pt3-total-info').textContent = fmt(totalWithVAT(base));
+  let c={v:0}, ph1='', ph2='', ph3='';
+  ph1 += rowsDeposit(base, 0.10, c, 'ph1', 1);
+  ph1 += row(3,'5 tháng sau HĐMB','Đợt 2',0.10,base,c,'ph1');
+  ph2 += row(4,'Q2/2027 (dự kiến 04/2027)','Bàn Giao Tạm Thời',0.10,base,c,'ph2','🏠 Nhận Nhà TT');
+  ph2 += row(5,'6 tháng sau BG TT','Đợt 4',0.08,base,c,'ph2');
+  ph2 += row(6,'6 tháng sau Đợt 4','Đợt 5',0.08,base,c,'ph2');
+  ph2 += row(7,'6 tháng sau Đợt 5','Đợt 6',0.08,base,c,'ph2');
+  ph3 += row(8,'Q2/2029 (dự kiến 04/2029)','Bàn Giao Chính Thức',0.41,base,c,'ph3','🏠 BG Chính Thức');
+  ph3 += row(9,'Sau BG Chính Thức','Sổ Hồng',0.05,base,c,'ph4','📄 Sổ Hồng');
+  document.getElementById('pt3-ph1').innerHTML = ph1;
+  document.getElementById('pt3-ph2').innerHTML = ph2;
+  document.getElementById('pt3-ph3').innerHTML = ph3;
+  document.getElementById('pt3-grand').textContent = fmt(c.v);
+}
+
+// PT05 — Nhàn rỗi 60T
+function renderPT4(base) {
+  document.getElementById('pt4-total-info').textContent = fmt(totalWithVAT(base));
+  let c={v:0}, ph1='', ph2='', ph3='';
+  ph1 += rowsDeposit(base, 0.10, c, 'ph1', 1);
+  ph1 += row(3,'5 tháng sau HĐMB','Đợt 2',0.10,base,c,'ph1');
+  ph2 += row(4,'Q2/2027 (dự kiến 04/2027)','Bàn Giao Tạm Thời',0.10,base,c,'ph2','🏠 Nhận Nhà TT');
+  [['6T sau BG TT','(2028)'],['6T sau Đ4','(2028)'],['6T sau Đ5','(2028)'],
+   ['6T sau Đ6','(2029)'],['6T sau Đ7','(2029)'],['6T sau Đ8','(2029)'],['6T sau Đ9','(2030)']
+  ].forEach(([d,y],i) => { ph2 += row(5+i,d,`Đợt ${4+i} ${y}`,0.05,base,c,'ph2'); });
+  ph3 += row(12,'Q2/2031 (dự kiến 04/2031)','Bàn Giao Chính Thức',0.30,base,c,'ph3','🏠 BG Chính Thức');
+  ph3 += row(13,'Sau BG Chính Thức','Sổ Hồng',0.05,base,c,'ph4','📄 Sổ Hồng');
+  document.getElementById('pt4-ph1').innerHTML = ph1;
+  document.getElementById('pt4-ph2').innerHTML = ph2;
+  document.getElementById('pt4-ph3').innerHTML = ph3;
+  document.getElementById('pt4-grand').textContent = fmt(c.v);
+}
+
+// ══ XUẤT PDF BÁO GIÁ ══
+const PT_NAMES = ['PT01 · Cam Kết Cho Thuê (4%/năm × 4 năm)','PT02 · Thanh Toán Chuẩn','PT03 · Thanh Toán Nhanh','PT04 · Linh Hoạt 36 Tháng','PT05 · Nhàn Rỗi 60 Tháng'];
+const PT_BUCKET_NAME = { GRR:'GRR (Cam kết cho thuê)', CN:'Chuẩn / Nhanh / 36 Tháng', '60':'Nhàn rỗi 60 tháng', ALL:'Tất cả PTTT' };
+
+function exportPDF() {
+  const rawKey = (document.getElementById('unitInp').value || '').trim();
+  const u = PRICE_LIST[rawKey.toUpperCase()] || PRICE_LIST[rawKey] || null;
+  const r = computeSteps();
+  const idx = st.ptIdx;
+
+  // Chi tiết chiết khấu
+  let dcRows = r.steps.map(s =>
+    `<tr><td>${s.label}</td><td class="r">${s.type==='fixed'?'—':(s.pct*100).toFixed(2)+'%'}</td><td class="r ps-ded">- ${fmtS(s.amount)} đ</td></tr>`
+  ).join('');
+  if (!dcRows) dcRows = `<tr><td colspan="3" style="color:#999">Chưa áp dụng ưu đãi nào (giá niêm yết)</td></tr>`;
+
+  // Lịch thanh toán — lấy từ panel đang active
+  const panel = document.querySelector('.pt-panel.active');
+  let schedRows = '';
+  if (panel) {
+    panel.querySelectorAll('tr').forEach(tr => {
+      const tds = tr.querySelectorAll('td');
+      if (tds.length >= 8) {
+        const dot  = tds[0].innerText.trim();
+        const date = tds[1].innerText.trim();
+        const desc = tds[2].innerText.replace(/\s+/g,' ').trim();
+        const pct  = tds[3].innerText.trim();
+        const tot  = tds[6].innerText.trim();
+        const cum  = tds[7].innerText.trim();
+        schedRows += `<tr><td>${dot}</td><td>${date} — ${desc}</td><td class="r">${pct}</td><td class="r">${tot}</td><td class="r">${cum}</td></tr>`;
+      }
+    });
+  }
+
+  const grrBlock = idx===0 && u
+    ? `<h2>Cam Kết Cho Thuê (GRR)</h2>
+       <div class="ps-grid">
+         <div><span>Tỷ lệ</span><b>4%/năm × 4 năm</b></div>
+         <div><span>Thu nhập/năm</span><b>${fmtS(r.finalPre*0.04)} đ</b></div>
+         <div><span>Tổng 4 năm</span><b>${fmtS(r.finalPre*0.04*4)} đ</b></div>
+       </div>` : '';
+
+  const unitInfo = u
+    ? `<div class="ps-grid">
+        <div><span>Mã căn</span><b>${rawKey.toUpperCase()}</b></div>
+        <div><span>Loại căn</span><b>${u.type||'—'}</b></div>
+        <div><span>Số tầng</span><b>${u.floors||'—'} tầng</b></div>
+        <div><span>Diện tích đất</span><b>${u.landArea?u.landArea+' m²':'—'}</b></div>
+        <div><span>Diện tích sàn (GFA)</span><b>${u.gfa?u.gfa+' m²':'—'}</b></div>
+        <div><span>Phân nhóm</span><b>${u.group||'—'}</b></div>
+        <div><span>Giỏ PTTT</span><b>${PT_BUCKET_NAME[u.pt]||'—'}</b></div>
+        <div><span>Trạng thái</span><b>${u.status==='đã bán'?'ĐÃ BÁN':u.status==='cam kết cho thuê'?'Cam kết cho thuê':'Còn hàng'}</b></div>
+        <div><span>Mã lô CĐT</span><b>${u.unitCode||'—'}</b></div>
+       </div>`
+    : `<div class="ps-note">Không chọn mã căn — báo giá tính theo đơn giá nhập tay: <b>${fmtS(price)} đ</b></div>`;
+
+  const soldWarn = (u && u.status==='đã bán')
+    ? `<div style="background:#fdecea;border:1px solid #e0a49c;color:#b23b2e;font-size:11px;font-weight:600;padding:7px 12px;border-radius:6px;margin-bottom:12px">⚠️ Căn này đã được bán — báo giá chỉ mang tính tham khảo.</div>` : '';
+
+  const today = new Date().toLocaleDateString('vi-VN');
+
+  document.getElementById('print-sheet').innerHTML = `
+    <div class="ps-hd">
+      <div>
+        <div class="ps-brand">Artisan Park</div>
+        <div class="ps-badge">Bảng Tính Báo Giá · CTBH số 15.2 (01–31/07/2026)</div>
+      </div>
+      <div class="ps-meta">
+        Ngày lập: <b>${today}</b><br>
+        Phương thức: <b>${PT_NAMES[idx]}</b><br>
+        Chuyên viên tư vấn: ______________
+      </div>
+    </div>
+    ${soldWarn}
+    <h2>Thông Tin Căn</h2>
+    ${unitInfo}
+
+    <h2>Chi Tiết Chiết Khấu (áp dụng tuần tự)</h2>
+    <table>
+      <thead><tr><th>Ưu đãi</th><th class="r">Mức</th><th class="r">Số tiền trừ</th></tr></thead>
+      <tbody>${dcRows}</tbody>
+    </table>
+
+    <h2>Tổng Hợp Giá</h2>
+    <div class="ps-grid" style="grid-template-columns:1fr 1fr">
+      <div><span>Giá bán trước VAT (gốc)</span><b>${fmtS(price)} đ</b></div>
+      <div><span>Tổng chiết khấu</span><b class="ps-ded" style="color:#b23b2e">- ${fmtS(price - r.finalPre)} đ</b></div>
+      <div><span>Giá sau CK (trước VAT)</span><b>${fmtS(r.finalPre)} đ</b></div>
+      <div><span>VAT (10% phần nhà)</span><b>+ ${fmtS(r.vatAmt)} đ</b></div>
+      <div><span>Phí sử dụng đất (không VAT)</span><b>${fmtS(lurFee)} đ</b></div>
+      <div><span>Tiết kiệm so với niêm yết</span><b style="color:#1B6B4A">${fmtS(r.savings)} đ</b></div>
+    </div>
+    <div class="ps-final">
+      <div class="l">Tổng Thanh Toán (đã gồm VAT)</div>
+      <div class="v">${fmtS(r.total)} đ</div>
+    </div>
+    ${grrBlock}
+
+    <h2>Lịch Thanh Toán — ${PT_NAMES[idx]}</h2>
+    <table>
+      <thead><tr><th>Đợt</th><th>Mốc / Mô tả</th><th class="r">%</th><th class="r">Số tiền đợt (có VAT)</th><th class="r">Luỹ kế</th></tr></thead>
+      <tbody>${schedRows || '<tr><td colspan="5" style="color:#999">—</td></tr>'}</tbody>
+    </table>
+
+    <div class="ps-note">
+      Ghi chú: Các % ưu đãi tính tuần tự theo thứ tự, không cộng gộp. VAT chỉ tính trên phần giá nhà (không tính phí sử dụng đất).
+      KPBT (2%) thu tại thời điểm bàn giao. Giá trị mang tính tham khảo theo CTBH số 15.2, không có giá trị quy đổi tiền mặt.
+      Vui lòng liên hệ CĐT/CVTV để xác nhận thông tin chính thức.
+    </div>
+    <div class="ps-foot">
+      <div>Artisan Park — Gamuda Land · CTBH 15.2</div>
+      <div>Xuất từ Bảng Tính Chiết Khấu & 5 PTTT · ${today}</div>
+    </div>`;
+
+  window.print();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('#grp-pt .opt-btn')[2].classList.add('active-ck');
+  recalc();
+});
+
+// ── UNIT DROPDOWN ─────────────────────────────────────
+let ddTab  = 'all';
+let ddOpen = false;
+
+function unitRow(k) {
+  const u = PRICE_LIST[k];
+  const isSold = u.status === 'đã bán';
+  const isLock = u.status === 'lock';
+  const isCKT  = u.status === 'cam kết cho thuê';
+  const badge = isSold
+    ? `<span class="di-badge" style="background:#7f1d1d;color:#fca5a5">ĐÃ BÁN</span>`
+    : isLock
+    ? `<span class="di-badge" style="background:#78350f;color:#fcd34d">LOCK</span>`
+    : isCKT
+    ? `<span class="di-badge" style="background:rgba(27,107,74,.5);color:#5DD4A0">CAM KẾT THUÊ</span>`
+    : u.gioHang === '60 tháng'
+    ? `<span class="di-badge" style="background:rgba(91,58,139,.4);color:#BEA0E8">60T</span>`
+    : `<span class="di-badge" style="background:rgba(46,125,155,.3);color:#6EC6E8">THƯỜNG</span>`;
+  const gfaStr   = u.gfa      ? `${u.gfa}m²` : '';
+  const landStr  = u.landArea ? `${u.landArea}m² · ` : '';
+  const codeDisp = u.unitCode ? `${k} · <span style="color:var(--gold-l);font-size:12px">${u.unitCode}</span>` : k;
+  return `<div class="dd-item ${isLock?'is-coc':''}"
+    onclick="${isLock ? '' : `selectUnit('${k}'); closeDD()`}">
+    <div class="di-code">${codeDisp}</div>
+    <div class="di-info">${u.subPlot} · ${u.floors}T · ${landStr}${gfaStr}</div>
+    <div class="di-price">${Math.round(u.price).toLocaleString('vi-VN')} đ</div>
+    ${badge}
+  </div>`;
+}
+
+function renderDDList(q) {
+  const query = (q||'').toUpperCase().trim();
+  const list  = document.getElementById('dd-list');
+  if (!list) return;
+  const keys  = Object.keys(PRICE_LIST).filter(k => {
+    const u = PRICE_LIST[k];
+    if (query && !k.includes(query) && !u.subPlot.toUpperCase().includes(query) && !u.type.toUpperCase().includes(query) && !(u.unitCode||'').toUpperCase().includes(query)) return false;
+    if (ddTab === '60t'   && u.gioHang !== '60 tháng') return false;
+    if (ddTab === 'usual' && u.gioHang === '60 tháng') return false;
+    if (ddTab === 'avail' && (u.status === 'đã cọc' || u.status === 'đã bán' || u.status === 'lock')) return false;
+    return true;
+  });
+  list.innerHTML = keys.length
+    ? keys.map(unitRow).join('')
+    : `<div style="padding:16px;text-align:center;color:var(--mut);font-size:13px">Không tìm thấy căn phù hợp</div>`;
+}
+
+function setDDTab(tab) {
+  ddTab = tab;
+  document.querySelectorAll('.dd-tab').forEach((b,i) => {
+    b.classList.toggle('active', ['all','60t','usual','avail'][i] === tab);
+  });
+  renderDDList(document.getElementById('dd-search')?.value || '');
+}
+
+function filterDD(val) { renderDDList(val); }
+
+function toggleFullList() {
+  const dd = document.getElementById('unit-dropdown');
+  ddOpen   = !ddOpen;
+  dd.style.display = ddOpen ? 'block' : 'none';
+  if (ddOpen) {
+    renderDDList('');
+    const s = document.getElementById('dd-search');
+    if (s) { s.value = ''; s.focus(); }
+  }
+}
+
+function closeDD() {
+  ddOpen = false;
+  const dd = document.getElementById('unit-dropdown');
+  if (dd) dd.style.display = 'none';
+}
+
+function onUnitInput(el) {
+  const val = el.value.trim().toUpperCase();
+  const dd  = document.getElementById('unit-dropdown');
+  if (!val) { closeDD(); clearUnitInfo(); return; }
+  ddOpen = true;
+  dd.style.display = 'block';
+  const s = document.getElementById('dd-search');
+  if (s) s.value = val;
+  renderDDList(val);
+}
+
+function selectUnit(key) {
+  const u = PRICE_LIST[key];
+  document.getElementById('unitInp').value = key;
+
+  const gfaStr  = u.gfa      ? `${u.gfa} m²` : '—';
+  const landStr = u.landArea ? `${u.landArea} m² đất · ` : '';
+  const isSoldUnit = u.status === 'đã bán';
+  const sBadge  = u.status === 'cam kết cho thuê'
+    ? ` <span style="background:rgba(27,107,74,.3);color:#5DD4A0;font-size:11px;padding:2px 8px;border-radius:4px">Cam Kết Thuê</span>` : '';
+  const noteStr = u.note
+    ? `<br><span style="font-size:11px;color:#E8A06E">⚠️ ${u.note}</span>` : '';
+
+  // Sold banner
+  const soldBanner = isSoldUnit
+    ? `<div style="background:#7f1d1d;border:1px solid #fca5a5;border-radius:6px;padding:7px 14px;
+        margin-bottom:10px;font-size:12px;color:#fca5a5;font-weight:600">
+        ⚠️ Căn này đã được bán — bảng tính chỉ mang tính tham khảo</div>` : '';
+  const soldEl = document.getElementById('sold-banner');
+  if (soldEl) soldEl.innerHTML = soldBanner;
+
+  document.getElementById('unit-meta').innerHTML =
+    `${u.subPlot} · ${u.unitCode ? `<span style="color:var(--gold-l);font-weight:700">${u.unitCode}</span> · ` : ''}${u.floors} tầng · ${u.group} · <b style="color:var(--gold)">${u.gioHang}</b>${sBadge}${noteStr}`;
+  document.getElementById('unit-gfa').textContent = `${landStr}${gfaStr}`;
+
+  const pi = document.getElementById('priceInp');
+  pi.value = Math.round(u.price).toLocaleString('vi-VN');
+  price    = Math.round(u.price);
+  document.getElementById('price-note').textContent = `Căn ${key}${u.unitCode ? ' · ' + u.unitCode : ''} — từ bảng giá CĐT`;
+
+  const li = document.getElementById('lurInp');
+  if (u.lurFee > 0) {
+    li.value      = Math.round(u.lurFee).toLocaleString('vi-VN');
+    lurFee        = Math.round(u.lurFee);
+    li.placeholder = '';
+  } else {
+    li.value       = '';
+    lurFee         = 0;
+    li.placeholder = 'Vui lòng nhập LUR từ CĐT';
+  }
+  applyUnitPT(u.pt || 'ALL', u.status);
+  recalc();
+}
+
+function clearUnitInfo() {
+  document.getElementById('unit-meta').textContent = '—';
+  document.getElementById('unit-gfa').textContent  = '—';
+  resetPTLock();
+}
+
+document.addEventListener('click', e => {
+  const inside = e.target.closest('#unit-dropdown')
+    || e.target.id === 'unitInp'
+    || e.target.id === 'listBtn'
+    || e.target.closest('#listBtn');
+  if (!inside) closeDD();
+});
+
+// ── MAP HIGHLIGHTING ─────────────────────────────────────
+const UNIT_COORDS = {
+  'G1A.01': [5.59, 11.24],
+  'G1A.02': [5.59, 13.67],
+  'G1A.03': [5.59, 16.09],
+  'G1A.04': [5.59, 18.51],
+  'G1A.06': [5.59, 23.36],
+  'G1A.07': [5.59, 25.78],
+  'G1A.11': [5.59, 35.48],
+  'G1A.12': [5.59, 37.9],
+  'G1A.13': [5.59, 40.33],
+  'G1A.15': [5.59, 45.17],
+  'G1B.22': [5.59, 73.61],
+  'G1B.23': [5.59, 76.33],
+  'G1B.24': [5.59, 79.06],
+  'G1B.26': [5.59, 84.51],
+  'G1B.27': [5.59, 87.24],
+  'G1C.28': [11.41, 13.79],
+  'G1C.29': [13.69, 13.79],
+  'G1C.31': [18.26, 13.79],
+  'G1C.33': [22.82, 13.79],
+  'G1D.34': [11.41, 31.38],
+  'G1E.40': [11.41, 42.07],
+  'G1G.52': [10.25, 68.97],
+  'G1H1.59': [30.17, 58.62],
+  'G1H1.61': [34.16, 58.62],
+  'G1H1.62': [36.15, 58.62],
+  'G1H1.63': [38.14, 58.62],
+  'G1I.90': [85.24, 58.62],
+  'G1J1.91': [28.18, 66.9],
+  'G1M.139': [39.36, 81.03],
+  'G1N.154': [65.21, 82.76],
+  'G1N.156': [68.55, 82.76],
+  'G1N.157': [70.21, 82.76],
+  'G1N.158': [71.88, 82.76],
+  'G1N.159': [73.55, 82.76],
+  'G1N.160': [75.22, 82.76],
+  'G1N.161': [76.89, 82.76],
+  'G1N.162': [78.56, 82.76],
+  'G1N.163': [80.23, 82.76],
+  'G1N.164': [81.9, 82.76],
+  'G1N.165': [83.57, 82.76],
+  'G1N.166': [85.24, 82.76],
+  'G1O.169': [93.62, 61.82],
+  'G1O.172': [93.62, 71.79],
+  'G1O.173': [93.62, 75.11],
+  'G9A1.179': [28.18, 13.45],
+  'G9A1.184': [38.14, 13.45],
+  'G9A1.185': [40.13, 13.45],
+  'G9A1.186': [42.13, 13.45],
+  'G9A1.187': [44.12, 13.45],
+  'G9A1.188': [46.11, 13.45],
+  'G9A2.190': [48.23, 13.45],
+  'G9A2.191': [50.35, 13.45],
+  'G9A2.192': [52.48, 13.45],
+  'G9A2.193': [54.6, 13.45],
+  'G9A2.194': [56.72, 13.45],
+  'G9A2.197': [63.09, 13.45],
+  'G9A2.198': [65.21, 13.45],
+  'G9B.199': [66.14, 13.45],
+  'G9B.201': [69.55, 13.45],
+  'G9B.203': [72.97, 13.45],
+  'G9B.204': [74.68, 13.45],
+  'G9B.207': [79.8, 13.45],
+  'G9B.209': [83.23, 13.45],
+  'G9B.210': [84.92, 13.45],
+  'G9C1.212': [28.18, 29.66],
+  'G9C1.213': [30.17, 29.66],
+  'G9C1.214': [32.16, 29.66],
+  'G9C1.215': [34.16, 29.66],
+  'G9C1.216': [36.15, 29.66],
+  'G9C1.217': [38.14, 29.66],
+  'G9C1.218': [40.13, 29.66],
+  'G9C1.219': [42.13, 29.66],
+  'G9C1.220': [44.12, 29.66],
+  'G9C2.222': [46.11, 29.66],
+  'G9C2.223': [48.23, 29.66],
+  'G9C2.224': [50.35, 29.66],
+  'G9C2.225': [52.48, 29.66],
+  'G9C2.226': [54.6, 29.66],
+  'G9C2.227': [56.72, 29.66],
+  'G9C2.228': [58.84, 29.66],
+  'G9C2.229': [60.96, 29.66],
+  'G9C2.230': [63.09, 29.66],
+  'G9C2.231': [65.21, 29.66],
+  'G9D.235': [71.26, 29.66],
+  'G9D.236': [72.97, 29.66],
+  'G9D.237': [74.68, 29.66],
+  'G9D.238': [76.39, 29.66],
+  'G9D.239': [78.09, 29.66],
+  'G9D.240': [79.8, 29.66],
+  'G9D.241': [81.51, 29.66],
+  'G9D.242': [83.22, 29.66],
+  'G9D.243': [84.92, 29.66],
+  'G9D.244': [86.63, 29.66],
+  'G9E1.245': [28.18, 44.83],
+  'G9E1.249': [36.15, 44.83],
+  'G9E1.251': [40.13, 44.83],
+  'G9E2.256': [49.06, 44.83],
+  'G9E2.257': [51.08, 44.83],
+  'G9E2.259': [55.12, 44.83],
+  'G9E2.260': [57.13, 44.83],
+  'G9E2.263': [63.19, 44.83],
+  'G9E2.264': [65.21, 44.83],
+  'G9F.266': [66.14, 44.83],
+  'G9F.269': [71.73, 44.83],
+  'G9F.277': [86.63, 44.83],
+  'G9G.282': [91.29, 21.67],
+  'G9G.283': [91.29, 24.33],
+  'G9G.288': [91.29, 37.64],
+};
+
+let mapAnimFrame = null;
+let mapPulse = 0;
+
+function syncCanvas() {
+  const img = document.getElementById('mapImg');
+  const canvas = document.getElementById('mapCanvas');
+  if (!img || !canvas) return;
+  canvas.width  = img.naturalWidth  || img.offsetWidth;
+  canvas.height = img.naturalHeight || img.offsetHeight;
+}
+
+function highlightUnit(key) {
+  const canvas = document.getElementById('mapCanvas');
+  const img    = document.getElementById('mapImg');
+  const hint   = document.getElementById('map-hint');
+  const lbl    = document.getElementById('map-selected-label');
+  if (!canvas || !img) return;
+
+  // sync canvas size to actual rendered image
+  canvas.width  = img.offsetWidth;
+  canvas.height = img.offsetHeight;
+
+  const ctx = canvas.getContext('2d');
+
+  const coords = UNIT_COORDS[key];
+  if (!coords) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (hint) hint.style.display = '';
+    if (lbl)  lbl.style.display  = 'none';
+    return;
+  }
+
+  const u = PRICE_LIST[key];
+  const isSH = u && u.unitCode && u.unitCode.toUpperCase().includes('SH');
+  const dotColor = isSH ? '#F5956A' : '#5DD4A0';
+  const ringColor = isSH ? 'rgba(245,149,106,0.35)' : 'rgba(93,212,160,0.35)';
+
+  if (hint) hint.style.display = 'none';
+  if (lbl) {
+    lbl.style.display = '';
+    lbl.textContent = `📍 ${key}${u && u.unitCode ? '  ·  ' + u.unitCode : ''}  ·  ${u && u.subPlot ? u.subPlot : ''}`;
+  }
+
+  // cancel previous animation
+  if (mapAnimFrame) cancelAnimationFrame(mapAnimFrame);
+
+  function draw() {
+    canvas.width  = img.offsetWidth;
+    canvas.height = img.offsetHeight;
+    const w = canvas.width;
+    const h = canvas.height;
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = (coords[0] / 100) * w;
+    const cy = (coords[1] / 100) * h;
+
+    mapPulse = (mapPulse + 0.06) % (Math.PI * 2);
+    const pulse = Math.sin(mapPulse);
+    const baseR = Math.max(w, h) * 0.012;
+    const r     = baseR + pulse * baseR * 0.4;
+
+    // outer ring pulse
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = ringColor;
+    ctx.fill();
+
+    // inner ring
+    ctx.beginPath();
+    ctx.arc(cx, cy, r * 1.4, 0, Math.PI * 2);
+    ctx.fillStyle = isSH ? 'rgba(245,149,106,0.55)' : 'rgba(93,212,160,0.55)';
+    ctx.fill();
+
+    // dot
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    ctx.fillStyle = dotColor;
+    ctx.fill();
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = Math.max(1, w * 0.0015);
+    ctx.stroke();
+
+    // label
+    const fs  = Math.max(9, w * 0.012);
+    const lbl = u && u.unitCode ? u.unitCode : key;
+    ctx.font = `bold ${fs}px 'Be Vietnam Pro', sans-serif`;
+    const tw  = ctx.measureText(lbl).width;
+    const pad = fs * 0.5;
+    const bx  = cx - tw/2 - pad;
+    const by  = cy - r * 2.8 - fs * 1.2;
+    const bw  = tw + pad * 2;
+    const bh  = fs * 1.6;
+
+    // label background
+    ctx.fillStyle = 'rgba(11,31,58,0.88)';
+    ctx.beginPath();
+    const br = 4;
+    ctx.moveTo(bx + br, by);
+    ctx.lineTo(bx + bw - br, by);
+    ctx.arcTo(bx + bw, by, bx + bw, by + bh, br);
+    ctx.lineTo(bx + bw, by + bh);
+    ctx.arcTo(bx + bw, by + bh, bx, by + bh, br);
+    ctx.lineTo(bx, by + bh);
+    ctx.arcTo(bx, by + bh, bx, by, br);
+    ctx.lineTo(bx, by);
+    ctx.arcTo(bx, by, bx + bw, by, br);
+    ctx.closePath();
+    ctx.fill();
+    ctx.strokeStyle = dotColor;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    // label text
+    ctx.fillStyle = '#fff';
+    ctx.fillText(lbl, bx + pad, by + bh * 0.72);
+
+    mapAnimFrame = requestAnimationFrame(draw);
+  }
+
+  mapAnimFrame = requestAnimationFrame(draw);
+
+  // scroll map into view
+  const mapCard = document.getElementById('map-card');
+  if (mapCard) mapCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// patch selectUnit to call highlightUnit
+const _origSelectUnit = selectUnit;
+window.selectUnit = function(key) {
+  _origSelectUnit(key);
+  highlightUnit(key);
+};
+
+// canvas resize handling
+window.addEventListener('resize', () => {
+  const img = document.getElementById('mapImg');
+  const canvas = document.getElementById('mapCanvas');
+  if (canvas && img) {
+    canvas.width  = img.offsetWidth;
+    canvas.height = img.offsetHeight;
+  }
+});
+
+</script>
+</body>
+</html>

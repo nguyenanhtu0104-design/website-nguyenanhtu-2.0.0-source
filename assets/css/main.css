@@ -849,3 +849,7 @@ h2.p-sec{font:inherit}
   .rv.rv-in{opacity:1;transform:none}
 }
 @media print{.rv{opacity:1!important;transform:none!important}}
+
+/* Chữ nhỏ màu đỏ đất: sáng hơn một chút để đạt độ tương phản 4,5:1 (trước đó 3,4–3,7:1). Chữ lớn giữ nguyên màu. */
+#pBody .p-card strong,#pBody .p-tl-yr{color:#c9604d;color:color-mix(in srgb,var(--pc,var(--brand)) 78%,#fff)}
+#pTag[style*="#b05040"],#pBody [style*="color:#b05040"]{color:#d4705d!important}

@@ -230,13 +230,17 @@ var io=new IntersectionObserver(function(es){
   es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('rv-in'); io.unobserve(e.target); } });
 },{rootMargin:'0px 0px -6% 0px',threshold:0.06});
 var seen=new Map();
-Array.prototype.forEach.call(body.querySelectorAll(SEL),function(el){
-  if(el.closest('.p-360,.faq-a,#pAside')) return;
-  var r=el.getBoundingClientRect();
-  if(r.top<vh||r.bottom<0) return;                 /* đã ở trong/trên khung nhìn lúc mở trang: giữ nguyên, không ẩn */
-  var par=el.parentElement;
-  if(par&&par.matches&&par.matches(STAG)){ var i=seen.get(par)||0; seen.set(par,i+1); el.style.setProperty('--rv-d',Math.min(i*70,280)+'ms'); }
-  el.classList.add('rv'); io.observe(el);
+var els=Array.prototype.filter.call(body.querySelectorAll(SEL),function(el){ return !el.closest('.p-360,.faq-a,#pAside'); });
+/* Đọc toàn bộ vị trí một lượt, rồi mới ghi class: tránh bắt trình duyệt tính bố cục lại hàng chục lần */
+var rects=els.map(function(el){ return el.getBoundingClientRect(); });
+requestAnimationFrame(function(){
+  els.forEach(function(el,i){
+    var r=rects[i];
+    if(r.top<vh||r.bottom<0) return;                 /* đã ở trong/trên khung nhìn lúc mở trang: giữ nguyên, không ẩn */
+    var par=el.parentElement;
+    if(par&&par.matches&&par.matches(STAG)){ var k=seen.get(par)||0; seen.set(par,k+1); el.style.setProperty('--rv-d',Math.min(k*70,280)+'ms'); }
+    el.classList.add('rv'); io.observe(el);
+  });
 });
 })();
 
