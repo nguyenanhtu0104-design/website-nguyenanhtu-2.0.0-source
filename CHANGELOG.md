@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-04 — Vùng 08: gắn sao và đổi tên "Đại lộ Bình Dương (QL13)"
+- `data/categories.json`: vùng 08 `truc-quoc-lo-13` thêm `star` + `highlight` như các vùng gắn sao khác.
+- Đổi tên hiển thị "Trục Quốc Lộ 13" → "Đại lộ Bình Dương (QL13)": `title`/`seoTitle` bài vùng, `subtitle`/`seoTitle` các bài dự án trong vùng, tiêu đề H1 bài vùng và các bài khung (Habitat, Hồ Gươm Xanh, The Solis, Setia Edenia, One Era), link "Bối cảnh trục" trong SkySOLIS và Norton Park. `searchKeywords` giữ thêm tên cũ "Trục Quốc Lộ 13 QL13" để tìm kiếm vẫn ra. **Giữ nguyên URL** `/cam-nang/truc-quoc-lo-13/` (địa chỉ vĩnh viễn, không cần redirect).
+
 ## 2026-10-04 — Dự Án Chọn Lọc: Norton Park (bài đầy đủ, công bố)
 - `norton-park` (trước là bài khung `stub`): viết đầy đủ theo khung dự án 01–04 của SkySOLIS/Nam Mekong từ phiếu nhập liệu Tú gửi (Norton_Park_COMPACT.docx): clip giới thiệu (mở trên Facebook) + Prologue; 01 Tổng quan (vị trí cạnh AEON Mall Bình Dương Canary, quy mô 7,9 ha · 2 phân khu · 6 tháp 19 tầng · 1.286 sản phẩm, nhà phát triển, pháp lý & giai đoạn: kick-off 10/10/2026, bàn giao ~quý IV/2029, ảnh hiện trạng công trường); 02 Chi tiết (khối giá "Chờ công bố" + nút Zalo đăng ký nhận bảng giá, `.p-offers` 36 tháng · 10–15% ký HĐMB · 6 tháng/đợt; cơ cấu sản phẩm theo mặt bằng tầng 4–9; phối cảnh Forestscape; tiện ích nội khu; ngoại khu); 03 Vì sao tôi chọn; 04 SWOT (theo bản Tú gửi) + thang điểm 19 chỉ số, TB 4,18 + Hỏi & Đáp 6 câu. Dải `facts`, `seoTitle`/`seoDescription` theo khuôn "Giá, Pháp Lý, Tiến Độ 2026". Chuyển `published`.
 - 15 ảnh (tông ấm §8.4): xóa logo và hình mờ CBC trên ảnh vùng, chữ mờ "PHÚ LÊ" trên ảnh sân golf, địa chỉ web đại lý trên ảnh mặt bằng. Ảnh OG cắt từ ảnh hero.
