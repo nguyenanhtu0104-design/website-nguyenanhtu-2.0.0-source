@@ -1659,35 +1659,56 @@
  {
   "id": "norton_park",
   "slug": "norton-park",
-  "status": "stub",
+  "status": "published",
   "title": "Norton Park",
-  "subtitle": "Trục Quốc Lộ 13 · Đang cập nhật",
+  "subtitle": "Gamuda Land · Cạnh AEON Mall · Đại lộ Bình Dương · 1.286 sản phẩm · Kick-off 10/2026",
   "icon": "🏢",
   "category": "du-an-chon-loc",
   "parent": "truc-quoc-lo-13",
   "tags": [
    "du-an-chon-loc",
    "truc-quoc-lo-13",
-   "dang-cap-nhat"
+   "gamuda-land"
   ],
-  "description": "Phân tích chi tiết về dự án Norton Park đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
-  "thumbnail": null,
-  "heroImage": null,
-  "publishedDate": "2026-09-28",
-  "updatedDate": "2026-09-28",
+  "description": "Dự án căn hộ của Gamuda Land trên Đại lộ Bình Dương, ngay cạnh AEON Mall Bình Dương Canary: 7,9 ha, 6 tháp 19 tầng, 1.286 sản phẩm.",
+  "thumbnail": "norton-park/01",
+  "heroImage": "norton-park/01",
+  "publishedDate": "2026-10-04",
+  "updatedDate": "2026-10-04",
   "author": "nguyen-anh-tu",
   "content": "content/articles/norton-park.html",
-  "relatedArticles": [],
-  "seoTitle": "Norton Park — Trục Quốc Lộ 13",
-  "seoDescription": "Phân tích chi tiết về dự án Norton Park đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
+  "relatedArticles": [
+   "truc-quoc-lo-13",
+   "gamuda-land"
+  ],
+  "seoTitle": "Norton Park: Giá, Pháp Lý, Tiến Độ 2026",
+  "seoDescription": "Norton Park của Gamuda Land cạnh AEON Mall Bình Dương Canary: 7,9 ha, 1.286 sản phẩm, giãn thanh toán 36 tháng, bàn giao dự kiến quý IV/2029.",
   "ogImage": "assets/images/og/norton-park.jpg",
   "section": "🏛️ Dự Án Chọn Lọc",
   "accent": "#b05040",
-  "searchKeywords": "Norton Park Trục Quốc Lộ 13",
+  "searchKeywords": "Norton Park Gamuda Land Thuận Giao Lái Thiêu Thuận An Đại lộ Bình Dương Quốc lộ 13 AEON Mall Bình Dương Canary nhà ga C8 metro Bình Dương sân golf Sông Bé VSIP 1 Lotte Mart TOD Biophilic Forestscape Pulse Forest Cloud Forest 7,9 ha 1286 sản phẩm 6 tháp 19 tầng mật độ 20% Studio 1PN+ 2PN 2PN+ 3PN Duplex căn hộ sân vườn shophouse shop khối đế giãn thanh toán 36 tháng 10-15% ký HĐMB kick off 10/10/2026 bàn giao quý IV 2029 SWOT thang điểm giá bán pháp lý tiến độ có nên mua hỏi đáp Celadon City",
   "legacy": {
    "source": "v57",
    "panelId": "norton_park"
-  }
+  },
+  "facts": [
+   {
+    "n": "7,9 ha",
+    "l": "diện tích phát triển"
+   },
+   {
+    "n": "1.286",
+    "l": "sản phẩm · 6 tháp"
+   },
+   {
+    "n": "19",
+    "l": "tầng · 1 hầm"
+   },
+   {
+    "n": "Q4/2029",
+    "l": "bàn giao dự kiến"
+   }
+  ]
  },
  {
   "id": "the_solis",
