@@ -69,7 +69,7 @@
   "icon": "🏛️",
   "title": "Dự Án Đã Chọn Lọc",
   "tagline": "19 vùng chức năng · 79 dự án · ⭐ vùng & dự án tác giả đề xuất",
-  "badge": "19 vùng · 79 dự án",
+  "badge": "19 vùng · 80 dự án",
   "layout": "zones",
   "items": [
    {
@@ -437,6 +437,9 @@
      },
      {
       "article": "masterise-can-gio"
+     },
+     {
+      "article": "celesta-gold"
      }
     ]
    },

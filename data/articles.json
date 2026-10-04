@@ -2763,10 +2763,22 @@
   "accent": "#9b72cf",
   "searchKeywords": "Gamuda Land Gamuda Berhad Malaysia 50 năm 1976 hạ tầng SMART tunnel MRT tự chủ M&A pháp lý sạch quỹ đất GQUAS CONQUAS BCA Singapore chất lượng quốc tế Biophilic Design xanh bền vững ESG Green Plan 2030 Celadon City Tân Phú 82ha Eaton Park Thủ Đức Metro Elysian Artisan Park TPMBD Bình Dương Springville Nhơn Trạch The Meadow Gamuda City Hà Nội QTP Quick Turnaround township cộng đồng town-making 4.2 tỷ USD 10 dự án Việt Nam A-TBM autonomous TBM Golden Dragon Awards Top 10 chuyển đổi xanh",
   "facts": [
-   {"n": "2007", "l": "gia nhập Việt Nam"},
-   {"n": "10 dự án", "l": "Hà Nội · Hải Phòng · TP.HCM · Đồng Nai"},
-   {"n": "4,2 tỷ", "l": "USD vốn tích lũy"},
-   {"n": "+1,6 tỷ", "l": "USD rót thêm trong 5 năm tới"}
+   {
+    "n": "2007",
+    "l": "gia nhập Việt Nam"
+   },
+   {
+    "n": "10 dự án",
+    "l": "Hà Nội · Hải Phòng · TP.HCM · Đồng Nai"
+   },
+   {
+    "n": "4,2 tỷ",
+    "l": "USD vốn tích lũy"
+   },
+   {
+    "n": "+1,6 tỷ",
+    "l": "USD rót thêm trong 5 năm tới"
+   }
   ],
   "legacy": {
    "source": "v57",
@@ -2804,10 +2816,22 @@
   "accent": "#9b72cf",
   "searchKeywords": "Vinhomes Vingroup hệ sinh thái Grand Park Smart City Ocean Park Cần Giờ thanh khoản thương hiệu số 1",
   "facts": [
-   {"n": "271 ha", "l": "Vinhomes Grand Park"},
-   {"n": "280 ha", "l": "Smart City"},
-   {"n": "1.000+", "l": "ha · Vinhomes Hóc Môn"},
-   {"n": "2.870 ha", "l": "Vinhome Green Paradise · Cần Giờ"}
+   {
+    "n": "271 ha",
+    "l": "Vinhomes Grand Park"
+   },
+   {
+    "n": "280 ha",
+    "l": "Smart City"
+   },
+   {
+    "n": "1.000+",
+    "l": "ha · Vinhomes Hóc Môn"
+   },
+   {
+    "n": "2.870 ha",
+    "l": "Vinhome Green Paradise · Cần Giờ"
+   }
   ],
   "legacy": {
    "source": "v57",
@@ -2844,10 +2868,22 @@
   "accent": "#9b72cf",
   "searchKeywords": "Sun Group Lê Viết Lam destination developer hệ sinh thái 51 công ty thành viên 113 dự án biểu tượng cầu Vàng Bà Nà Hills Đà Nẵng Sapa Fansipan Phú Quốc Sun World Sun Hospitality Group Sun Property Sun PMC Sun Phu Quoc Airways hàng không LRT cáp treo kỷ lục thế giới Blanca City Vũng Tàu 96.6ha công viên nước Sun Thủ Thiêm 2C 32ha tháp 69 tầng 270m sông Sài Gòn Metro số 2 SOM EDSA Morphis Trung tâm Hành chính TP.HCM 29600 tỷ quảng trường BT PPP Bến Nhà Rồng Khánh Hội Bảo tàng HCM Marriott JW Marriott IHG InterContinental Accor Novotel MGallery Capella Bill Bensley condotel villa shophouse resort nghỉ dưỡng du lịch Asia Leading Travel Group World Travel Awards World Luxury Hotel Awards APEC 202",
   "facts": [
-   {"n": "2007", "l": "thành lập · Lê Viết Lam"},
-   {"n": "51", "l": "công ty thành viên"},
-   {"n": "113", "l": "dự án đầu tư"},
-   {"n": "~5,7 tỷ", "l": "USD · 5 dự án lớn tại TP.HCM"}
+   {
+    "n": "2007",
+    "l": "thành lập · Lê Viết Lam"
+   },
+   {
+    "n": "51",
+    "l": "công ty thành viên"
+   },
+   {
+    "n": "113",
+    "l": "dự án đầu tư"
+   },
+   {
+    "n": "~5,7 tỷ",
+    "l": "USD · 5 dự án lớn tại TP.HCM"
+   }
   ],
   "legacy": {
    "source": "v57",
@@ -2885,10 +2921,22 @@
   "accent": "#9b72cf",
   "searchKeywords": "CapitaLand Singapore 40 năm 40 quốc gia 1200 dự án REITs Somerset Citadines The Vista TPMBD Bình Dương tài chính vững vàng tổ ấm toàn diện hệ sinh thái dịch vụ tầm nhìn siêu hạn cao cấp expat quản trị minh bạch đô thị hóa bền vững Sycamore The Orchard Orchard Mansion Orchard Hill Orchard Heights Orchard Grand Orchard Collection De La Sol Quận 4 Dual Key Define Thạnh Mỹ Lợi Monaco hạng sang",
   "facts": [
-   {"n": "40+", "l": "năm phát triển"},
-   {"n": "40+", "l": "quốc gia"},
-   {"n": "1.200+", "l": "dự án toàn cầu"},
-   {"n": "30", "l": "năm tại Việt Nam"}
+   {
+    "n": "40+",
+    "l": "năm phát triển"
+   },
+   {
+    "n": "40+",
+    "l": "quốc gia"
+   },
+   {
+    "n": "1.200+",
+    "l": "dự án toàn cầu"
+   },
+   {
+    "n": "30",
+    "l": "năm tại Việt Nam"
+   }
   ],
   "legacy": {
    "source": "v57",
@@ -3026,10 +3074,22 @@
   "accent": "#9b72cf",
   "searchKeywords": "Masterise Homes Masterise Group Thảo Điền Investment 2007 2019 branded residences branded living Marriott JW Marriott Ritz-Carlton Residences Ritz-Carlton Hotel One Central Saigon Tứ Giác Bến Thành Grand Marina Saigon Ba Son Q1 The Global City 117.4ha Foster Partners WATG Arquitectonica HBA Turner Masteri Collection Masteri Thảo Điền Masteri West Heights LUMIÈRE Series Lumière Riverside Lumière EverGreen luxury ultra-premium UHNWI HNWI trophy asset tài sản toàn cầu global asset class Christie's International Real Estate Developer of the Year Vietnam 2026 Real Estate Asia Awards Masterise Property Management concierge 5 sao Nexus Zone Savills expat Việt kiều hàng hiệu siêu sang",
   "facts": [
-   {"n": "2007", "l": "năm khởi đầu"},
-   {"n": "3", "l": "thương hiệu · Masteri, LUMIÈRE, Branded"},
-   {"n": "117,4 ha", "l": "The Global City · Foster + Partners"},
-   {"n": "2026", "l": "Developer of the Year – Vietnam"}
+   {
+    "n": "2007",
+    "l": "năm khởi đầu"
+   },
+   {
+    "n": "3",
+    "l": "thương hiệu · Masteri, LUMIÈRE, Branded"
+   },
+   {
+    "n": "117,4 ha",
+    "l": "The Global City · Foster + Partners"
+   },
+   {
+    "n": "2026",
+    "l": "Developer of the Year – Vietnam"
+   }
   ],
   "legacy": {
    "source": "v57",
@@ -6065,5 +6125,50 @@
    "source": "v64",
    "panelId": "dev_huongviet"
   }
+ },
+ {
+  "id": "celesta_gold",
+  "slug": "celesta-gold",
+  "status": "stub",
+  "title": "Celesta Gold",
+  "subtitle": "Nguyễn Hữu Thọ · Keppel – Phú Long – Nomura · 420 căn hộ",
+  "icon": "🏢",
+  "category": "du-an-chon-loc",
+  "parent": "truc-nguyen-huu-tho-thuong-cang-hiep-phuoc",
+  "tags": [
+   "du-an-chon-loc",
+   "truc-nguyen-huu-tho-thuong-cang-hiep-phuoc"
+  ],
+  "description": "Celesta Gold, giai đoạn 3 Khu đô thị CELESTA trên trục Nguyễn Hữu Thọ, Nhà Bè: 420 căn hộ 25 tầng, khởi công 07/05/2026.",
+  "thumbnail": "celesta-gold/01",
+  "heroImage": "celesta-gold/01",
+  "publishedDate": "2026-10-04",
+  "updatedDate": "2026-10-04",
+  "author": "nguyen-anh-tu",
+  "content": "content/articles/celesta-gold.html",
+  "relatedArticles": [
+   "truc-nguyen-huu-tho-thuong-cang-hiep-phuoc"
+  ],
+  "seoTitle": "Celesta Gold Nguyễn Hữu Thọ: Thông Tin Dự Án",
+  "seoDescription": "Celesta Gold, giai đoạn 3 Khu đô thị CELESTA trên trục Nguyễn Hữu Thọ, Nhà Bè: 420 căn hộ 25 tầng, khởi công 07/05/2026.",
+  "ogImage": "assets/images/og/celesta-gold.jpg",
+  "section": "🏛️ Dự Án Chọn Lọc",
+  "accent": "#b05040",
+  "searchKeywords": "Celesta Gold Celesta City Keppel Phú Long Nomura Real Estate Vietnam Nguyễn Hữu Thọ Nhà Bè Phước Kiển khu Nam Sài Gòn 420 căn hộ 25 tầng 12.815 m2 shophouse officetel Coteccons khởi công 7/5/2026 metro số 4 cầu cảnh quan Hoàng Kim BCA Green Mark Gold",
+  "legacy": null,
+  "facts": [
+   {
+    "n": "420",
+    "l": "căn hộ cao cấp"
+   },
+   {
+    "n": "25",
+    "l": "tầng"
+   },
+   {
+    "n": "12.815",
+    "l": "m² · khu đất"
+   }
+  ]
  }
 ]
