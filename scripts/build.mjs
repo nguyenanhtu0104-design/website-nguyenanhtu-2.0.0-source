@@ -467,7 +467,14 @@ for (const sec of pubSections) {
     if (is.html) {
       fs.mkdirSync(path.join(out, 'doc'), { recursive: true });
       const raw = fs.readFileSync(path.join(is.dir, is.html), 'utf8');
-      fs.writeFileSync(path.join(out, 'doc', 'index.html'), externalizeBase64(raw, path.join(out, 'doc'), `${url}doc/`));
+      let docHtml = externalizeBase64(raw, path.join(out, 'doc'), `${url}doc/`);
+      // 2.10.1: bản đọc thiếu thẻ chia sẻ thì thêm og:image (bia.jpg của kỳ, không có thì ảnh trang chủ) + og:title/description/url + canonical, để link /doc/ dán lên Facebook/Zalo có ảnh
+      if (!/property=["']og:image["']/i.test(docHtml)) {
+        const ogImg = is.cover ? SITE + url + encodeURI(is.cover) : abs('assets/images/og/trang-chu.jpg');
+        const tags = `<meta property="og:type" content="website">\n<meta property="og:site_name" content="${esc(cfg.siteName)}">\n<meta property="og:title" content="${esc(is.title)}">\n<meta property="og:description" content="${esc(is.desc || sec.description)}">\n<meta property="og:url" content="${SITE + url}doc/">\n<meta property="og:image" content="${ogImg}">\n<meta name="twitter:card" content="summary_large_image">\n` + (/rel=["']canonical["']/i.test(docHtml) ? '' : `<link rel="canonical" href="${SITE + url}doc/">\n`);
+        docHtml = docHtml.replace(/<\/head>/i, tags + '</head>');
+      }
+      fs.writeFileSync(path.join(out, 'doc', 'index.html'), docHtml);
       actions += `<a class="pub-btn" href="${url}doc/">Đọc trực tuyến →</a>`;
     }
     for (const f of is.pdfs) actions += `<a class="pub-btn pub-btn-ghost" href="${url}${encodeURI(f)}" target="_blank" rel="noopener">Tải PDF${is.pdfs.length > 1 ? ' · ' + esc(f) : ''} ↓</a>`;

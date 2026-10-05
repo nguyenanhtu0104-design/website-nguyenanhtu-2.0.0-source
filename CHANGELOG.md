@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-05 — 2.10.1: Ảnh chia sẻ link cho Atlas / Chỉ số đô thị
+- Tú yêu cầu World Atlas, Atlas VietNam, Chỉ số đô thị đều lấy **ảnh trang chủ Cẩm nang** làm ảnh khi dán link (tạm thời). Thêm `bia.jpg` (bản sao `trang-chu.jpg`) cho kỳ Chỉ số đô thị; hai kỳ Atlas đã có từ trước.
+- `scripts/build.mjs`: trang bản đọc `/<mục>/<kỳ>/doc/` nào thiếu thẻ `og:image` thì build tự thêm `og:image` (= `bia.jpg` của kỳ), `og:title`, `og:description`, `og:url`, `twitter:card` và canonical. Trước đó link `/doc/` dán lên Facebook/Zalo không có ảnh. Bản đọc đã có thẻ riêng (Nhật san) giữ nguyên. Khi có ảnh riêng, chỉ cần thay `bia.jpg` của kỳ (đặt tên file mới nếu muốn né cache của Facebook, rồi Scrape Again).
+
 ## 2026-10-05 — Nội dung: VietNam Atlas bản Backfill 2022 Q1 → 2026 Q3
 - `publications/atlas-viet-nam/chi-so-kinh-te-viet-nam/` thay tại chỗ bằng bản **Historical Backfill Q1/2022 → Q3/2026** (final). Không đổi URL, không thêm bài; tiêu đề trang giữ "VietNam Atlas: chỉ số kinh tế Việt Nam".
 - File gốc vẫn có lỗi cũ (khối ngăn chi tiết nằm sau script khiến nút Chi tiết/In/Phương pháp không chạy) nên đã dời lên trước script, và thêm 1 dòng CSS ≤600px chống tràn ngang trên điện thoại. Không đổi số liệu hay thiết kế. Chân trang file vẫn ghi "Release v1.2.1" — giữ nguyên.
