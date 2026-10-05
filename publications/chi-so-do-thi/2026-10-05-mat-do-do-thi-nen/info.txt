@@ -3,4 +3,4 @@ so: 01
 ngay: 2026-10-05
 mo-ta: So sánh 11 chỉ số mật độ và kết nối đô thị của các mô hình đô thị nén thế giới với TP.HCM, Hà Nội, Vũng Tàu; số liệu là ước lượng phân tích.
 trich-doan: Mật độ thuần, hệ số sử dụng đất (FAR), nút giao, tiếp cận giao thông công cộng: đặt các đô thị Việt Nam cạnh những mô hình nén nổi tiếng thế giới trên cùng thang chuẩn hóa 0–100.
-trang-thai: nhap
+trang-thai: cong-bo

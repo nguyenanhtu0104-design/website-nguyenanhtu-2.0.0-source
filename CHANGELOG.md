@@ -4,7 +4,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 ## 2026-10-05 — 2.9.0: Menu mới "Chỉ số đô thị"
 - Thêm mục **Chỉ số đô thị** (`/chi-so-do-thi/`) vào thanh menu NAT, nằm sau "Nhật san". Dùng đúng cơ chế ấn phẩm theo kỳ của World Atlas / Nhật san: khai báo trong `site.config.json` → `publications`, mỗi báo cáo là một thư mục trong `publications/chi-so-do-thi/<kỳ>/`. Không đổi giao diện menu (các mục còn lại giữ nguyên).
-- Kỳ đầu tiên: "Báo cáo Mật độ Đô thị Nén 2026" (`2026-10-05-mat-do-do-thi-nen`), trạng thái **nháp** (`nhap`): xem thử qua đường dẫn, chưa hiện trong thư viện, chưa vào Google. Đổi `trang-thai: cong-bo` trong `info.txt` để công bố.
+- Kỳ đầu tiên: "Báo cáo Mật độ Đô thị Nén 2026" (`2026-10-05-mat-do-do-thi-nen`), đã **công bố** (`cong-bo`) theo yêu cầu của Tú: hiện trong thư viện `/chi-so-do-thi/`, có trong sitemap.
 - Báo cáo gốc dùng thư viện Chart.js tải từ CDN; theo §12.9 đã thay bằng 2 biểu đồ SVG tự vẽ (radar 11 chỉ số, cột Gap Analysis), giữ nguyên số liệu, màu và có tự co theo màn hình điện thoại. Phần còn lại của báo cáo giữ nguyên thiết kế.
 
 ## 2026-10-04 — Vùng 08: gắn sao và đổi tên "Đại lộ Bình Dương (QL13)"
