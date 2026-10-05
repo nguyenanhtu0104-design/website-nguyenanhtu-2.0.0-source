@@ -2,6 +2,11 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-05 — Nội dung: cập nhật World Atlas (v1.5.20) và VietNam Atlas (Q3/2026 final)
+- Cập nhật **tại chỗ**, không thêm kỳ/bài mới, không đổi URL: `publications/atlas/2026-q3/` thay bằng World Economic Atlas **v1.5.20** (bản No-JS Q3/2026, thêm mục tín dụng – nợ – tỷ trọng); `publications/atlas-viet-nam/chi-so-kinh-te-viet-nam/` thay bằng bản **Q3/2026 final** (v1.3.0). Tiêu đề trang giữ "World Atlas quý III/2026" và "VietNam Atlas: chỉ số kinh tế Việt Nam".
+- Bản final của VietNam Atlas vẫn có lỗi cũ: khối "ngăn chi tiết" nằm sau script nên các nút Chi tiết/In/Phương pháp không chạy. Đã dời lên trước script. Thêm 1 dòng CSS cho màn hình ≤600px (thanh trên cùng và ô lọc không còn tràn ngang trên điện thoại). Không đổi số liệu hay thiết kế.
+- Chân trang file vẫn ghi "Release v1.2.1" trong khi tiêu đề là v1.3.0 — giữ nguyên, chờ Tú xác nhận.
+
 ## 2026-10-05 — 2.10.0: Menu mới "Atlas VietNam", đăng World Atlas v1.5.19, rút gọn đường nhấp
 - Thêm mục **Atlas VietNam** (`/atlas-viet-nam/`) vào thanh menu NAT, nằm sau "World Atlas". Cùng cơ chế ấn phẩm theo kỳ: khai báo trong `site.config.json` → `publications` (`navKey: nav_atlasvn`), mỗi kỳ là một thư mục trong `publications/atlas-viet-nam/<kỳ>/`. Bài duy nhất, cập nhật tại chỗ: **VietNam Atlas: chỉ số kinh tế Việt Nam** (`chi-so-kinh-te-viet-nam`), đã **công bố** theo yêu cầu của Tú.
 - **World Atlas:** đăng **World Atlas quý III/2026** (`2026-q3`, bản No-JS cho điện thoại; mỗi quý một kỳ), đã **công bố**. Bản nháp cũ v1.5.16 (`trang-thai: nhap`) giữ nguyên, không hiện ra ngoài.
