@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-05 — Nội dung: VietNam Atlas bản Backfill 2022 Q1 → 2026 Q3
+- `publications/atlas-viet-nam/chi-so-kinh-te-viet-nam/` thay tại chỗ bằng bản **Historical Backfill Q1/2022 → Q3/2026** (final). Không đổi URL, không thêm bài; tiêu đề trang giữ "VietNam Atlas: chỉ số kinh tế Việt Nam".
+- File gốc vẫn có lỗi cũ (khối ngăn chi tiết nằm sau script khiến nút Chi tiết/In/Phương pháp không chạy) nên đã dời lên trước script, và thêm 1 dòng CSS ≤600px chống tràn ngang trên điện thoại. Không đổi số liệu hay thiết kế. Chân trang file vẫn ghi "Release v1.2.1" — giữ nguyên.
+
 ## 2026-10-05 — Nội dung: cập nhật World Atlas (v1.5.20) và VietNam Atlas (Q3/2026 final)
 - Cập nhật **tại chỗ**, không thêm kỳ/bài mới, không đổi URL: `publications/atlas/2026-q3/` thay bằng World Economic Atlas **v1.5.20** (bản No-JS Q3/2026, thêm mục tín dụng – nợ – tỷ trọng); `publications/atlas-viet-nam/chi-so-kinh-te-viet-nam/` thay bằng bản **Q3/2026 final** (v1.3.0). Tiêu đề trang giữ "World Atlas quý III/2026" và "VietNam Atlas: chỉ số kinh tế Việt Nam".
 - Bản final của VietNam Atlas vẫn có lỗi cũ: khối "ngăn chi tiết" nằm sau script nên các nút Chi tiết/In/Phương pháp không chạy. Đã dời lên trước script. Thêm 1 dòng CSS cho màn hình ≤600px (thanh trên cùng và ô lọc không còn tràn ngang trên điện thoại). Không đổi số liệu hay thiết kế.
