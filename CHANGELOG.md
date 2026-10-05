@@ -2,6 +2,11 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-05 — 2.9.0: Menu mới "Chỉ số đô thị"
+- Thêm mục **Chỉ số đô thị** (`/chi-so-do-thi/`) vào thanh menu NAT, nằm sau "Nhật san". Dùng đúng cơ chế ấn phẩm theo kỳ của World Atlas / Nhật san: khai báo trong `site.config.json` → `publications`, mỗi báo cáo là một thư mục trong `publications/chi-so-do-thi/<kỳ>/`. Không đổi giao diện menu (các mục còn lại giữ nguyên).
+- Kỳ đầu tiên: "Báo cáo Mật độ Đô thị Nén 2026" (`2026-10-05-mat-do-do-thi-nen`), trạng thái **nháp** (`nhap`): xem thử qua đường dẫn, chưa hiện trong thư viện, chưa vào Google. Đổi `trang-thai: cong-bo` trong `info.txt` để công bố.
+- Báo cáo gốc dùng thư viện Chart.js tải từ CDN; theo §12.9 đã thay bằng 2 biểu đồ SVG tự vẽ (radar 11 chỉ số, cột Gap Analysis), giữ nguyên số liệu, màu và có tự co theo màn hình điện thoại. Phần còn lại của báo cáo giữ nguyên thiết kế.
+
 ## 2026-10-04 — Vùng 08: gắn sao và đổi tên "Đại lộ Bình Dương (QL13)"
 - `data/categories.json`: vùng 08 `truc-quoc-lo-13` thêm `star` + `highlight` như các vùng gắn sao khác.
 - Đổi tên hiển thị "Trục Quốc Lộ 13" → "Đại lộ Bình Dương (QL13)": `title`/`seoTitle` bài vùng, `subtitle`/`seoTitle` các bài dự án trong vùng, tiêu đề H1 bài vùng và các bài khung (Habitat, Hồ Gươm Xanh, The Solis, Setia Edenia, One Era), link "Bối cảnh trục" trong SkySOLIS và Norton Park. `searchKeywords` giữ thêm tên cũ "Trục Quốc Lộ 13 QL13" để tìm kiếm vẫn ra. **Giữ nguyên URL** `/cam-nang/truc-quoc-lo-13/` (địa chỉ vĩnh viễn, không cần redirect).

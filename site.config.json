@@ -1,5 +1,5 @@
 {
-  "version": "2.8.0",
+  "version": "2.9.0",
   "ctaCategories": [
     "du-an-chon-loc"
   ],
@@ -48,6 +48,16 @@
       "pageTitle": "Nhật san | Nguyễn Anh Tú",
       "label": "GÓC NHÌN · QUAN SÁT · THỊ TRƯỜNG",
       "description": "Những ghi chép và góc nhìn về thị trường, được biên tập thành từng kỳ để đọc trực tuyến hoặc tải về."
+    },
+    {
+      "id": "chi-so-do-thi",
+      "path": "chi-so-do-thi",
+      "cover": false,
+      "navKey": "nav_chisodothi",
+      "title": "Chỉ số đô thị",
+      "pageTitle": "Chỉ số đô thị | Nguyễn Anh Tú",
+      "label": "MẬT ĐỘ · HẠ TẦNG · BENCHMARK",
+      "description": "Các báo cáo chỉ số đô thị: mật độ, hệ số sử dụng đất, kết nối giao thông. Đặt TP.HCM, Hà Nội, Vũng Tàu cạnh các mô hình đô thị nén trên thế giới."
     }
   ]
 }

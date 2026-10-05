@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo Cáo Phân Tích Mật Độ Đô Thị Nén (Urban Compactness Analysis) · Niên độ 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#e7eae6; --surface:#f5f7f3; --surface-2:#eef1ec;
+  --ink:#16302b; --ink-soft:#3f5a54; --muted:#6d817b;
+  --line:#d3dad4; --line-soft:#e0e5df;
+  --vn-before:#9aa8a2; --vn-after:#1f6f5c; --vn-after-soft:#cfe6de;
+  --accent:#8f3b24;
+  --shadow:0 1px 2px rgba(22,48,43,.06), 0 8px 24px -18px rgba(22,48,43,.35);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0e1a17; --surface:#152521; --surface-2:#10201c;
+    --ink:#e7efeb; --ink-soft:#b6c8c2; --muted:#829892;
+    --line:#263a34; --line-soft:#1c2c28;
+    --vn-before:#5f736c; --vn-after:#4fb79a; --vn-after-soft:#1d3b34;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -18px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0e1a17; --surface:#152521; --surface-2:#10201c;
+  --ink:#e7efeb; --ink-soft:#b6c8c2; --muted:#829892;
+  --line:#263a34; --line-soft:#1c2c28;
+  --vn-before:#5f736c; --vn-after:#4fb79a; --vn-after-soft:#1d3b34;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px -18px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Be Vietnam Pro",system-ui,-apple-system,sans-serif;
+  font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px; margin:0 auto; padding:0 20px}
+h1,h2,h3,h4{font-family:"Space Grotesk","Be Vietnam Pro",sans-serif; line-height:1.15; margin:0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+.masthead{background:linear-gradient(180deg,var(--ink),#0f231f);
+  color:#eaf2ee; padding:44px 0 40px; position:relative; overflow:hidden}
+.masthead::before{content:""; position:absolute; inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:34px 34px; -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.5),transparent 70%);
+  mask-image:linear-gradient(180deg,rgba(0,0,0,.5),transparent 70%)}
+.masthead .wrap{position:relative}
+.mh-kicker{font-family:"Space Grotesk"; font-size:12.5px; letter-spacing:.14em;
+  color:#8fd0bd; margin-bottom:14px; font-weight:600}
+.mh-title{font-size:clamp(26px,4.3vw,40px); font-weight:700; max-width:20ch; letter-spacing:-.01em}
+.mh-sub{color:#a9c4bb; margin-top:14px; max-width:60ch; font-size:14.5px}
+.mh-stats{display:flex; gap:34px; margin-top:26px; flex-wrap:wrap}
+.mh-stat b{font-family:"Space Grotesk"; font-size:26px; font-weight:700; color:#fff; display:block}
+.mh-stat span{font-size:12.5px; color:#8fb3a8}
+
+.spectrum{padding:88px 0 20px}
+.spec-track{position:relative; height:150px; margin:0 8px}
+.spec-line{position:absolute; left:0; right:0; top:96px; height:2px;
+  background:linear-gradient(90deg,#f2e7c9,#e7c878,#d99a4e,#c05f34,#8f3b24); border-radius:2px}
+.spec-item{position:absolute; top:96px; transform:translate(-50%,-50%)}
+.spec-dot{display:block; width:15px; height:15px; border-radius:50%;
+  border:2.5px solid var(--paper); box-shadow:0 0 0 1px rgba(22,48,43,.25); position:relative; z-index:2}
+.spec-leader{position:absolute; left:50%; bottom:50%; width:1px;
+  background:var(--line); transform:translateX(-50%)}
+.spec-label{position:absolute; left:50%; transform:translateX(-50%); text-align:center; white-space:nowrap}
+.spec-name{display:block; font-size:11.5px; font-weight:600; color:var(--ink)}
+.spec-val{display:block; font-family:"Space Grotesk"; font-size:12px; color:var(--muted)}
+.vn-lane{position:absolute; left:0; right:0; top:96px; height:54px}
+.vn-seg{position:absolute; top:22px; height:3px; background:var(--vn-after-soft); border-radius:3px}
+.vn-dot{position:absolute; top:17px; width:13px; height:13px; border-radius:50%; transform:translateX(-50%)}
+.vn-before{background:var(--paper); border:2.5px solid var(--vn-before)}
+.vn-after{background:var(--vn-after); border:2.5px solid var(--paper); box-shadow:0 0 0 1px var(--vn-after)}
+.vn-label{position:absolute; transform:translateX(-50%);
+  font-size:11px; font-weight:600; color:var(--vn-after); white-space:nowrap}
+.vn-label::before{content:"▸ "; color:var(--vn-after)}
+.spec-scale{display:flex; justify-content:space-between; margin-top:6px;
+  font-size:11.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:10px}
+.spec-scale span:nth-child(2){font-family:"Space Grotesk"; font-weight:600; color:var(--ink-soft)}
+
+.section{padding:40px 0}
+.sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px}
+.sec-title{font-size:20px; font-weight:700}
+.sec-note{font-size:13px; color:var(--muted); margin:0 0 22px; max-width:70ch}
+
+.heatmap-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:14px;
+  background:var(--surface); box-shadow:var(--shadow)}
+.heatmap{border-collapse:collapse; width:100%; min-width:660px; font-size:13px}
+.heatmap th,.heatmap td{padding:0}
+.hm-corner{text-align:left; padding:12px 14px; font-family:"Space Grotesk";
+  font-weight:600; font-size:12.5px; color:var(--ink-soft); position:sticky; left:0;
+  background:var(--surface-2); border-bottom:1px solid var(--line); min-width:190px}
+.hm-idx-h{display:block; font-family:"Be Vietnam Pro"; font-weight:400; font-size:10.5px; color:var(--muted)}
+.hm-metric{padding:12px 6px; font-size:11.5px; font-weight:600; color:var(--ink-soft);
+  border-bottom:1px solid var(--line); text-align:center; vertical-align:bottom; background:var(--surface-2)}
+.hm-row{text-align:left; padding:10px 14px; font-weight:600; font-size:13px;
+  position:sticky; left:0; background:var(--surface); border-bottom:1px solid var(--line-soft); white-space:nowrap}
+.hm-idx{display:inline-block; margin-left:8px; font-family:"Space Grotesk"; font-size:11px; color:var(--muted); font-weight:500}
+.hm-cell{text-align:center; font-family:"Space Grotesk"; font-weight:600; font-size:12.5px;
+  border-bottom:1px solid rgba(255,255,255,.35); border-left:1px solid rgba(255,255,255,.35)}
+.hm-empty{background:var(--surface-2)!important; color:var(--muted)!important}
+.row-vnb .hm-row{color:var(--vn-before)}
+.row-vna .hm-row{color:var(--vn-after); font-weight:700}
+
+.ramp-legend{display:flex; align-items:center; gap:10px; margin-top:14px; font-size:12px; color:var(--muted); flex-wrap:wrap}
+.ramp-bar{width:120px; height:10px; border-radius:6px;
+  background:linear-gradient(90deg,#f2e7c9,#e7c878,#d99a4e,#c05f34,#8f3b24)}
+.ramp-note{margin-left:auto}
+
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:18px 20px; box-shadow:var(--shadow)}
+.panel h3{font-size:15px; margin-bottom:14px; color:var(--ink)}
+.chartbox{height:auto}
+.chartbox svg{display:block;width:100%;height:auto;overflow:visible}
+.chart-legend{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin-top:10px;font-size:12px;color:var(--ink-soft)}
+.chart-legend span{display:inline-flex;align-items:center;gap:6px}
+.chart-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.readme{font-size:13.5px; color:var(--ink-soft); padding-left:18px; margin:0}
+.readme li{margin:9px 0}
+.readme b{color:var(--ink)}
+
+.tabs{display:flex; gap:6px; border-bottom:1px solid var(--line); margin:8px 0 26px;
+  position:sticky; top:0; background:var(--paper); z-index:5; padding-top:8px}
+.tab-btn{appearance:none; border:0; background:none; cursor:pointer;
+  font-family:"Space Grotesk",sans-serif; font-size:14px; font-weight:600; color:var(--muted);
+  padding:12px 14px; border-bottom:2.5px solid transparent; transition:color .15s, border-color .15s}
+.tab-btn:hover{color:var(--ink-soft)}
+.tab-btn.active{color:var(--accent); border-color:var(--accent)}
+.tab-btn:focus-visible{outline:2px solid var(--vn-after); outline-offset:3px; border-radius:4px}
+.panel-tab{display:none}
+.panel-tab.active{display:block}
+
+.cases{display:grid; grid-template-columns:1fr 1fr; gap:20px}
+.case{background:var(--surface); border:1px solid var(--line); border-radius:14px;
+  padding:20px; box-shadow:var(--shadow); display:flex; flex-direction:column; gap:14px}
+.case-head{display:flex; align-items:center; gap:12px}
+.case-chip{font-family:"Space Grotesk"; font-weight:700; font-size:15px;
+  min-width:40px; height:40px; border-radius:10px; display:grid; place-items:center; flex:none}
+.case-name{font-size:17px; font-weight:700}
+.case-strategy{font-size:13.5px; color:var(--ink-soft); margin:0}
+.mchips{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.mchip{background:var(--surface-2); border-radius:8px; padding:7px 9px; text-align:center}
+.mchip-k{display:block; font-size:10px; color:var(--muted); margin-bottom:2px}
+.mchip-v{display:block; font-family:"Space Grotesk"; font-weight:600; font-size:15px; color:var(--ink)}
+.pc{display:grid; grid-template-columns:1fr 1fr; gap:14px; border-top:1px solid var(--line-soft); padding-top:12px}
+.pc-col{list-style:none; margin:0; padding:0}
+.pc-col li{font-size:12.5px; line-height:1.5; margin-bottom:7px; padding-left:16px; position:relative}
+.pro::before{content:"+"; position:absolute; left:0; color:var(--vn-after); font-weight:700}
+.con::before{content:"−"; position:absolute; left:0; color:var(--accent); font-weight:700}
+
+.vngrid{display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-bottom:24px}
+.vncity{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px; box-shadow:var(--shadow)}
+.vncity-name{font-size:17px; margin-bottom:10px}
+.vncity-legend{display:flex; gap:18px; font-size:12px; color:var(--muted); margin-bottom:16px}
+.sw{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:middle}
+.sw-b{background:var(--vn-before)} .sw-a{background:var(--vn-after)}
+.gap-row{display:grid; grid-template-columns:100px 1fr 92px; gap:10px; align-items:center; margin-bottom:11px}
+.gap-label{font-size:12px; color:var(--ink-soft)}
+.gap-track{position:relative; height:16px; background:var(--surface-2); border-radius:8px; overflow:hidden}
+.gap-fill-b{position:absolute; left:0; top:0; height:100%; background:var(--vn-before); opacity:.55; border-radius:8px}
+.gap-fill-a{position:absolute; left:0; top:0; height:100%; background:var(--vn-after); border-radius:8px;
+  clip-path:inset(4px 0 4px 0 round 8px)}
+.gap-nums{font-family:"Space Grotesk"; font-size:12px; color:var(--muted); text-align:right}
+.gap-nums b{color:var(--ink)}
+.vncols{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+.vncol{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px; box-shadow:var(--shadow)}
+.vncol h3{font-size:15px; margin-bottom:12px}
+.vncol ul{margin:0; padding-left:18px; font-size:13.5px; color:var(--ink-soft)}
+.vncol li{margin-bottom:9px}
+.vncol.compat h3{color:var(--vn-after)}
+.vncol.barrier h3{color:var(--accent)}
+
+.metrics{display:grid; grid-template-columns:repeat(2,1fr); gap:18px}
+.metric{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px; box-shadow:var(--shadow)}
+.metric-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px}
+.metric-no{font-family:"Space Grotesk"; font-size:20px; font-weight:700; color:var(--line)}
+.metric-unit{font-size:11px; color:var(--vn-after); background:var(--vn-after-soft); padding:3px 9px; border-radius:20px; font-weight:600}
+.metric-name{font-size:15px; margin-bottom:8px}
+.metric-desc{font-size:13px; color:var(--ink-soft); margin:0}
+
+.src-note{background:var(--surface-2); border:1px solid var(--line);
+  border-left:3px solid var(--vn-after); border-radius:12px; padding:16px 20px; margin-bottom:22px; position:relative}
+.src-note p{margin:8px 0 0; font-size:13px; color:var(--ink-soft); line-height:1.65; max-width:95ch}
+.src-note-badge{font-family:"Space Grotesk"; font-size:11px; font-weight:600; letter-spacing:.04em;
+  color:var(--vn-after); text-transform:uppercase}
+.src-updated{display:inline-block; margin-top:10px; font-family:"Space Grotesk";
+  font-size:11.5px; color:var(--muted)}
+.src-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:18px}
+.src-model{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px}
+.src-name{font-size:14px; margin-bottom:10px; color:var(--ink)}
+.src-list{list-style:none; margin:0; padding:0}
+.src-list li{font-size:12.5px; line-height:1.5; margin-bottom:9px; padding-left:16px; position:relative}
+.src-list li::before{content:"↳"; position:absolute; left:0; color:var(--muted)}
+.src-list a{color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--line)}
+.src-list a:hover{color:var(--vn-after); border-color:var(--vn-after)}
+
+footer{border-top:1px solid var(--line); margin-top:30px; padding:26px 0 40px; font-size:12.5px; color:var(--muted); text-align:center}
+
+@media (max-width:760px){
+  .grid2,.cases,.vngrid,.vncols,.metrics,.src-grid{grid-template-columns:1fr}
+  .mh-stats{gap:22px}
+  .spec-name{font-size:10px}
+  .ramp-note{margin-left:0; width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="mh-kicker">PHÂN TÍCH MẬT ĐỘ ĐÔ THỊ NÉN · NIÊN ĐỘ 2026</div>
+    <h1 class="mh-title">Báo Cáo Phân Tích Mật Độ Đô Thị Nén (Urban Compactness Analysis)</h1>
+    <p class="mh-sub">Đối chiếu chiến lược của 15 mô hình đô thị toàn cầu theo 6 chỉ số nén, đặt trong bối cảnh địa lý từng vùng và định hướng cho đô thị Việt Nam.</p>
+    <div class="mh-stats">
+      <div class="mh-stat"><b>15</b><span>Mô hình đô thị</span></div>
+      <div class="mh-stat"><b>11</b><span>Chỉ số cốt lõi</span></div>
+      <div class="mh-stat"><b>100</b><span>Năm tầm nhìn</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="spectrum">
+      <div class="spec-track">
+        
+        <div class="spec-item" style="left:0.8%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Vũng Tàu – BR-VT</span>
+            <span class="spec-val">1</span>
+          </div>
+          <span class="spec-dot" style="background:#f2e6c6"></span>
+        </div>
+        <div class="spec-item" style="left:4.8%">
+          <span class="spec-leader" style="height:3.55rem"></span>
+          <div class="spec-label" style="top:-4.10rem">
+            <span class="spec-name">Biên Hòa – Đồng Nai</span>
+            <span class="spec-val">5</span>
+          </div>
+          <span class="spec-dot" style="background:#f0e1b9"></span>
+        </div>
+        <div class="spec-item" style="left:9.3%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Bình Dương</span>
+            <span class="spec-val">9</span>
+          </div>
+          <span class="spec-dot" style="background:#eedbab"></span>
+        </div>
+        <div class="spec-item" style="left:31.2%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Portland</span>
+            <span class="spec-val">31</span>
+          </div>
+          <span class="spec-dot" style="background:#e4bd6e"></span>
+        </div>
+        <div class="spec-item" style="left:37.5%">
+          <span class="spec-leader" style="height:3.55rem"></span>
+          <div class="spec-label" style="top:-4.10rem">
+            <span class="spec-name">Medellín</span>
+            <span class="spec-val">38</span>
+          </div>
+          <span class="spec-dot" style="background:#e0b163"></span>
+        </div>
+        <div class="spec-item" style="left:43.2%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Thâm Quyến</span>
+            <span class="spec-val">43</span>
+          </div>
+          <span class="spec-dot" style="background:#dda759"></span>
+        </div>
+        <div class="spec-item" style="left:44.7%">
+          <span class="spec-leader" style="height:5.30rem"></span>
+          <div class="spec-label" style="top:-5.85rem">
+            <span class="spec-name">Curitiba</span>
+            <span class="spec-val">45</span>
+          </div>
+          <span class="spec-dot" style="background:#dca457"></span>
+        </div>
+        <div class="spec-item" style="left:47.6%">
+          <span class="spec-leader" style="height:3.55rem"></span>
+          <div class="spec-label" style="top:-4.10rem">
+            <span class="spec-name">Ahmedabad</span>
+            <span class="spec-val">48</span>
+          </div>
+          <span class="spec-dot" style="background:#da9e52"></span>
+        </div>
+        <div class="spec-item" style="left:53.7%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Copenhagen</span>
+            <span class="spec-val">54</span>
+          </div>
+          <span class="spec-dot" style="background:#d5914a"></span>
+        </div>
+        <div class="spec-item" style="left:65.2%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Seoul</span>
+            <span class="spec-val">65</span>
+          </div>
+          <span class="spec-dot" style="background:#ca763e"></span>
+        </div>
+        <div class="spec-item" style="left:68.3%">
+          <span class="spec-leader" style="height:3.55rem"></span>
+          <div class="spec-label" style="top:-4.10rem">
+            <span class="spec-name">Singapore</span>
+            <span class="spec-val">68</span>
+          </div>
+          <span class="spec-dot" style="background:#c76f3b"></span>
+        </div>
+        <div class="spec-item" style="left:71.5%">
+          <span class="spec-leader" style="height:5.30rem"></span>
+          <div class="spec-label" style="top:-5.85rem">
+            <span class="spec-name">Tokyo</span>
+            <span class="spec-val">72</span>
+          </div>
+          <span class="spec-dot" style="background:#c46738"></span>
+        </div>
+        <div class="spec-item" style="left:74.1%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Barcelona</span>
+            <span class="spec-val">74</span>
+          </div>
+          <span class="spec-dot" style="background:#c16135"></span>
+        </div>
+        <div class="spec-item" style="left:78.4%">
+          <span class="spec-leader" style="height:3.55rem"></span>
+          <div class="spec-label" style="top:-4.10rem">
+            <span class="spec-name">Paris</span>
+            <span class="spec-val">78</span>
+          </div>
+          <span class="spec-dot" style="background:#b95a32"></span>
+        </div>
+        <div class="spec-item" style="left:88.9%">
+          <span class="spec-leader" style="height:1.80rem"></span>
+          <div class="spec-label" style="top:-2.35rem">
+            <span class="spec-name">Hong Kong</span>
+            <span class="spec-val">89</span>
+          </div>
+          <span class="spec-dot" style="background:#a54b2b"></span>
+        </div>
+        <div class="spec-line"></div>
+        <div class="vn-lane">
+        <div class="vn-seg" style="left:18.2%;width:36.7%"></div><div class="vn-dot vn-before" style="left:18.2%" title="Hiện trạng"></div>
+        <div class="vn-dot vn-after" style="left:54.9%"></div>
+        <div class="vn-label" style="left:54.9%; top:34px">Hà Nội</div>
+        <div class="vn-seg" style="left:23.6%;width:37.6%"></div><div class="vn-dot vn-before" style="left:23.6%" title="Hiện trạng"></div>
+        <div class="vn-dot vn-after" style="left:61.2%"></div>
+        <div class="vn-label" style="left:61.2%; top:20px">TP. Hồ Chí Minh</div></div>
+      </div>
+      <div class="spec-scale">
+        <span>Dàn trải · mật độ thấp</span>
+        <span>Chỉ số nén cốt lõi — Core Compactness (0–100)</span>
+        <span>Nén cao · đa chức năng</span>
+      </div>
+    </div></section>
+
+  <section class="section">
+    <div class="sec-head"><h2 class="sec-title">Ma trận so sánh toàn cảnh</h2></div>
+    <p class="sec-note">Mỗi ô màu thể hiện cường độ của một chỉ số sau khi chuẩn hóa trên cùng thang 0–100; đậm hơn = giá trị cao hơn. Đọc theo cột để so một chỉ số giữa các mô hình, đọc theo hàng để thấy "hình dạng" của từng mô hình.</p>
+    
+    <div class="heatmap-wrap">
+      <table class="heatmap">
+        <thead><tr><th class="hm-corner">Mô hình đô thị<span class="hm-idx-h">Chỉ số nén</span></th><th class='hm-metric'>Mật độ thuần</th><th class='hm-metric'>FAR Tổng hợp</th><th class='hm-metric'>FAR Cao tầng</th><th class='hm-metric'>FAR Thấp tầng</th><th class='hm-metric'>Đa dạng SDĐ</th><th class='hm-metric'>Nút giao</th><th class='hm-metric'>Tiếp cận GTCC</th><th class='hm-metric'>Kết nối đường</th><th class='hm-metric'>Tỷ lệ ĐTH</th><th class='hm-metric'>Tốc độ ĐTH</th><th class='hm-metric'>% Cao tầng</th></tr></thead>
+        <tbody><tr class='row-global'><th class='hm-row'>Hong Kong<span class='hm-idx'>89</span></th><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>350</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>5</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>9</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>1.8</td><td class='hm-cell' style='background:#ac512e;color:#fbf3e6'>0.82</td><td class='hm-cell' style='background:#bc5c33;color:#fbf3e6'>140</td><td class='hm-cell' style='background:#954026;color:#fbf3e6'>92</td><td class='hm-cell' style='background:#c05f34;color:#fbf3e6'>75</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>100</td><td class='hm-cell' style='background:#ebd498;color:#241a12'>0.6</td><td class='hm-cell' style='background:#933e25;color:#fbf3e6'>93</td></tr><tr class='row-global'><th class='hm-row'>Singapore<span class='hm-idx'>68</span></th><td class='hm-cell' style='background:#cc7b40;color:#241a12'>245</td><td class='hm-cell' style='background:#deab5e;color:#241a12'>2.5</td><td class='hm-cell' style='background:#ecd79e;color:#241a12'>3.8</td><td class='hm-cell' style='background:#e5c172;color:#241a12'>1.2</td><td class='hm-cell' style='background:#c56b39;color:#fbf3e6'>0.76</td><td class='hm-cell' style='background:#d5914a;color:#241a12'>110</td><td class='hm-cell' style='background:#9e4629;color:#fbf3e6'>88</td><td class='hm-cell' style='background:#a3492a;color:#fbf3e6'>84</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>100</td><td class='hm-cell' style='background:#ead191;color:#241a12'>0.7</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>95</td></tr><tr class='row-global'><th class='hm-row'>Curitiba (Brazil)<span class='hm-idx'>45</span></th><td class='hm-cell' style='background:#e9cd85;color:#241a12'>125</td><td class='hm-cell' style='background:#edd8a2;color:#241a12'>1.3</td><td class='hm-cell' style='background:#e2b96a;color:#241a12'>5</td><td class='hm-cell' style='background:#ecd59b;color:#241a12'>0.8</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>0.68</td><td class='hm-cell' style='background:#dda85b;color:#241a12'>95</td><td class='hm-cell' style='background:#c16035;color:#fbf3e6'>72</td><td class='hm-cell' style='background:#c76f3b;color:#fbf3e6'>71</td><td class='hm-cell' style='background:#b45630;color:#fbf3e6'>88</td><td class='hm-cell' style='background:#ead191;color:#241a12'>0.7</td><td class='hm-cell' style='background:#ecd59a;color:#241a12'>18</td></tr><tr class='row-global'><th class='hm-row'>Tokyo<span class='hm-idx'>72</span></th><td class='hm-cell' style='background:#e1b567;color:#241a12'>165</td><td class='hm-cell' style='background:#e8c97c;color:#241a12'>1.8</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>6</td><td class='hm-cell' style='background:#ecd59b;color:#241a12'>0.8</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>0.88</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>170</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>95</td><td class='hm-cell' style='background:#c56b39;color:#fbf3e6'>72</td><td class='hm-cell' style='background:#a84d2c;color:#fbf3e6'>92</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>-0.1</td><td class='hm-cell' style='background:#eedba9;color:#241a12'>14</td></tr><tr class='row-global'><th class='hm-row'>Seoul (Hàn Quốc)<span class='hm-idx'>65</span></th><td class='hm-cell' style='background:#d18746;color:#241a12'>230</td><td class='hm-cell' style='background:#ebd293;color:#241a12'>1.5</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>3</td><td class='hm-cell' style='background:#e5c172;color:#241a12'>1.2</td><td class='hm-cell' style='background:#b65831;color:#fbf3e6'>0.8</td><td class='hm-cell' style='background:#c66d3a;color:#fbf3e6'>130</td><td class='hm-cell' style='background:#9a4328;color:#fbf3e6'>90</td><td class='hm-cell' style='background:#c26336;color:#fbf3e6'>74</td><td class='hm-cell' style='background:#c36637;color:#fbf3e6'>82</td><td class='hm-cell' style='background:#eedcad;color:#241a12'>0.3</td><td class='hm-cell' style='background:#cb783f;color:#fbf3e6'>63</td></tr><tr class='row-global'><th class='hm-row'>Paris (Pháp)<span class='hm-idx'>78</span></th><td class='hm-cell' style='background:#c76f3b;color:#fbf3e6'>260</td><td class='hm-cell' style='background:#da9e52;color:#241a12'>2.8</td><td class='hm-cell' style='background:#ebd293;color:#241a12'>4</td><td class='hm-cell' style='background:#e5c172;color:#241a12'>1.2</td><td class='hm-cell' style='background:#ac512e;color:#fbf3e6'>0.82</td><td class='hm-cell' style='background:#ad512e;color:#fbf3e6'>150</td><td class='hm-cell' style='background:#933e25;color:#fbf3e6'>93</td><td class='hm-cell' style='background:#a94e2d;color:#fbf3e6'>82</td><td class='hm-cell' style='background:#c56a39;color:#fbf3e6'>81</td><td class='hm-cell' style='background:#ecd79f;color:#241a12'>0.5</td><td class='hm-cell' style='background:#f1e3be;color:#241a12'>8</td></tr><tr class='row-global'><th class='hm-row'>Portland (Mỹ)<span class='hm-idx'>31</span></th><td class='hm-cell' style='background:#f1e5c3;color:#241a12'>70</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>0.8</td><td class='hm-cell' style='background:#ebd293;color:#241a12'>4</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>0.4</td><td class='hm-cell' style='background:#e4bf70;color:#241a12'>0.6</td><td class='hm-cell' style='background:#e2b668;color:#241a12'>85</td><td class='hm-cell' style='background:#dca457;color:#241a12'>45</td><td class='hm-cell' style='background:#bd5d33;color:#fbf3e6'>76</td><td class='hm-cell' style='background:#c26336;color:#fbf3e6'>83</td><td class='hm-cell' style='background:#e9cf89;color:#241a12'>0.8</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>5</td></tr><tr class='row-global'><th class='hm-row'>Ahmedabad (Ấn Độ)<span class='hm-idx'>48</span></th><td class='hm-cell' style='background:#d8984d;color:#241a12'>210</td><td class='hm-cell' style='background:#ecd59b;color:#241a12'>1.4</td><td class='hm-cell' style='background:#eeddae;color:#241a12'>3.5</td><td class='hm-cell' style='background:#d28947;color:#241a12'>2</td><td class='hm-cell' style='background:#cf8244;color:#241a12'>0.72</td><td class='hm-cell' style='background:#ce7f42;color:#241a12'>120</td><td class='hm-cell' style='background:#d7954c;color:#241a12'>52</td><td class='hm-cell' style='background:#dba054;color:#241a12'>58</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>36</td><td class='hm-cell' style='background:#d7954c;color:#241a12'>2.3</td><td class='hm-cell' style='background:#efddb0;color:#241a12'>12</td></tr><tr class='row-global'><th class='hm-row'>Thâm Quyến (Trung Quốc)<span class='hm-idx'>43</span></th><td class='hm-cell' style='background:#e2b96a;color:#241a12'>160</td><td class='hm-cell' style='background:#e2b96a;color:#241a12'>2.2</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>6</td><td class='hm-cell' style='background:#dfae60;color:#241a12'>1.5</td><td class='hm-cell' style='background:#dda85b;color:#241a12'>0.65</td><td class='hm-cell' style='background:#e8ca7e;color:#241a12'>70</td><td class='hm-cell' style='background:#ab502d;color:#fbf3e6'>82</td><td class='hm-cell' style='background:#dea95c;color:#241a12'>55</td><td class='hm-cell' style='background:#dca356;color:#241a12'>65</td><td class='hm-cell' style='background:#deaa5d;color:#241a12'>1.8</td><td class='hm-cell' style='background:#ce8042;color:#241a12'>60</td></tr><tr class='row-global'><th class='hm-row'>Barcelona (Tây Ban Nha)<span class='hm-idx'>74</span></th><td class='hm-cell' style='background:#b1542f;color:#fbf3e6'>300</td><td class='hm-cell' style='background:#e2b96a;color:#241a12'>2.2</td><td class='hm-cell' style='background:#e7c878;color:#241a12'>4.5</td><td class='hm-cell' style='background:#c05f34;color:#fbf3e6'>2.5</td><td class='hm-cell' style='background:#a3492a;color:#fbf3e6'>0.84</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>105</td><td class='hm-cell' style='background:#a54b2b;color:#fbf3e6'>85</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>90</td><td class='hm-cell' style='background:#c56a39;color:#fbf3e6'>81</td><td class='hm-cell' style='background:#eedcad;color:#241a12'>0.3</td><td class='hm-cell' style='background:#efddb0;color:#241a12'>12</td></tr><tr class='row-global'><th class='hm-row'>Medellín (Colombia)<span class='hm-idx'>38</span></th><td class='hm-cell' style='background:#dba255;color:#241a12'>195</td><td class='hm-cell' style='background:#edd8a2;color:#241a12'>1.3</td><td class='hm-cell' style='background:#ebd293;color:#241a12'>4</td><td class='hm-cell' style='background:#e5c172;color:#241a12'>1.2</td><td class='hm-cell' style='background:#d48e49;color:#241a12'>0.7</td><td class='hm-cell' style='background:#e6c575;color:#241a12'>75</td><td class='hm-cell' style='background:#d38d48;color:#241a12'>55</td><td class='hm-cell' style='background:#e4bf70;color:#241a12'>48</td><td class='hm-cell' style='background:#c36637;color:#fbf3e6'>82</td><td class='hm-cell' style='background:#e7c97c;color:#241a12'>1</td><td class='hm-cell' style='background:#e8cb81;color:#241a12'>25</td></tr><tr class='row-global'><th class='hm-row'>Copenhagen (Đan Mạch)<span class='hm-idx'>54</span></th><td class='hm-cell' style='background:#eedcac;color:#241a12'>90</td><td class='hm-cell' style='background:#e8c97c;color:#241a12'>1.8</td><td class='hm-cell' style='background:#ebd293;color:#241a12'>4</td><td class='hm-cell' style='background:#dfae60;color:#241a12'>1.5</td><td class='hm-cell' style='background:#ca773e;color:#fbf3e6'>0.74</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>105</td><td class='hm-cell' style='background:#a74d2c;color:#fbf3e6'>84</td><td class='hm-cell' style='background:#a94e2d;color:#fbf3e6'>82</td><td class='hm-cell' style='background:#b45630;color:#fbf3e6'>88</td><td class='hm-cell' style='background:#ecd79f;color:#241a12'>0.5</td><td class='hm-cell' style='background:#f1e3be;color:#241a12'>8</td></tr><tr class='row-global'><th class='hm-row'>Bình Dương (ĐNB)<span class='hm-idx'>9</span></th><td class='hm-cell' style='background:#edd8a1;color:#241a12'>100</td><td class='hm-cell' style='background:#ecd59b;color:#241a12'>1.4</td><td class='hm-cell' style='background:#ebd293;color:#241a12'>4</td><td class='hm-cell' style='background:#ab502d;color:#fbf3e6'>2.8</td><td class='hm-cell' style='background:#eedba9;color:#241a12'>0.52</td><td class='hm-cell' style='background:#efddb0;color:#241a12'>50</td><td class='hm-cell' style='background:#f1e3be;color:#241a12'>8</td><td class='hm-cell' style='background:#eeddae;color:#241a12'>35</td><td class='hm-cell' style='background:#ba5b32;color:#fbf3e6'>86</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>4.5</td><td class='hm-cell' style='background:#f1e3be;color:#241a12'>8</td></tr><tr class='row-global'><th class='hm-row'>Biên Hòa – Đồng Nai (ĐNB)<span class='hm-idx'>5</span></th><td class='hm-cell' style='background:#efdeb2;color:#241a12'>85</td><td class='hm-cell' style='background:#eedbaa;color:#241a12'>1.2</td><td class='hm-cell' style='background:#eeddae;color:#241a12'>3.5</td><td class='hm-cell' style='background:#c05f34;color:#fbf3e6'>2.5</td><td class='hm-cell' style='background:#f0e1b9;color:#241a12'>0.5</td><td class='hm-cell' style='background:#f0e2bd;color:#241a12'>45</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>5</td><td class='hm-cell' style='background:#f1e3be;color:#241a12'>32</td><td class='hm-cell' style='background:#e7c878;color:#241a12'>52</td><td class='hm-cell' style='background:#ba5a32;color:#fbf3e6'>3.5</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>5</td></tr><tr class='row-global'><th class='hm-row'>Vũng Tàu – BR-VT (ĐNB)<span class='hm-idx'>1</span></th><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>65</td><td class='hm-cell' style='background:#f0e1b9;color:#241a12'>1</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>3</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>1.8</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>0.48</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>40</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>5</td><td class='hm-cell' style='background:#f2e7c9;color:#241a12'>30</td><td class='hm-cell' style='background:#deab5e;color:#241a12'>62</td><td class='hm-cell' style='background:#d28b47;color:#241a12'>2.5</td><td class='hm-cell' style='background:#f0e0b7;color:#241a12'>10</td></tr><tr class='row-vnb'><th class='hm-row'>Hà Nội (Hiện trạng)<span class='hm-idx'>18</span></th><td class='hm-cell' style='background:#eddaa7;color:#241a12'>95</td><td class='hm-cell' style='background:#eacf8b;color:#241a12'>1.6</td><td class='hm-cell' style='background:#e7c878;color:#241a12'>4.5</td><td class='hm-cell' style='background:#9d4529;color:#fbf3e6'>3</td><td class='hm-cell' style='background:#e4bf70;color:#241a12'>0.6</td><td class='hm-cell' style='background:#ebd497;color:#241a12'>60</td><td class='hm-cell' style='background:#ecd59a;color:#241a12'>18</td><td class='hm-cell' style='background:#e9ce88;color:#241a12'>42</td><td class='hm-cell' style='background:#f1e3bf;color:#241a12'>38</td><td class='hm-cell' style='background:#ca763e;color:#fbf3e6'>2.9</td><td class='hm-cell' style='background:#edd9a5;color:#241a12'>15</td></tr><tr class='row-vna'><th class='hm-row'>Hà Nội (Mục tiêu)<span class='hm-idx'>55</span></th><td class='hm-cell' style='background:#deac5e;color:#241a12'>180</td><td class='hm-cell' style='background:#da9e52;color:#241a12'>2.8</td><td class='hm-cell' style='background:#d99a4e;color:#241a12'>6</td><td class='hm-cell' style='background:#c05f34;color:#fbf3e6'>2.5</td><td class='hm-cell' style='background:#ca773e;color:#fbf3e6'>0.74</td><td class='hm-cell' style='background:#dba154;color:#241a12'>100</td><td class='hm-cell' style='background:#c8733d;color:#fbf3e6'>65</td><td class='hm-cell' style='background:#cc7b40;color:#241a12'>68</td><td class='hm-cell' style='background:#dca356;color:#241a12'>65</td><td class='hm-cell' style='background:#e2b668;color:#241a12'>1.5</td><td class='hm-cell' style='background:#dfae61;color:#241a12'>40</td></tr><tr class='row-vnb'><th class='hm-row'>TP. Hồ Chí Minh (Hiện trạng)<span class='hm-idx'>24</span></th><td class='hm-cell' style='background:#eacf8a;color:#241a12'>120</td><td class='hm-cell' style='background:#e8c97c;color:#241a12'>1.8</td><td class='hm-cell' style='background:#e2b96a;color:#241a12'>5</td><td class='hm-cell' style='background:#8f3b24;color:#fbf3e6'>3.2</td><td class='hm-cell' style='background:#e0b163;color:#241a12'>0.63</td><td class='hm-cell' style='background:#eacf8b;color:#241a12'>65</td><td class='hm-cell' style='background:#ebd293;color:#241a12'>20</td><td class='hm-cell' style='background:#e7c878;color:#241a12'>45</td><td class='hm-cell' style='background:#f1e3bf;color:#241a12'>38</td><td class='hm-cell' style='background:#ca763e;color:#fbf3e6'>2.9</td><td class='hm-cell' style='background:#ecd59a;color:#241a12'>18</td></tr><tr class='row-vna'><th class='hm-row'>TP. Hồ Chí Minh (Mục tiêu)<span class='hm-idx'>61</span></th><td class='hm-cell' style='background:#dba255;color:#241a12'>195</td><td class='hm-cell' style='background:#d7944c;color:#241a12'>3</td><td class='hm-cell' style='background:#d18645;color:#241a12'>6.5</td><td class='hm-cell' style='background:#ab502d;color:#fbf3e6'>2.8</td><td class='hm-cell' style='background:#c05f34;color:#fbf3e6'>0.78</td><td class='hm-cell' style='background:#d7954c;color:#241a12'>108</td><td class='hm-cell' style='background:#c36637;color:#fbf3e6'>70</td><td class='hm-cell' style='background:#c56b39;color:#fbf3e6'>72</td><td class='hm-cell' style='background:#dca356;color:#241a12'>65</td><td class='hm-cell' style='background:#e2b668;color:#241a12'>1.5</td><td class='hm-cell' style='background:#dca457;color:#241a12'>45</td></tr></tbody>
+      </table>
+    </div>
+    <div class="ramp-legend">
+      <span>Thấp</span><span class="ramp-bar"></span><span>Cao</span>
+      <span class="ramp-note">Ô màu = giá trị chỉ số sau chuẩn hóa 0–100; số hiển thị là giá trị gốc.</span>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid2">
+      <div class="panel">
+        <h3>Đối chiếu hình dạng chỉ số (11 chỉ số)</h3>
+        <div class="chartbox" id="radar" role="img" aria-label="Biểu đồ radar so sánh 11 chỉ số đô thị giữa Hong Kong, Vũng Tàu, Hà Nội và TP. Hồ Chí Minh"></div>
+      </div>
+      <div class="panel">
+        <h3>Gap Analysis — Khoảng cách VN vs Benchmark</h3>
+        <div class="chartbox" id="gapChart" role="img" aria-label="Biểu đồ cột so sánh khoảng cách chỉ số giữa Hà Nội hiện trạng, Hà Nội mục tiêu và Hong Kong"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="grid2">
+      <div class="panel">
+        <h3>Cách đọc bản báo cáo</h3>
+        <ul class="readme">
+          <li><b>Chỉ số nén cốt lõi (Core)</b>: 6 chỉ số đo trực tiếp mức nén — dùng để xếp hạng trên phổ mật độ.</li>
+          <li><b>Chỉ số ngữ cảnh (Context)</b>: 5 chỉ số giải thích cấu trúc — FAR cao/thấp tầng, tỷ lệ/tốc độ ĐTH, % cao tầng.</li>
+          <li><b>Phổ mật độ</b> xếp theo Core Index; <b>Gap Analysis</b> so sánh từng chỉ số core giữa VN hiện trạng, mục tiêu và benchmark cao nhất.</li>
+          <li>Con số là <b>ước lượng phân tích định vị tương đối</b>, không phải thống kê chính thức.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>Phương pháp tách nhóm chỉ số</h3>
+        <ul class="readme">
+          <li><b>Core (6)</b>: Mật độ thuần, FAR tổng hợp, Đa dạng SDĐ, Nút giao, Tiếp cận GTCC, Kết nối đường.</li>
+          <li><b>Context (5)</b>: FAR cao tầng, FAR thấp tầng, Tỷ lệ ĐTH, Tốc độ ĐTH, % Cao tầng.</li>
+          <li>Tách nhóm giúp tránh sai lệch: TP có ĐTH 100% (HK, SG) không được ưu tiên chỉ vì dân sống hết ở đô thị — chỉ đánh giá mức nén thực.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="global" role="tab">Mô hình toàn cầu</button>
+      <button class="tab-btn" data-tab="vietnam" role="tab">Phân tích Việt Nam</button>
+      <button class="tab-btn" data-tab="metrics" role="tab">Khung 11 chỉ số</button>
+    </div>
+
+    <div id="tab-global" class="panel-tab active">
+      <p class="sec-note">Xếp theo chỉ số nén tổng hợp, cao nhất trước. Ô số bên trái là chỉ số nén; các ô nhỏ là giá trị gốc của 6 chỉ số.</p>
+      <div class="cases">
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#a54b2b;color:#fbf3e6" title="Core: 89 | Context: 73">89</span>
+        <h3 class="case-name">Hong Kong</h3>
+      </div>
+      <p class="case-strategy">Phát triển theo mô hình TOD (Transit-Oriented Development) cực đoan, nén dân số quanh ga MTR, kết hợp không gian ngầm và trên cao đa tầng.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>350</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>5</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.82</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>140</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>92</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>75</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>100</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.6</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>9</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.8</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>93</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Hiệu suất sử dụng đất cực cao, tối ưu chi phí hạ tầng trên đầu người</li><li class='pro'>Mạng lưới MTR phủ gần như toàn bộ nhu cầu di chuyển đô thị</li><li class='pro'>Không gian công cộng theo chiều đứng (podium, sky bridge) bù đắp thiếu đất nền</li></ul><ul class="pc-col"><li class='con'>Áp lực tâm lý và không gian sống rất chật (living space per capita thấp nhất thế giới)</li><li class='con'>Chi phí nhà ở thuộc nhóm đắt đỏ nhất toàn cầu</li><li class='con'>Khó nhân rộng ở các đô thị chưa có nền tảng giao thông công cộng mạnh</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#b95a32;color:#fbf3e6" title="Core: 78 | Context: 26">78</span>
+        <h3 class="case-name">Paris (Pháp)</h3>
+      </div>
+      <p class="case-strategy">Cấu trúc khối phố Haussmann đồng nhất (perimeter block, cao 6-7 tầng) tạo mật độ cư trú cực cao mà không cần nhà chọc trời; triển khai mô hình 'thành phố 15 phút' (ville du quart d'heure) đưa mọi nhu cầu thiết yếu vào bán kính đi bộ/xe đạp.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>260</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>2.8</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.82</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>150</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>93</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>82</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>81</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.5</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>4</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.2</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>8</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Mật độ cư trú rất cao đạt được bằng khối phố trung tầng đồng nhất, không phụ thuộc cao ốc — dễ kiểm soát cảnh quan</li><li class='pro'>Mô hình 15 phút tối đa hóa trộn lẫn chức năng (nhà ở - cửa hàng - trường học - văn phòng), giảm nhu cầu sở hữu ô tô</li><li class='pro'>Mạng lưới đường ô cờ mịn kết hợp metro dày cho phép tiếp cận toàn bộ quy mô vùng đô thị trong 1 giờ</li></ul><ul class="pc-col"><li class='con'>Chênh lệch rõ giữa lõi trung tâm giàu (đạt chuẩn 15 phút) và vùng ven ngoại vi dàn trải, bất bình đẳng tiếp cận</li><li class='con'>Diện tích căn hộ nhỏ, chất lượng sống phụ thuộc nhiều vào không gian công cộng ngoài trời</li><li class='con'>Cấu trúc đô thị lịch sử cứng nhắc, khó chèn thêm hạ tầng mới hay điều chỉnh mật độ trong lõi</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#c16135;color:#fbf3e6" title="Core: 74 | Context: 37">74</span>
+        <h3 class="case-name">Barcelona (Tây Ban Nha)</h3>
+      </div>
+      <p class="case-strategy">Mô hình siêu ô phố (Superblock) trên nền lưới Eixample của Cerdà — giảm xe cơ giới trong lõi 3×3 block, giải phóng 60-75% mặt đường cho đi bộ, xe đạp và không gian công cộng.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>300</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>2.2</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.84</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>105</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>85</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>90</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>81</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.3</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>4.5</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>2.5</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>12</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Lưới Cerdà 133m × 133m tạo mật độ nút giao cực cao, tối ưu đi bộ và kết nối đa hướng</li><li class='pro'>Mô hình Superblock chứng minh có thể nén đô thị hiệu quả mà không cần xây cao tầng — chỉ cần tái phân bổ không gian đường</li><li class='pro'>Truyền thống mixed-use mạnh (thương mại tầng trệt + ở tầng trên) duy trì land-use entropy cao tự nhiên</li></ul><ul class="pc-col"><li class='con'>Mật độ cao kết hợp du lịch đại chúng gây áp lực gentrification, đẩy giá nhà tăng nhanh</li><li class='con'>Superblock phụ thuộc vào lưới ô cờ đều đặn — khó áp dụng nguyên bản cho đô thị có mạng đường không đều</li><li class='con'>Việc giảm lưu thông xe gây phản đối từ cư dân và doanh nghiệp phụ thuộc ô tô trong giai đoạn đầu</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#c46738;color:#fbf3e6" title="Core: 72 | Context: 32">72</span>
+        <h3 class="case-name">Tokyo</h3>
+      </div>
+      <p class="case-strategy">Mạng lưới đa trung tâm (polycentric) với các nhà ga tư nhân (private rail) đóng vai trò vừa là đầu mối giao thông vừa là trung tâm thương mại-dân cư hỗn hợp.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>165</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.8</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.88</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>170</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>95</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>72</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>92</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>-0.1</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>6</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>0.8</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>14</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Mô hình đa trung tâm giảm áp lực dồn về lõi trung tâm duy nhất</li><li class='pro'>Doanh nghiệp đường sắt tư nhân tự tài trợ hạ tầng qua khai thác bất động sản quanh ga</li><li class='pro'>Mật độ đa dạng chức năng (entropy) cao nhất trong nhóm, giảm nhu cầu di chuyển xa</li></ul><ul class="pc-col"><li class='con'>Mạng lưới đường bộ nhỏ hẹp, chỉ số kết nối đường bộ (street connectivity) thấp hơn nhóm</li><li class='con'>Mô hình gắn chặt với hệ sinh thái đường sắt tư nhân đặc thù, khó sao chép nguyên bản</li><li class='con'>Chi phí đất quanh các ga trung tâm cực cao, tạo áp lực giãn dân ra vùng ven</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#c76f3b;color:#fbf3e6" title="Core: 68 | Context: 52">68</span>
+        <h3 class="case-name">Singapore</h3>
+      </div>
+      <p class="case-strategy">Quy hoạch tổng thể dài hạn (Concept Plan 50 năm) với các new town vệ tinh quanh trục MRT, quỹ đất công do nhà nước chủ động điều phối (HDB).</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>245</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>2.5</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.76</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>110</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>88</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>84</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>100</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.7</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>3.8</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.2</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>95</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Cân bằng tốt giữa mật độ cao và chất lượng sống (mảng xanh, tiện ích công cộng)</li><li class='pro'>Nhà nước kiểm soát quỹ đất giúp quy hoạch đồng bộ, ít bị phá vỡ bởi lợi ích tư nhân</li><li class='pro'>Chương trình HDB đảm bảo khả năng chi trả nhà ở cho đa số dân cư</li></ul><ul class="pc-col"><li class='con'>Mô hình phụ thuộc nhiều vào quyền sở hữu đất tập trung của nhà nước</li><li class='con'>Chi phí triển khai new town rất lớn, đòi hỏi tầm nhìn tài khóa dài hạn</li><li class='con'>Tính đồng nhất cao đôi khi làm giảm bản sắc khu vực</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#ca763e;color:#fbf3e6" title="Core: 65 | Context: 35">65</span>
+        <h3 class="case-name">Seoul (Hàn Quốc)</h3>
+      </div>
+      <p class="case-strategy">Đô thị đa trung tâm (polycentric) với 3 CBD và 7 trung tâm phụ, phát triển TOD quanh mạng lưới tàu điện ngầm dày đặc từ thập niên 1970; khôi phục dòng suối Cheonggyecheon thay cho đường trên cao để tăng không gian xanh trong lõi nén.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>230</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.5</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.8</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>130</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>90</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>74</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>82</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.3</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>3</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.2</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>63</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Hơn 70% dân số sống trong bán kính 1km từ ga tàu điện ngầm — cự ly đi làm thuộc nhóm ngắn nhất thế giới</li><li class='pro'>Mô hình đa trung tâm phân bổ đều dân cư, việc làm, nhà ở, giảm áp lực dồn về một lõi</li><li class='pro'>Nâng không gian xanh đầu người từ 5,73 m2 (1975) lên 18,74 m2 (2023) dù mật độ cao — chứng minh nén và xanh không loại trừ nhau</li></ul><ul class="pc-col"><li class='con'>Vùng ven đô thị mở rộng lại có xu hướng phụ thuộc ô tô tăng dần, TOD suy yếu ở ngoại vi</li><li class='con'>Áp lực chồng mật độ lên hạ tầng cũ (thoát nước, cấp nhiệt khu vực) gây ngập và quá tải cục bộ</li><li class='con'>Địa hình đồi núi và hiệu ứng đảo nhiệt đô thị đòi hỏi chi phí thích ứng khí hậu ngày càng lớn</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#d5914a;color:#241a12" title="Core: 54 | Context: 31">54</span>
+        <h3 class="case-name">Copenhagen (Đan Mạch)</h3>
+      </div>
+      <p class="case-strategy">Kế hoạch Bàn Tay (Finger Plan 1947) — nén phát triển dọc 5 trục tàu điện ngoại ô (S-train), giữ mảng xanh giữa các ngón, kết hợp hạ tầng xe đạp đẳng cấp thế giới và metro vòng tròn Cityringen.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>90</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.8</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.74</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>105</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>84</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>82</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>88</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.5</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>4</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.5</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>8</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Finger Plan giữ tầm nhìn 80 năm vẫn hiệu lực — chứng minh quy hoạch dài hạn có thể kiểm soát đô thị hóa hiệu quả</li><li class='pro'>50% chuyến đi nội đô bằng xe đạp — mật độ thấp hơn nhưng modal split cực tốt nhờ hạ tầng xe đạp 350 km</li><li class='pro'>Cityringen (metro vòng tròn) đưa 100% dân nội đô vào bán kính 600m từ trạm giao thông công cộng</li></ul><ul class="pc-col"><li class='con'>Mật độ thuần thấp nhất trong nhóm nghiên cứu — không phù hợp tham chiếu trực tiếp cho đô thị nhiệt đới đông dân</li><li class='con'>Mô hình phụ thuộc vào truyền thống quy hoạch Bắc Âu với quyền sở hữu đất và thuế bất động sản minh bạch</li><li class='con'>Chi phí hạ tầng xe đạp + metro trên đầu người rất cao, đòi hỏi GDP bình quân và mức thuế tương xứng</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#da9e52;color:#241a12" title="Core: 48 | Context: 25">48</span>
+        <h3 class="case-name">Ahmedabad (Ấn Độ)</h3>
+      </div>
+      <p class="case-strategy">Hệ thống BRT khép kín 'Janmarg' (do đại học CEPT thiết kế, khai trương 2009) với trạm giữa đường, thu vé trước khi lên xe; cải tạo toàn bộ mặt cắt đường hẹp để chèn làn BRT, làn xe đạp và vỉa hè trong một đô thị mật độ cao có phố cổ hữu cơ.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>210</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.4</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.72</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>120</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>52</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>58</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>36</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>2.3</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>3.5</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>2</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>12</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Chứng minh BRT chuẩn quốc tế vận hành được trong đô thị Ấn Độ mật độ cao với ngân sách hạn chế</li><li class='pro'>Cải tạo được mặt cắt đường hẹp (right-of-way) để tích hợp BRT + xe đạp + đi bộ — bài học cho đô thị hẻm nhỏ</li><li class='pro'>Mật độ dân cư tự nhiên rất cao của phố cổ hữu cơ tạo lượng khách nền lớn cho giao thông công cộng</li></ul><ul class="pc-col"><li class='con'>Mạng lưới đường phố cổ hữu cơ có chỉ số kết nối và mật độ nút giao thấp, cản trở hiệu quả di chuyển tổng thể</li><li class='con'>BRT có sức chở giới hạn, dễ quá tải khi đô thị 6+ triệu dân tiếp tục tăng trưởng nhanh</li><li class='con'>Chất lượng không khí và tỷ lệ chuyển đổi từ xe cá nhân sang GTCC vẫn là thách thức lớn</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#dca457;color:#241a12" title="Core: 45 | Context: 32">45</span>
+        <h3 class="case-name">Curitiba (Brazil)</h3>
+      </div>
+      <p class="case-strategy">Tiên phong mô hình BRT (Bus Rapid Transit) kết hợp phân vùng mật độ cao dọc các trục BRT chính, chi phí đầu tư thấp hơn metro nhưng hiệu quả tương đương.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>125</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.3</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.68</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>95</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>72</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>71</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>88</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.7</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>5</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>0.8</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>18</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Chi phí đầu tư hạ tầng giao thông thấp hơn nhiều lần so với đường sắt đô thị</li><li class='pro'>Triển khai nhanh, phù hợp các đô thị đang phát triển với ngân sách hạn chế</li><li class='pro'>Mô hình 'trục phát triển' dễ nhân rộng cho các hành lang tăng trưởng mới</li></ul><ul class="pc-col"><li class='con'>Sức chở tối đa thấp hơn đường sắt, dễ quá tải khi đô thị tăng trưởng nhanh</li><li class='con'>Hiệu quả phụ thuộc rất nhiều vào kỷ luật thực thi quy hoạch dọc trục</li><li class='con'>Khó tạo hiệu ứng nén 3 chiều (không gian ngầm/trên cao) như các mô hình châu Á</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#dda759;color:#241a12" title="Core: 43 | Context: 47">43</span>
+        <h3 class="case-name">Thâm Quyến (Trung Quốc)</h3>
+      </div>
+      <p class="case-strategy">Đô thị hóa siêu tốc theo quy hoạch tổng thể nhà nước (từ làng chài lên siêu đô thị ~17 triệu dân trong 40 năm); mô hình 'siêu ô phố' (superblock) kết hợp cải cách tài chính đất đai (cho thuê đất 70 năm, land value capture) và mạng lưới metro mở rộng nhanh.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>160</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>2.2</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.65</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>70</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>82</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>55</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>65</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>1.8</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>6</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.5</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>60</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Cơ chế tài chính đất đai (đấu giá quyền sử dụng đất, land value capture) tạo nguồn vốn khổng lồ tự tài trợ hạ tầng</li><li class='pro'>Quy hoạch nhà nước mạnh cho phép triển khai metro và hạ tầng quy mô lớn với 'tốc độ Thâm Quyến'</li><li class='pro'>Đi đầu về khử carbon đô thị: điện khí hóa 100% xe buýt/taxi, mô hình 'thành phố bọt biển' chống ngập</li></ul><ul class="pc-col"><li class='con'>Mô hình siêu ô phố cho chỉ số nút giao và kết nối đường bộ thấp nhất nhóm — phố xá đơn điệu, kém thân thiện người đi bộ</li><li class='con'>Đa dạng chức năng (entropy) thấp do các khối ở đồng nhất, khép kín bằng tường rào</li><li class='con'>Phụ thuộc nặng vào quyền lực quy hoạch tập trung và tài chính đất đai, khó sao chép ở thể chế khác</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#e0b163;color:#241a12" title="Core: 38 | Context: 33">38</span>
+        <h3 class="case-name">Medellín (Colombia)</h3>
+      </div>
+      <p class="case-strategy">Đô thị xã hội (Social Urbanism) — dùng hạ tầng giao thông (Metrocable, thang cuốn công cộng) kết hợp công trình công cộng chất lượng cao tại vùng lõm để xóa chia cắt địa hình và giảm bất bình đẳng không gian.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>195</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.3</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.7</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>75</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>55</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>48</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>82</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>1</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>4</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.2</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>25</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Chứng minh mô hình 'nén bằng kết nối' — không cần mật độ siêu cao, chỉ cần hạ tầng gắn kết cộng đồng bị cô lập</li><li class='pro'>Chi phí triển khai Metrocable rẻ hơn metro ngầm 5-10 lần, phù hợp ngân sách đô thị đang phát triển</li><li class='pro'>Mô hình PUI (Proyecto Urbano Integral) kết hợp đầu tư hạ tầng với chương trình xã hội, giảm tội phạm 66% tại khu vực phục vụ</li></ul><ul class="pc-col"><li class='con'>Chỉ số kết nối đường và nút giao thấp do địa hình dốc — hạn chế khả năng mở rộng lưới đường truyền thống</li><li class='con'>Phụ thuộc nặng vào ý chí chính trị và ngân sách công — mô hình dễ suy giảm khi thay đổi chính quyền</li><li class='con'>Transit proximity chưa cao dù có Metrocable — phần lớn dân cư vẫn ngoài bán kính 500m của trạm</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#e4bd6e;color:#241a12" title="Core: 31 | Context: 22">31</span>
+        <h3 class="case-name">Portland (Mỹ)</h3>
+      </div>
+      <p class="case-strategy">Ranh giới tăng trưởng đô thị (Urban Growth Boundary - UGB) thiết lập từ 1979 nhằm cưỡng chế nén đô thị và bảo vệ đất nông - lâm nghiệp ngoài ranh; kết hợp lưới ô phố nhỏ (block ~60m) và đầu tư đường sắt nhẹ để chống dàn trải kiểu Mỹ.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>70</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>0.8</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.6</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>85</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>45</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>76</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>83</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>0.8</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>4</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>0.4</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>5</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>UGB là công cụ chống dàn trải nghiêm ngặt nhất tại Mỹ, giữ được đô thị nén tương đối và bảo tồn vành đai xanh</li><li class='pro'>Lưới ô phố nhỏ cho chỉ số kết nối đường bộ cao dù mật độ thấp — dễ đi bộ trong khu trung tâm</li><li class='pro'>Quyết định phát triển mang tính công khai, dân chủ thay vì bị chi phối bởi lợi ích tư nhân đơn lẻ</li></ul><ul class="pc-col"><li class='con'>Vẫn phụ thuộc ô tô ở mức cao và mật độ nền thấp so với các mô hình châu Á — hiệu quả nén hạn chế</li><li class='con'>Bị chỉ trích làm giá nhà tăng và tăng ùn tắc do ép mật độ lên hạ tầng chưa đủ</li><li class='con'>Bối cảnh văn hóa 'nhà riêng có sân vườn' của Mỹ khiến mô hình khó áp dụng cho nơi có văn hóa ở khác</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#eedbab;color:#241a12" title="Core: 9 | Context: 57">9</span>
+        <h3 class="case-name">Bình Dương (ĐNB)</h3>
+      </div>
+      <p class="case-strategy">Đô thị công nghiệp vệ tinh — phát triển KCN (VSIP, Mỹ Phước, Nam Tân Uyên) kéo theo đô thị hóa tự phát, dân số tăng từ 650K lên 2.7M trong 28 năm nhờ di cư lao động.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>100</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.4</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>4</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>2.8</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.52</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>50</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>8</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>35</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>86</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>4.5</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>8</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Tỷ lệ đô thị hóa 86% — cao nhất Đông Nam Bộ, vượt nhiều thành phố phát triển</li><li class='pro'>Mô hình 'KCN kéo đô thị' tạo việc làm trước, dân cư theo sau — tốc độ phát triển kinh tế cực nhanh</li><li class='pro'>Hạ tầng giao thông liên vùng tốt (ĐT743, Mỹ Phước-Tân Vạn, sắp có Metro 3A)</li></ul><ul class="pc-col"><li class='con'>Đô thị hóa tự phát — KCN và khu dân cư tách rời, thiếu mixed-use</li><li class='con'>Transit proximity gần bằng 0 — phụ thuộc xe máy 95%+</li><li class='con'>Street connectivity rất kém giữa các khu vực do quy hoạch theo từng KCN riêng biệt</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#f0e1b9;color:#241a12" title="Core: 5 | Context: 37">5</span>
+        <h3 class="case-name">Biên Hòa – Đồng Nai (ĐNB)</h3>
+      </div>
+      <p class="case-strategy">Đô thị công nghiệp truyền thống — Biên Hòa là thành phố trực thuộc tỉnh đông dân nhất cả nước (1.3M), phát triển trên nền KCN thế hệ 1 (Biên Hòa I từ 1963) kết hợp đô thị tự phát ven sông Đồng Nai.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>85</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1.2</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>3.5</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>2.5</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.5</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>45</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>5</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>32</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>52</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>3.5</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>5</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Vị trí đắc địa — nút giao liên vùng ĐNB, cửa ngõ sân bay Long Thành</li><li class='pro'>Quỹ đất KCN cũ (Biên Hòa I đã di dời) là cơ hội tái phát triển đô thị hiếm có</li><li class='pro'>Sông Đồng Nai tạo tiềm năng đô thị ven sông (waterfront urbanism) tương tự Seoul Cheonggyecheon</li></ul><ul class="pc-col"><li class='con'>Tỷ lệ ĐTH thấp nhất 'tứ giác kinh tế' ĐNB (52% vs BD 86%)</li><li class='con'>Hạ tầng đô thị 'hụt hơi' — là ĐT loại I đông dân nhất nước nhưng chất lượng hạ tầng kém xa các ĐT cùng hạng</li><li class='con'>Transit proximity cực thấp (5%) — chưa có metro, BRT hay GTCC chất lượng</li></ul></div>
+    </article>
+    <article class="case">
+      <div class="case-head">
+        <span class="case-chip" style="background:#f2e6c6;color:#241a12" title="Core: 1 | Context: 30">1</span>
+        <h3 class="case-name">Vũng Tàu – BR-VT (ĐNB)</h3>
+      </div>
+      <p class="case-strategy">Đô thị du lịch biển + công nghiệp dầu khí — TP Vũng Tàu phát triển trên bán đảo hẹp, kết hợp condotel/resort với khu dân cư, KCN Phú Mỹ tách biệt. Đã sáp nhập vào TP.HCM từ 7/2025.</p>
+      <div class="mchips"><div class='mchip'><span class='mchip-k'>Mật độ thuần</span><span class='mchip-v'>65</span></div><div class='mchip'><span class='mchip-k'>FAR Tổng hợp</span><span class='mchip-v'>1</span></div><div class='mchip'><span class='mchip-k'>FAR Cao tầng</span><span class='mchip-v'>3</span></div><div class='mchip'><span class='mchip-k'>FAR Thấp tầng</span><span class='mchip-v'>1.8</span></div><div class='mchip'><span class='mchip-k'>Đa dạng SDĐ</span><span class='mchip-v'>0.48</span></div><div class='mchip'><span class='mchip-k'>Nút giao</span><span class='mchip-v'>40</span></div><div class='mchip'><span class='mchip-k'>Tiếp cận GTCC</span><span class='mchip-v'>5</span></div><div class='mchip'><span class='mchip-k'>Kết nối đường</span><span class='mchip-v'>30</span></div><div class='mchip'><span class='mchip-k'>Tỷ lệ ĐTH</span><span class='mchip-v'>62</span></div><div class='mchip'><span class='mchip-k'>Tốc độ ĐTH</span><span class='mchip-v'>2.5</span></div><div class='mchip'><span class='mchip-k'>% Cao tầng</span><span class='mchip-v'>10</span></div></div>
+      <div class="pc"><ul class="pc-col"><li class='pro'>Hạ tầng du lịch biển + dầu khí tạo GDP/đầu người cao thứ 3 cả nước</li><li class='pro'>Bán đảo hẹp tạo 'nén tự nhiên' — buộc phải phát triển đứng, không sprawl được</li><li class='pro'>Sân bay Long Thành gần → tiềm năng trở thành đô thị nghỉ dưỡng quốc tế</li></ul><ul class="pc-col"><li class='con'>Mô hình condotel/resort không tạo mixed-use thực sự — land-use entropy rất thấp</li><li class='con'>Dân cư thường trú ít, dân du lịch mùa vụ gây áp lực hạ tầng không đều</li><li class='con'>KCN Phú Mỹ tách biệt hoàn toàn — không tích hợp vào vùng đô thị lõi Vũng Tàu</li></ul></div>
+    </article></div>
+    </div>
+
+    <div id="tab-vietnam" class="panel-tab">
+      <p class="sec-note">Thanh mờ là hiện trạng, thanh đậm là mục tiêu tầm nhìn — độ dài theo giá trị chuẩn hóa để thấy khoảng cách cần thu hẹp.</p>
+      <div class="vngrid">
+    <div class="vncity">
+      <h3 class="vncity-name">Hà Nội</h3>
+      <div class="vncity-legend">
+        <span><i class="sw sw-b"></i>Hiện trạng (trước quy hoạch)</span>
+        <span><i class="sw sw-a"></i>Mục tiêu tầm nhìn 100 năm</span>
+      </div>
+      
+        <div class="gap-row">
+          <div class="gap-label">Mật độ thuần</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:10.5%"></div>
+            <div class="gap-fill-a" style="width:40.4%"></div>
+          </div>
+          <div class="gap-nums"><b>95</b> → <b>180</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">FAR Tổng hợp</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:19.0%"></div>
+            <div class="gap-fill-a" style="width:47.6%"></div>
+          </div>
+          <div class="gap-nums"><b>1.6</b> → <b>2.8</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">FAR Cao tầng</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:25.0%"></div>
+            <div class="gap-fill-a" style="width:50.0%"></div>
+          </div>
+          <div class="gap-nums"><b>4.5</b> → <b>6</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">FAR Thấp tầng</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:92.9%"></div>
+            <div class="gap-fill-a" style="width:75.0%"></div>
+          </div>
+          <div class="gap-nums"><b>3</b> → <b>2.5</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Đa dạng SDĐ</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:30.0%"></div>
+            <div class="gap-fill-a" style="width:65.0%"></div>
+          </div>
+          <div class="gap-nums"><b>0.6</b> → <b>0.74</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Nút giao</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:15.4%"></div>
+            <div class="gap-fill-a" style="width:46.2%"></div>
+          </div>
+          <div class="gap-nums"><b>60</b> → <b>100</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Tiếp cận GTCC</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:14.4%"></div>
+            <div class="gap-fill-a" style="width:66.7%"></div>
+          </div>
+          <div class="gap-nums"><b>18</b> → <b>65</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Kết nối đường</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:20.0%"></div>
+            <div class="gap-fill-a" style="width:63.3%"></div>
+          </div>
+          <div class="gap-nums"><b>42</b> → <b>68</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Tỷ lệ ĐTH</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:3.1%"></div>
+            <div class="gap-fill-a" style="width:45.3%"></div>
+          </div>
+          <div class="gap-nums"><b>38</b> → <b>65</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Tốc độ ĐTH</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:65.2%"></div>
+            <div class="gap-fill-a" style="width:34.8%"></div>
+          </div>
+          <div class="gap-nums"><b>2.9</b> → <b>1.5</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">% Cao tầng</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:11.1%"></div>
+            <div class="gap-fill-a" style="width:38.9%"></div>
+          </div>
+          <div class="gap-nums"><b>15</b> → <b>40</b></div>
+        </div>
+    </div>
+    <div class="vncity">
+      <h3 class="vncity-name">TP. Hồ Chí Minh</h3>
+      <div class="vncity-legend">
+        <span><i class="sw sw-b"></i>Hiện trạng (trước quy hoạch)</span>
+        <span><i class="sw sw-a"></i>Mục tiêu tầm nhìn 100 năm</span>
+      </div>
+      
+        <div class="gap-row">
+          <div class="gap-label">Mật độ thuần</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:19.3%"></div>
+            <div class="gap-fill-a" style="width:45.6%"></div>
+          </div>
+          <div class="gap-nums"><b>120</b> → <b>195</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">FAR Tổng hợp</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:23.8%"></div>
+            <div class="gap-fill-a" style="width:52.4%"></div>
+          </div>
+          <div class="gap-nums"><b>1.8</b> → <b>3</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">FAR Cao tầng</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:33.3%"></div>
+            <div class="gap-fill-a" style="width:58.3%"></div>
+          </div>
+          <div class="gap-nums"><b>5</b> → <b>6.5</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">FAR Thấp tầng</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:100.0%"></div>
+            <div class="gap-fill-a" style="width:85.7%"></div>
+          </div>
+          <div class="gap-nums"><b>3.2</b> → <b>2.8</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Đa dạng SDĐ</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:37.5%"></div>
+            <div class="gap-fill-a" style="width:75.0%"></div>
+          </div>
+          <div class="gap-nums"><b>0.63</b> → <b>0.78</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Nút giao</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:19.2%"></div>
+            <div class="gap-fill-a" style="width:52.3%"></div>
+          </div>
+          <div class="gap-nums"><b>65</b> → <b>108</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Tiếp cận GTCC</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:16.7%"></div>
+            <div class="gap-fill-a" style="width:72.2%"></div>
+          </div>
+          <div class="gap-nums"><b>20</b> → <b>70</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Kết nối đường</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:25.0%"></div>
+            <div class="gap-fill-a" style="width:70.0%"></div>
+          </div>
+          <div class="gap-nums"><b>45</b> → <b>72</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Tỷ lệ ĐTH</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:3.1%"></div>
+            <div class="gap-fill-a" style="width:45.3%"></div>
+          </div>
+          <div class="gap-nums"><b>38</b> → <b>65</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">Tốc độ ĐTH</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:65.2%"></div>
+            <div class="gap-fill-a" style="width:34.8%"></div>
+          </div>
+          <div class="gap-nums"><b>2.9</b> → <b>1.5</b></div>
+        </div>
+        <div class="gap-row">
+          <div class="gap-label">% Cao tầng</div>
+          <div class="gap-track">
+            <div class="gap-fill-b" style="width:14.4%"></div>
+            <div class="gap-fill-a" style="width:44.4%"></div>
+          </div>
+          <div class="gap-nums"><b>18</b> → <b>45</b></div>
+        </div>
+    </div></div>
+      <div class="vncols">
+        <div class="vncol compat"><h3>Điểm tương thích cấu trúc</h3><ul><li>Dân số trẻ, tốc độ đô thị hóa cao tương tự giai đoạn tăng trưởng đầu của Singapore và Hong Kong thập niên 1970-1980</li><li>Quỹ đất ven các tuyến Metro (Bến Thành - Suối Tiên, Nhổn - Ga Hà Nội) tương đồng cơ hội TOD như Tokyo giai đoạn mở rộng mạng lưới tư nhân</li><li>Văn hóa 'phố kết hợp nhà ở - kinh doanh' truyền thống vốn có Land-use Entropy cao tự nhiên, thuận lợi cho mô hình nén đa chức năng</li><li>Mô hình Metrocable của Medellín có thể áp dụng cho địa hình đồi núi Đông Nam Bộ (Bình Dương, Đồng Nai) với chi phí khả thi hơn metro ngầm</li><li>Superblock Barcelona khả thi thí điểm trên lưới ô cờ Quận 1, Quận 3 (TP.HCM) hoặc khu phố cổ Hà Nội với mạng đường nhỏ sẵn có</li></ul></div>
+        <div class="vncol barrier"><h3>Rào cản triển khai</h3><ul><li>Văn hóa xe máy cá nhân ăn sâu, hạ tầng dành cho người đi bộ và xe đạp còn yếu, cản trở chuyển đổi sang giao thông công cộng</li><li>Độ trễ triển khai hệ thống Metro (Metro delay) kéo dài nhiều năm so với kế hoạch, làm giảm niềm tin thị trường vào mô hình TOD</li><li>Sở hữu đất phân mảnh (đất ở riêng lẻ, hẻm nhỏ) gây khó khăn cho việc gom quỹ đất quy mô lớn dọc trục giao thông</li><li>Thiếu cơ chế tài chính đất đai kiểu 'giá trị gia tăng từ hạ tầng' (land value capture) như mô hình đường sắt tư nhân Nhật Bản</li><li>Quy hoạch phân mảnh giữa các quận/tỉnh lân cận thiếu tính đồng bộ liên vùng (đặc biệt trong bối cảnh sáp nhập Đông Nam Bộ)</li><li>Thiếu hạ tầng xe đạp đồng bộ và văn hóa đi bộ — modal split phụ thuộc xe máy 80-90%, khác biệt cơ bản với các đô thị kiểu mẫu</li></ul></div>
+      </div>
+    </div>
+
+    <div id="tab-metrics" class="panel-tab">
+      <p class="sec-note">11 chỉ số: 6 cốt lõi (Core Compactness) + 5 ngữ cảnh (Structural Context).</p>
+      <div class="metrics">
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">01</span>
+        <span class="metric-unit">người/ha</span>
+      </div>
+      <h4 class="metric-name">Mật độ dân cư thuần (Net Density)</h4>
+      <p class="metric-desc">Dân số trên diện tích đất thực sự dùng để ở, loại trừ đường, công viên, đất công cộng.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">02</span>
+        <span class="metric-unit">lần</span>
+      </div>
+      <h4 class="metric-name">Hệ số sử dụng đất tổng hợp (FAR Composite)</h4>
+      <p class="metric-desc">FAR trung bình trên toàn vùng đô thị nghiên cứu (built-up area) — phản ánh cường độ sử dụng đất tổng thể.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">03</span>
+        <span class="metric-unit">lần</span>
+      </div>
+      <h4 class="metric-name">FAR phân khu cao tầng (High-rise Residential)</h4>
+      <p class="metric-desc">FAR trung bình của khu vực nhà ở cao tầng (>10 tầng: chung cư, apartment complex, HDB estate).</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">04</span>
+        <span class="metric-unit">lần</span>
+      </div>
+      <h4 class="metric-name">FAR phân khu thấp tầng (Low-rise Residential)</h4>
+      <p class="metric-desc">FAR trung bình của khu vực nhà ở thấp tầng (≤5 tầng: nhà phố, biệt thự, landed housing, village house).</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">05</span>
+        <span class="metric-unit">chỉ số 0-1</span>
+      </div>
+      <h4 class="metric-name">Chỉ số đa dạng sử dụng đất (Land-use Entropy)</h4>
+      <p class="metric-desc">Mức độ trộn lẫn chức năng (ở, thương mại, dịch vụ) trong cùng một khu vực — càng cao càng giảm nhu cầu di chuyển xa.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">06</span>
+        <span class="metric-unit">nút/km2</span>
+      </div>
+      <h4 class="metric-name">Mật độ nút giao (Intersection Density)</h4>
+      <p class="metric-desc">Số lượng giao lộ trên mỗi km2 — phản ánh khả năng kết nối và đi bộ của mạng lưới đường.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">07</span>
+        <span class="metric-unit">% dân số trong bán kính 500m</span>
+      </div>
+      <h4 class="metric-name">Chỉ số tiếp cận giao thông công cộng (Transit Proximity)</h4>
+      <p class="metric-desc">Tỷ lệ dân số sống trong bán kính đi bộ hợp lý đến một điểm trung chuyển giao thông công cộng.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">08</span>
+        <span class="metric-unit">chỉ số 0-100</span>
+      </div>
+      <h4 class="metric-name">Chỉ số kết nối mạng lưới đường (Street Connectivity)</h4>
+      <p class="metric-desc">Mức độ liên kết của mạng lưới đường (dạng lưới ô cờ so với dạng cụt/cul-de-sac) — ảnh hưởng trực tiếp đến hiệu quả giao thông nội khu.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">09</span>
+        <span class="metric-unit">% dân số đô thị</span>
+      </div>
+      <h4 class="metric-name">Tỷ lệ đô thị hóa (Urbanization Rate)</h4>
+      <p class="metric-desc">Tỷ lệ phần trăm dân số sống trong khu vực đô thị so với tổng dân số quốc gia — phản ánh mức độ trưởng thành của quá trình đô thị hóa.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">10</span>
+        <span class="metric-unit">%/năm</span>
+      </div>
+      <h4 class="metric-name">Tốc độ đô thị hóa (Urbanization Speed)</h4>
+      <p class="metric-desc">Tốc độ tăng trưởng dân số đô thị trung bình hàng năm — chỉ số áp lực lên hạ tầng và nhu cầu quy hoạch nén.</p>
+    </div>
+    <div class="metric">
+      <div class="metric-top">
+        <span class="metric-no">11</span>
+        <span class="metric-unit">% dân số</span>
+      </div>
+      <h4 class="metric-name">Tỷ trọng cao tầng (High-rise Share)</h4>
+      <p class="metric-desc">Phần trăm dân số sống trong nhà ở cao tầng (>10 tầng) — chỉ số ngữ cảnh giải thích cấu trúc FAR.</p>
+    </div></div>
+    </div>
+  </section>
+
+  <section class="section" id="sources">
+    <div class="sec-head"><h2 class="sec-title">Nguồn dữ liệu &amp; phương pháp luận</h2></div>
+    
+    <div class="src-note">
+      <span class="src-note-badge">Phương pháp &amp; nguồn</span>
+      <p>Phần chiến lược cốt lõi và ưu/nhược điểm của từng mô hình được tổng hợp từ các nguồn công khai liệt kê bên dưới (nghiên cứu học thuật, cơ quan quy hoạch thành phố, tổ chức đa phương). Sáu chỉ số định lượng là ƯỚC LƯỢNG PHÂN TÍCH nhằm định vị tương đối giữa các mô hình trên cùng thang chuẩn hóa 0–100, KHÔNG phải số liệu thống kê chính thức của từng thành phố — do không tồn tại bộ dữ liệu công bố đầy đủ cả 6 chỉ số cho mọi đô thị. Số liệu của 4 mô hình gốc (Hong Kong, Singapore, Curitiba, Tokyo) là ước lượng nền của bản báo cáo.</p>
+      <span class="src-updated">Cập nhật nguồn: 2026-09-18</span>
+    </div>
+    <div class="src-grid"><div class="src-model"><h4 class="src-name">Seoul (Hàn Quốc)</h4><ul class="src-list"><li><a href="https://development.asia/insight/build-together-benefit-together-seouls-approach-urban-development" target="_blank" rel="noopener">ADB / Development Asia — Seoul's compact & polycentric development</a></li><li><a href="https://www.mdpi.com/2071-1050/13/6/3047" target="_blank" rel="noopener">Woo, J.H. (2021), Sustainability 13(6):3047 — phân loại TOD theo hành vi đi bộ ở Seoul</a></li><li><a href="https://www.worldtransitresearch.info/research/3909" target="_blank" rel="noopener">Sung & Oh (2011); Lee, An & Kim (2017) — World Transit Research (TOD & compact-city ở SMA)</a></li></ul></div><div class="src-model"><h4 class="src-name">Paris (Pháp)</h4><ul class="src-list"><li><a href="https://urbanland.uli.org/trends/paris-embracing-the-compact-density-of-15-minute-neighborhoods" target="_blank" rel="noopener">Urban Land Institute (ULI) — Paris & mô hình 'thành phố 15 phút'</a></li><li><a href="https://circle-economy.prod.circularity-gap.world/knowledge-hub/article/7642" target="_blank" rel="noopener">Circle Economy Knowledge Hub — The 15-minute City in Paris (policy case)</a></li><li><a href="https://encyclopedia.pub/entry/34586" target="_blank" rel="noopener">Moreno, C. (Sorbonne) — khái niệm gốc ville du quart d'heure</a></li></ul></div><div class="src-model"><h4 class="src-name">Portland (Mỹ)</h4><ul class="src-list"><li><a href="https://www.oregonencyclopedia.org/articles/urban_growth_boundary/" target="_blank" rel="noopener">The Oregon Encyclopedia — Urban Growth Boundary (UGB)</a></li><li><a href="https://www.oregonencyclopedia.org/articles/urban_growth_boundary/" target="_blank" rel="noopener">Oregon Senate Bill 100 (1973) — cơ sở pháp lý hệ thống UGB</a></li><li><a href="https://www.probuilder.com/node/10246" target="_blank" rel="noopener">National Center for Smart Growth Research (Knaap & Song) — đánh giá chống dàn trải</a></li></ul></div><div class="src-model"><h4 class="src-name">Ahmedabad (Ấn Độ)</h4><ul class="src-list"><li><a href="https://unfccc.int/es/node/340" target="_blank" rel="noopener">UNFCCC Momentum for Change — Ahmedabad BRTS 'Janmarg'</a></li><li><a href="https://www.edf.org/media/ahmedabad-india-wins-2010-sustainable-transport-award" target="_blank" rel="noopener">EDF — Ahmedabad đoạt Sustainable Transport Award 2010</a></li><li><a href="https://en.wikipedia.org/wiki/Ahmedabad_BRTS" target="_blank" rel="noopener">Ahmedabad Janmarg Ltd / thiết kế bởi Đại học CEPT (khai trương 2009)</a></li></ul></div><div class="src-model"><h4 class="src-name">Thâm Quyến (Trung Quốc)</h4><ul class="src-list"><li><a href="https://repository.tudelft.nl/file/File_0c245dbf-7efc-4a21-b3c9-007d0a408a13?preview=1" target="_blank" rel="noopener">Kong, T. (2021), TU Delft — 'Deconstructing the Superblock' (Thâm Quyến)</a></li><li><a href="https://govt.chinadaily.com.cn/s/201905/31/WS5cf07e82498e079e68022175/shenzhen-offers-lesson-to-global-cities.html" target="_blank" rel="noopener">China Daily — Shenzhen offers lesson to global cities (land value capture)</a></li><li><a href="https://fixthenews.com/s/301-53" target="_blank" rel="noopener">Carbon Brief — Thâm Quyến & khử carbon đô thị (điện khí hóa xe buýt/taxi)</a></li></ul></div></div>
+  </section>
+
+</div>
+
+<footer>Biên soạn tự động · Niên độ 2026 · Nguyễn Anh Tú - ERA Vietnam / Galaxy Group</footer>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+      document.querySelectorAll('.panel-tab').forEach(function(p){p.classList.remove('active')});
+      btn.classList.add('active');
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* Biểu đồ vẽ bằng SVG thuần (không dùng thư viện ngoài); màu chữ/lưới theo biến CSS nên tự đổi theo chế độ sáng/tối */
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent, text){
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function legend(box, sets, fillKey){
+    var d = document.createElement('div'); d.className = 'chart-legend';
+    sets.forEach(function(s){
+      var sp = document.createElement('span'), i = document.createElement('i');
+      i.style.background = s[fillKey]; if (fillKey === 'backgroundColor' && s.borderColor) i.style.background = s.borderColor;
+      sp.appendChild(i); sp.appendChild(document.createTextNode(s.label)); d.appendChild(sp);
+    });
+    box.appendChild(d);
+  }
+  var INK = 'var(--ink-soft)', GRID = 'rgba(120,130,128,.28)';
+
+  function drawRadar(box, cfg){
+    var labels = cfg.data.labels, sets = cfg.data.datasets, n = labels.length;
+    var sm = box.clientWidth < 480;
+    var W = sm ? 340 : 560, H = sm ? 330 : 440, cx = W/2, cy = sm ? 160 : 212, R = sm ? 88 : 138, FS = sm ? 10.5 : 11;
+    var svg = el('svg', {viewBox:'0 0 '+W+' '+H, 'aria-hidden':'true'}, box);
+    function pt(i, v){ var a = -Math.PI/2 + i*2*Math.PI/n; return [cx + Math.cos(a)*R*v/100, cy + Math.sin(a)*R*v/100]; }
+    [20,40,60,80,100].forEach(function(v){
+      var p = labels.map(function(_, i){ return pt(i, v).join(','); }).join(' ');
+      el('polygon', {points:p, fill:'none', stroke:GRID, 'stroke-width':1}, svg);
+      el('text', {x:cx+4, y:cy - R*v/100 - 2, 'font-size':9, fill:INK, opacity:.7}, svg, v);
+    });
+    labels.forEach(function(lb, i){
+      var o = pt(i, 100), l = pt(i, sm ? 120 : 116);
+      el('line', {x1:cx, y1:cy, x2:o[0], y2:o[1], stroke:GRID, 'stroke-width':1}, svg);
+      var c = Math.cos(-Math.PI/2 + i*2*Math.PI/n);
+      el('text', {x:l[0], y:l[1]+4, 'font-size':FS, fill:INK, 'text-anchor': c > .25 ? 'start' : (c < -.25 ? 'end' : 'middle')}, svg, lb);
+    });
+    sets.forEach(function(s){
+      var pts = s.data.map(function(v, i){ return pt(i, v); });
+      el('polygon', {points:pts.map(function(p){return p.join(',');}).join(' '), fill:s.backgroundColor, stroke:s.borderColor, 'stroke-width':2, 'stroke-linejoin':'round'}, svg);
+      pts.forEach(function(p){ el('circle', {cx:p[0], cy:p[1], r:2.6, fill:s.borderColor}, svg); });
+    });
+    legend(box, sets, 'borderColor');
+  }
+
+  function drawBars(box, cfg){
+    var labels = cfg.data.labels, sets = cfg.data.datasets, m = sets.length;
+    var sm = box.clientWidth < 480, FS = sm ? 10.5 : 11;
+    var L = sm ? 78 : 112, Rm = sm ? 26 : 34, T = 8, bh = sm ? 12 : 13, gap = 2, grp = m*bh + (m-1)*gap, pad = 16, rowH = grp + pad;
+    var W = sm ? 340 : 560, pw = W - L - Rm, H = T + labels.length*rowH + 44;
+    var svg = el('svg', {viewBox:'0 0 '+W+' '+H, 'aria-hidden':'true'}, box);
+    [0,20,40,60,80,100].forEach(function(v){
+      var x = L + pw*v/100;
+      el('line', {x1:x, y1:T, x2:x, y2:H-40, stroke:GRID, 'stroke-width':1}, svg);
+      el('text', {x:x, y:H-26, 'font-size':10, fill:INK, 'text-anchor':'middle'}, svg, v);
+    });
+    el('text', {x:L + pw/2, y:H-8, 'font-size':11, fill:INK, 'text-anchor':'middle'}, svg, (cfg.options.scales.x.title && cfg.options.scales.x.title.text) || '');
+    labels.forEach(function(lb, i){
+      var y0 = T + i*rowH + pad/2;
+      el('text', {x:L-6, y:y0 + grp/2 + 4, 'font-size':FS, fill:INK, 'text-anchor':'end'}, svg, lb);
+      sets.forEach(function(s, j){
+        var v = s.data[i], y = y0 + j*(bh+gap), w = Math.max(pw*v/100, 1);
+        el('rect', {x:L, y:y, width:w, height:bh, rx:3, fill:s.backgroundColor}, svg);
+        el('text', {x:L + w + 4, y:y + bh - 3, 'font-size':9.5, fill:INK}, svg, Math.round(v));
+      });
+    });
+    legend(box, sets, 'backgroundColor');
+  }
+
+  function mount(id, fn, cfg){
+    var box = document.getElementById(id), w = 0;
+    function go(){ w = box.clientWidth; box.innerHTML = ''; fn(box, cfg); }
+    go();
+    var t; window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(function(){ if ((box.clientWidth < 480) !== (w < 480)) go(); }, 150); });
+  }
+  mount('radar', drawRadar, {"type": "radar", "data": {"labels": ["Mật độ thuần", "FAR Tổng hợp", "FAR Cao tầng", "FAR Thấp tầng", "Đa dạng SDĐ", "Nút giao", "Tiếp cận GTCC", "Kết nối đường", "Tỷ lệ ĐTH", "Tốc độ ĐTH", "% Cao tầng"], "datasets": [{"label": "Hong Kong", "data": [100.0, 100.0, 100.0, 50.0, 85.0, 76.9, 96.7, 75.0, 100.0, 15.2, 97.8], "borderColor": "#8F3B24", "backgroundColor": "#8F3B2422", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#8F3B24"}, {"label": "Vũng Tàu – BR-VT (ĐNB)", "data": [0.0, 4.8, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, 40.6, 56.5, 5.6], "borderColor": "#C9A227", "backgroundColor": "#C9A22722", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#C9A227"}, {"label": "Hà Nội (Mục tiêu)", "data": [40.4, 47.6, 50.0, 75.0, 65.0, 46.2, 66.7, 63.3, 45.3, 34.8, 38.9], "borderColor": "#1F6F5C", "backgroundColor": "#1F6F5C22", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#1F6F5C"}, {"label": "TP. Hồ Chí Minh (Mục tiêu)", "data": [45.6, 52.4, 58.3, 85.7, 75.0, 52.3, 72.2, 70.0, 45.3, 34.8, 44.4], "borderColor": "#2B6CB0", "backgroundColor": "#2B6CB022", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#2B6CB0"}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"position": "bottom", "labels": {"boxWidth": 12, "font": {"size": 11}}}}, "scales": {"r": {"min": 0, "max": 100, "ticks": {"stepSize": 20, "backdropColor": "transparent"}, "grid": {"color": "rgba(120,130,128,.25)"}, "angleLines": {"color": "rgba(120,130,128,.25)"}, "pointLabels": {"font": {"size": 11}}}}}});
+  mount('gapChart', drawBars, {"type": "bar", "data": {"labels": ["Mật độ thuần", "FAR Tổng hợp", "Đa dạng SDĐ", "Nút giao", "Tiếp cận GTCC", "Kết nối đường"], "datasets": [{"label": "Hà Nội (Hiện trạng) — Hiện trạng", "data": [10.5, 19.0, 30.0, 15.4, 14.4, 20.0], "backgroundColor": "#d4a574", "borderRadius": 3, "barPercentage": 0.7}, {"label": "Hà Nội (Mục tiêu) — Mục tiêu", "data": [40.4, 47.6, 65.0, 46.2, 66.7, 63.3], "backgroundColor": "#1F6F5C", "borderRadius": 3, "barPercentage": 0.7}, {"label": "Hong Kong (Benchmark)", "data": [100.0, 100.0, 85.0, 76.9, 96.7, 75.0], "backgroundColor": "#8F3B24", "borderRadius": 3, "barPercentage": 0.7}]}, "options": {"responsive": true, "maintainAspectRatio": false, "indexAxis": "y", "plugins": {"legend": {"position": "bottom", "labels": {"boxWidth": 12, "font": {"size": 11}}}}, "scales": {"x": {"min": 0, "max": 100, "title": {"display": true, "text": "Chuẩn hóa 0–100"}}, "y": {"ticks": {"font": {"size": 11}}}}}});
+</script>
+</body>
+</html>
