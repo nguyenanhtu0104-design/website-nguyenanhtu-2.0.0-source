@@ -483,9 +483,11 @@ for (const sec of pubSections) {
     if (is.published) { pubUrls.push({ loc: SITE + url, lastmod: is.date }); if (is.html) pubUrls.push({ loc: SITE + url + 'doc/', lastmod: is.date }); }
   }
   const metaOf = (is) => esc([is.number ? 'Số ' + is.number : '', fmtDate(is.date)].filter(Boolean).join(' · '));
+  // 2.10.0: kỳ chỉ có bản đọc HTML (không PDF, không ảnh trang) → thẻ thư viện mở thẳng bản đọc: menu → thẻ = 2 lần nhấp (trước đây 3). Trang giới thiệu kỳ vẫn giữ nguyên URL để chia sẻ.
+  const cardHref = (is) => `${BASE}${sec.path}/${is.slug}/${is.html && !is.pdfs.length && !is.pages.length ? 'doc/' : ''}`;
   const cards = listed.map((is) => showCover
-    ? `<a class="pub-card" href="${BASE}${sec.path}/${is.slug}/">${is.cover ? `<img src="${BASE}${sec.path}/${is.slug}/${encodeURI(is.cover)}" alt="" loading="lazy" decoding="async">` : '<div class="pub-card-nocover">' + esc(sec.title) + '</div>'}<div class="pub-card-body"><div class="pub-card-meta">${metaOf(is)}</div><div class="pub-card-title">${esc(is.title)}</div></div></a>`
-    : `<a class="pub-card pub-card-text" href="${BASE}${sec.path}/${is.slug}/"><div class="pub-card-body"><div class="pub-card-meta">${metaOf(is)}</div><h2 class="pub-card-title">${esc(is.title)}</h2>${(is.teaser || is.desc) ? `<p class="pub-card-excerpt">${esc(is.teaser || is.desc)}</p>` : ''}<span class="pub-card-more">Đọc ${esc(sec.title.toLowerCase())} →</span></div></a>`).join('\n');
+    ? `<a class="pub-card" href="${cardHref(is)}">${is.cover ? `<img src="${BASE}${sec.path}/${is.slug}/${encodeURI(is.cover)}" alt="" loading="lazy" decoding="async">` : '<div class="pub-card-nocover">' + esc(sec.title) + '</div>'}<div class="pub-card-body"><div class="pub-card-meta">${metaOf(is)}</div><div class="pub-card-title">${esc(is.title)}</div></div></a>`
+    : `<a class="pub-card pub-card-text" href="${cardHref(is)}"><div class="pub-card-body"><div class="pub-card-meta">${metaOf(is)}</div><h2 class="pub-card-title">${esc(is.title)}</h2>${(is.teaser || is.desc) ? `<p class="pub-card-excerpt">${esc(is.teaser || is.desc)}</p>` : ''}<span class="pub-card-more">Đọc ${esc(sec.title.toLowerCase())} →</span></div></a>`).join('\n');
   const library = listed.length
     ? `<section class="edition-list"><div class="pub-label">THƯ VIỆN ẤN PHẨM</div><div class="pub-grid${showCover ? '' : ' pub-list'}">${cards}</div></section>`
     : `<section class="edition-empty"><div class="pub-label">THƯ VIỆN ẤN PHẨM</div><h2>Chưa có ấn phẩm được công bố</h2><p>Các kỳ phát hành sẽ xuất hiện tại đây cùng ảnh bìa, ngày phát hành và đường dẫn đọc hoặc tải về.</p></section>`;

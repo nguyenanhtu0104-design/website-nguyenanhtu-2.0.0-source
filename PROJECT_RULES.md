@@ -20,12 +20,12 @@
 | Dữ liệu (Data) | `data/*.json`, `site.config.json` | Metadata, menu, ảnh, chuyển hướng |
 | Nội dung (Content) | `content/articles/<slug>.html` | Mỗi bài một file, chỉ chứa HTML thân bài |
 | Ảnh (Media) | `assets/images/` | WebP, tách file, không Base64 |
-| Ấn phẩm theo kỳ | `publications/<mục>/<kỳ>/` | World Atlas, Nhật san, Chỉ số đô thị — mỗi kỳ một thư mục, Tú tự đăng (§6A) |
+| Ấn phẩm theo kỳ | `publications/<mục>/<kỳ>/` | World Atlas, Atlas VietNam, Nhật san, Chỉ số đô thị — mỗi kỳ một thư mục, Tú tự đăng (§6A) |
 
 **Mô hình hoạt động:** đây là website tĩnh sinh sẵn (static site generator), chạy bằng Node ≥ 18 và **không dùng thư viện ngoài nào**. Lệnh `node scripts/build.mjs` đọc dữ liệu, nội dung và template rồi sinh ra thư mục `dist/`. Hosting (Cloudflare Pages) tự chạy lệnh build mỗi khi có commit mới lên `main`.
 
 - **Trang chủ** gồm menu 5 chương render sẵn thành HTML tĩnh. Trang chủ không tải nội dung bài, không tải ảnh bài, không tải search index.
-- **Thanh menu NAT** (`templates/partials/global-nav.html`) nằm trên mọi trang: Cẩm nang · World Atlas · Nhật san · Chỉ số đô thị · YouTube · Liên hệ ▾. Giữ đúng bản đang chạy trước 2.0.
+- **Thanh menu NAT** (`templates/partials/global-nav.html`) nằm trên mọi trang: Cẩm nang · World Atlas · Atlas VietNam · Nhật san · Chỉ số đô thị · YouTube · Liên hệ ▾. Giữ đúng bản đang chạy trước 2.0.
 - **Trang bài** là một trang thật tại `/cam-nang/<slug>/` (giữ nguyên địa chỉ bản trước đã công khai), có sẵn toàn bộ nội dung và thẻ SEO/OG. Trang dùng lại khung "panel" của v57 (dải màu, thanh tiêu đề, nút PDF, footer tác giả) nhưng ở dạng trang, không phải modal.
 - **World Atlas** `/atlas/` và **Nhật san** `/nhat-san/`: trang thư viện và trang từng kỳ, sinh tự động từ `publications/`.
 - **Search** dùng `dist/data/search-index.json` (chỉ chứa metadata). File này chỉ được tải khi người dùng bấm vào ô tìm kiếm.
@@ -261,6 +261,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-10-05 — **2.10.0** (Tú yêu cầu): (1) thêm menu "Atlas VietNam" `/atlas-viet-nam/` (mục ấn phẩm thứ tư, cùng cơ chế §6A, nằm sau World Atlas trên thanh NAT; địa chỉ mới là vĩnh viễn, §6B nếu đổi); (2) thư viện ấn phẩm: kỳ chỉ có bản đọc HTML thì thẻ mở thẳng `/<mục>/<kỳ>/doc/` (2 lần nhấp thay vì 3), trang `/<mục>/<kỳ>/` vẫn giữ để chia sẻ; (3) hover chỉ áp dụng cho thiết bị có chuột. Không đổi nguyên tắc nào khác.
 - 2026-10-05 — **2.9.0** (Tú yêu cầu): thêm menu "Chỉ số đô thị" `/chi-so-do-thi/` (mục ấn phẩm thứ ba, cùng cơ chế §6A, nằm sau Nhật san trên thanh NAT). Địa chỉ mới là vĩnh viễn (§6B nếu đổi). Không đổi nguyên tắc nào khác; báo cáo HTML đưa vào không được tải thư viện/CDN ngoài (§12.9).
 - 2026-10-03 — Không đổi nguyên tắc. Tú yêu cầu gỡ bài trùng `dong-tien-la-vua-…` (chương Tư duy đầu tư): áp dụng §6B (301 sang bài giữ lại + xóa file nội dung, theo tiền lệ `the-solis` → `skysolis`) thay vì chuyển `archived`, vì URL đã xuất bản bị khóa trong `tests/published-urls.json` (archived sẽ noindex và rơi khỏi sitemap).
 - 2026-10-02 — **2.7.0** (Tú duyệt): (1) thang chữ trang bài lớn hơn (đoạn văn 16px, thẻ/hỏi đáp 15px, nhãn nhỏ nhất 12px, `p-h2` 22px), chỉ trong thân bài; (2) khối `.p-price` / `.p-offers` cho mục giá và ưu đãi; (3) hiệu ứng hiện dần khi lướt trong `article.js`, tôn trọng "giảm chuyển động" và không ẩn nội dung khi tắt JS (ngoại lệ có chủ đích của §12.5); (4) SEO trang dự án: thêm mục "❓ Hỏi & Đáp" cuối mục 04, title dạng "Tên dự án: Giá, Pháp Lý, Tiến Độ 2026", và trong mục 02 đưa "Giá Bán & Chính Sách" lên đầu (thứ tự mới thay cho thứ tự ở §8.2: Giá & Chính sách → Loại hình → Phối cảnh → Tiện ích → Ngoại khu → Tham quan 360°). Clip giới thiệu dự án trên Facebook luôn được giữ ở đầu bài.

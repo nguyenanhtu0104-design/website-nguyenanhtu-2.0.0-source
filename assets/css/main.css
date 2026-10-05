@@ -574,7 +574,7 @@ body{
     letter-spacing:1.15px;text-transform:uppercase;white-space:nowrap;
     border-bottom:2px solid transparent;transition:.18s ease;
   }
-  .rei-global-nav__link:hover{color:#fff!important;background:rgba(255,255,255,.045)}
+  @media (hover:hover){.rei-global-nav__link:hover{color:#fff!important;background:rgba(255,255,255,.045)}}
   .rei-global-nav__link.is-active{color:#fff!important;border-bottom-color:#d7ad55;background:rgba(215,173,85,.075)}
   .rei-global-nav__home-note{font-size:8px;color:#d7ad55;margin-left:6px;letter-spacing:.8px}
   @media(max-width:720px){
@@ -630,7 +630,7 @@ a.p-close{text-decoration:none}
 .edition-list{margin:48px 0}
 .pub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;margin-top:18px}
 .pub-card{display:block;background:#151615;border:1px solid #3b3428;border-radius:4px;overflow:hidden;text-decoration:none;color:inherit;transition:border-color .18s,transform .18s}
-.pub-card:hover{border-color:#d9b467;transform:translateY(-2px)}
+@media (hover:hover){.pub-card:hover{border-color:#d9b467;transform:translateY(-2px)}}
 .pub-card img,.pub-card-nocover{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;background:#1b1a17}
 .pub-card-nocover{display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:22px;color:#6f6552}
 .pub-card-body{padding:14px 16px 16px}

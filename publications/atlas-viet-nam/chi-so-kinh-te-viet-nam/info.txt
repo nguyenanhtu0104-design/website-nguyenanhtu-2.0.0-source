@@ -1,0 +1,6 @@
+tieu-de: VietNam Atlas: chỉ số kinh tế Việt Nam
+so: 01
+ngay: 2026-10-05
+mo-ta: Bộ chỉ số kinh tế Việt Nam trên một trang: tăng trưởng, FDI, lao động, dân số và đô thị hóa, mỗi số liệu kèm nguồn đối chiếu. Cập nhật theo từng đợt số liệu mới, không tạo bài mới.
+trich-doan: Kinh tế Việt Nam đang đi đâu? Một trang gom các chỉ số then chốt (tăng trưởng, vốn FDI, lao động, dân số, đô thị hóa), mỗi chỉ số có nguồn từ Cục Thống kê và Ngân hàng Thế giới để tự đối chiếu. Bài được cập nhật khi có số liệu mới.
+trang-thai: cong-bo

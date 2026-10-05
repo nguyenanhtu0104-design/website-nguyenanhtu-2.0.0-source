@@ -2,6 +2,14 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-05 — 2.10.0: Menu mới "Atlas VietNam", đăng World Atlas v1.5.19, rút gọn đường nhấp
+- Thêm mục **Atlas VietNam** (`/atlas-viet-nam/`) vào thanh menu NAT, nằm sau "World Atlas". Cùng cơ chế ấn phẩm theo kỳ: khai báo trong `site.config.json` → `publications` (`navKey: nav_atlasvn`), mỗi kỳ là một thư mục trong `publications/atlas-viet-nam/<kỳ>/`. Bài duy nhất, cập nhật tại chỗ: **VietNam Atlas: chỉ số kinh tế Việt Nam** (`chi-so-kinh-te-viet-nam`), đã **công bố** theo yêu cầu của Tú.
+- **World Atlas:** đăng **World Atlas quý III/2026** (`2026-q3`, bản No-JS cho điện thoại; mỗi quý một kỳ), đã **công bố**. Bản nháp cũ v1.5.16 (`trang-thai: nhap`) giữ nguyên, không hiện ra ngoài.
+- **Rút gọn đường nhấp (Tú báo phải nhấp tới lần thứ 3 mới vào nội dung):** trước đây menu → thư viện → trang giới thiệu kỳ → "Đọc trực tuyến". Nay kỳ chỉ có bản đọc HTML (không PDF, không ảnh trang) thì thẻ trong thư viện mở **thẳng** bản đọc `/doc/`: menu → thẻ = **2 lần nhấp** (Nhật san, World Atlas, Atlas VietNam, Chỉ số đô thị). Trang giới thiệu kỳ `/<mục>/<kỳ>/` vẫn còn, giữ nguyên URL, dùng để chia sẻ Facebook/Zalo. Kỳ có PDF hoặc ảnh trang vẫn mở trang giới thiệu như cũ.
+- Atlas VietNam v1.2.2: file gốc đặt khối "ngăn chi tiết" (drawer) **sau** đoạn script nên trình duyệt báo lỗi và các nút **Chi tiết**, **In**, **Phương pháp** không chạy. Đã chuyển khối đó lên trước script, không đổi giao diện hay số liệu. Chân trang trong file vẫn ghi "Release v1.2.1" (tiêu đề là v1.2.2) — giữ nguyên, chờ Tú xác nhận.
+- CSS: hiệu ứng hover của thẻ ấn phẩm và của menu chỉ áp dụng cho thiết bị có chuột (`@media (hover:hover)`), để cảm ứng không tốn một lần chạm chỉ để "hover".
+- Báo cáo HTML của cả hai kỳ không tải thư viện/CDN ngoài (§12.9); các link trong file là link nguồn dẫn chứng, giữ nguyên. Ảnh bìa `bia.jpg` của hai kỳ tạm dùng ảnh trang chủ Cẩm nang, sẽ thay khi có ảnh riêng.
+
 ## 2026-10-05 — 2.9.0: Menu mới "Chỉ số đô thị"
 - Thêm mục **Chỉ số đô thị** (`/chi-so-do-thi/`) vào thanh menu NAT, nằm sau "Nhật san". Dùng đúng cơ chế ấn phẩm theo kỳ của World Atlas / Nhật san: khai báo trong `site.config.json` → `publications`, mỗi báo cáo là một thư mục trong `publications/chi-so-do-thi/<kỳ>/`. Không đổi giao diện menu (các mục còn lại giữ nguyên).
 - Kỳ đầu tiên: "Báo cáo Mật độ Đô thị Nén 2026" (`2026-10-05-mat-do-do-thi-nen`), đã **công bố** (`cong-bo`) theo yêu cầu của Tú: hiện trong thư viện `/chi-so-do-thi/`, có trong sitemap.

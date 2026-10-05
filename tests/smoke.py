@@ -35,7 +35,7 @@ with sync_playwright() as p:
         check(home_bytes <= 6, f'trang chủ chỉ {home_bytes} request nội bộ')
         pg.locator('.chapter[data-ch="4"] .ch-header').click()
         check(pg.locator('.chapter[data-ch="4"]').evaluate('e=>e.classList.contains("open")'), 'mở chương 4 (accordion)')
-        check(pg.locator('.chapter[data-ch="4"] a.art-row').count() == 19 and pg.locator('.chapter[data-ch="4"] a.xl-i').count() == 79, 'chương 4: 19 vùng · 79 dự án')
+        check(pg.locator('.chapter[data-ch="4"] a.art-row').count() == 19 and pg.locator('.chapter[data-ch="4"] a.xl-i').count() == 80, 'chương 4: 19 vùng · 80 dự án')
         pg.locator('.chapter[data-ch="4"] a.xl-i', has_text='The MarQ').first.click(); pg.wait_for_load_state()
         check(pg.url.endswith('/cam-nang/the-marq/'), 'bấm chip dự án → /cam-nang/the-marq/')
         pg.go_back(); pg.wait_for_load_state()
@@ -66,7 +66,12 @@ with sync_playwright() as p:
         sw = pg.evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1')
         check(sw, 'không tràn ngang')
         pg.goto(BASE + '/atlas/'); check(pg.locator('h1', has_text='World Atlas').count() == 1 and pg.locator('.rei-global-nav__link.is-active', has_text='World Atlas').count() == 1, '/atlas/ hoạt động, menu đúng mục')
-        check(pg.locator('.edition-empty').count() == 1, 'Atlas: bản nháp không hiện trong thư viện')
+        check(pg.locator('a.pub-card').count() == 1 and '2026-q3' in (pg.locator('a.pub-card').first.get_attribute('href') or '') and pg.locator('a[href*="v1-5-16"]').count() == 0, 'Atlas: chỉ hiện kỳ quý III/2026, bản nháp v1.5.16 không hiện trong thư viện')
+        # 2.10.0: menu → thẻ → bản đọc = 2 lần nhấp
+        for lbl in ['World Atlas', 'Atlas VietNam', 'Nhật san', 'Chỉ số đô thị']:
+            pg.goto(BASE + '/'); pg.locator('.rei-global-nav__link', has_text=lbl).first.click(); pg.wait_for_load_state()
+            pg.locator('a.pub-card').first.click(); pg.wait_for_url('**/doc/'); pg.wait_for_load_state()
+            check(pg.url.rstrip('/').endswith('/doc'), f'{lbl}: menu → thẻ mở thẳng bản đọc (2 lần nhấp)')
         pg.goto(BASE + '/nhat-san/so-00-demo/'); check('noindex' in (pg.locator('meta[name=robots]').get_attribute('content') or '') and pg.locator('.pub-draft').count() == 1, 'kỳ nháp Nhật san: xem được qua link, gắn noindex')
         pg.locator('a.pub-btn', has_text='Đọc trực tuyến').click(); pg.wait_for_load_state()
         check('/nhat-san/so-00-demo/doc/' in pg.url and pg.evaluate("Promise.all([...document.images].map(i=>{i.loading='eager';return i.complete?0:new Promise(r=>{i.onload=i.onerror=r})})).then(()=>[...document.images].every(i=>i.naturalWidth>0))"), 'Đọc trực tuyến: mở bản HTML, ảnh đã tách khỏi Base64 hiển thị đủ')

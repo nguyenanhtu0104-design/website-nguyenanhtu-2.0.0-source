@@ -1,5 +1,5 @@
 {
-  "version": "2.9.0",
+  "version": "2.10.0",
   "ctaCategories": [
     "du-an-chon-loc"
   ],
@@ -38,6 +38,16 @@
       "pageTitle": "World Atlas | Nguyễn Anh Tú",
       "label": "KHÔNG GIAN · ĐÔ THỊ · BẤT ĐỘNG SẢN",
       "description": "Bộ sưu tập ấn phẩm về không gian, đô thị và bất động sản. Mỗi kỳ được trình bày độc lập dưới dạng hình ảnh hoặc PDF."
+    },
+    {
+      "id": "atlas-viet-nam",
+      "path": "atlas-viet-nam",
+      "cover": false,
+      "navKey": "nav_atlasvn",
+      "title": "Atlas VietNam",
+      "pageTitle": "Atlas VietNam | Nguyễn Anh Tú",
+      "label": "KINH TẾ · DÂN SỐ · ĐÔ THỊ HÓA",
+      "description": "Atlas kinh tế Việt Nam theo quý: tăng trưởng, dòng vốn FDI, dân số và đô thị hóa, mỗi số liệu kèm nguồn để đối chiếu."
     },
     {
       "id": "nhat-san",

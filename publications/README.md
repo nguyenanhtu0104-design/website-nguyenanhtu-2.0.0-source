@@ -1,6 +1,6 @@
-# Ấn phẩm theo kỳ — World Atlas, Nhật san & Chỉ số đô thị
+# Ấn phẩm theo kỳ — World Atlas, Atlas VietNam, Nhật san & Chỉ số đô thị
 
-Mỗi kỳ là **một thư mục** trong `publications/atlas/`, `publications/nhat-san/` hoặc `publications/chi-so-do-thi/`.
+Mỗi kỳ là **một thư mục** trong `publications/atlas/`, `publications/atlas-viet-nam/`, `publications/nhat-san/` hoặc `publications/chi-so-do-thi/`.
 
 Tên thư mục trở thành đường dẫn. Chỉ dùng chữ thường không dấu, số và dấu `-`.
 Ví dụ: thư mục `2026-10-ky-01` sẽ có đường dẫn `nguyenanhtu.vn/atlas/2026-10-ky-01/`.
@@ -30,3 +30,5 @@ trang-thai: nhap
 - Mỗi file không vượt quá 24 MB.
 
 - Nhật san không hiện ảnh bìa trên web (`cover: false` trong `site.config.json`): thư viện hiện số kỳ, tiêu đề và `trich-doan`. File `bia.jpg` vẫn nên có vì dùng làm ảnh khi chia sẻ Facebook/Zalo.
+
+- Kỳ chỉ có một file `.html` (không PDF, không ảnh trang): thẻ trong thư viện mở thẳng bản đọc, người đọc chỉ cần 2 lần nhấp (menu → thẻ). Trang giới thiệu kỳ vẫn có để chia sẻ.
