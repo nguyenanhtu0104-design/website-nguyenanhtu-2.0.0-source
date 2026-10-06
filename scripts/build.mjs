@@ -190,6 +190,8 @@ console.log(`✓ Kiểm tra OK — ${articles.length} bài, ${Object.keys(images
 if (CHECK_ONLY) process.exit(0);
 
 /* ───────────────────────── RENDER ───────────────────────── */
+// Giao diện riêng của từng bài (trường `theme` trong articles.json) → class theme-<tên> ở <html> và <body>
+const themeCls = a => (a.theme && /^[a-z0-9-]+$/.test(a.theme)) ? ` theme-${a.theme}` : '';
 const common = { embedHosts: esc((cfg.embedHosts || []).join(',')), authorRole: esc(cfg.author.role), base: BASE, version: cfg.version, themeColor: cfg.themeColor, siteName: esc(cfg.siteName), locale: cfg.locale, fonts: esc(cfg.fonts),
   /* Google Fonts không chặn hiển thị: tải CSS font ở mức ưu tiên cao nhưng áp dụng sau (display=swap trong URL); noscript giữ nguyên bản cũ */
   fontsLink: `<link rel="preload" as="style" href="${esc(cfg.fonts)}" onload="this.onload=null;this.rel='stylesheet'">\n<noscript><link rel="stylesheet" href="${esc(cfg.fonts)}"></noscript>` };
@@ -335,7 +337,7 @@ for (const a of articles) {
   const withCta = ctaCats.has(a.category);
   const dec = decorate(a, contents.get(a.slug), withCta);
   write(`${SECTION}/${a.slug}/index.html`, fill(tplArticle, {
-    ...common, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: dec.aside ? ' has-aside' : '', ctaBar: withCta ? ctaHtml : '', bodyClass: withCta ? ' has-cta' : '', pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
+    ...common, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
     accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: renderContent(dec.html), hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,

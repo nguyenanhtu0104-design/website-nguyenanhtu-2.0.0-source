@@ -2,6 +2,11 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-06 — 2.11.0: Giao diện riêng cho Norton Park
+- Tú gửi bảng màu "Hướng dẫn gửi xe" của dự án: nền xanh rêu `#545748`, chữ kem `#ead6c5`, họa tiết lá. Bài `norton-park` đổi sang tông này: nền và chữ, thẻ, bảng, SWOT, Hỏi & Đáp, thanh gọi/Zalo, chân trang tác giả; màu nhấn chuyển từ đỏ gạch sang vàng cát `#e6c58f` (đủ tương phản ≥ 4,5:1 trên nền rêu). Dải họa tiết lá (tách từ ảnh của Tú, `assets/images/site/norton-pattern.webp`) thay vạch màu 3px ở đầu trang.
+- Cơ chế: thêm trường tùy chọn `theme` trong `data/articles.json` (xem PROJECT_RULES §3.1). Build thêm class `theme-<tên>` vào `<html>`/`<body>`; CSS ở cuối `main.css`. Chỉ Norton Park có `theme`; các bài khác, trang chủ và menu NAT không đổi. Giữ `accent` `#b05040` trong dữ liệu (màu chấm của menu/tìm kiếm).
+- Nội dung `norton-park.html`: các màu chữ gắn cứng (đỏ gạch, vàng, xanh lá) đổi sang biến màu để theo giao diện. Tăng `version` 2.11.0.
+
 ## 2026-10-06 — Nội dung: Norton Park — bổ sung đội ngũ dự án
 - Mục "Nhà Phát Triển" của `norton-park`: thay "Đơn vị thiết kế" bằng các đơn vị theo slide giới thiệu dự án: tư vấn kiến trúc DP Architects (DPA), tư vấn nội thất dwp, tư vấn cảnh quan Belt Collins, thi công phần ngầm CBM. Tư vấn kết cấu (slide chỉ có logo, chưa rõ tên) và Tổng thầu vẫn "Đang cập nhật". Thêm poster đội ngũ dự án (ảnh `norton-park/17`, từ ảnh chụp slide: nắn thẳng, cắt nền, chỉnh tông ấm) ngay dưới khối này. Cập nhật `updatedDate` 2026-10-06.
 

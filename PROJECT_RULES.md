@@ -90,6 +90,7 @@ dist/                     ← SINH TỰ ĐỘNG, không commit, không sửa tay
 | `relatedArticles` | | Mảng slug các bài được liên kết tới. |
 | `section` | ✔ | Nhãn ở đầu trang bài (vd `🏛️ Dự Án Chọn Lọc`). |
 | `accent` | ✔ | Màu nhấn hex của bài (xem §8.3). |
+| `theme` | | Tùy chọn (từ 2.11.0). Tên giao diện riêng của bài, chỉ gồm `a-z0-9-`; build thêm class `theme-<tên>` vào `<html>` và `<body>`. CSS của giao diện nằm ở cuối `assets/css/main.css`. Hiện có: `norton-park`. |
 | `searchKeywords` | | Từ khóa tìm kiếm, tối đa khoảng 700 ký tự, chỉ văn bản thuần. |
 | `facts` | | Chỉ cho bài dự án: mảng **2–4** phần tử `{"n":"1.622","l":"căn hộ · 2 block"}` (`n` = số lớn, ngắn, ≤ 8 ký tự; `l` = nhãn). Hiện thành dải số liệu ngay dưới tiêu đề. **Chỉ lấy số đã có trong bài**, không thêm số mới (§8.1). Bài có đủ mục 01–04 mà thiếu `facts` thì build cảnh báo. |
 | `legacy` | | `{source:"v57", panelId}` cho bài cũ; link `/#panelId` tự chuyển về URL mới. Bài mới để `null`. |
@@ -261,6 +262,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-10-06 — **2.11.0** (Tú yêu cầu): bài Norton Park dùng giao diện riêng theo nhận diện dự án (nền xanh rêu #545748, chữ kem #ead6c5, dải họa tiết lá ở đầu trang). Thêm trường `theme` trong `articles.json` + class `theme-<tên>` ở build; chỉ bài có `theme` mới đổi, các bài khác và trang chủ giữ nguyên giao diện đã duyệt (§12.5). Menu NAT giữ nguyên.
 - 2026-10-05 — **2.10.0** (Tú yêu cầu): (1) thêm menu "Atlas VietNam" `/atlas-viet-nam/` (mục ấn phẩm thứ tư, cùng cơ chế §6A, nằm sau World Atlas trên thanh NAT; địa chỉ mới là vĩnh viễn, §6B nếu đổi); (2) thư viện ấn phẩm: kỳ chỉ có bản đọc HTML thì thẻ mở thẳng `/<mục>/<kỳ>/doc/` (2 lần nhấp thay vì 3), trang `/<mục>/<kỳ>/` vẫn giữ để chia sẻ; (3) hover chỉ áp dụng cho thiết bị có chuột. Không đổi nguyên tắc nào khác.
 - 2026-10-05 — **2.9.0** (Tú yêu cầu): thêm menu "Chỉ số đô thị" `/chi-so-do-thi/` (mục ấn phẩm thứ ba, cùng cơ chế §6A, nằm sau Nhật san trên thanh NAT). Địa chỉ mới là vĩnh viễn (§6B nếu đổi). Không đổi nguyên tắc nào khác; báo cáo HTML đưa vào không được tải thư viện/CDN ngoài (§12.9).
 - 2026-10-03 — Không đổi nguyên tắc. Tú yêu cầu gỡ bài trùng `dong-tien-la-vua-…` (chương Tư duy đầu tư): áp dụng §6B (301 sang bài giữ lại + xóa file nội dung, theo tiền lệ `the-solis` → `skysolis`) thay vì chuyển `archived`, vì URL đã xuất bản bị khóa trong `tests/published-urls.json` (archived sẽ noindex và rơi khỏi sitemap).
