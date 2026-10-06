@@ -861,41 +861,41 @@ h2.p-sec{font:inherit}
 .pub-card-excerpt{margin:12px 0 16px;font-size:15px;line-height:1.75;color:#a9a9a9;max-width:none}
 .pub-card-more{font-size:13px;font-weight:600;color:#d9b467;letter-spacing:.3px}
 
-/* ─── GIAO DIỆN RIÊNG: Norton Park (2.11.0) — nền xanh rêu #545748, chữ kem #ead6c5, họa tiết lá của dự án ─── */
-html.theme-norton-park{background:#474a3d!important}
+/* ─── GIAO DIỆN RIÊNG: Norton Park (2.11.1) — nền xanh rêu đậm, chữ kem, dải họa tiết lá #545748, họa tiết lá của dự án ─── */
+html.theme-norton-park{background:#2b2d24!important}
 body.theme-norton-park{
-  --bg:#474a3d;--bg2:#545748;--bg3:#5d6050;
-  --text:#ead6c5;--text-2:#e3d0be;--muted:#ddcdba;--ok:#b5e0c6;
+  --bg:#2b2d24;--bg2:#383b2f;--bg3:#424538;
+  --text:#f4e8da;--text-2:#ecdfcf;--muted:#d8c9b6;--ok:#b5e0c6;
   --brand:#e6c58f;--brand-dim:rgba(230,197,143,.18);
   --border:rgba(234,214,197,.2);--border-2:rgba(234,214,197,.16);
   --pc-soft:#f0d9b5;--pc-num:rgba(230,197,143,.65);
-  background:#474a3d!important;
+  background:#2b2d24!important;
 }
-body.theme-norton-park #panel{--pc:#e6c58f!important;background:#545748;box-shadow:1px 0 0 var(--border-2)}
+body.theme-norton-park #panel{--pc:#e6c58f!important;background:#383b2f;box-shadow:1px 0 0 var(--border-2)}
 body.theme-norton-park #pStrip{height:88px;background:url(../images/site/norton-pattern.webp) repeat-x left top/238px 88px,#545748!important}
 body.theme-norton-park #pTag{color:#e6c58f!important}
-body.theme-norton-park #pHead{background:rgba(84,87,72,.96)}
+body.theme-norton-park #pHead{background:rgba(56,59,47,.96)}
 body.theme-norton-park #panel::-webkit-scrollbar-thumb{background:rgba(234,214,197,.3)}
 body.theme-norton-park .p-h1{color:#f6e9da}
-body.theme-norton-park .p-card{background:rgba(0,0,0,.15)}
-body.theme-norton-park .p-card p,body.theme-norton-park #pBody .p-lead,body.theme-norton-park .p-call p{color:#e3d0be}
-body.theme-norton-park .p-call,body.theme-norton-park .p-warn,body.theme-norton-park .knum{background:rgba(0,0,0,.15)}
-body.theme-norton-park .proj-row{background:rgba(0,0,0,.15)}
-body.theme-norton-park .proj-row:hover{background:rgba(0,0,0,.24)}
+body.theme-norton-park .p-card{background:rgba(234,214,197,.06)}
+body.theme-norton-park .p-card p,body.theme-norton-park #pBody .p-lead,body.theme-norton-park .p-call p{color:#ecdfcf}
+body.theme-norton-park .p-call,body.theme-norton-park .p-warn,body.theme-norton-park .knum{background:rgba(234,214,197,.06)}
+body.theme-norton-park .proj-row{background:rgba(234,214,197,.06)}
+body.theme-norton-park .proj-row:hover{background:rgba(234,214,197,.11)}
 body.theme-norton-park .proj-row-name{color:#f6e9da}
-body.theme-norton-park #copyArticleLink{background:rgba(0,0,0,.2);color:#ead6c5;border-color:rgba(234,214,197,.35)}
+body.theme-norton-park #copyArticleLink{background:rgba(0,0,0,.2);color:#f4e8da;border-color:rgba(234,214,197,.35)}
 body.theme-norton-park #articleLinkStatus:not(:empty){color:#e6c58f}
-body.theme-norton-park #ctaBar{background:rgba(71,74,61,.97);border-top-color:rgba(234,214,197,.22)}
+body.theme-norton-park #ctaBar{background:rgba(43,45,36,.97);border-top-color:rgba(234,214,197,.22)}
 body.theme-norton-park #ctaBar .cta-call,body.theme-norton-park .aside-cta .cta-call{background:#e6c58f;color:#2b2d23}
-body.theme-norton-park #ctaBar .cta-zalo,body.theme-norton-park .aside-cta .cta-zalo{color:#ead6c5;border-color:rgba(234,214,197,.4)}
-body.theme-norton-park .swot-cell ul,body.theme-norton-park .swot-cell p{color:#e3d0be}
+body.theme-norton-park #ctaBar .cta-zalo,body.theme-norton-park .aside-cta .cta-zalo{color:#f4e8da;border-color:rgba(234,214,197,.4)}
+body.theme-norton-park .swot-cell ul,body.theme-norton-park .swot-cell p{color:#ecdfcf}
 body.theme-norton-park .swot-s .swot-label{color:#b5e0c6}body.theme-norton-park .swot-w .swot-label{color:#f2aea0}
 body.theme-norton-park .swot-o .swot-label{color:#bcd3f2}body.theme-norton-park .swot-t .swot-label{color:#e6c58f}
-body.theme-norton-park .faq-q{color:#ead6c5}
+body.theme-norton-park .faq-q{color:#f4e8da}
 body.theme-norton-park .faq-num{opacity:.85}
-body.theme-norton-park .faq-a{color:#e3d0be}
-body.theme-norton-park #pFooter{background:rgba(0,0,0,.2);border-top-color:rgba(234,214,197,.2)}
+body.theme-norton-park .faq-a{color:#ecdfcf}
+body.theme-norton-park #pFooter{background:rgba(0,0,0,.22);border-top-color:rgba(234,214,197,.2)}
 body.theme-norton-park .pf-name{color:#f6e9da}
 body.theme-norton-park .pf-role{color:#e6c58f}
-body.theme-norton-park .pf-cta{color:#d6c6b3}
+body.theme-norton-park .pf-cta{color:#d8c9b6}
 body.theme-norton-park .pf-btn-phone{color:#e6c58f;border-color:rgba(230,197,143,.45);background:rgba(230,197,143,.1)}
