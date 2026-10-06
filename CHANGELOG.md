@@ -3,7 +3,7 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 ## 2026-10-06 — Nội dung: Norton Park — bổ sung đội ngũ dự án
-- Mục "Nhà Phát Triển" của `norton-park`: thay "Đơn vị thiết kế" bằng các đơn vị theo slide giới thiệu dự án: tư vấn kiến trúc DP Architects (DPA), tư vấn nội thất dwp, tư vấn cảnh quan Belt Collins, thi công phần ngầm CBM. Tư vấn kết cấu (slide chỉ có logo, chưa rõ tên) và Tổng thầu vẫn "Đang cập nhật". Cập nhật `updatedDate` 2026-10-06.
+- Mục "Nhà Phát Triển" của `norton-park`: thay "Đơn vị thiết kế" bằng các đơn vị theo slide giới thiệu dự án: tư vấn kiến trúc DP Architects (DPA), tư vấn nội thất dwp, tư vấn cảnh quan Belt Collins, thi công phần ngầm CBM. Tư vấn kết cấu (slide chỉ có logo, chưa rõ tên) và Tổng thầu vẫn "Đang cập nhật". Thêm poster đội ngũ dự án (ảnh `norton-park/17`, từ ảnh chụp slide: nắn thẳng, cắt nền, chỉnh tông ấm) ngay dưới khối này. Cập nhật `updatedDate` 2026-10-06.
 
 ## 2026-10-05 — 2.10.1: Ảnh chia sẻ link cho Atlas / Chỉ số đô thị
 - Tú yêu cầu World Atlas, Atlas VietNam, Chỉ số đô thị đều lấy **ảnh trang chủ Cẩm nang** làm ảnh khi dán link (tạm thời). Thêm `bia.jpg` (bản sao `trang-chu.jpg`) cho kỳ Chỉ số đô thị; hai kỳ Atlas đã có từ trước.
