@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-07 — 2.12.0: SEO Phase 3 — tiêu đề không bị cắt, mô tả đủ dài, nối link nội bộ
+- **Thẻ `<title>` (build.mjs):** hậu tố thương hiệu " | Nguyễn Anh Tú" chỉ thêm khi tổng độ dài ≤ 60 ký tự, ngược lại bỏ hậu tố. Trước đó 32/78 bài published có title 63–68 ký tự nên Google cắt chữ ở kết quả tìm kiếm; nay không còn bài nào quá 60 ký tự (36 bài vẫn giữ hậu tố). Chỉ đổi thẻ `<title>`; `og:title`, JSON-LD và tiêu đề trong bài không đổi. Không đổi URL nào.
+- **Mô tả meta:** viết lại 5 mô tả quá ngắn (88–99 ký tự) thành 140–155 ký tự, chỉ dùng số liệu đã có trong bài: `truc-metro-so-1-hcm`, `vung-khcn-hcm-ii-hub-icd`, `one-central-saigon`, `vinhome-green-paradise`, `capitaland`. Không đổi `updatedDate`.
+- **Liên kết nội bộ:** số bài published chỉ có link từ menu trang chủ giảm 16 → 7. Gắn 8 link trong thân bài tới trang Nhà phát triển chưa có link ngữ cảnh: Sun Group (từ `sun-thu-thiem-2c`, `tu-giac-kinh-te-bien-1-650km`), Vinhomes (từ `vung-tri-thuc-khcn-tay-bac`, `chuc-nang-vung-giao-duc`), Masterise Homes (từ `global-city`, `grand-marina-saigon`, `one-central-saigon`), An Gia Group (từ `son-kim-land`). Link ở lần nhắc đầu tiên trong văn xuôi, màu vàng thương hiệu có gạch chân để người đọc nhận ra.
+- Thêm dòng "📚 Đọc thêm" cuối 8 bài chủ đề nối vòng cho nhau: nhóm TOD (`mo-hinh-tod-hanh-lang-metro`, `tod-5-0-mat-do-hoat-dong`, `do-nen-do-thi-compact-city`), nhóm tư duy đầu tư (`22-nguyen-tac-tu-duy-dau-tu-bds`, `thi-truong-dan-trai-nhung-rat-tap-trung`), nhóm pháp luật (`luat-dat-dai-2024-to-chuc-kinh-te`, `phap-luat-bds`, `nha-o-xa-hoi-toan-canh-phap-ly-2024-2026`).
+- Kiểm thử: build 0 lỗi, `check-dist` ĐẠT (82 URL khóa, 0 link hỏng, 0 trang mồ côi published).
+
 ## 2026-10-07 — Nội dung: gắn video YouTube lên đầu 2 bài Thành phố mới Bình Dương
 - `thanh-pho-moi-binh-duong` và `tpm-binh-duong`: thêm thẻ liên kết "Video phân tích" (https://youtu.be/t62og8f0iTk) ở đầu bài, cùng kiểu thẻ video của Artisan Park, tông xanh chương Chiến lược. Mở YouTube ở tab mới, không nhúng iframe. Không đổi URL, không tăng version.
 

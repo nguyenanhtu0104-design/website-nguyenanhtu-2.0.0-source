@@ -262,6 +262,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-10-07 — **2.12.0** (Tú ủy quyền SEO "tự làm"): thẻ `<title>` chỉ gắn hậu tố "| Nguyễn Anh Tú" khi tổng ≤ 60 ký tự (hàm `withSuffix` trong `build.mjs`); khi viết `seoTitle` nên giữ ≤ 52 ký tự để còn chỗ cho hậu tố. Không đổi URL, giao diện hay nguyên tắc nào khác.
 - 2026-10-06 — **2.11.1** (Tú yêu cầu): bài Norton Park dùng giao diện riêng theo nhận diện dự án (nền xanh rêu đậm, chữ kem, dải họa tiết lá #545748 ở đầu trang). Thêm trường `theme` trong `articles.json` + class `theme-<tên>` ở build; chỉ bài có `theme` mới đổi, các bài khác và trang chủ giữ nguyên giao diện đã duyệt (§12.5). Menu NAT giữ nguyên.
 - 2026-10-05 — **2.10.0** (Tú yêu cầu): (1) thêm menu "Atlas VietNam" `/atlas-viet-nam/` (mục ấn phẩm thứ tư, cùng cơ chế §6A, nằm sau World Atlas trên thanh NAT; địa chỉ mới là vĩnh viễn, §6B nếu đổi); (2) thư viện ấn phẩm: kỳ chỉ có bản đọc HTML thì thẻ mở thẳng `/<mục>/<kỳ>/doc/` (2 lần nhấp thay vì 3), trang `/<mục>/<kỳ>/` vẫn giữ để chia sẻ; (3) hover chỉ áp dụng cho thiết bị có chuột. Không đổi nguyên tắc nào khác.
 - 2026-10-05 — **2.9.0** (Tú yêu cầu): thêm menu "Chỉ số đô thị" `/chi-so-do-thi/` (mục ấn phẩm thứ ba, cùng cơ chế §6A, nằm sau Nhật san trên thanh NAT). Địa chỉ mới là vĩnh viễn (§6B nếu đổi). Không đổi nguyên tắc nào khác; báo cáo HTML đưa vào không được tải thư viện/CDN ngoài (§12.9).

@@ -24,6 +24,9 @@ const abs = (p) => SITE + BASE + p.replace(/^\//, '');
 const SECTION = 'cam-nang';   // URL bài: /cam-nang/<slug>/ (giữ nguyên địa chỉ đã công khai)
 const artUrl = (slug) => `${BASE}${SECTION}/${slug}/`;
 const esc = (s = '') => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+/* <title>: thêm hậu tố thương hiệu chỉ khi tổng không vượt ~60 ký tự (Google cắt tiêu đề dài hơn). Từ 2.12.0. */
+const TITLE_MAX = 60;
+const withSuffix = (t) => { const full = `${t} | ${cfg.titleSuffix}`; return full.length <= TITLE_MAX ? full : t; };
 const fill = (tpl, v) => tpl.replace(/\{\{(\w+)\}\}/g, (m, k) => (k in v ? v[k] : m));
 
 /* ───────────────────────── KIỂM TRA ───────────────────────── */
@@ -337,7 +340,7 @@ for (const a of articles) {
   const withCta = ctaCats.has(a.category);
   const dec = decorate(a, contents.get(a.slug), withCta);
   write(`${SECTION}/${a.slug}/index.html`, fill(tplArticle, {
-    ...common, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
+    ...common, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(withSuffix(title)), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
     accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: renderContent(dec.html), hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,
@@ -382,7 +385,7 @@ ${groupsHtml}`;
     { ...typeLd, '@id': canonical, url: canonical, name: title, description: pg.description, inLanguage: 'vi', isPartOf: { '@id': ENT.website }, breadcrumb: { '@id': canonical + '#breadcrumb' }, dateModified: pg.updatedDate, ...extra },
     { '@type': 'BreadcrumbList', '@id': canonical + '#breadcrumb', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Trang chủ', item: abs('') }, { '@type': 'ListItem', position: 2, name: pg.h1, item: canonical }] }] };
   const crumb = `<nav class="p-crumb" aria-label="Breadcrumb"><ol><li><a href="${BASE}">Trang chủ</a></li><li><span aria-current="page">${esc(pg.h1)}</span></li></ol></nav>\n`;
-  write(`${pg.path}/index.html`, fill(tplPage, { ...common, slug: pg.path, secNav: '', aside: '', htmlClass: '', ctaBar: '', bodyClass: '', pageTitle: esc(`${title} | ${cfg.titleSuffix}`), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(pg.h1),
+  write(`${pg.path}/index.html`, fill(tplPage, { ...common, slug: pg.path, secNav: '', aside: '', htmlClass: '', ctaBar: '', bodyClass: '', pageTitle: esc(withSuffix(title)), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(pg.h1),
     description: esc(pg.description), canonical, ogImage: abs('assets/images/og/trang-chu.jpg'), ogType: pg.type === 'profile' ? 'profile' : 'website', robots: '', accent: '#c8993a', section: esc(pg.type === 'profile' ? 'Tác giả' : 'Chủ đề'),
     breadcrumb: crumb, content: body, footer, jsonld: JSON.stringify(ld).replace(/</g, '\\u003c') }));
   pageUrls.push({ loc: canonical, lastmod: pg.updatedDate });
