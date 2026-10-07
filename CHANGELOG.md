@@ -2,6 +2,9 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-07 — Nội dung: gắn video YouTube lên đầu 2 bài Thành phố mới Bình Dương
+- `thanh-pho-moi-binh-duong` và `tpm-binh-duong`: thêm thẻ liên kết "Video phân tích" (https://youtu.be/t62og8f0iTk) ở đầu bài, cùng kiểu thẻ video của Artisan Park, tông xanh chương Chiến lược. Mở YouTube ở tab mới, không nhúng iframe. Không đổi URL, không tăng version.
+
 ## 2026-10-06 — 2.11.1: Giao diện riêng cho Norton Park (đã chỉnh dễ đọc hơn)
 - Tú gửi bảng màu "Hướng dẫn gửi xe" của dự án: nền xanh rêu `#545748`, chữ kem `#ead6c5`, họa tiết lá. Bài `norton-park` đổi sang tông này: nền và chữ, thẻ, bảng, SWOT, Hỏi & Đáp, thanh gọi/Zalo, chân trang tác giả; màu nhấn chuyển từ đỏ gạch sang vàng cát `#e6c58f` (đủ tương phản ≥ 4,5:1 trên nền rêu). Dải họa tiết lá (tách từ ảnh của Tú, `assets/images/site/norton-pattern.webp`) thay vạch màu 3px ở đầu trang.
 - Cơ chế: thêm trường tùy chọn `theme` trong `data/articles.json` (xem PROJECT_RULES §3.1). Build thêm class `theme-<tên>` vào `<html>`/`<body>`; CSS ở cuối `main.css`. Chỉ Norton Park có `theme`; các bài khác, trang chủ và menu NAT không đổi. Giữ `accent` `#b05040` trong dữ liệu (màu chấm của menu/tìm kiếm).
