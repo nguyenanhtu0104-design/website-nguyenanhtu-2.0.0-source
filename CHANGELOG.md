@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-08 — Norton Park: cơ cấu sản phẩm theo website chính thức của dự án
+- `norton-park` mục "🏠 Cơ Cấu Sản Phẩm" dựng lại theo phần Căn hộ của nortonpark.com.vn (Gamuda Land): hai bộ sưu tập "Chuẩn sống toàn cầu" (Studio, 1PN+, 2PN, 2PN+, 3PN — 45 mã căn) và "Chuẩn sống đặc tuyển" (căn hộ sân vườn, Duplex, Duplex sân vườn, Podium Shop, Standalone Shop — 18 mã căn); bảng diện tích căn tiêu biểu / diện tích từ / số mã căn; thêm đoạn hai phân khu B (ra mắt trước) và C (sắp ra mắt). Chỉ lấy số liệu và cách phân nhóm, không chép ảnh, hotline hay form của trang dự án.
+- Bàn giao dự kiến quý IV/2029 → **quý III/2029** theo website chính thức (dòng thời gian, Hỏi & Đáp, `facts`, `seoDescription`). Bãi xe: thêm tỉ lệ chỗ đậu xe 3:1.
+
 ## 2026-10-07 — 2.12.0: SEO Phase 3 — tiêu đề không bị cắt, mô tả đủ dài, nối link nội bộ
 - **Thẻ `<title>` (build.mjs):** hậu tố thương hiệu " | Nguyễn Anh Tú" chỉ thêm khi tổng độ dài ≤ 60 ký tự, ngược lại bỏ hậu tố. Trước đó 32/78 bài published có title 63–68 ký tự nên Google cắt chữ ở kết quả tìm kiếm; nay không còn bài nào quá 60 ký tự (36 bài vẫn giữ hậu tố). Chỉ đổi thẻ `<title>`; `og:title`, JSON-LD và tiêu đề trong bài không đổi. Không đổi URL nào.
 - **Mô tả meta:** viết lại 5 mô tả quá ngắn (88–99 ký tự) thành 140–155 ký tự, chỉ dùng số liệu đã có trong bài: `truc-metro-so-1-hcm`, `vung-khcn-hcm-ii-hub-icd`, `one-central-saigon`, `vinhome-green-paradise`, `capitaland`. Không đổi `updatedDate`.
