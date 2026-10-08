@@ -899,3 +899,24 @@ body.theme-norton-park .pf-name{color:#f6e9da}
 body.theme-norton-park .pf-role{color:#e6c58f}
 body.theme-norton-park .pf-cta{color:#d8c9b6}
 body.theme-norton-park .pf-btn-phone{color:#e6c58f;border-color:rgba(230,197,143,.45);background:rgba(230,197,143,.1)}
+
+/* ─── WATERMARK CHÂN DUNG TÁC GIẢ (2.13.0, Tú yêu cầu) ───
+   Ảnh chân dung ở trang chủ hiện mờ phía sau nội dung mọi trang bài/trang riêng.
+   Nằm trong ngữ cảnh xếp lớp của #panel (z-index:-1) nên luôn ở dưới chữ, trên nền khung. */
+#panel.page{--panel-w:640px}
+#panel.page::after{
+  content:'';position:fixed;z-index:-1;pointer-events:none;
+  bottom:0;right:max(0px,calc((100vw - var(--panel-w)) / 2));
+  width:min(46vh,62%);height:88vh;max-width:440px;
+  background:url(../images/site/tac-gia-nguyen-anh-tu.webp) right bottom/contain no-repeat;
+  opacity:.07;filter:grayscale(1) sepia(.35);
+  -webkit-mask-image:linear-gradient(to top,#000 55%,transparent),linear-gradient(to left,#000 60%,transparent);
+  mask-image:linear-gradient(to top,#000 55%,transparent),linear-gradient(to left,#000 60%,transparent);
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+}
+@media (min-width:1100px){
+  html.is-article #panel.page{--panel-w:860px}
+  html.has-aside #panel.page{--panel-w:1180px}
+}
+@media (max-width:640px){#panel.page::after{opacity:.05;width:min(58vw,300px)}}
+@media print{#panel.page::after{display:none!important}}

@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-08 — 2.13.0: watermark chân dung tác giả; Norton Park: ảnh chính, phối cảnh, chính sách 5 phương thức, bảng tính
+- **Giao diện (Tú yêu cầu):** trang bài và trang riêng hiện ảnh chân dung tác giả (ảnh trang chủ) làm watermark mờ phía sau nội dung — khối CSS cuối `assets/css/main.css`, không đổi template. Ẩn khi in/xuất PDF.
+- `norton-park`: ảnh chính (đầu bài, `heroImage`, `thumbnail`, OG) đổi sang phối cảnh tổng thể khu vực `norton-park/27`. Ảnh `01` chuyển xuống lưới "Vì sao tôi chọn" (bỏ lần dùng trùng ảnh `02`).
+- Tiện ích nội khu: thêm phối cảnh hồ bơi trung tâm và tòa Work Hub (`29`), thảm cỏ và khán đài ngoài trời (`28`); thêm 2 thẻ Work Hub và "Vận động mỗi ngày" (sân tập golf, công viên trượt ván, Vườn Mưa) theo website dự án.
+- Giá & chính sách: thay "36 tháng, 10–15% ký HĐMB" bằng chính sách bán hàng 5 phương thức (chuẩn CK 5%, 10% HĐMB – 10 điểm CK 1%, 10% HĐMB – nửa năm vô ưu CK 2%, nhanh CK 10%, vay HTLS tối đa 10% trong 24 tháng; tổng CK lên đến 14%, đặt chỗ sớm 1%), bảng tóm tắt tỷ lệ từng giai đoạn và ảnh chính sách `30` (đã xóa logo và các hình mờ IQI Vietnam). Dòng thời gian thêm mốc ký HĐMB dự kiến 12/2026; bàn giao dự kiến 09/2029. Cập nhật Hỏi & Đáp và `seoDescription`.
+- Bảng tính phương thức thanh toán của Tú đưa lên `/assets/tools/norton-park-bang-tinh/` (`noindex`, canonical về bài; 10 ảnh nhúng base64 tách thành file WebP, trang từ 746 KB còn 66 KB; 9 ảnh mẫu căn thay bằng bản đã cắt sạch nút giao diện và biểu tượng của trang gốc); khối CTA trong bài trỏ tới bảng tính.
+
 ## 2026-10-08 — Norton Park: cơ cấu sản phẩm theo website chính thức của dự án
 - `norton-park` mục "🏠 Cơ Cấu Sản Phẩm" dựng lại theo phần Căn hộ của nortonpark.com.vn (Gamuda Land): hai bộ sưu tập "Chuẩn sống toàn cầu" (Studio, 1PN+, 2PN, 2PN+, 3PN — 45 mã căn) và "Chuẩn sống đặc tuyển" (căn hộ sân vườn, Duplex, Duplex sân vườn, Podium Shop, Standalone Shop — 18 mã căn); bảng diện tích căn tiêu biểu / diện tích từ / số mã căn; thêm đoạn hai phân khu B (ra mắt trước) và C (sắp ra mắt). Chỉ lấy số liệu và cách phân nhóm, không chép ảnh, hotline hay form của trang dự án.
 - Thêm mục "📐 Mẫu Căn Tiêu Biểu" (9 thẻ: Studio ST1.1A, 1PN+ A1.1A, 2PN B1.4A, 2PN+ B2.2A, 3PN C4.1A, căn hộ sân vườn C3.1C.PES, Duplex D2.1C, Duplex sân vườn D1.1C, Podium Shop SH04) với mặt bằng `norton-park/18`–`26` từ ảnh chụp Tú gửi (cắt riêng phần mặt bằng, xóa nút giao diện của trang gốc, tông ấm 70%), kèm phòng, diện tích sàn/sử dụng/sân vườn, từng tầng, cảnh quan; mô tả viết lại ngắn, không chép nguyên văn.
