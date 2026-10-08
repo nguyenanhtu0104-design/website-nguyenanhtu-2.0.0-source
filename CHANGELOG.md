@@ -4,6 +4,8 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 ## 2026-10-08 — Norton Park: cơ cấu sản phẩm theo website chính thức của dự án
 - `norton-park` mục "🏠 Cơ Cấu Sản Phẩm" dựng lại theo phần Căn hộ của nortonpark.com.vn (Gamuda Land): hai bộ sưu tập "Chuẩn sống toàn cầu" (Studio, 1PN+, 2PN, 2PN+, 3PN — 45 mã căn) và "Chuẩn sống đặc tuyển" (căn hộ sân vườn, Duplex, Duplex sân vườn, Podium Shop, Standalone Shop — 18 mã căn); bảng diện tích căn tiêu biểu / diện tích từ / số mã căn; thêm đoạn hai phân khu B (ra mắt trước) và C (sắp ra mắt). Chỉ lấy số liệu và cách phân nhóm, không chép ảnh, hotline hay form của trang dự án.
+- Thêm mục "📐 Mẫu Căn Tiêu Biểu" (9 thẻ: Studio ST1.1A, 1PN+ A1.1A, 2PN B1.4A, 2PN+ B2.2A, 3PN C4.1A, căn hộ sân vườn C3.1C.PES, Duplex D2.1C, Duplex sân vườn D1.1C, Podium Shop SH04) với mặt bằng `norton-park/18`–`26` từ ảnh chụp Tú gửi (cắt riêng phần mặt bằng, xóa nút giao diện của trang gốc, tông ấm 70%), kèm phòng, diện tích sàn/sử dụng/sân vườn, từng tầng, cảnh quan; mô tả viết lại ngắn, không chép nguyên văn.
+- Dưới thẻ "🧭 Phối Cảnh 3D": thêm một dòng link thường tới tour 360° chính thức https://360.nortonpark.com.vn/ (mở tab mới, `nofollow`). Không nhúng iframe, không dùng `.p-360` → trang không tải gì và không nhận cookie từ tour cho tới khi người đọc tự bấm.
 - Bàn giao dự kiến quý IV/2029 → **quý III/2029** theo website chính thức (dòng thời gian, Hỏi & Đáp, `facts`, `seoDescription`). Bãi xe: thêm tỉ lệ chỗ đậu xe 3:1.
 
 ## 2026-10-07 — 2.12.0: SEO Phase 3 — tiêu đề không bị cắt, mô tả đủ dài, nối link nội bộ
