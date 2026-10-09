@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-09 — 2.13.1: Sửa lỗi phóng to ảnh bằng 2 ngón trên điện thoại
+- **Lỗi:** mở ảnh lớn rồi chụm 2 ngón để phóng thì trình duyệt phóng cả trang (không phải ảnh) nên ảnh trượt ra ngoài màn hình, không xem được.
+- **Sửa (`assets/js/zoom.js`):** trong khung xem ảnh, chặn trình duyệt tự phóng trang; chụm 2 ngón phóng thẳng ảnh (1×–6×, phóng quanh điểm giữa 2 ngón), kéo 1 ngón để di chuyển, chạm đúp để phóng/thu, vuốt ngang để đổi ảnh khi chưa phóng. Ảnh có giới hạn biên nên không bao giờ trượt mất. Chuột/máy tính giữ nguyên cách cũ (bấm để phóng, kéo để di chuyển). Áp dụng cả trang bài và trang bảng tính.
+
 ## 2026-10-08 — 2.13.0: watermark chân dung tác giả; Norton Park: ảnh chính, phối cảnh, chính sách 5 phương thức, bảng tính
 - **Giao diện (Tú yêu cầu):** trang bài và trang riêng hiện ảnh chân dung tác giả (ảnh trang chủ) làm watermark mờ phía sau nội dung — khối CSS cuối `assets/css/main.css`, không đổi template. Ẩn khi in/xuất PDF.
 - `norton-park`: ảnh chính (đầu bài, `heroImage`, `thumbnail`, OG) đổi sang phối cảnh tổng thể khu vực `norton-park/27`. Ảnh `01` chuyển xuống lưới "Vì sao tôi chọn" (bỏ lần dùng trùng ảnh `02`).

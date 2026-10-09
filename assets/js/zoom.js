@@ -13,7 +13,7 @@ var CSS=[
 '.nz-b:hover{background:#d9ab4b;color:#1a140a;transform:translateY(-1px)}',
 '.nz-b:focus-visible,.nz-x:focus-visible,.nz-n:focus-visible{outline:2px solid #e7c680;outline-offset:2px}',
 '.nz-l{position:fixed;inset:0;z-index:2147483000;display:none;flex-direction:column;background:rgba(8,7,5,.985);color:#f4efe4;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}',
-'.nz-l.on{display:flex}',
+'.nz-l.on{display:flex;touch-action:none;-ms-touch-action:none}',
 '.nz-top{display:flex;align-items:center;gap:12px;padding:10px 14px;flex:none}',
 '.nz-cap{flex:1;min-width:0;font-size:13.5px;line-height:1.4;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}',
 '.nz-cnt{flex:none;font-size:12px;opacity:.7}',
@@ -23,6 +23,8 @@ var CSS=[
 '.nz-in{position:relative;margin:auto;line-height:0;max-width:100%}',
 '.nz-in img{display:block;max-width:100%;max-height:calc(100vh - 118px);max-height:calc(100dvh - 118px);width:auto;height:auto;cursor:zoom-in;-webkit-user-select:none;user-select:none}',
 '.nz-in.z{max-width:none}',
+'.nz-in.t{will-change:transform;transform-origin:50% 50%}',
+'.nz-in.t img{cursor:grab;-webkit-touch-callout:none}',
 '.nz-in.z img{max-width:none;max-height:none;cursor:zoom-out}',
 '.nz-mk{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:rgba(220,38,38,.88);border:2px solid #fff;box-shadow:0 2px 10px rgba(220,38,38,.6);pointer-events:none;animation:nzp 1.5s ease-in-out infinite}',
 '.nz-mk::after{content:"";position:absolute;left:50%;top:50%;width:8px;height:8px;margin:-4px 0 0 -4px;background:#fff;border-radius:50%}',
@@ -42,14 +44,33 @@ var CSS=[
 
 var st=document.createElement('style'); st.id='nz-css'; st.textContent=CSS; (document.head||document.documentElement).appendChild(st);
 
-var L=null,el={},items=[],idx=0,lastFocus=null,tok=0;
+var L=null,el={},items=[],idx=0,lastFocus=null,tok=0,touchMode=false,T={s:1,x:0,y:0};
+
+function dist(a,b){return Math.sqrt(Math.pow(a.clientX-b.clientX,2)+Math.pow(a.clientY-b.clientY,2));}
+function stRect(){return el.st.getBoundingClientRect();}
+function clampT(){
+  var r=el.in.getBoundingClientRect(), sr=stRect();
+  var w=(el.in.offsetWidth)*T.s, h=(el.in.offsetHeight)*T.s;
+  var mx=Math.max(0,(w-sr.width)/2), my=Math.max(0,(h-sr.height)/2);
+  T.x=Math.max(-mx,Math.min(mx,T.x)); T.y=Math.max(-my,Math.min(my,T.y));
+}
+function applyT(){
+  if(T.s<=1.001){ T.s=1;T.x=0;T.y=0; el.in.classList.remove('t'); el.in.style.transform=''; return; }
+  clampT(); el.in.classList.add('t'); el.in.style.transform='translate('+T.x+'px,'+T.y+'px) scale('+T.s+')';
+}
+function center(){ var sr=stRect(); return {x:sr.left+sr.width/2,y:sr.top+sr.height/2}; }
+function zoomAt(px,py,ns){
+  ns=Math.max(1,Math.min(6,ns));
+  var c=center(), u={x:(px-c.x-T.x)/T.s,y:(py-c.y-T.y)/T.s};
+  T.s=ns; T.x=px-c.x-ns*u.x; T.y=py-c.y-ns*u.y; applyT();
+}
 
 function build(){
   L=document.createElement('div'); L.className='nz-l'; L.setAttribute('role','dialog'); L.setAttribute('aria-modal','true'); L.setAttribute('aria-label','Xem ảnh lớn');
   L.innerHTML='<div class="nz-top"><div class="nz-cap"></div><div class="nz-cnt"></div><button type="button" class="nz-x" aria-label="Đóng ảnh">✕</button></div>'+
     '<div class="nz-st"><div class="nz-in"><img alt=""></div><div class="nz-ld">Đang tải ảnh chất lượng cao…</div></div>'+
     '<button type="button" class="nz-n nz-p" aria-label="Ảnh trước">‹</button><button type="button" class="nz-n nz-nx" aria-label="Ảnh sau">›</button>'+
-    '<div class="nz-ht">Bấm vào ảnh để phóng to hết cỡ · kéo để di chuyển · ← → đổi ảnh · Esc để đóng</div>';
+    '<div class="nz-ht">Chụm 2 ngón hoặc chạm đúp để phóng to · kéo để di chuyển · vuốt hoặc ← → đổi ảnh · Esc để đóng</div>';
   document.body.appendChild(L);
   el={cap:L.querySelector('.nz-cap'),cnt:L.querySelector('.nz-cnt'),x:L.querySelector('.nz-x'),st:L.querySelector('.nz-st'),in:L.querySelector('.nz-in'),img:L.querySelector('.nz-in img'),p:L.querySelector('.nz-p'),n:L.querySelector('.nz-nx'),ld:L.querySelector('.nz-ld')};
   el.x.addEventListener('click',close);
@@ -58,13 +79,44 @@ function build(){
   L.addEventListener('click',function(e){ if(e.target===L||e.target===el.st) close(); });
   el.img.addEventListener('click',toggleZoom);
   window.addEventListener('keydown',onKey,true);
-  var sx=0,sy=0;
-  el.st.addEventListener('touchstart',function(e){ if(e.touches.length===1){sx=e.touches[0].clientX;sy=e.touches[0].clientY;} },{passive:true});
-  el.st.addEventListener('touchend',function(e){
-    if(el.in.classList.contains('z')||!e.changedTouches.length) return;
-    var dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;
-    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5) go(dx<0?1:-1);
+  /* cảm ứng: chụm 2 ngón để phóng ảnh, kéo 1 ngón để di chuyển, chạm đúp để phóng/thu, vuốt ngang để đổi ảnh */
+  var sx=0,sy=0,pinch=null,pan=null,lastTap=0,lastTapX=0,lastTapY=0,moved=false;
+  el.st.addEventListener('touchstart',function(e){
+    touchMode=true;
+    if(e.touches.length===2){
+      var a=e.touches[0],b=e.touches[1];
+      pinch={d:dist(a,b),s:T.s}; pan=null; moved=true;
+    } else if(e.touches.length===1){
+      sx=e.touches[0].clientX; sy=e.touches[0].clientY; moved=false;
+      pan={x:sx,y:sy,tx:T.x,ty:T.y};
+    }
   },{passive:true});
+  el.st.addEventListener('touchmove',function(e){
+    if(e.cancelable) e.preventDefault();
+    if(e.touches.length===2&&pinch){
+      var a=e.touches[0],b=e.touches[1], mx=(a.clientX+b.clientX)/2, my=(a.clientY+b.clientY)/2;
+      zoomAt(mx,my,pinch.s*dist(a,b)/pinch.d);
+    } else if(e.touches.length===1&&pan&&!pinch){
+      var dx=e.touches[0].clientX-pan.x, dy=e.touches[0].clientY-pan.y;
+      if(Math.abs(dx)+Math.abs(dy)>6) moved=true;
+      if(T.s>1){ T.x=pan.tx+dx; T.y=pan.ty+dy; applyT(); }
+    }
+  },{passive:false});
+  el.st.addEventListener('touchend',function(e){
+    if(e.touches.length>0){ if(e.touches.length===1){ pan={x:e.touches[0].clientX,y:e.touches[0].clientY,tx:T.x,ty:T.y}; } pinch=null; return; }
+    pinch=null; pan=null;
+    if(!e.changedTouches.length) return;
+    var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy;
+    if(T.s===1&&Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5){ go(dx<0?1:-1); return; }
+    if(!moved){
+      var now=Date.now();
+      if(now-lastTap<320&&Math.abs(t.clientX-lastTapX)<30&&Math.abs(t.clientY-lastTapY)<30){
+        lastTap=0; if(T.s>1) { T.s=1; applyT(); } else zoomAt(t.clientX,t.clientY,2.6);
+      } else { lastTap=now; lastTapX=t.clientX; lastTapY=t.clientY; }
+    }
+  },{passive:true});
+  /* iOS Safari: không cho trang tự phóng khi đang xem ảnh */
+  ['gesturestart','gesturechange','gestureend'].forEach(function(n){ L.addEventListener(n,function(e){ e.preventDefault(); },{passive:false}); });
   /* kéo để di chuyển khi đã phóng to (chuột) */
   var drag=null;
   el.st.addEventListener('mousedown',function(e){ if(!el.in.classList.contains('z')) return; drag={x:e.clientX,y:e.clientY,l:el.st.scrollLeft,t:el.st.scrollTop,moved:false}; });
@@ -85,7 +137,7 @@ function onKey(e){
 }
 
 function toggleZoom(e){
-  if(el.img.getAttribute('data-nodrag')) return;
+  if(touchMode||el.img.getAttribute('data-nodrag')) return;
   var inn=el.in, img=el.img;
   if(inn.classList.contains('z')){ inn.classList.remove('z'); img.style.width=''; el.st.scrollLeft=0; el.st.scrollTop=0; return; }
   var r=img.getBoundingClientRect(), fx=(e&&e.clientX!=null)?(e.clientX-r.left)/r.width:.5, fy=(e&&e.clientY!=null)?(e.clientY-r.top)/r.height:.5;
@@ -97,7 +149,7 @@ function toggleZoom(e){
 
 function show(){
   var it=items[idx], my=++tok;
-  el.in.classList.remove('z'); el.img.style.width=''; el.st.scrollLeft=0; el.st.scrollTop=0;
+  el.in.classList.remove('z'); el.img.style.width=''; el.st.scrollLeft=0; el.st.scrollTop=0; T.s=1;T.x=0;T.y=0; applyT();
   var old=el.in.querySelector('.nz-mk'); if(old) old.remove();
   el.cap.textContent=it.cap||''; el.cap.title=it.cap||'';
   el.cnt.textContent=items.length>1?(idx+1)+' / '+items.length:'';
@@ -125,7 +177,7 @@ function open(list,i){
   document.documentElement.classList.add('nz-open'); L.classList.add('on'); show(); el.x.focus();
 }
 function close(){
-  if(!L) return; L.classList.remove('on'); tok++; document.documentElement.classList.remove('nz-open');
+  if(!L) return; L.classList.remove('on'); tok++; T.s=1;T.x=0;T.y=0; if(el.in){ el.in.classList.remove('t'); el.in.style.transform=''; } document.documentElement.classList.remove('nz-open');
   el.img.removeAttribute('src'); var m=el.in.querySelector('.nz-mk'); if(m) m.remove();
   if(lastFocus&&lastFocus.focus) try{lastFocus.focus();}catch(e){}
 }
