@@ -2,6 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-10 — Nội dung: sửa bài "Mục Tiêu Metro HCM 2030" (thêm bản đồ ③, chú giải ①–⑨)
+- Thêm ảnh 10 (thẻ thông tin + bản đồ Metro Bến Thành – Cần Giờ) vào mục ③, thay đoạn "chưa có ảnh hồ sơ riêng"; cập nhật bảng thông số ③ (2 ga giai đoạn đầu, 350 km/h, khổ 1.435 mm, tàu 3 → 6 toa, depot Cần Giờ, 115.214 tỷ).
+- Đầu bài: thêm mục "Chú Giải Bản Đồ" liệt kê ① đến ⑨ theo dạng số – tên tuyến – điểm kết nối – trạng thái (ô số cùng màu với đường trên bản đồ), kèm khối "Bảy nút chuyển tuyến". Chuyển khung "Cách đọc số hiệu" xuống ngay dưới chú giải.
+- Mục "Hồ Sơ 9 Hạng Mục": thêm bảng "Nhìn nhanh: vốn dồn vào đâu?" (vốn, vốn/km, tỷ lệ có thanh ngang) cho 8 hạng mục chưa vận hành; phép tính là của tác giả.
+- Kiểm thử: build 0 lỗi, `check-dist` ĐẠT.
+
 ## 2026-10-10 — Nội dung: bài mới "Định Kiến Về Dòng Tiền Bất Động Sản" (chương Tư Duy Đầu Tư)
 - Thêm `dinh-kien-ve-dong-tien-bat-dong-san` (`/cam-nang/dinh-kien-ve-dong-tien-bat-dong-san/`) từ bài của Tú: giữ lập luận gốc (3 vai trò của bất động sản, phân định phát triển đô thị khác đầu cơ thổi giá), thêm khung "Bộ Lọc 3 Tầng Của Dòng Tiền" (loại hình – mục đích – gắn kết), 4 dấu hiệu nhận ra dòng tiền đúng chỗ và liên kết sang `muc-tieu-metro-hcm-2030`, `ban-do-dau-tu-cong-2026-2030`, `quy-hoach-100-nam-tp-hcm`.
 - Bổ sung số liệu đến 10/10/2026 (Ngân hàng Nhà nước, Tổng cục Thống kê qua báo chí): tín dụng BĐS 25,73% tổng dư nợ (cuối 5/2026), 5,146 triệu tỷ (cuối 6/2026), 51,97% tự sử dụng, nợ xấu 2,3% nhưng tăng 10,5% so cuối 2025; CPI 9 tháng 4,52%; FDI thực hiện vào BĐS 1,59 tỷ USD (7,5%). Có nêu cả phía quan ngại (Thủ tướng 26/2/2026, đại biểu Quốc hội 21/4/2026) và ghi rõ đâu là số liệu, đâu là ý kiến. Bài không kết luận nguyên nhân lạm phát hay tỷ giá.
