@@ -18,7 +18,7 @@
   "context": "Theo phân tích trong Cẩm Nang, sau sáp nhập có hiệu lực từ 1/7/2025, TP.HCM mới có diện tích 6.772 km² và khoảng 14 triệu dân. Quy hoạch, hạ tầng và pháp lý là ba lớp quyết định nơi nhu cầu bất động sản hình thành.",
   "groups": [
    { "title": "Quy hoạch và tầm nhìn", "items": ["quy-hoach-100-nam-tp-hcm", "phuong-an-bcg-cho-quy-hoach-100-nam", "bds-viet-nam-dang-o-giai-doan-nao", "ban-do-dau-tu-cong-2026-2030", "do-nen-do-thi-compact-city"] },
-   { "title": "Metro và TOD", "items": ["mo-hinh-tod-hanh-lang-metro", "tod-5-0-mat-do-hoat-dong", "truc-metro-so-1-hcm"] },
+   { "title": "Metro và TOD", "items": ["muc-tieu-metro-hcm-2030", "mo-hinh-tod-hanh-lang-metro", "tod-5-0-mat-do-hoat-dong", "truc-metro-so-1-hcm"] },
    { "title": "Tài chính và Thủ Thiêm", "items": ["vifc-hcm-dac-khu-tai-chinh", "mice-hub-thu-thiem", "vung-loi-thu-thiem", "cang-dong-von-imfe-cuc-tang-truong-bien", "old-money"] },
    { "title": "Các vùng phát triển", "items": ["vung-rach-chiec-truong-tho", "vung-thuong-luu-thao-dien", "ban-dao-thanh-da", "vung-kinh-te-bien", "tu-giac-kinh-te-bien-1-650km", "vung-ve-tinh-san-bay-long-thanh", "thanh-pho-moi-binh-duong", "vung-khcn-cao-tpm-binh-duong", "vung-tri-thuc-khcn-tay-bac"] },
    { "title": "Pháp lý", "items": ["luat-dat-dai-2024-to-chuc-kinh-te", "nha-o-xa-hoi-toan-canh-phap-ly-2024-2026", "phap-luat-bds"] },

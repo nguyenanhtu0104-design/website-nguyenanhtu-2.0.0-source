@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-10 — Nội dung: bài mới "Mục Tiêu Metro HCM 2030" (chương Chiến Lược & Quy Hoạch)
+- Thêm `muc-tieu-metro-hcm-2030` (`/cam-nang/muc-tieu-metro-hcm-2030/`) từ tài liệu của Tú: khung "4 Trục Hội Tụ" (Tây · Nam · Bắc · hai sân bay), phát hiện "xương sống chung" Thủ Thiêm – Long Thành, hồ sơ 9 hạng mục ①–⑨ kèm 9 ảnh bản đồ (tông ấm 70%, WebP qua `images.py`), bảng nấc trạng thái và 3 rủi ro (vốn, quỹ đất BT, thời gian), bộ lọc 4 câu hỏi và liên kết sang các vùng liên quan.
+- Cập nhật số liệu đến 10/10/2026 theo Ban MAUR và báo chí; ghi rõ chỗ các nguồn lệch (Bến Thành – Thủ Thiêm 36.744 / ~46.300 tỷ, mốc hoàn thành 2028 / quý III/2030; Thủ Thiêm – Long Thành 84.753 → 175.000 → ~134.169 tỷ; mốc Metro 1 kéo dài 2030 / trước 2035). Tổng vốn Cần Giờ 115.214 tỷ = 102.430 tỷ + ~12.784 tỷ giải phóng mặt bằng.
+- Gắn vào bài hub `chien-luoc-quy-hoach` (thêm thẻ, 12 → 13 phân tích, badge chương 20 → 21), `relatedArticles` của hub và `mo-hinh-tod-hanh-lang-metro`, và nhóm "Metro và TOD" trong `data/pages.json` (trang `/bat-dong-san/tphcm/`).
+- Ảnh ③ (Bến Thành – Cần Giờ) chưa có trong bộ ảnh nên hồ sơ ③ chỉ có văn bản; hướng tuyến xem trên bản đồ tổng quan.
+- Kiểm thử: build 0 lỗi 0 cảnh báo, `check-dist` ĐẠT (82 URL khóa, 0 link hỏng), `smoke.py` ĐẠT.
+
 ## 2026-10-09 — 2.13.1: Sửa lỗi phóng to ảnh bằng 2 ngón trên điện thoại
 - **Lỗi:** mở ảnh lớn rồi chụm 2 ngón để phóng thì trình duyệt phóng cả trang (không phải ảnh) nên ảnh trượt ra ngoài màn hình, không xem được.
 - **Sửa (`assets/js/zoom.js`):** trong khung xem ảnh, chặn trình duyệt tự phóng trang; chụm 2 ngón phóng thẳng ảnh (1×–6×, phóng quanh điểm giữa 2 ngón), kéo 1 ngón để di chuyển, chạm đúp để phóng/thu, vuốt ngang để đổi ảnh khi chưa phóng. Ảnh có giới hạn biên nên không bao giờ trượt mất. Chuột/máy tính giữ nguyên cách cũ (bấm để phóng, kéo để di chuyển). Áp dụng cả trang bài và trang bảng tính.

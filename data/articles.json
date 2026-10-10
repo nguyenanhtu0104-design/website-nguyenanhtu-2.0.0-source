@@ -317,7 +317,8 @@
    "vung-khcn-cao-tpm-binh-duong",
    "vung-ve-tinh-san-bay-long-thanh",
    "trung-tam-cn-cang-bien-phu-my",
-   "vung-loi-thu-thiem"
+   "vung-loi-thu-thiem",
+   "muc-tieu-metro-hcm-2030"
   ],
   "seoTitle": "Mô Hình TOD Và Hành Lang Metro Tại Việt Nam",
   "seoDescription": "Transit-Oriented Development (TOD) không đơn thuần là một công thức quy hoạch — đây là cơ chế tạo ra giá trị đất đai mạnh nhất thế kỷ 21.",
@@ -3380,18 +3381,18 @@
   "slug": "chien-luoc-quy-hoach",
   "status": "published",
   "title": "Chiến Lược Quy Hoạch Vùng Đông Nam Bộ",
-  "subtitle": "12 phân tích · Chu kỳ thị trường · Quy hoạch 100 năm · Tứ giác biển · TOD Metro · Đầu tư công · TPMBD · VIFC · MICE · Cảng dòng vốn IMFE",
+  "subtitle": "13 phân tích · Chu kỳ thị trường · Quy hoạch 100 năm · Tứ giác biển · TOD Metro · Metro 2030 · Đầu tư công · TPMBD · VIFC · MICE · Cảng dòng vốn IMFE",
   "icon": "🗺️",
   "category": "chien-luoc-quy-hoach",
   "parent": null,
   "tags": [
    "chien-luoc-quy-hoach"
   ],
-  "description": "12 phân tích chuyên sâu về chiến lược quy hoạch và hạ tầng vùng Đông Nam Bộ, từ Quy hoạch 100 năm TP.HCM, TOD Metro đến VIFC và cảng dòng vốn.",
+  "description": "13 phân tích chuyên sâu về chiến lược quy hoạch và hạ tầng vùng Đông Nam Bộ, từ Quy hoạch 100 năm TP.HCM, TOD Metro, Metro 2030 đến VIFC và cảng dòng vốn.",
   "thumbnail": null,
   "heroImage": null,
   "publishedDate": "2026-09-28",
-  "updatedDate": "2026-10-03",
+  "updatedDate": "2026-10-10",
   "author": "nguyen-anh-tu",
   "content": "content/articles/chien-luoc-quy-hoach.html",
   "relatedArticles": [
@@ -3406,10 +3407,11 @@
    "chuc-nang-vung-giao-duc",
    "vifc-hcm-dac-khu-tai-chinh",
    "mice-hub-thu-thiem",
-   "cang-dong-von-imfe-cuc-tang-truong-bien"
+   "cang-dong-von-imfe-cuc-tang-truong-bien",
+   "muc-tieu-metro-hcm-2030"
   ],
   "seoTitle": "Chiến Lược Quy Hoạch Vùng Đông Nam Bộ",
-  "seoDescription": "12 phân tích chuyên sâu về chiến lược quy hoạch và hạ tầng vùng Đông Nam Bộ, từ Quy hoạch 100 năm TP.HCM, TOD Metro đến VIFC và cảng dòng vốn.",
+  "seoDescription": "13 phân tích chuyên sâu về chiến lược quy hoạch và hạ tầng vùng Đông Nam Bộ, từ Quy hoạch 100 năm TP.HCM, TOD Metro, Metro 2030 đến VIFC và cảng dòng vốn.",
   "ogImage": "assets/images/og/chien-luoc-quy-hoach.jpg",
   "section": "🗺️ Chiến Lược & Quy Hoạch",
   "accent": "#4aaa7f",
@@ -6192,5 +6194,45 @@
     "l": "m² · khu đất"
    }
   ]
+ },
+ {
+  "id": "muc_tieu_metro_hcm_2030",
+  "slug": "muc-tieu-metro-hcm-2030",
+  "status": "published",
+  "title": "Mục Tiêu Metro HCM 2030",
+  "subtitle": "9 tuyến · 1 mạng lưới · 1 trục tăng trưởng",
+  "icon": "🚇",
+  "category": "chien-luoc-quy-hoach",
+  "parent": "chien-luoc-quy-hoach",
+  "tags": [
+   "chien-luoc-quy-hoach",
+   "metro",
+   "tod",
+   "ha-tang",
+   "thu-thiem",
+   "long-thanh"
+  ],
+  "description": "Mạng lưới metro TP.HCM đến 2030: ~255km, ~672.519 tỷ đồng, 4 trục cùng hội tụ về Thủ Thiêm – Long Thành. Tiến độ từng tuyến đến tháng 10/2026.",
+  "thumbnail": "muc-tieu-metro-hcm-2030/01",
+  "heroImage": "muc-tieu-metro-hcm-2030/01",
+  "publishedDate": "2026-10-10",
+  "updatedDate": "2026-10-10",
+  "author": "nguyen-anh-tu",
+  "content": "content/articles/muc-tieu-metro-hcm-2030.html",
+  "relatedArticles": [
+   "chien-luoc-quy-hoach",
+   "mo-hinh-tod-hanh-lang-metro",
+   "truc-metro-so-1-hcm",
+   "ban-do-dau-tu-cong-2026-2030",
+   "vung-loi-thu-thiem",
+   "vung-ve-tinh-san-bay-long-thanh"
+  ],
+  "seoTitle": "Metro HCM 2030: 9 Tuyến, 1 Mạng Lưới, ~255km",
+  "seoDescription": "Mạng lưới metro TP.HCM đến 2030: ~255km, ~672.519 tỷ đồng, 4 trục cùng hội tụ về Thủ Thiêm – Long Thành. Tiến độ từng tuyến đến tháng 10/2026.",
+  "ogImage": "assets/images/og/muc-tieu-metro-hcm-2030.jpg",
+  "section": "🗺️ Chiến Lược & Quy Hoạch",
+  "accent": "#4aaa7f",
+  "searchKeywords": "metro TP.HCM 2030 mạng lưới 9 tuyến 255km 672.519 tỷ 4 trục hội tụ xương sống Thủ Thiêm Long Thành Metro số 1 Metro số 2 Bến Thành Tham Lương Bến Thành Thủ Thiêm Bến Thành Cần Giờ Vinspeed Metro số 6 Tân Sơn Nhất Phú Hữu Metro 1 kéo dài Thành phố mới Bình Dương Thủ Dầu Một Tao Đàn Tham Lương An Hạ Khu đô thị Tây Bắc Củ Chi hợp đồng BT PPP quỹ đất TOD tiến độ khởi công 2026 sân bay Long Thành vốn đầu tư đường sắt đô thị",
+  "legacy": null
  }
 ]
