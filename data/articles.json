@@ -6234,5 +6234,42 @@
   "accent": "#4aaa7f",
   "searchKeywords": "metro TP.HCM 2030 mạng lưới 9 tuyến 255km 672.519 tỷ 4 trục hội tụ xương sống Thủ Thiêm Long Thành Metro số 1 Metro số 2 Bến Thành Tham Lương Bến Thành Thủ Thiêm Bến Thành Cần Giờ Vinspeed Metro số 6 Tân Sơn Nhất Phú Hữu Metro 1 kéo dài Thành phố mới Bình Dương Thủ Dầu Một Tao Đàn Tham Lương An Hạ Khu đô thị Tây Bắc Củ Chi hợp đồng BT PPP quỹ đất TOD tiến độ khởi công 2026 sân bay Long Thành vốn đầu tư đường sắt đô thị",
   "legacy": null
+ },
+ {
+  "id": "dinh_kien_ve_dong_tien_bat_dong_san",
+  "slug": "dinh-kien-ve-dong-tien-bat-dong-san",
+  "status": "published",
+  "title": "Định Kiến Về Dòng Tiền Bất Động Sản",
+  "subtitle": "Nhìn một chiều dễ dẫn đến quy chụp sai lệch",
+  "icon": "💧",
+  "category": "tu-duy-dau-tu",
+  "parent": null,
+  "tags": [
+   "tu-duy-dau-tu",
+   "dong-tien",
+   "tin-dung",
+   "phan-tich-vi-mo"
+  ],
+  "description": "Tiền chảy vào bất động sản không mặc định là sai. Bộ lọc 3 tầng phân biệt dòng vốn phát triển đô thị với đầu cơ thổi giá, kèm số liệu tín dụng 2026.",
+  "thumbnail": "dinh-kien-ve-dong-tien-bat-dong-san/01",
+  "heroImage": "dinh-kien-ve-dong-tien-bat-dong-san/01",
+  "publishedDate": "2026-10-10",
+  "updatedDate": "2026-10-10",
+  "author": "nguyen-anh-tu",
+  "content": "content/articles/dinh-kien-ve-dong-tien-bat-dong-san.html",
+  "relatedArticles": [
+   "thi-truong-dan-trai-nhung-rat-tap-trung",
+   "22-nguyen-tac-tu-duy-dau-tu-bds",
+   "muc-tieu-metro-hcm-2030",
+   "ban-do-dau-tu-cong-2026-2030",
+   "quy-hoach-100-nam-tp-hcm"
+  ],
+  "seoTitle": "Dòng Tiền Bất Động Sản: Đừng Quy Chụp Một Chiều",
+  "seoDescription": "Tiền chảy vào bất động sản không mặc định là sai. Bộ lọc 3 tầng phân biệt dòng vốn phát triển đô thị với đầu cơ thổi giá, kèm số liệu tín dụng 2026.",
+  "ogImage": "assets/images/og/dinh-kien-ve-dong-tien-bat-dong-san.jpg",
+  "section": "💡 Tư Duy Chiến Lược",
+  "accent": "#c89540",
+  "searchKeywords": "định kiến dòng tiền bất động sản tín dụng bất động sản 25,73% dư nợ 5,146 triệu tỷ nợ xấu thặng dư xã hội đầu cơ thổi giá phát triển đô thị bộ lọc 3 tầng loại hình mục đích gắn kết lạm phát mất giá nội tệ FDI Ngân hàng Nhà nước nhu cầu ở thực nhà ở xã hội 145.000 tỷ trái phiếu bất động sản",
+  "legacy": null
  }
 ]

@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-10 — Nội dung: bài mới "Định Kiến Về Dòng Tiền Bất Động Sản" (chương Tư Duy Đầu Tư)
+- Thêm `dinh-kien-ve-dong-tien-bat-dong-san` (`/cam-nang/dinh-kien-ve-dong-tien-bat-dong-san/`) từ bài của Tú: giữ lập luận gốc (3 vai trò của bất động sản, phân định phát triển đô thị khác đầu cơ thổi giá), thêm khung "Bộ Lọc 3 Tầng Của Dòng Tiền" (loại hình – mục đích – gắn kết), 4 dấu hiệu nhận ra dòng tiền đúng chỗ và liên kết sang `muc-tieu-metro-hcm-2030`, `ban-do-dau-tu-cong-2026-2030`, `quy-hoach-100-nam-tp-hcm`.
+- Bổ sung số liệu đến 10/10/2026 (Ngân hàng Nhà nước, Tổng cục Thống kê qua báo chí): tín dụng BĐS 25,73% tổng dư nợ (cuối 5/2026), 5,146 triệu tỷ (cuối 6/2026), 51,97% tự sử dụng, nợ xấu 2,3% nhưng tăng 10,5% so cuối 2025; CPI 9 tháng 4,52%; FDI thực hiện vào BĐS 1,59 tỷ USD (7,5%). Có nêu cả phía quan ngại (Thủ tướng 26/2/2026, đại biểu Quốc hội 21/4/2026) và ghi rõ đâu là số liệu, đâu là ý kiến. Bài không kết luận nguyên nhân lạm phát hay tỷ giá.
+- Bài Word không kèm ảnh nên tự vẽ 2 ảnh gốc: sơ đồ "Cùng một dòng vốn, hai kết cục" (ảnh chính, OG) và biểu đồ cơ cấu tín dụng BĐS (kiểm tra màu bằng validator, có nguồn và ngày số liệu). Ảnh OG dựng riêng để không bị cắt tiêu đề.
+- Gắn vào menu chương 3 (`categories.json`, badge 2 → 3 bài), `relatedArticles`, nhóm "Tư duy đầu tư" trong `data/pages.json`.
+- Kiểm thử: build 0 lỗi, `check-dist` ĐẠT.
+
 ## 2026-10-10 — Nội dung: bài mới "Mục Tiêu Metro HCM 2030" (chương Chiến Lược & Quy Hoạch)
 - Thêm `muc-tieu-metro-hcm-2030` (`/cam-nang/muc-tieu-metro-hcm-2030/`) từ tài liệu của Tú: khung "4 Trục Hội Tụ" (Tây · Nam · Bắc · hai sân bay), phát hiện "xương sống chung" Thủ Thiêm – Long Thành, hồ sơ 9 hạng mục ①–⑨ kèm 9 ảnh bản đồ (tông ấm 70%, WebP qua `images.py`), bảng nấc trạng thái và 3 rủi ro (vốn, quỹ đất BT, thời gian), bộ lọc 4 câu hỏi và liên kết sang các vùng liên quan.
 - Cập nhật số liệu đến 10/10/2026 theo Ban MAUR và báo chí; ghi rõ chỗ các nguồn lệch (Bến Thành – Thủ Thiêm 36.744 / ~46.300 tỷ, mốc hoàn thành 2028 / quý III/2030; Thủ Thiêm – Long Thành 84.753 → 175.000 → ~134.169 tỷ; mốc Metro 1 kéo dài 2030 / trước 2035). Tổng vốn Cần Giờ 115.214 tỷ = 102.430 tỷ + ~12.784 tỷ giải phóng mặt bằng.
