@@ -3,4 +3,4 @@ so: 03
 ngay: 2026-10-12
 mo-ta: Nhật san BĐS kỳ 3 (12/10/2026): lãi suất, trái phiếu, nguồn cung Thủ Thiêm, Long Thành và cách chọn giá đúng với Norton Park, Nam Mekong Grand Plaza, SkySOLIS.
 trich-doan: Lãi suất tiền gửi mới phát sinh ở mức 6,38%/năm, hơn 90% trái phiếu doanh nghiệp phát hành nằm ở ngân hàng và bất động sản, cổ phiếu bất động sản điều chỉnh 30–50% từ đầu năm. Nguồn cung mở rộng từ nhà ở xã hội đến 3.790 căn hộ Thủ Thiêm chuẩn bị đấu giá. Kỳ này hỏi: mức giá nào xứng đáng với giá trị của tài sản, qua Norton Park, Nam Mekong Grand Plaza và SkySOLIS.
-trang-thai: nhap
+trang-thai: cong-bo
