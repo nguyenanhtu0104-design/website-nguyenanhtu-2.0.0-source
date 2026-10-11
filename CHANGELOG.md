@@ -2,6 +2,20 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-11 — Nội dung: bảng tính SkySOLIS bản mới (bảng giá căn 09/10/2026)
+- `assets/tools/skysolis-bang-tinh/index.html` thay bằng bản "Bảng tính chiết khấu & 3 phương thức thanh toán" mới của Tú: thêm 43 căn có giá niêm yết sẵn (bảng giá 09/10/2026, chưa VAT & KPBT; 36 căn trong bảng + 7 căn ngoài bảng đánh dấu *), tab mặc định "💰 Có giá sẵn", căn mặc định C.07.06, nhãn "GIÁ NIÊM YẾT 09/10" và ghi chú nguồn giá.
+- Giữ nguyên các chỉnh sửa khung của site đã áp dụng cho bản trước: `noindex, nofollow`, khung rộng 1440px, tự phóng to ảnh mặt bằng (`zoom.js`). 4 ảnh mặt bằng nhúng base64 trong file mới (cùng kích thước 1700 px, cùng nội dung) được thay bằng 4 file WebP đang có sẵn, nên trang vẫn nhẹ (80 KB thay vì 997 KB) và không thêm ảnh mới.
+- Kiểm thử trình duyệt: không lỗi JavaScript; 43 căn có giá sẵn; C.07.06 ra 3.656.380.103 đ khớp bảng giá; chọn căn khác vẫn hiện đúng mặt bằng. Không đổi bài `skysolis`, không đổi URL.
+
+## 2026-10-11 — Nội dung: Nhật san kỳ 3 "Thời kỳ chọn giá đúng" (bản nháp)
+- Thêm kỳ `publications/nhat-san/2026-10-12-so-03/` (Nhật san đầu tuần 12/10/2026, Số 03) ở trạng thái **nhap**: chưa hiện trong thư viện Nhật san, không vào sitemap; xem thử qua `/nhat-san/2026-10-12-so-03/` và bản đọc `/nhat-san/2026-10-12-so-03/doc/`. Công bố bằng cách đổi `trang-thai: cong-bo` trong `info.txt`.
+- Nội dung biên tập từ file Word của Tú trên khung trình bày của bản HTML GPT (giữ CSS, mục lục, lightbox, nút In/PDF). Sửa lỗi chính tả và câu cụt trong bài nhận xét tuần, giữ nguyên lập luận; ghép 11 ảnh trong Word (phối cảnh Nam Mekong dùng hai lần; chuyển WebP, tách file khi build). Dựng ảnh bìa `bia.jpg` 1200×630 cùng kiểu số 01–02.
+- Đối chiếu nguồn: số liệu trái phiếu (ngân hàng 49,2%, bất động sản 41,5%, dữ liệu đến 24/9) và SSI (cổ phiếu bất động sản điều chỉnh 30–50%; NLG, KDH P/B 0,8 lần) khớp bài Mekong ASEAN 11/10; Kỳ Hòa theo VOV, VnExpress, Vietstock qua PHS (8,2 ha, 45 tầng, 10.000 người, đang lấy ý kiến, chưa phê duyệt). Nguồn Vietstock nêu đất đối ứng của Kỳ Hòa gắn với đường vượt biển Cần Giờ – Vũng Tàu, không phải đường sắt Cần Giờ như bản Word, nên bài ghi theo nguồn và nêu rõ chưa có xác nhận bàn giao cho dự án đường sắt. Chú thích bản đồ R1–R5 ghi rõ vòng khoanh đỏ rộng hơn năm ô đấu giá.
+- Đánh lại số nguồn liên tục 1–20 (bản gốc nhảy cách 5, 9, 15–17); thêm breadcrumb, JSON-LD (`WebSite`, `Person`, `WebPage`, `Article`, `BreadcrumbList`), canonical về `/doc/` và liên kết nội bộ tới Norton Park, Nam Mekong Grand Plaza, SkySOLIS, Gamuda Land, Vinhomes, SkyWorld, TOD 5.0, "Định kiến về dòng tiền bất động sản", hồ sơ tác giả, thư viện Nhật san.
+- Sửa lỗi bố cục của file GPT: trên điện thoại (390 px) bảng làm trang rộng 432 px gây cuộn ngang; nay khớp màn hình, bảng tự cuộn trong khung. Mục lục có dòng "03 Nguồn cung" hiện lặp số, đã sửa.
+- Thư mục nháp cũ `publications/nhat-san/2026-10-05-so-03/` (bản sao Số 02 đặt nhầm tên, `nhap`, chưa từng công bố) vẫn còn trên kho do gói cập nhật không xóa được file; nó không hiện ra ngoài và có thể xóa khi tiện.
+- Kiểm thử: build 0 lỗi 0 cảnh báo, `check-dist` ĐẠT; kiểm tra trình duyệt desktop 1360 px và điện thoại 390 px (ảnh tải đủ, lightbox mở/đóng, không lỗi JavaScript).
+
 ## 2026-10-10 — Nội dung: sửa bài "Mục Tiêu Metro HCM 2030" (thêm bản đồ ③, chú giải ①–⑨)
 - Thêm ảnh 10 (thẻ thông tin + bản đồ Metro Bến Thành – Cần Giờ) vào mục ③, thay đoạn "chưa có ảnh hồ sơ riêng"; cập nhật bảng thông số ③ (2 ga giai đoạn đầu, 350 km/h, khổ 1.435 mm, tàu 3 → 6 toa, depot Cần Giờ, 115.214 tỷ).
 - Đầu bài: thêm mục "Chú Giải Bản Đồ" liệt kê ① đến ⑨ theo dạng số – tên tuyến – điểm kết nối – trạng thái (ô số cùng màu với đường trên bản đồ), kèm khối "Bảy nút chuyển tuyến". Chuyển khung "Cách đọc số hiệu" xuống ngay dưới chú giải.

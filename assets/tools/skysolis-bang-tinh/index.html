@@ -325,7 +325,6 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   border:1px solid rgba(255,255,255,.06);border-radius:10px}
 .terms b{color:var(--gold-l)}
 .sec-note{font-size:11px;color:var(--mut);margin-top:5px}
-
 @media(min-width:1100px){.hdr h1{font-size:44px}.card{padding:26px 30px}.card-title{font-size:12px}.input-group label{font-size:11px}.price-inp{font-size:18px}}
 @media(max-width:600px){.wrap{padding:28px 14px 48px}}
 </style>
@@ -337,7 +336,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 <div class="hdr">
   <div class="hdr-badge">SkySOLIS · Exclusive Preview Event</div>
   <h1>Bảng Tính Chiết Khấu &amp; Phương Thức Thanh Toán</h1>
-  <div class="hdr-sub">Căn hộ · 3 PTTT: Chuẩn · Nhanh · Vay Ngân Hàng<br>Bảng tạm tính 14/09/2026 · Booking 01–23/10/2026</div>
+  <div class="hdr-sub">Căn hộ · 3 PTTT: Chuẩn · Nhanh · Vay Ngân Hàng<br>Bảng tạm tính 14/09/2026 · Bảng giá căn cập nhật 09/10/2026 · Booking 01–23/10/2026</div>
   <div class="div-gold"></div>
 </div>
 
@@ -348,7 +347,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
     <div class="input-group" style="position:relative">
       <label>Mã Căn / Unit No.</label>
       <div style="display:flex;gap:8px;align-items:center">
-        <input class="price-inp" id="unitInp" type="text" placeholder="Gõ mã căn (vd: C.07.08) hoặc bấm ▼"
+        <input class="price-inp" id="unitInp" type="text" placeholder="Gõ mã căn (vd: C.07.06) hoặc bấm ▼"
           style="font-size:15px;text-transform:uppercase;flex:1;text-align:left" oninput="onUnitInput(this)" autocomplete="off">
         <button onclick="toggleFullList()" id="listBtn"
           style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;border-radius:8px;padding:0 16px;
@@ -357,7 +356,8 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
       <div id="unit-dropdown" style="display:none;position:absolute;top:calc(100% + 4px);left:0;width:100%;z-index:200;background:#0D2440;
         border:1px solid rgba(201,168,76,.45);border-radius:10px;box-shadow:0 16px 48px rgba(0,0,0,.55);overflow:hidden">
         <div id="dd-tabs" style="display:flex;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,.08)">
-          <button class="dd-tab active" data-f="all" onclick="setDDTab('all')" style="flex:1">Tất Cả</button>
+          <button class="dd-tab active" data-f="listed" id="dd-tab-listed" onclick="setDDTab('listed')" style="flex:1.6">💰 Có giá sẵn</button>
+          <button class="dd-tab" data-f="all" onclick="setDDTab('all')" style="flex:1">Tất Cả</button>
           <button class="dd-tab" data-f="Studio" onclick="setDDTab('Studio')" style="flex:1">Studio</button>
           <button class="dd-tab" data-f="2PN1WC" onclick="setDDTab('2PN1WC')" style="flex:1">2PN1WC</button>
           <button class="dd-tab" data-f="2PN2WC" onclick="setDDTab('2PN2WC')" style="flex:1">2PN2WC</button>
@@ -423,7 +423,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
     <span>⚙️ Cấu Hình Bảng Giá — Giá Linh Động</span><span id="cfg-arrow" style="font-size:12px;color:var(--mut)">▼ Mở</span>
   </div>
   <div id="cfg-body" style="display:none">
-    <div class="inp-note" style="margin-bottom:14px;font-size:12px">Giá/m² áp dụng cho một căn = <b style="color:var(--gold-l)">(giá theo loại căn, nếu trống thì giá chung) + phụ thu tầng</b>, sau đó <b style="color:var(--gold-l)">± điều chỉnh %</b>. Muốn chốt giá riêng cho một căn, sửa trực tiếp ô “Giá tư vấn/m²” ở mục Thông Tin Căn Hộ.</div>
+    <div class="inp-note" style="margin-bottom:14px;font-size:12px">Giá/m² áp dụng cho một căn = <b style="color:var(--gold-l)">(giá theo loại căn, nếu trống thì giá chung) + phụ thu tầng</b>, sau đó <b style="color:var(--gold-l)">± điều chỉnh %</b>. Căn có <b>giá sẵn</b> (bảng giá 09/10/2026) luôn dùng giá niêm yết cố định, không bị ảnh hưởng bởi cấu hình này (trừ khi đặt giá riêng). Muốn chốt giá riêng cho một căn, sửa trực tiếp ô “Giá tư vấn/m²” ở mục Thông Tin Căn Hộ.</div>
     <div class="prop-grid">
       <div class="input-group"><label>Giá chung / m² (VND)</label>
         <input class="price-inp" id="cfgBase" type="text" inputmode="numeric" oninput="onCfgNum(this,'ppm')" style="font-size:16px"></div>
@@ -555,7 +555,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <b>Khoản quan tâm 50.000.000 đ</b> (Interest Expression Form) là khoản có hoàn lại, không tính vào tổng thanh toán.<br>
   <b>Vay ngân hàng:</b> hỗ trợ tài chính cho đợt 1 &amp; 2 do ngân hàng khách hàng chọn quyết định theo chính sách tín dụng; Chủ đầu tư không cam kết khách hàng được chấp thuận cấp tín dụng.
 </div>
-<div class="footer-note">SkySOLIS · Bảng tính theo mã căn · Dữ liệu căn lập từ mặt bằng tầng 4-5, 6, 7-20 / 22-40 và 21 · Giá/m² và chiết khấu theo bảng tính tạm tính 14/09/2026</div>
+<div class="footer-note">SkySOLIS · Bảng tính theo mã căn · Dữ liệu căn lập từ mặt bằng tầng 4-5, 6, 7-20 / 22-40 và 21 · Giá niêm yết 43 căn theo bảng giá 09/10/2026 · các căn còn lại: giá/m² linh động · chiết khấu theo bảng tính tạm tính 14/09/2026</div>
 </div>
 
 <div id="print-sheet"></div>
@@ -592,6 +592,58 @@ for(let f=7;f<=20;f++) PLANS.ftyp.units.forEach(u=>addUnit(f,u,'ftyp','7-20',PLA
 PLANS.f21.units.forEach(u=>addUnit(21,u,'f21','21',PLANS.f21.src,u.nsa,u.nfa));
 for(let f=22;f<=40;f++) PLANS.ftyp.units.forEach(u=>addUnit(f,u,'ftyp','22-40',PLANS.ftyp.src,u.nsa2,u.nfa2));
 
+// ── BẢNG GIÁ CÓ SẴN (nguồn: Bảng giá niêm yết 09/10/2026 · sheet GIỎ CĂN) ──
+// p = giá niêm yết chưa VAT & KPBT · nfa = tim tường · nsa = thông thủy · x:1 = căn ngoài bảng 36 căn
+const LIST_DATE='09/10/2026';
+const LISTED=[
+ {c:"C.07.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3656380103},
+ {c:"C.07.02",nsa:93.56,nfa:103.19,t:"3PN2WC",p:5299814916},
+ {c:"C.07.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4412631966},
+ {c:"C.08.09",nsa:121.66,nfa:131.96,t:"Sky Villa",p:6899568051},
+ {c:"C.08.03",nsa:93.81,nfa:103.06,t:"3PN2WC",p:5391787631},
+ {c:"C.08.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4495640514},
+ {c:"C.09.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4512242268},
+ {c:"C.09.05",nsa:62.62,nfa:69.9,t:"2PN2WC",p:3763899713},
+ {c:"C.09.09",nsa:121.66,nfa:131.96,t:"Sky Villa",p:6926004161},
+ {c:"C.09.10",nsa:74.01,nfa:81.43,t:"2PN2WC",p:4353797223},
+ {c:"C.09.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4473187291},
+ {c:"C.10.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4524693584},
+ {c:"C.11.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4578649062},
+ {c:"C.11.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3776089853},
+ {c:"C.11.09",nsa:121.66,nfa:131.96,t:"Sky Villa",p:6965658386},
+ {c:"C.11.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4539313683},
+ {c:"C.14.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3779610765},
+ {c:"C.14.05",nsa:62.62,nfa:69.9,t:"2PN2WC",p:3784904778},
+ {c:"C.14.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3708259076},
+ {c:"C.15.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3761305118},
+ {c:"C.15.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4601307166},
+ {c:"C.16.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3762006330},
+ {c:"C.16.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3778987131},
+ {c:"C.17.08",nsa:30.14,nfa:34.07,t:"Studio",p:1898805322},
+ {c:"C.17.05",nsa:62.62,nfa:69.9,t:"2PN2WC",p:3837417347},
+ {c:"C.18.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4712895406},
+ {c:"C.22.08",nsa:30.19,nfa:34.07,t:"Studio",p:1951780783},
+ {c:"C.24.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4015991778},
+ {c:"C.25.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4036996912},
+ {c:"C.26.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4054501096},
+ {c:"C.27.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4026494314},
+ {c:"C.29.08",nsa:30.19,nfa:34.07,t:"Studio",p:1970550600},
+ {c:"C.30.08",nsa:30.19,nfa:34.07,t:"Studio",p:1970550600},
+ {c:"C.34.12",nsa:74.79,nfa:82.52,t:"2PN2WC",p:4783705266},
+ {c:"C.36.08",nsa:30.19,nfa:34.07,t:"Studio",p:1970550600},
+ {c:"C.37.08",nsa:30.19,nfa:34.07,t:"Studio",p:1965431553},
+ {c:"B.04.03A",nsa:170.5,nfa:181.7,t:"Mixed-used",p:7057481659,x:1},
+ {c:"B.04.05",nsa:87.2,nfa:93.8,t:"Mixed-used",p:3933860907,x:1},
+ {c:"B.09.03A",nsa:54.7,nfa:59.8,t:"Mixed-used",p:2880325477,x:1},
+ {c:"C.08.06",nsa:63.7,nfa:70.3,t:"2PN1WC",p:3832423879,x:1},
+ {c:"C.18.06",nsa:63.7,nfa:70.3,t:"2PN1WC",p:3832423879,x:1},
+ {c:"C.19.05",nsa:62.6,nfa:69.9,t:"2PN2WC",p:3903933375,x:1},
+ {c:"C.25.12",nsa:74.7,nfa:82.5,t:"2PN2WC",p:4878761860,x:1}
+];
+LISTED.forEach(l=>{const u=UNIT_MAP[l.c.replace(/[^A-Z0-9]/g,'')]; if(!u) return;
+  u.list={price:l.p,extra:!!l.x}; u.nfa=l.nfa; u.nsa=l.nsa; if(!l.x) u.type=l.t;});
+const LISTED_N=UNITS.filter(u=>u.list).length;
+
 // ── STATE ──
 const DEFAULT_PPM=55_000_000;
 const st={code:'',ppm:DEFAULT_PPM,typePpm:{},floorStep:0,floorBase:7,adj:0,unitPpm:{},price:0,priceManual:false,bk:'oct',ng:true,pt:0,ptck:true,kh:0};
@@ -608,6 +660,7 @@ function parseNum(s){return parseInt(String(s).replace(/\D/g,''))||0}
 // ── INPUTS ──
 function autoPPM(u){
   if(!u) return st.ppm;
+  if(u.list) return u.list.price/u.nfa; // căn có giá sẵn: giá niêm yết cố định, không chịu cấu hình giá chung
   const base=st.typePpm[u.type]||st.ppm;
   return r((base+st.floorStep*(u.floor-st.floorBase))*(1+st.adj));
 }
@@ -617,7 +670,8 @@ function effPPM(u){
 }
 function ppmSource(u){
   if(!u) return 'Chưa chọn căn — dùng giá chung';
-  if(st.unitPpm[u.code]) return `Giá riêng của căn ${u.code} (tự động sẽ là ${fmtS(autoPPM(u))})`;
+  if(st.unitPpm[u.code]) return `Giá riêng của căn ${u.code} (${u.list?'giá niêm yết sẽ là':'tự động sẽ là'} ${fmtS(autoPPM(u))})`;
+  if(u.list) return `Giá niêm yết bảng giá ${LIST_DATE}: ${fmtS(u.list.price)} ÷ ${u.nfa.toLocaleString('vi-VN')} m² (tim tường)`+(u.list.extra?' · căn ngoài bảng 36 căn':'');
   const typed=st.typePpm[u.type]; let s=typed?`Giá loại ${u.type} ${fmtS(typed)}`:`Giá chung ${fmtS(st.ppm)}`;
   if(st.floorStep) s+=` ${st.floorStep>0?'+':'−'} ${fmtS(Math.abs(st.floorStep))} × ${Math.abs(u.floor-st.floorBase)} tầng ${u.floor>=st.floorBase?'trên':'dưới'} tầng ${st.floorBase}`;
   if(st.adj) s+=` · điều chỉnh ${st.adj>0?'+':''}${(st.adj*100).toFixed(2).replace(/\.?0+$/,'')}%`;
@@ -626,7 +680,7 @@ function ppmSource(u){
 function onPPM(el){
   const v=parseNum(el.value); const u=curUnit();
   el.value=v?v.toLocaleString('vi-VN'):'';
-  if(u){ if(v && v!==autoPPM(u)) st.unitPpm[u.code]=v; else delete st.unitPpm[u.code]; }
+  if(u){ if(v && v!==r(autoPPM(u))) st.unitPpm[u.code]=v; else delete st.unitPpm[u.code]; }
   else { st.ppm=v||DEFAULT_PPM; $('cfgBase').value=st.ppm.toLocaleString('vi-VN'); }
   st.priceManual=false; syncPrice(true); recalc(); saveCfg();
 }
@@ -640,14 +694,14 @@ function onPrice(el){
 }
 function syncPrice(keepPPMField){
   const u=curUnit(), ppm=effPPM(u);
-  if(!keepPPMField) $('ppmInp').value=ppm?ppm.toLocaleString('vi-VN'):'';
+  if(!keepPPMField) $('ppmInp').value=ppm?r(ppm).toLocaleString('vi-VN'):'';
   const own=u&&st.unitPpm[u.code];
-  $('ppm-badge').innerHTML=own?'<span class="type-chip t-Dual">GIÁ RIÊNG</span>':'';
+  $('ppm-badge').innerHTML=own?'<span class="type-chip t-Dual">GIÁ RIÊNG</span>':(u&&u.list?'<span class="type-chip" style="background:rgba(201,168,76,.22);color:var(--gold-l)">GIÁ NIÊM YẾT '+LIST_DATE.slice(0,5)+'</span>':'');
   $('ppm-reset').style.display=own?'':'none';
   $('ppm-note').textContent=ppmSource(u);
   if(!st.priceManual){
-    st.price=u?r(ppm*u.nfa):0; $('priceInp').value=st.price?st.price.toLocaleString('vi-VN'):'';
-    $('price-note').textContent=u?`= ${fmtS(ppm)} × ${u.nfa.toLocaleString('vi-VN')} m² (DT tim tường) · sửa tay để ghi đè, xoá trống để tính lại`:'= Giá/m² × DT tim tường · sửa tay để ghi đè, xoá trống để tính lại';
+    st.price=u?((u.list&&!own)?u.list.price:r(ppm*u.nfa)):0; $('priceInp').value=st.price?st.price.toLocaleString('vi-VN'):'';
+    $('price-note').textContent=u?((u.list&&!own)?`Giá niêm yết cố định theo bảng giá ${LIST_DATE} (chưa VAT & KPBT) · sửa tay để ghi đè, xoá trống để tính lại`:`= ${fmtS(ppm)} × ${u.nfa.toLocaleString('vi-VN')} m² (DT tim tường) · sửa tay để ghi đè, xoá trống để tính lại`):'= Giá/m² × DT tim tường · sửa tay để ghi đè, xoá trống để tính lại';
   }
 }
 
@@ -852,22 +906,24 @@ function recalc(){
 }
 
 // ── UNIT DROPDOWN ──
-let ddTab='all', ddOpen=false;
+let ddTab='listed', ddOpen=false;
 function floorOptions(){const s=$('dd-floor');const fl=[...new Set(UNITS.map(u=>u.floor))].sort((a,b)=>a-b);fl.forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent='Tầng '+f;s.appendChild(o);});}
 function renderDDList(){
   const q=($('dd-search').value||'').toUpperCase().replace(/[^A-Z0-9.]/g,''), fl=$('dd-floor').value;
   let list=UNITS.filter(u=>{
-    if(ddTab==='other'){ if(['Studio','2PN1WC','2PN2WC','3PN2WC'].includes(u.type)) return false; }
+    if(ddTab==='listed'){ if(!u.list) return false; }
+    else if(ddTab==='other'){ if(['Studio','2PN1WC','2PN2WC','3PN2WC'].includes(u.type)) return false; }
     else if(ddTab!=='all' && u.type!==ddTab) return false;
     if(fl!=='all' && u.floor!==+fl) return false;
     if(q && !(u.code.includes(q)||u.layout.toUpperCase().includes(q)||u.type.toUpperCase().includes(q))) return false;
     return true;});
   const total=list.length; list=list.slice(0,150);
   $('dd-list').innerHTML=list.map(u=>`<div class="dd-item" onclick="selectUnit('${u.code}');closeDD()">
-    <span class="di-code">${u.code}</span><span class="di-info">T${u.floor} · ${u.layout} · NFA ${u.nfa} m²</span>
+    <span class="di-code">${u.code}</span><span class="di-info">T${u.floor} · ${u.layout} · NFA ${u.nfa} m²${u.list?` · <b style="color:var(--gold-l)">${fmtS(u.list.price)}</b>${u.list.extra?' *':''}`:''}</span>
     <span class="di-badge ${TYPE_CLS[u.type]}">${u.type.toUpperCase()}</span></div>`).join('')
     +(total>150?`<div style="padding:8px 14px;font-size:11px;color:var(--mut)">Hiển thị 150/${total} căn — gõ thêm để lọc</div>`:'')
-    +(total===0?`<div style="padding:12px 14px;font-size:12px;color:var(--mut)">Không có căn phù hợp</div>`:'');
+    +(total===0?`<div style="padding:12px 14px;font-size:12px;color:var(--mut)">Không có căn phù hợp</div>`:'')
+    +(ddTab==='listed'&&total?`<div style="padding:8px 14px;font-size:11px;color:var(--mut)">Giá niêm yết chưa VAT &amp; KPBT · bảng giá ${LIST_DATE} · (*) căn ngoài bảng 36 căn</div>`:'');
 }
 function setDDTab(t){ddTab=t;document.querySelectorAll('.dd-tab').forEach(b=>b.classList.toggle('active',b.dataset.f===t));renderDDList();}
 function toggleFullList(){ddOpen?closeDD():(ddOpen=true,$('unit-dropdown').style.display='block',renderDDList(),$('dd-search').focus());}
@@ -882,7 +938,7 @@ function selectUnit(code,fromInput){
   const u=UNIT_MAP[code.replace(/[^A-Z0-9]/g,'')]; if(!u) return;
   st.code=u.code; if(!fromInput) $('unitInp').value=u.code;
   st.priceManual=false;
-  $('unit-meta').innerHTML=`Block ${u.block} · Tầng ${u.floor} · ${u.type}<span class="type-chip ${TYPE_CLS[u.type]}">${u.layout}</span>`;
+  $('unit-meta').innerHTML=`Block ${u.block} · Tầng ${u.floor} · ${u.type}<span class="type-chip ${TYPE_CLS[u.type]}">${u.layout}</span>${u.list?`<span class="type-chip" style="background:rgba(201,168,76,.22);color:var(--gold-l)">CÓ GIÁ SẴN</span>`:''}`;
   $('unit-area').textContent=`${u.nfa.toLocaleString('vi-VN')} m²  ·  ${u.nsa.toLocaleString('vi-VN')} m²`+(u.pes?`  ·  sân vườn ${u.pes.toLocaleString('vi-VN')} m²`:'');
   $('unit-hand').textContent=handover(u.type);
   syncPrice(); recalc(); highlightUnit(u);
@@ -967,7 +1023,8 @@ function exportPDF(){
 // ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
   loadCfg(); buildPanels(); floorOptions(); buildCfg();
-  $('unitInp').value='C.07.08'; selectUnit('C.07.08');
+  $('dd-tab-listed').textContent=`💰 Có giá sẵn (${LISTED_N})`;
+  $('unitInp').value='C.07.06'; selectUnit('C.07.06');
   setPT(0);
 });
 
