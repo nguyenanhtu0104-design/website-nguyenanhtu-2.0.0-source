@@ -1,5 +1,5 @@
 {
-  "version": "2.13.1",
+  "version": "2.13.2",
   "ctaCategories": [
     "du-an-chon-loc"
   ],
@@ -27,7 +27,7 @@
     "youtube": "https://www.youtube.com/@nguyenanhtu.kienphat",
     "sameAs": []
   },
-  "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500&display=swap",
+  "fonts": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500&family=Noto+Serif:wght@400&display=swap",
   "titleSuffix": "Nguyễn Anh Tú",
   "publications": [
     {

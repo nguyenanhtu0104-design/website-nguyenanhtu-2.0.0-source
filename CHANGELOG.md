@@ -2,6 +2,14 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-11 — v2.13.2: sửa lỗi dấu tiếng Việt bị tách (ố, ắ, ầ, ế…) trên Windows
+- Nguyên nhân: font Georgia trên Windows không có dấu chồng (mũ + dấu sắc/huyền…), trình duyệt tự ghép nên dấu rời khỏi chữ.
+- `assets/css/main.css`: tiêu đề bài, thẻ thư viện dùng `'Noto Serif'` (tải qua Google Fonts, có tiếng Việt) rồi mới tới Georgia; `site.config.json` thêm font Noto Serif, version 2.13.2.
+- Nhật san kỳ 3: nhúng sẵn Noto Serif (latin + vietnamese) trong file nên hiển thị đúng dù offline/in PDF.
+- Nhật san kỳ 1, kỳ 2: thêm Noto Serif làm font dự phòng cho các ký tự font nhúng "News Serif" còn thiếu (ỡ, ỷ, ẹ…).
+- Đã rà Atlas, VietNam Atlas, Chỉ số đô thị và các công cụ: dùng font sans/Playfair/Be Vietnam Pro/Space Grotesk có đủ tiếng Việt, không cần sửa.
+- Kiểm thử: build 0 lỗi, `check-dist` ĐẠT, kiểm tra font thực dùng bằng trình duyệt.
+
 ## 2026-10-11 — Nội dung: bảng tính SkySOLIS bản mới (bảng giá căn 09/10/2026)
 - `assets/tools/skysolis-bang-tinh/index.html` thay bằng bản "Bảng tính chiết khấu & 3 phương thức thanh toán" mới của Tú: thêm 43 căn có giá niêm yết sẵn (bảng giá 09/10/2026, chưa VAT & KPBT; 36 căn trong bảng + 7 căn ngoài bảng đánh dấu *), tab mặc định "💰 Có giá sẵn", căn mặc định C.07.06, nhãn "GIÁ NIÊM YẾT 09/10" và ghi chú nguồn giá.
 - Giữ nguyên các chỉnh sửa khung của site đã áp dụng cho bản trước: `noindex, nofollow`, khung rộng 1440px, tự phóng to ảnh mặt bằng (`zoom.js`). 4 ảnh mặt bằng nhúng base64 trong file mới (cùng kích thước 1700 px, cùng nội dung) được thay bằng 4 file WebP đang có sẵn, nên trang vẫn nhẹ (80 KB thay vì 997 KB) và không thêm ảnh mới.
