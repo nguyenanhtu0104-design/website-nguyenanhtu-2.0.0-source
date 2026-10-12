@@ -2,6 +2,11 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-12 — Nội dung: Norton Park — trang "Mặt bằng tầng & mẫu căn" và danh mục tiện ích Phân khu B
+- Thêm trang công cụ tĩnh `assets/tools/norton-park-mat-bang/` (noindex, không thư viện ngoài, ảnh tách file WebP): chọn loại căn (Studio, 1PN+, 2PN, 2PN+, 3PN, căn hộ sân vườn, Duplex, Duplex sân vườn) thì mặt bằng tầng 1, 2, 3, 4–9, 10–15, 16 & 18, 17 & 19 tô sáng đúng các căn thuộc loại đó (theo bảng màu loại căn của tài liệu chủ đầu tư), kèm layout nội thất 22 mẫu, diện tích, cảnh quan, mã căn tương đương và số căn của từng mẫu trên tầng điển hình 4–9. Có mặt bằng tiện ích Phân khu B (30 hạng mục khuôn viên + 24 hạng mục công viên) lọc theo nhóm. Có nút phóng to (dùng `zoom.js` sẵn có).
+- Số liệu lấy từ tờ rơi Phân khu B (10/2026): 3 tòa, 645 căn, 95% căn 2 mặt thoáng, bố trí công năng theo tầng, bảng "loại tương đương" của từng mẫu. Vị trí căn trên tầng 4–9 dùng dữ liệu mặt bằng đã có trong bảng tính Norton Park, đối chiếu lại với nhãn trên mặt bằng PDF (căn B1.1a/B1.1b thuộc nhóm mẫu B1.4, không phải B1.3).
+- Bài `norton-park`: thêm khối nút mở trang mặt bằng ở mục 02, danh mục tiện ích Phân khu B và bố trí công năng theo tầng; bổ sung "3 tòa, 645 căn" vào mô tả Phân khu B; cập nhật `updatedDate`. Không đổi URL, giao diện hay CSS/JS (không tăng version).
+
 ## 2026-10-12 — Nội dung: Chỉ số đô thị — thay báo cáo Mật độ Đô thị Nén bằng bản mới của Tú
 - `publications/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/urban-compactness-report.html` thay bằng bản mới (giữ nguyên thư mục kỳ, URL `/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/`, `info.txt` và `bia.jpg`; trạng thái vẫn `cong-bo`).
 - Khác bản cũ: hai biểu đồ có ô chọn "Benchmark quốc tế" (12 đô thị: Hong Kong, Paris, Barcelona, Tokyo, Singapore, Seoul, Copenhagen, Ahmedabad, Curitiba, Thâm Quyến, Medellín, Portland). Radar so TP.HCM hiện trạng, Bình Dương, Vũng Tàu với benchmark chọn; Gap Analysis đặt TP.HCM hiện trạng, TP.HCM mục tiêu cạnh benchmark chọn (bản cũ cố định Hong Kong và so Hà Nội). Ma trận, 15 mô hình, tab Việt Nam, khung 11 chỉ số và nguồn giữ nguyên.
