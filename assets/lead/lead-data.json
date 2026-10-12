@@ -1,0 +1,38 @@
+{
+  "settings": {
+    "siteUrl": "https://nguyenanhtu.vn",
+    "ga4": "",
+    "clarity": "",
+    "metaPixel": "",
+    "zaloPhone": "",
+    "privacyUrl": "/chinh-sach-bao-mat/"
+  },
+  "projects": {
+    "nam-mekong-grand-plaza": {
+      "name": "Nam Mekong Grand Plaza",
+      "ready": true,
+      "region": "",
+      "url": "",
+      "docs": {
+        "bang-tinh": { "label": "Bảng tính dự án", "url": "" },
+        "tong-quan": { "label": "Tổng quan dự án", "url": "" }
+      },
+      "video": "",
+      "areaArticle": { "title": "", "url": "" },
+      "related": []
+    },
+    "artisan-park": {
+      "name": "Artisan Park",
+      "ready": true,
+      "region": "",
+      "url": "",
+      "docs": {
+        "bang-tinh": { "label": "Bảng tính dự án", "url": "" },
+        "tong-quan": { "label": "Tổng quan dự án", "url": "" }
+      },
+      "video": "",
+      "areaArticle": { "title": "", "url": "" },
+      "related": []
+    }
+  }
+}
