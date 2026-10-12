@@ -5,8 +5,9 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 ## 2026-10-12 (bổ sung) — Nội dung: Palm River — thêm ảnh, Prologue, góc nhìn, SWOT, thang điểm, chính sách; chuyển sang published
 - Thêm Prologue và thông điệp "Một resort giữa lòng thành phố"; mục 03 "Vì sao tôi chọn Palm River?" (cư dân / nhà đầu tư) và mục 04 SWOT + thang điểm theo bản Word của Tú (sửa lỗi chính tả, giữ ý). Điểm: Vị trí 4,20 · Cư dân 4,14 · Nhà đầu tư 4,00 · tổng 3,97/5.
 - Giá & chính sách: 4 phương án thanh toán (Chuẩn, Đặc biệt, Vay, Nhanh), ưu đãi mua nhiều căn, theo tài liệu chủ đầu tư. Ưu đãi Early Birds đã hết hạn (30/9/2026) nên không trình bày như đang áp dụng. Chưa có giá tham chiếu.
-- 16 ảnh (phối cảnh CĐT, tổng mặt bằng, tiện ích, 2 mặt bằng tầng điển hình tháp 3 và tháp 4): ảnh phối cảnh xử lý tông ấm, bản đồ 70%, mặt bằng giữ nguyên; không có logo cần xóa. Không dùng 3 ảnh GPT (chưa rõ nguồn) và ảnh có chữ "PALM CITY".
+- 27 ảnh (phối cảnh CĐT, tổng mặt bằng, tiện ích, 6 mặt bằng tầng, 6 mẫu căn): ảnh phối cảnh xử lý tông ấm, bản đồ 70%, mặt bằng giữ nguyên; không có logo cần xóa. Không dùng 3 ảnh GPT (chưa rõ nguồn) và ảnh có chữ "PALM CITY".
 - Cập nhật website dự án palm-city.com.vn/palm-river, hồ sơ năng lực Hướng Việt; diện tích Palm City ghi "hơn 30 ha" (brochure CĐT 30,2 ha, ERA/thông cáo 30,6 ha).
+- Bố cục chi tiết kiểu Norton Park: ảnh kèm từng nhóm tiện ích (hồ bơi & trị liệu, thể thao & gia đình, thư giãn & cảnh quan), ảnh tổng mặt bằng ở Vị trí, bốn panel phương án thanh toán với số liệu nổi bật, dải vuốt ngang 6 mặt bằng tầng (tháp 3, tháp 4) và 6 mẫu căn tiêu biểu (cắt từ tờ rơi, bỏ phần có logo ERA); bỏ bảng diện tích dài.
 - Trạng thái đổi `stub` → `published`; tạo lại ảnh OG từ ảnh hero. Chưa có: clip giới thiệu, tham quan 360° (cần duyệt host nhúng), giá tham chiếu, tổng thầu, FAR.
 
 ## 2026-10-12 — Nội dung: Palm River — dựng trang dự án từ landing ERA (chưa có ảnh, chưa có SWOT)
