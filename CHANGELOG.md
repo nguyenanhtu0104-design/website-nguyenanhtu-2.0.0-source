@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-12 — Nội dung: Norton Park — thay bảng tính phương thức thanh toán bằng bản mới của Tú
+- `assets/tools/norton-park-bang-tinh/index.html` thay bằng bản mới (đủ tầng 1–19, mặt bằng theo nhóm tầng, mã căn dạng Tháp.Tầng.Căn). Giữ noindex và canonical về bài.
+- Ảnh nhúng Base64 trong bản gốc được tách thành file WebP (mặt bằng 7 nhóm tầng + 9 layout), bỏ các ảnh của bản cũ không còn dùng.
+
 ## 2026-10-12 — v2.14.0: dải cuộn ngang `.p-hscroll` + chỉnh lần 3 trang mặt bằng Norton Park
 - `assets/css/main.css`: thêm `.p-hscroll` (cuộn ngang, scroll-snap) cho nhóm thẻ/ảnh dài; version 2.14.0.
 - Bài `norton-park`: "Mẫu căn tiêu biểu" và mặt bằng tầng điển hình dùng đúng ảnh trong tờ rơi PDF (ảnh 31–45), xếp dải cuộn ngang thay cho cuộn dọc.
