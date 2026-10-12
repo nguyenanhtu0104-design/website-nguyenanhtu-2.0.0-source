@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-12 (bảng tính) — Nội dung: Palm River — đưa bảng tính phương thức thanh toán vào web
+- Thêm công cụ tĩnh `assets/tools/palm-river-bang-tinh/` từ file `PalmRiver_BangTinh_PTTT.html` của Tú (noindex): giữ nguyên logic và giao diện; chỉ tách 21 ảnh Base64 (mẫu căn, mặt bằng tầng) thành 20 file WebP (620 KB, file HTML từ 2,1 MB còn 71 KB) và thêm thẻ noindex.
+- Trang `palm-river` mục Giá & Chính sách có khối nút "Mở bảng tính ngay" (mở tab mới), giống Nam Mekong và Norton Park; câu trả lời Hỏi & Đáp về giá dẫn tới bảng tính.
+
 ## 2026-10-12 (bổ sung) — Nội dung: Palm River — thêm ảnh, Prologue, góc nhìn, SWOT, thang điểm, chính sách; chuyển sang published
 - Thêm Prologue và thông điệp "Một resort giữa lòng thành phố"; mục 03 "Vì sao tôi chọn Palm River?" (cư dân / nhà đầu tư) và mục 04 SWOT + thang điểm theo bản Word của Tú (sửa lỗi chính tả, giữ ý). Điểm: Vị trí 4,20 · Cư dân 4,14 · Nhà đầu tư 4,00 · tổng 3,97/5.
 - Giá & chính sách: 4 phương án thanh toán (Chuẩn, Đặc biệt, Vay, Nhanh), ưu đãi mua nhiều căn, theo tài liệu chủ đầu tư. Ưu đãi Early Birds đã hết hạn (30/9/2026) nên không trình bày như đang áp dụng. Chưa có giá tham chiếu.
