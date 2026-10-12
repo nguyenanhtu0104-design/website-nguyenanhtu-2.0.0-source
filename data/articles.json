@@ -5921,7 +5921,7 @@
  {
   "id": "palm_river",
   "slug": "palm-river",
-  "status": "stub",
+  "status": "published",
   "title": "Palm River",
   "subtitle": "Palm City · Hướng Việt · Ven sông Bình Trưng · 620 căn hộ · Bàn giao Q1/2029",
   "icon": "🌴",
@@ -5933,8 +5933,8 @@
    "palm-city"
   ],
   "description": "Palm River là phân khu căn hộ ven sông của Palm City: 4 tháp 36 tầng, 620 căn hộ, khởi công 16/6/2026, dự kiến bàn giao quý 1/2029.",
-  "thumbnail": null,
-  "heroImage": null,
+  "thumbnail": "palm-river/01",
+  "heroImage": "palm-river/01",
   "publishedDate": "2026-10-01",
   "updatedDate": "2026-10-12",
   "author": "nguyen-anh-tu",

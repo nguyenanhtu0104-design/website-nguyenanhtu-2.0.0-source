@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-12 (bổ sung) — Nội dung: Palm River — thêm ảnh, Prologue, góc nhìn, SWOT, thang điểm, chính sách; chuyển sang published
+- Thêm Prologue và thông điệp "Một resort giữa lòng thành phố"; mục 03 "Vì sao tôi chọn Palm River?" (cư dân / nhà đầu tư) và mục 04 SWOT + thang điểm theo bản Word của Tú (sửa lỗi chính tả, giữ ý). Điểm: Vị trí 4,20 · Cư dân 4,14 · Nhà đầu tư 4,00 · tổng 3,97/5.
+- Giá & chính sách: 4 phương án thanh toán (Chuẩn, Đặc biệt, Vay, Nhanh), ưu đãi mua nhiều căn, theo tài liệu chủ đầu tư. Ưu đãi Early Birds đã hết hạn (30/9/2026) nên không trình bày như đang áp dụng. Chưa có giá tham chiếu.
+- 16 ảnh (phối cảnh CĐT, tổng mặt bằng, tiện ích, 2 mặt bằng tầng điển hình tháp 3 và tháp 4): ảnh phối cảnh xử lý tông ấm, bản đồ 70%, mặt bằng giữ nguyên; không có logo cần xóa. Không dùng 3 ảnh GPT (chưa rõ nguồn) và ảnh có chữ "PALM CITY".
+- Cập nhật website dự án palm-city.com.vn/palm-river, hồ sơ năng lực Hướng Việt; diện tích Palm City ghi "hơn 30 ha" (brochure CĐT 30,2 ha, ERA/thông cáo 30,6 ha).
+- Trạng thái đổi `stub` → `published`; tạo lại ảnh OG từ ảnh hero. Chưa có: clip giới thiệu, tham quan 360° (cần duyệt host nhúng), giá tham chiếu, tổng thầu, FAR.
+
 ## 2026-10-12 — Nội dung: Palm River — dựng trang dự án từ landing ERA (chưa có ảnh, chưa có SWOT)
 - Bài `palm-river` (phân khu của Palm City) viết lại theo khung trang dự án 01–04: Tổng quan (vị trí + thời gian di chuyển, quy mô, nhà phát triển, giai đoạn) · Chi tiết (giá & chính sách, loại hình, phối cảnh, tiện ích, ngoại khu) · Góc nhìn · Phân tích & đánh giá + 7 câu Hỏi & Đáp. Thêm dải số liệu `facts` (620 căn hộ · 36 tầng · 1,89 ha · Q1/2029), cập nhật tiêu đề SEO, mô tả, từ khóa, tag, bài liên quan; tạo lại ảnh OG.
 - Nguồn: landing ERA (cập nhật 9/2026) đối chiếu báo chí: Tuổi Trẻ/KTSG (16/6/2026), Thị trường Tài chính Tiền tệ (16/6/2026), thông cáo Hướng Việt Properties đăng VietnamPlus (13/8/2026). Số khớp giữa các nguồn: 4 tháp, 36 tầng, 1,89–1,9 ha, mật độ ~40%, khởi công 16/6/2026, bàn giao dự kiến Q1/2029.
