@@ -2,6 +2,11 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-12 — v2.14.0: dải cuộn ngang `.p-hscroll` + chỉnh lần 3 trang mặt bằng Norton Park
+- `assets/css/main.css`: thêm `.p-hscroll` (cuộn ngang, scroll-snap) cho nhóm thẻ/ảnh dài; version 2.14.0.
+- Bài `norton-park`: "Mẫu căn tiêu biểu" và mặt bằng tầng điển hình dùng đúng ảnh trong tờ rơi PDF (ảnh 31–45), xếp dải cuộn ngang thay cho cuộn dọc.
+- Trang `norton-park-mat-bang`: bỏ chấm đỏ thừa trên mặt bằng tầng, loại căn khác giữ màu gốc nhạt đi, loại được chọn nổi màu đầy đủ kèm viền; mặt bằng tiện ích dựng lại độ phân giải cao, 57 điểm đánh dấu (xanh: Phân khu B, đỏ: công viên) liên kết hai chiều với danh sách, có lọc nhóm và phóng/thu.
+
 ## 2026-10-12 — Nội dung: Norton Park — trang "Mặt bằng tầng & mẫu căn" và danh mục tiện ích Phân khu B
 - Thêm trang công cụ tĩnh `assets/tools/norton-park-mat-bang/` (noindex, không thư viện ngoài, ảnh tách file WebP): chọn loại căn (Studio, 1PN+, 2PN, 2PN+, 3PN, căn hộ sân vườn, Duplex, Duplex sân vườn) thì mặt bằng tầng 1, 2, 3, 4–9, 10–15, 16 & 18, 17 & 19 tô sáng đúng các căn thuộc loại đó (theo bảng màu loại căn của tài liệu chủ đầu tư), kèm layout nội thất 22 mẫu, diện tích, cảnh quan, mã căn tương đương và số căn của từng mẫu trên tầng điển hình 4–9. Có mặt bằng tiện ích Phân khu B (30 hạng mục khuôn viên + 24 hạng mục công viên) lọc theo nhóm. Có nút phóng to (dùng `zoom.js` sẵn có).
 - Số liệu lấy từ tờ rơi Phân khu B (10/2026): 3 tòa, 645 căn, 95% căn 2 mặt thoáng, bố trí công năng theo tầng, bảng "loại tương đương" của từng mẫu. Vị trí căn trên tầng 4–9 dùng dữ liệu mặt bằng đã có trong bảng tính Norton Park, đối chiếu lại với nhãn trên mặt bằng PDF (căn B1.1a/B1.1b thuộc nhóm mẫu B1.4, không phải B1.3).

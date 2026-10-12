@@ -64,11 +64,23 @@ td{padding:8px 10px;border-top:1px solid var(--bd)}
 .pos{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .pos span{font-size:12.5px;padding:3px 10px;border-radius:7px;background:rgba(234,214,197,.07);border:1px solid var(--bd)}
 .pos span b{color:var(--gd)}
+.mapbox{position:relative;overflow:auto;max-height:80vh;border-radius:8px;background:#e9eadf;border:1px solid var(--bd);-webkit-overflow-scrolling:touch}
+.mapin{position:relative;width:100%;line-height:0}
+.mapin img{width:100%;height:auto;display:block}
+.mk{position:absolute;width:1.9%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:0;background:transparent;cursor:pointer;padding:0}
+.mk.cat{box-shadow:0 0 0 3px #ffd54a,0 0 0 5px #1b1d14}
+.mk.on{z-index:4;box-shadow:0 0 0 4px #ffd54a,0 0 0 7px #1b1d14,0 0 22px 12px rgba(255,213,74,.85);animation:pls 1.2s ease-in-out infinite}
+@keyframes pls{50%{box-shadow:0 0 0 6px #ffd54a,0 0 0 9px #1b1d14,0 0 30px 16px rgba(255,213,74,.9)}}
+.mt{position:absolute;z-index:5;transform:translate(-50%,-165%);background:#1b1d14;color:#fff7e8;font:600 12px 'Be Vietnam Pro',sans-serif;line-height:1.3;padding:5px 9px;border-radius:7px;white-space:nowrap;pointer-events:none;box-shadow:0 3px 12px rgba(0,0,0,.4)}
+.zc{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 10px}
+.zc .chip{min-height:36px;padding:0 14px}
 .am{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:4px 18px;margin-top:12px}
-.am div{display:flex;gap:9px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--bd);font-size:13px}
+.am button.it{display:flex;gap:9px;align-items:baseline;padding:7px 8px;border:0;border-bottom:1px solid var(--bd);background:transparent;color:var(--tx);font:13px 'Be Vietnam Pro',sans-serif;text-align:left;cursor:pointer;border-radius:6px}
+.am button.it:hover,.am button.it.on{background:rgba(255,213,74,.16)}
+.am button.it.on{outline:1px solid #ffd54a}
+.am button.it:focus-visible{outline:2px solid #e7c680}
 .am b{flex:none;min-width:26px;text-align:center;font-size:11px;color:#1a140a;background:var(--gd);border-radius:999px;padding:1px 0}
-.am.p b{background:#9fc79a}
-.am div.hide{display:none}
+.am.p b{background:#e0555a;color:#fff}
 .fn{margin-top:30px;font-size:11.5px;color:var(--mu);font-style:italic;max-width:900px}
 .floorfn{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}
 .floorfn div{background:var(--pn2);border:1px solid var(--bd);border-radius:9px;padding:10px 13px;font-size:13px}
@@ -121,13 +133,15 @@ td{padding:8px 10px;border-top:1px solid var(--bd)}
   </div>
 
   <h2>Tiện ích cộng đồng <small>mặt bằng tiện ích Phân khu B</small></h2>
-  <p class="sub">Tiện ích Phân khu B gồm 30 hạng mục trong khuôn viên các tòa và 24 hạng mục công viên chung. Dự án chỉ dùng 20% mật độ xây dựng, phần còn lại dành cho cảnh quan nhiều tầng tán theo cảm hứng rừng nhiệt đới. Số thứ tự trên mặt bằng trùng với danh mục bên dưới.</p>
-  <div class="plan" style="background:#e9eadf"><img id="amImg" src="tien-ich-phan-khu-b.webp" alt="Mặt bằng tiện ích Phân khu B Norton Park: 30 hạng mục trong khuôn viên các tòa và 24 hạng mục công viên, cạnh Đại lộ Bình Dương" width="2000" height="1414" loading="lazy" style="width:100%;height:auto;display:block"><button class="zbtn" id="za" type="button">⤢ Phóng to</button></div>
+  <p class="sub">Tiện ích Phân khu B gồm 30 hạng mục trong khuôn viên các tòa và 24 hạng mục công viên chung. Dự án chỉ dùng 20% mật độ xây dựng, phần còn lại dành cho cảnh quan nhiều tầng tán theo cảm hứng rừng nhiệt đới. Số thứ tự trên mặt bằng trùng với danh mục bên dưới; bấm vào danh mục để chấm tương ứng sáng lên trên bản đồ.</p>
+  <div class="zc"><button class="chip sm" type="button" id="zin">＋ Phóng to bản đồ</button><button class="chip sm" type="button" id="zout">－ Thu nhỏ</button><button class="chip sm" type="button" id="zfs">⤢ Xem toàn màn hình</button></div>
+  <p class="note" style="margin:0 0 10px">Bấm một hạng mục trong danh mục (hoặc một chấm trên bản đồ) để chấm đó sáng lên. <b style="color:#8aa0ff">Chấm xanh</b>: Phân khu B · <b style="color:#ff7d82">Chấm đỏ</b>: công viên.</p>
+  <div class="mapbox" id="mbox"><div class="mapin" id="mapin"><img id="amImg" src="tien-ich-phan-khu-b.webp" alt="Mặt bằng tiện ích Phân khu B Norton Park: 30 hạng mục trong khuôn viên các tòa (chấm xanh) và 24 hạng mục công viên (chấm đỏ), cạnh Đại lộ Bình Dương" width="2800" height="1979" loading="lazy"><div id="mks"></div></div></div>
   <div class="lbl">Lọc theo nhóm</div>
   <div class="chips" id="amF" role="group" aria-label="Lọc tiện ích"></div>
-  <div class="lbl">Trong khuôn viên Phân khu B (01–30)</div>
+  <div class="lbl">Trong khuôn viên Phân khu B (01–30) · chấm xanh</div>
   <div class="am" id="amB"></div>
-  <div class="lbl">Công viên (01–24)</div>
+  <div class="lbl">Công viên (01–24) · chấm đỏ</div>
   <div class="am p" id="amP"></div>
 
   <p class="fn">Nguồn: tài liệu giới thiệu Phân khu B (Plot B) của chủ đầu tư Gamuda Land, 10/2026. Mặt bằng, diện tích, nội thất và hình phối cảnh mang tính minh họa, có thể điều chỉnh mà không báo trước và không phải đề nghị giao dịch; thông tin chính thức theo hợp đồng mua bán. Diện tích sân vườn dùng riêng cho căn hộ, không thuộc diện tích ghi trên giấy chứng nhận quyền sở hữu căn hộ. Màu tô sáng trên mặt bằng nhận theo bảng màu loại căn của tài liệu; mã mẫu (vd B1.3a) ghi trên nhãn từng căn.</p>
@@ -281,21 +295,18 @@ function drawPlan(){
     var img=new ImageData(new Uint8ClampedArray(o.base.data),o.w,o.h),d=img.data,cl=o.cls,hit=0,n=cl.length,m=new Uint8Array(n);
     for(var i=0;i<n;i++){var c=cl[i];if(!c)continue;
       if(sel[c]){hit++;m[i]=1;continue}
-      var j=i*4,g=d[j]*.3+d[j+1]*.59+d[j+2]*.11;g=g*.16+214;d[j]=d[j+1]=d[j+2]=g;
+      var j=i*4;d[j]=d[j]*.36+163;d[j+1]=d[j+1]*.36+163;d[j+2]=d[j+2]*.36+163;
     }
     if(hit>400){
-      var C=box(box(m,o.w,o.h,6,1),o.w,o.h,6,0),E=box(C,o.w,o.h,5,0);
-      for(var k=0;k<n;k++){var q=k*4;
-        if(C[k]&&!E[k]){d[q]=232;d[q+1]=70;d[q+2]=20}
-        else if(m[k]){d[q]=Math.max(0,d[q]*.92-6);d[q+1]=Math.max(0,d[q+1]*.92-6);d[q+2]=Math.max(0,d[q+2]*.92-6)}
-      }
+      var C=box(box(m,o.w,o.h,6,1),o.w,o.h,6,0),E=box(C,o.w,o.h,4,0);
+      for(var k=0;k<n;k++){if(C[k]&&!E[k]){var q=k*4;d[q]=28;d[q+1]=30;d[q+2]=22}}
     }
     x.putImageData(img,0,0);$('ld').style.display='none';
     var nm=FL.filter(function(z){return z[0]===f})[0][1];
     var n=$('pnote'),ok=hit>400;
     if(ok){
       n.className='note';
-      n.innerHTML='<b>'+nm+'</b>: loại <b>'+st.g.n+'</b> được khoanh viền cam, các loại khác chuyển xám nhạt.'+(f==='tang-4-9'&&FU[st.f]?' Mẫu <b>'+st.f+'</b> ở: '+Object.keys(FU[st.f]).sort().map(function(t){return t+' (căn '+FU[st.f][t].slice().sort(function(a,b){return a-b}).join(', ')+')'}).join(' · ')+'.':'');
+      n.innerHTML='<b>'+nm+'</b>: loại <b>'+st.g.n+'</b> được làm nổi (viền đậm, màu đầy đủ), các loại khác mờ đi nhưng giữ màu gốc.'+(f==='tang-4-9'&&FU[st.f]?' Mẫu <b>'+st.f+'</b> ở: '+Object.keys(FU[st.f]).sort().map(function(t){return t+' (căn '+FU[st.f][t].slice().sort(function(a,b){return a-b}).join(', ')+')'}).join(' · ')+'.':'');
     }else{
       n.className='note warn';
       n.innerHTML='<b>'+st.g.n+'</b> không có ở '+nm+'. '+(st.g.id==='pes'?'Căn hộ sân vườn chỉ có ở tầng 1.':st.g.id.indexOf('dup')===0?'Xem tầng 1–3 (Duplex sân vườn, Duplex B3) và tầng 16–17 (Duplex B2).':'Chọn tầng khác để xem.');
@@ -307,8 +318,6 @@ $('zp').onclick=function(){
   var cv=$('cv');if(!cv.toBlob)return;
   cv.toBlob(function(b){if(b&&window.NATZoom)NATZoom.open([{src:URL.createObjectURL(b),cap:cv.dataset.cap||'Mặt bằng tầng'}],0)},'image/png');
 };
-$('za').onclick=function(){window.NATZoom&&NATZoom.open([{src:$('amImg').src,cap:'Mặt bằng tiện ích Phân khu B'}],0)};
-$('amImg').style.cursor='zoom-in';$('amImg').onclick=$('za').onclick;
 
 /* ── chú giải màu ── */
 (function(){var l=$('leg'),nm={1:'Studio',2:'1PN+',3:'2PN',4:'2PN+',5:'3PN',6:'Duplex'};
@@ -316,13 +325,42 @@ $('amImg').style.cursor='zoom-in';$('amImg').onclick=$('za').onclick;
 })();
 
 /* ── tiện ích ── */
-function fillAm(host,arr,filter){
+var MK=[["b",23,9.26,18.06],["b",17,7.24,4.92],["b",27,12.69,21.05],["b",14,33.44,34.8],["b",1,31.01,26.21],["b",18,6.07,38.43],["b",25,13.0,18.15],["b",24,10.83,17.34],["b",28,14.22,20.4],["b",11,14.11,38.31],["b",8,13.48,41.81],["b",9,19.01,17.26],["b",29,12.34,15.93],["b",2,28.88,22.98],["b",26,11.63,19.44],["b",22,10.09,20.16],["b",14,13.77,5.97],["b",20,14.6,13.23],["b",15,33.47,43.99],["b",20,17.08,31.57],["b",19,20.5,29.72],["b",5,20.04,25.85],["b",13,21.72,27.22],["b",16,33.52,7.58],["b",7,16.11,34.23],["b",14,31.47,10.97],["b",21,20.58,21.09],["b",6,19.13,27.1],["b",30,21.35,10.36],["b",4,22.32,24.27],["b",12,12.34,10.4],["b",10,22.55,19.15],["b",3,33.95,23.87],["p",21,67.67,39.48],["p",4,83.64,48.75],["p",18,73.69,37.9],["p",19,64.17,42.74],["p",17,68.87,44.84],["p",7,81.13,36.98],["p",1,92.9,44.88],["p",2,79.45,38.99],["p",9,76.17,40.93],["p",10,75.68,45.2],["p",16,77.45,44.35],["p",23,95.24,59.11],["p",3,65.11,39.19],["p",15,73.12,42.54],["p",14,80.67,50.04],["p",20,69.41,37.38],["p",5,81.36,46.21],["p",13,64.88,46.61],["p",12,71.95,49.07],["p",22,62.26,43.99],["p",11,73.6,49.68],["p",24,86.09,59.15],["p",6,84.41,41.17],["p",8,77.85,36.09]];
+var amAct=null,amCat='all',zoom=1;
+function nameOf(t,n){var L=t==='b'?AMB:AMP;for(var i=0;i<L.length;i++)if(L[i][0]===n)return L[i][1];return''}
+function catOf(t,n){var L=t==='b'?AMB:AMP;for(var i=0;i<L.length;i++)if(L[i][0]===n)return L[i][2];return''}
+var mks=$('mks');
+MK.forEach(function(m){var b=mk('button','mk');b.type='button';b.style.left=m[2]+'%';b.style.top=m[3]+'%';b.dataset.t=m[0];b.dataset.n=m[1];
+  b.setAttribute('aria-label',(m[0]==='b'?'Phân khu B ':'Công viên ')+pad(m[1])+': '+nameOf(m[0],m[1]));
+  b.onclick=function(){pickAm(m[0],m[1],false)};mks.appendChild(b)});
+function paintAm(){
+  document.querySelectorAll('.mk').forEach(function(b){
+    var on=amAct&&b.dataset.t===amAct.t&&+b.dataset.n===amAct.n;
+    b.classList.toggle('on',!!on);
+    b.classList.toggle('cat',!amAct&&amCat!=='all'&&catOf(b.dataset.t,+b.dataset.n)===amCat);
+  });
+  document.querySelectorAll('.am button.it').forEach(function(b){b.classList.toggle('on',!!amAct&&b.dataset.t===amAct.t&&+b.dataset.n===amAct.n)});
+  document.querySelectorAll('.mt').forEach(function(e){e.remove()});
+  if(amAct){var first=null;document.querySelectorAll('.mk.on').forEach(function(b){
+      var t=mk('div','mt',(amAct.t==='b'?'':'Công viên · ')+pad(amAct.n)+' '+nameOf(amAct.t,amAct.n));t.style.left=b.style.left;t.style.top=b.style.top;$('mks').appendChild(t);if(!first)first=b});
+    if(first){var bx=$('mbox'),r=first.getBoundingClientRect(),br=bx.getBoundingClientRect();
+      bx.scrollTo({left:bx.scrollLeft+(r.left-br.left)-br.width/2+r.width/2,top:bx.scrollTop+(r.top-br.top)-br.height/2+r.height/2,behavior:'smooth'})}}
+}
+function pickAm(t,n,fromList){
+  if(amAct&&amAct.t===t&&amAct.n===n&&!fromList){amAct=null}else amAct={t:t,n:n};
+  paintAm();
+  if(amAct){var bx=$('mbox').getBoundingClientRect();if(bx.top<0||bx.bottom>innerHeight)$('mbox').scrollIntoView({behavior:'smooth',block:'center'})}
+}
+function fillAm(host,arr,t,filter){
   host.innerHTML='';
-  arr.forEach(function(a){if(filter==='all'||a[2]===filter)host.appendChild(mk('div',null,'<b>'+pad(a[0])+'</b><span>'+a[1].replace(/&/g,'&amp;')+'</span>'))});
+  arr.forEach(function(a){if(filter==='all'||a[2]===filter){var b=mk('button','it','<b>'+pad(a[0])+'</b><span>'+a[1].replace(/&/g,'&amp;')+'</span>');b.type='button';b.dataset.t=t;b.dataset.n=a[0];b.onclick=function(){pickAm(t,a[0],true)};host.appendChild(b)}});
   if(!host.children.length)host.appendChild(mk('div',null,'<span style="color:var(--mu)">Không có hạng mục trong nhóm này.</span>'));
 }
-var af='all';
-AMF.forEach(function(f){var b=mk('button','chip sm',f[1]);b.type='button';b.dataset.a=f[0];b.onclick=function(){af=f[0];fillAm($('amB'),AMB,af);fillAm($('amP'),AMP,af);document.querySelectorAll('[data-a]').forEach(function(x){var on=x.dataset.a===af;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)})};$('amF').appendChild(b)});
+function setZoom(z){zoom=Math.max(1,Math.min(3.6,z));$('mapin').style.width=(zoom*100)+'%'}
+$('zin').onclick=function(){setZoom(zoom*1.4)};$('zout').onclick=function(){setZoom(zoom/1.4)};
+$('zfs').onclick=function(){window.NATZoom&&NATZoom.open([{src:$('amImg').src,cap:'Mặt bằng tiện ích Phân khu B'}],0)};
+if(innerWidth<700)setZoom(2.4);
+AMF.forEach(function(f){var b=mk('button','chip sm',f[1]);b.type='button';b.dataset.a=f[0];b.onclick=function(){amCat=f[0];amAct=null;fillAm($('amB'),AMB,'b',amCat);fillAm($('amP'),AMP,'p',amCat);document.querySelectorAll('[data-a]').forEach(function(x){var on=x.dataset.a===amCat;x.classList.toggle('on',on);x.setAttribute('aria-pressed',on)});paintAm()};$('amF').appendChild(b)});
 $('amF').firstChild.click();
 
 selectG(G[2],false);
