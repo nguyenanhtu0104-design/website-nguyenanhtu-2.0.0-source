@@ -120,6 +120,10 @@ h1,h2,h3,h4{font-family:"Space Grotesk","Be Vietnam Pro",sans-serif; line-height
 .chart-legend{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;margin-top:10px;font-size:12px;color:var(--ink-soft)}
 .chart-legend span{display:inline-flex;align-items:center;gap:6px}
 .chart-legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.bench-pick{margin-bottom:10px}
+.bench-pick label{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+.bench-sel{font:inherit;font-size:13px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;max-width:100%}
+.bench-sel:focus-visible{outline:2px solid var(--vn-after);outline-offset:2px}
 .readme{font-size:13.5px; color:var(--ink-soft); padding-left:18px; margin:0}
 .readme li{margin:9px 0}
 .readme b{color:var(--ink)}
@@ -386,11 +390,17 @@ footer{border-top:1px solid var(--line); margin-top:30px; padding:26px 0 40px; f
     <div class="grid2">
       <div class="panel">
         <h3>Đối chiếu hình dạng chỉ số (11 chỉ số)</h3>
-        <div class="chartbox" id="radar" role="img" aria-label="Biểu đồ radar so sánh 11 chỉ số đô thị giữa Hong Kong, Vũng Tàu, Hà Nội và TP. Hồ Chí Minh"></div>
+        <div class="bench-pick"><label>Benchmark quốc tế:
+            <select id="radarBench" class="bench-sel" aria-label="Chọn đô thị benchmark quốc tế cho biểu đồ radar"></select>
+          </label></div>
+        <div class="chartbox" id="radar" role="img" aria-label="Biểu đồ radar so sánh 11 chỉ số đô thị giữa TP. Hồ Chí Minh hiện trạng, Bình Dương, Vũng Tàu và benchmark quốc tế được chọn"></div>
       </div>
       <div class="panel">
-        <h3>Gap Analysis — Khoảng cách VN vs Benchmark</h3>
-        <div class="chartbox" id="gapChart" role="img" aria-label="Biểu đồ cột so sánh khoảng cách chỉ số giữa Hà Nội hiện trạng, Hà Nội mục tiêu và Hong Kong"></div>
+        <h3>Gap Analysis — HCM vs Benchmark</h3>
+        <div class="bench-pick"><label>Benchmark quốc tế:
+            <select id="gapBench" class="bench-sel" aria-label="Chọn đô thị benchmark quốc tế cho biểu đồ khoảng cách"></select>
+          </label></div>
+        <div class="chartbox" id="gapChart" role="img" aria-label="Biểu đồ cột so sánh 6 chỉ số cốt lõi giữa TP. Hồ Chí Minh hiện trạng, TP. Hồ Chí Minh mục tiêu và benchmark quốc tế được chọn"></div>
       </div>
     </div>
   </section>
@@ -953,14 +963,62 @@ footer{border-top:1px solid var(--line); margin-top:30px; padding:26px 0 40px; f
     legend(box, sets, 'backgroundColor');
   }
 
-  function mount(id, fn, cfg){
-    var box = document.getElementById(id), w = 0;
-    function go(){ w = box.clientWidth; box.innerHTML = ''; fn(box, cfg); }
-    go();
+  /* Gắn biểu đồ vào hộp; vẽ lại khi đổi benchmark hoặc khi chuyển giữa màn hình hẹp/rộng */
+  function mount(id, fn, getCfg){
+    var box = document.getElementById(id), w = 0, cur = null;
+    function go(){ w = box.clientWidth; box.innerHTML = ''; fn(box, getCfg(cur)); }
     var t; window.addEventListener('resize', function(){ clearTimeout(t); t = setTimeout(function(){ if ((box.clientWidth < 480) !== (w < 480)) go(); }, 150); });
+    return function(name){ cur = name; go(); };
   }
-  mount('radar', drawRadar, {"type": "radar", "data": {"labels": ["Mật độ thuần", "FAR Tổng hợp", "FAR Cao tầng", "FAR Thấp tầng", "Đa dạng SDĐ", "Nút giao", "Tiếp cận GTCC", "Kết nối đường", "Tỷ lệ ĐTH", "Tốc độ ĐTH", "% Cao tầng"], "datasets": [{"label": "Hong Kong", "data": [100.0, 100.0, 100.0, 50.0, 85.0, 76.9, 96.7, 75.0, 100.0, 15.2, 97.8], "borderColor": "#8F3B24", "backgroundColor": "#8F3B2422", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#8F3B24"}, {"label": "Vũng Tàu – BR-VT (ĐNB)", "data": [0.0, 4.8, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, 40.6, 56.5, 5.6], "borderColor": "#C9A227", "backgroundColor": "#C9A22722", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#C9A227"}, {"label": "Hà Nội (Mục tiêu)", "data": [40.4, 47.6, 50.0, 75.0, 65.0, 46.2, 66.7, 63.3, 45.3, 34.8, 38.9], "borderColor": "#1F6F5C", "backgroundColor": "#1F6F5C22", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#1F6F5C"}, {"label": "TP. Hồ Chí Minh (Mục tiêu)", "data": [45.6, 52.4, 58.3, 85.7, 75.0, 52.3, 72.2, 70.0, 45.3, 34.8, 44.4], "borderColor": "#2B6CB0", "backgroundColor": "#2B6CB022", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#2B6CB0"}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"position": "bottom", "labels": {"boxWidth": 12, "font": {"size": 11}}}}, "scales": {"r": {"min": 0, "max": 100, "ticks": {"stepSize": 20, "backdropColor": "transparent"}, "grid": {"color": "rgba(120,130,128,.25)"}, "angleLines": {"color": "rgba(120,130,128,.25)"}, "pointLabels": {"font": {"size": 11}}}}}});
-  mount('gapChart', drawBars, {"type": "bar", "data": {"labels": ["Mật độ thuần", "FAR Tổng hợp", "Đa dạng SDĐ", "Nút giao", "Tiếp cận GTCC", "Kết nối đường"], "datasets": [{"label": "Hà Nội (Hiện trạng) — Hiện trạng", "data": [10.5, 19.0, 30.0, 15.4, 14.4, 20.0], "backgroundColor": "#d4a574", "borderRadius": 3, "barPercentage": 0.7}, {"label": "Hà Nội (Mục tiêu) — Mục tiêu", "data": [40.4, 47.6, 65.0, 46.2, 66.7, 63.3], "backgroundColor": "#1F6F5C", "borderRadius": 3, "barPercentage": 0.7}, {"label": "Hong Kong (Benchmark)", "data": [100.0, 100.0, 85.0, 76.9, 96.7, 75.0], "backgroundColor": "#8F3B24", "borderRadius": 3, "barPercentage": 0.7}]}, "options": {"responsive": true, "maintainAspectRatio": false, "indexAxis": "y", "plugins": {"legend": {"position": "bottom", "labels": {"boxWidth": 12, "font": {"size": 11}}}}, "scales": {"x": {"min": 0, "max": 100, "title": {"display": true, "text": "Chuẩn hóa 0–100"}}, "y": {"ticks": {"font": {"size": 11}}}}}});
+
+  /* ---------- Dữ liệu benchmark quốc tế ---------- */
+  var GLOBALS = {"Hong Kong": {"all": [100.0, 100.0, 100.0, 50.0, 85.0, 76.9, 96.7, 75.0, 100.0, 15.2, 97.8], "core": [100.0, 100.0, 85.0, 76.9, 96.7, 75.0]}, "Paris (Pháp)": {"all": [68.4, 47.6, 16.7, 28.6, 85.0, 84.6, 97.8, 86.7, 70.3, 13.0, 3.3], "core": [68.4, 47.6, 85.0, 84.6, 97.8, 86.7]}, "Barcelona (Tây Ban Nha)": {"all": [82.5, 33.3, 25.0, 75.0, 90.0, 50.0, 88.9, 100.0, 70.3, 8.7, 7.8], "core": [82.5, 33.3, 90.0, 50.0, 88.9, 100.0]}, "Tokyo": {"all": [35.1, 23.8, 50.0, 14.3, 100.0, 100.0, 100.0, 70.0, 87.5, 0.0, 10.0], "core": [35.1, 23.8, 100.0, 100.0, 100.0, 70.0]}, "Singapore": {"all": [63.2, 40.5, 13.3, 28.6, 70.0, 53.8, 92.2, 90.0, 100.0, 17.4, 100.0], "core": [63.2, 40.5, 70.0, 53.8, 92.2, 90.0]}, "Seoul (Hàn Quốc)": {"all": [57.9, 16.7, 0.0, 28.6, 80.0, 69.2, 94.4, 73.3, 71.9, 8.7, 64.4], "core": [57.9, 16.7, 80.0, 69.2, 94.4, 73.3]}, "Copenhagen (Đan Mạch)": {"all": [8.8, 23.8, 16.7, 39.3, 65.0, 50.0, 87.8, 86.7, 81.2, 13.0, 3.3], "core": [8.8, 23.8, 65.0, 50.0, 87.8, 86.7]}, "Ahmedabad (Ấn Độ)": {"all": [50.9, 14.3, 8.3, 57.1, 60.0, 61.5, 52.2, 46.7, 0.0, 52.2, 7.8], "core": [50.9, 14.3, 60.0, 61.5, 52.2, 46.7]}, "Curitiba (Brazil)": {"all": [21.1, 11.9, 33.3, 14.3, 50.0, 42.3, 74.4, 68.3, 81.2, 17.4, 14.4], "core": [21.1, 11.9, 50.0, 42.3, 74.4, 68.3]}, "Thâm Quyến (Trung Quốc)": {"all": [33.3, 33.3, 50.0, 39.3, 42.5, 23.1, 85.6, 41.7, 45.3, 41.3, 61.1], "core": [33.3, 33.3, 42.5, 23.1, 85.6, 41.7]}, "Medellín (Colombia)": {"all": [45.6, 11.9, 16.7, 28.6, 55.0, 26.9, 55.6, 30.0, 71.9, 23.9, 22.2], "core": [45.6, 11.9, 55.0, 26.9, 55.6, 30.0]}, "Portland (Mỹ)": {"all": [1.8, 0.0, 16.7, 0.0, 30.0, 34.6, 44.4, 76.7, 73.4, 19.6, 0.0], "core": [1.8, 0.0, 30.0, 34.6, 44.4, 76.7]}};
+  var GLOBAL_NAMES = Object.keys(GLOBALS);
+  var RADAR_DEFAULT = "Hong Kong";
+  var GAP_DEFAULT = "Hong Kong";
+  var BENCH_COLOR = '#8F3B24';
+
+  function fillSelect(sel, def){
+    GLOBAL_NAMES.forEach(function(n){
+      var o = document.createElement('option');
+      o.value = n; o.textContent = n;
+      if(n===def) o.selected = true;
+      sel.appendChild(o);
+    });
+  }
+  var radarSel = document.getElementById('radarBench'), gapSel = document.getElementById('gapBench');
+  fillSelect(radarSel, RADAR_DEFAULT);
+  fillSelect(gapSel, GAP_DEFAULT);
+
+  /* ---------- Radar: HCM hiện trạng + Bình Dương + Vũng Tàu + benchmark chọn ---------- */
+  var radarBase = {"type": "radar", "data": {"labels": ["Mật độ thuần", "FAR Tổng hợp", "FAR Cao tầng", "FAR Thấp tầng", "Đa dạng SDĐ", "Nút giao", "Tiếp cận GTCC", "Kết nối đường", "Tỷ lệ ĐTH", "Tốc độ ĐTH", "% Cao tầng"], "datasets": [{"label": "TP. Hồ Chí Minh (Hiện trạng)", "data": [19.3, 23.8, 33.3, 100.0, 37.5, 19.2, 16.7, 25.0, 3.1, 65.2, 14.4], "borderColor": "#2B6CB0", "backgroundColor": "#2B6CB022", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#2B6CB0"}, {"label": "Bình Dương (ĐNB)", "data": [12.3, 14.3, 16.7, 85.7, 10.0, 7.7, 3.3, 8.3, 78.1, 100.0, 3.3], "borderColor": "#C9A227", "backgroundColor": "#C9A22722", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#C9A227"}, {"label": "Vũng Tàu – BR-VT (ĐNB)", "data": [0.0, 4.8, 0.0, 50.0, 0.0, 0.0, 0.0, 0.0, 40.6, 56.5, 5.6], "borderColor": "#1F6F5C", "backgroundColor": "#1F6F5C22", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#1F6F5C"}, {"label": "Hong Kong", "data": [100.0, 100.0, 100.0, 50.0, 85.0, 76.9, 96.7, 75.0, 100.0, 15.2, 97.8], "borderColor": "#8F3B24", "backgroundColor": "#8F3B2422", "borderWidth": 2, "pointRadius": 2, "pointBackgroundColor": "#8F3B24"}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"position": "bottom", "labels": {"boxWidth": 12, "font": {"size": 11}}}}, "scales": {"r": {"min": 0, "max": 100, "ticks": {"stepSize": 20, "backdropColor": "transparent"}, "grid": {"color": "rgba(120,130,128,.25)"}, "angleLines": {"color": "rgba(120,130,128,.25)"}, "pointLabels": {"font": {"size": 11}}}}}};
+  function buildRadar(benchName){
+    var cfg = JSON.parse(JSON.stringify(radarBase));
+    cfg.data.datasets.splice(3);
+    if(benchName && GLOBALS[benchName]){
+      cfg.data.datasets.push({label: benchName, data: GLOBALS[benchName].all,
+        borderColor: BENCH_COLOR, backgroundColor: BENCH_COLOR+'22'});
+    }
+    return cfg;
+  }
+  var renderRadar = mount('radar', drawRadar, buildRadar);
+  renderRadar(RADAR_DEFAULT);
+  radarSel.addEventListener('change', function(){ renderRadar(this.value); });
+
+  /* ---------- Gap: HCM hiện trạng, HCM mục tiêu, benchmark chọn ---------- */
+  var gapBase = {"type": "bar", "data": {"labels": ["Mật độ thuần", "FAR Tổng hợp", "Đa dạng SDĐ", "Nút giao", "Tiếp cận GTCC", "Kết nối đường"], "datasets": [{"label": "TP. Hồ Chí Minh (Hiện trạng)", "data": [19.3, 23.8, 37.5, 19.2, 16.7, 25.0], "backgroundColor": "#d4a574", "borderRadius": 3, "barPercentage": 0.7}, {"label": "TP. Hồ Chí Minh (Mục tiêu)", "data": [45.6, 52.4, 75.0, 52.3, 72.2, 70.0], "backgroundColor": "#1F6F5C", "borderRadius": 3, "barPercentage": 0.7}, {"label": "Hong Kong (Benchmark)", "data": [100.0, 100.0, 85.0, 76.9, 96.7, 75.0], "backgroundColor": "#8F3B24", "borderRadius": 3, "barPercentage": 0.7}]}, "options": {"responsive": true, "maintainAspectRatio": false, "indexAxis": "y", "plugins": {"legend": {"position": "bottom", "labels": {"boxWidth": 12, "font": {"size": 11}}}}, "scales": {"x": {"min": 0, "max": 100, "title": {"display": true, "text": "Chuẩn hóa 0–100"}}, "y": {"ticks": {"font": {"size": 11}}}}}};
+  function buildGap(benchName){
+    var cfg = JSON.parse(JSON.stringify(gapBase));
+    cfg.data.datasets.splice(2);
+    if(benchName && GLOBALS[benchName]){
+      cfg.data.datasets.push({label: benchName + ' (Benchmark)', data: GLOBALS[benchName].core,
+        backgroundColor: BENCH_COLOR});
+    }
+    return cfg;
+  }
+  var renderGap = mount('gapChart', drawBars, buildGap);
+  renderGap(GAP_DEFAULT);
+  gapSel.addEventListener('change', function(){ renderGap(this.value); });
 </script>
 </body>
 </html>

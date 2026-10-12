@@ -2,6 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-12 — Nội dung: Chỉ số đô thị — thay báo cáo Mật độ Đô thị Nén bằng bản mới của Tú
+- `publications/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/urban-compactness-report.html` thay bằng bản mới (giữ nguyên thư mục kỳ, URL `/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/`, `info.txt` và `bia.jpg`; trạng thái vẫn `cong-bo`).
+- Khác bản cũ: hai biểu đồ có ô chọn "Benchmark quốc tế" (12 đô thị: Hong Kong, Paris, Barcelona, Tokyo, Singapore, Seoul, Copenhagen, Ahmedabad, Curitiba, Thâm Quyến, Medellín, Portland). Radar so TP.HCM hiện trạng, Bình Dương, Vũng Tàu với benchmark chọn; Gap Analysis đặt TP.HCM hiện trạng, TP.HCM mục tiêu cạnh benchmark chọn (bản cũ cố định Hong Kong và so Hà Nội). Ma trận, 15 mô hình, tab Việt Nam, khung 11 chỉ số và nguồn giữ nguyên.
+- Bản Tú gửi tải Chart.js từ CDN; không đưa vào vì trái §12.9. Hai biểu đồ vẽ bằng SVG thuần như bản đang chạy (màu theo chế độ sáng/tối), không thêm thư viện nào.
+- Kiểm thử: build 0 lỗi, `check-dist` ĐẠT; trình duyệt desktop 1360 px và điện thoại 390 px: không lỗi JavaScript, không cuộn ngang, đổi benchmark vẽ lại đúng, không có yêu cầu mạng tới bên thứ ba ngoài Google Fonts đã có sẵn.
+
 ## 2026-10-11 — v2.13.2: sửa lỗi dấu tiếng Việt bị tách (ố, ắ, ầ, ế…) trên Windows
 - Nguyên nhân: font Georgia trên Windows không có dấu chồng (mũ + dấu sắc/huyền…), trình duyệt tự ghép nên dấu rời khỏi chữ.
 - `assets/css/main.css`: tiêu đề bài, thẻ thư viện dùng `'Noto Serif'` (tải qua Google Fonts, có tiếng Việt) rồi mới tới Georgia; `site.config.json` thêm font Noto Serif, version 2.13.2.
