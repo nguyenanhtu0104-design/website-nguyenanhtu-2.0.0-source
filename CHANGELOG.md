@@ -2,6 +2,14 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-12 — Nội dung: Palm River — dựng trang dự án từ landing ERA (chưa có ảnh, chưa có SWOT)
+- Bài `palm-river` (phân khu của Palm City) viết lại theo khung trang dự án 01–04: Tổng quan (vị trí + thời gian di chuyển, quy mô, nhà phát triển, giai đoạn) · Chi tiết (giá & chính sách, loại hình, phối cảnh, tiện ích, ngoại khu) · Góc nhìn · Phân tích & đánh giá + 7 câu Hỏi & Đáp. Thêm dải số liệu `facts` (620 căn hộ · 36 tầng · 1,89 ha · Q1/2029), cập nhật tiêu đề SEO, mô tả, từ khóa, tag, bài liên quan; tạo lại ảnh OG.
+- Nguồn: landing ERA (cập nhật 9/2026) đối chiếu báo chí: Tuổi Trẻ/KTSG (16/6/2026), Thị trường Tài chính Tiền tệ (16/6/2026), thông cáo Hướng Việt Properties đăng VietnamPlus (13/8/2026). Số khớp giữa các nguồn: 4 tháp, 36 tầng, 1,89–1,9 ha, mật độ ~40%, khởi công 16/6/2026, bàn giao dự kiến Q1/2029.
+- Số liệu lệch giữa các nguồn, đã ghi theo tài liệu dự án và cần Tú xác nhận: tổng diện tích Palm City 30,6 ha (ERA, thông cáo) so với 30,2 ha (một số báo); tiện ích nội khu 68 (ERA, brochure CĐT) so với "hơn 40" (thông cáo 13/8); ERA ghi "2,7 km mặt tiền sông" cho khu đất 1,89 ha, không ghép được với các nguồn khác nên không đưa vào.
+- Thời gian di chuyển và mốc metro Thủ Thiêm – Long Thành 2030 là số của tài liệu chủ đầu tư, đã ghi rõ nguồn; trang dẫn tới `muc-tieu-metro-hcm-2030` để đối chiếu tiến độ thực tế.
+- Phần chưa có: giá và chính sách (landing không công bố), clip giới thiệu, bảng tính, tham quan 360°, website chủ đầu tư, tổng thầu, FAR, toàn bộ ảnh, "Vì sao tôi chọn", SWOT và thang điểm 1–5. Các mục này để khối "Nội dung đang được cập nhật" hoặc "Đang cập nhật".
+- Trạng thái giữ `stub` (noindex) cho tới khi Tú bổ sung phần phân tích; chưa đổi `categories.json`, `pages.json` hay bài `palm-city`. Không đổi giao diện, CSS/JS hay version.
+
 ## 2026-10-12 — Nội dung: Norton Park — thay bảng tính phương thức thanh toán bằng bản mới của Tú
 - `assets/tools/norton-park-bang-tinh/index.html` thay bằng bản mới (đủ tầng 1–19, mặt bằng theo nhóm tầng, mã căn dạng Tháp.Tầng.Căn). Giữ noindex và canonical về bài.
 - Ảnh nhúng Base64 trong bản gốc được tách thành file WebP (mặt bằng 7 nhóm tầng + 9 layout), bỏ các ảnh của bản cũ không còn dùng.

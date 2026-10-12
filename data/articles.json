@@ -5923,33 +5923,55 @@
   "slug": "palm-river",
   "status": "stub",
   "title": "Palm River",
-  "subtitle": "Palm City · Hướng Việt · Đang cập nhật",
+  "subtitle": "Palm City · Hướng Việt · Ven sông Bình Trưng · 620 căn hộ · Bàn giao Q1/2029",
   "icon": "🌴",
   "category": "du-an-chon-loc",
   "parent": "palm-city",
   "tags": [
    "du-an-chon-loc",
    "vung-rach-chiec-truong-tho",
-   "dang-cap-nhat"
+   "palm-city"
   ],
-  "description": "Phân tích chi tiết về dự án Palm River đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
+  "description": "Palm River là phân khu căn hộ ven sông của Palm City: 4 tháp 36 tầng, 620 căn hộ, khởi công 16/6/2026, dự kiến bàn giao quý 1/2029.",
   "thumbnail": null,
   "heroImage": null,
   "publishedDate": "2026-10-01",
-  "updatedDate": "2026-10-01",
+  "updatedDate": "2026-10-12",
   "author": "nguyen-anh-tu",
   "content": "content/articles/palm-river.html",
-  "relatedArticles": [],
-  "seoTitle": "Palm River — Palm City · Hướng Việt",
-  "seoDescription": "Phân tích chi tiết về dự án Palm River đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
+  "relatedArticles": [
+   "palm-city",
+   "vung-rach-chiec-truong-tho",
+   "muc-tieu-metro-hcm-2030"
+  ],
+  "seoTitle": "Palm River Palm City: Tổng Quan, Tiến Độ 2026",
+  "seoDescription": "Palm River của Hướng Việt Properties tại Bình Trưng, TP.HCM: 4 tháp 36 tầng, 620 căn hộ, khởi công 6/2026, bàn giao dự kiến quý 1/2029.",
   "ogImage": "assets/images/og/palm-river.jpg",
-  "section": "🏛️ Dự Án Chọn Lọc",
+  "section": "🏛️ Palm City · Ven Sông Bình Trưng",
   "accent": "#b05040",
-  "searchKeywords": "Palm River Palm City · Hướng Việt",
+  "searchKeywords": "Palm River Palm City Hướng Việt Properties Hướng Việt Holdings Nam Rạch Chiếc Công ty TNHH Nam Rạch Chiếc Bình Trưng Quận 2 cũ An Phú Thủ Thiêm sông Giồng Ông Tố ven sông cao tốc Long Thành Dầu Giây ga Bình Trưng metro Thủ Thiêm Long Thành CC3 4 tháp 36 tầng 620 căn hộ shophouse officetel Studio 1PN 2PN 3PN Duplex Penthouse DPA LJ-Group Dark Horse EDGE Sky Onsen hồ bơi 70m golf mô phỏng bàn giao quý 1/2029 khởi công 16/6/2026",
   "legacy": {
    "source": "v64",
    "panelId": "palm_river"
-  }
+  },
+  "facts": [
+   {
+    "n": "620",
+    "l": "căn hộ · 4 tháp"
+   },
+   {
+    "n": "36",
+    "l": "tầng nổi"
+   },
+   {
+    "n": "1,89",
+    "l": "ha khu đất"
+   },
+   {
+    "n": "Q1/2029",
+    "l": "bàn giao dự kiến"
+   }
+  ]
  },
  {
   "id": "blanca_casa_villa",
