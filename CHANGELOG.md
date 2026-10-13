@@ -26,6 +26,10 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 - Phần chưa có: giá và chính sách (landing không công bố), clip giới thiệu, bảng tính, tham quan 360°, website chủ đầu tư, tổng thầu, FAR, toàn bộ ảnh, "Vì sao tôi chọn", SWOT và thang điểm 1–5. Các mục này để khối "Nội dung đang được cập nhật" hoặc "Đang cập nhật".
 - Trạng thái giữ `stub` (noindex) cho tới khi Tú bổ sung phần phân tích; chưa đổi `categories.json`, `pages.json` hay bài `palm-city`. Không đổi giao diện, CSS/JS hay version.
 
+## 2026-10-13 — Nội dung: Norton Park — thay bảng tính bằng bản mới của Tú
+- `assets/tools/norton-park-bang-tinh/index.html` thay bằng bản mới: PT 01 tính theo giá niêm yết và chiết khấu từng phương thức (mặc định 5% · 1% · 2% · 10% · 0%), PT 05 đổi tên "Thanh Toán Vay" (chủ đầu tư hỗ trợ lãi suất tối đa 10% trong 24 tháng).
+- Giữ nguyên chỉnh sửa khung của site: `noindex, nofollow`, canonical về trang Norton Park; 16 ảnh Base64 trong file mới không đưa vào, dùng lại ảnh webp đã tách file (nội dung ảnh không đổi).
+
 ## 2026-10-12 — Nội dung: Norton Park — thay bảng tính phương thức thanh toán bằng bản mới của Tú
 - `assets/tools/norton-park-bang-tinh/index.html` thay bằng bản mới (đủ tầng 1–19, mặt bằng theo nhóm tầng, mã căn dạng Tháp.Tầng.Căn). Giữ noindex và canonical về bài.
 - Ảnh nhúng Base64 trong bản gốc được tách thành file WebP (mặt bằng 7 nhóm tầng + 9 layout), bỏ các ảnh của bản cũ không còn dùng.
