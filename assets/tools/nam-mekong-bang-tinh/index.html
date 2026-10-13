@@ -14,6 +14,7 @@
 .tsec{background:var(--w);border-radius:0 0 var(--r) var(--r);box-shadow:0 1px 3px rgba(0,0,0,.08);overflow-x:auto;margin-bottom:14px}table{width:100%;border-collapse:collapse;font-size:12px}thead th{background:var(--b9);color:var(--w);padding:8px 6px;text-align:center;font-weight:600;font-size:11px;white-space:nowrap}tbody td{padding:6px;border-bottom:1px solid var(--f2)}tbody tr:hover{background:var(--f50)}td.n{text-align:right;font-variant-numeric:tabular-nums}td.c{text-align:center}.rtot{background:var(--b9)!important;color:var(--w)!important;font-weight:700}.rtot td{color:var(--w)}.rkp{background:#fef9e7}.rvat{background:#f0f7ff}.tg{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600}.tg-k{background:#dbeafe;color:#1e40af}.tg-n{background:#fef3c7;color:#92400e}
 .dinfo{border-left:3px solid var(--g5)}.dinfo h3{font-size:13px;color:var(--b9);margin-bottom:6px}.ckl{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}.ckl .cv{font-weight:600;color:var(--gn)}
 .btn-p{padding:9px 14px;border:none;border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;background:var(--b9);color:var(--w);width:100%}.btn-p:hover{background:var(--b7)}
+.cmp h3{font-size:13px;color:var(--b9);margin-bottom:6px}.cmp .cw{overflow-x:auto}.cmp table{width:100%;border-collapse:collapse;font-size:12px}.cmp th,.cmp td{padding:5px 6px;border-bottom:1px solid var(--f3);text-align:right;white-space:nowrap}.cmp th:first-child,.cmp td:first-child{text-align:left}.cmp tr.sel td{background:#fff7e0;font-weight:700}.cmp .up{color:#c0392b}.cmp .dn{color:#1e8449}.cmp .nt{font-size:11px;color:var(--f5);margin-top:6px;line-height:1.5}
 @media print{body{background:#fff;font-size:10px}.hdr{padding:10px}.hdr h1{font-size:14px}.ctn{padding:0 6px}.card,.tabs,.srow,.btn-p,.fp-wrap{display:none}.ph{display:block!important}.tsec{box-shadow:none;border:1px solid var(--f3)}table{font-size:10px}.dinfo{box-shadow:none;border:1px solid var(--f3);page-break-inside:avoid;display:block!important}}.ph{display:none;text-align:center;margin-bottom:10px}.ph .p1{font-size:15px;font-weight:700;color:var(--b9)}.ph .p2{font-size:12px;margin-top:3px}.ph .p3{font-size:11px;color:var(--f5);margin-top:4px}
 @media(max-width:640px){.igrid{grid-template-columns:1fr}.srow{grid-template-columns:1fr 1fr}.tb{font-size:10px;padding:7px 4px}}
 
@@ -46,6 +47,7 @@
 <div class="tabs" id="tB" style="display:none"><button class="tb act" data-t="chuan" onclick="sw('chuan')">TT Chuẩn</button><button class="tb" data-t="vay30" onclick="sw('vay30')">Vay NH 30%</button><button class="tb" data-t="vay20" onclick="sw('vay20')">Vay NH 20%</button><button class="tb" data-t="som70" onclick="sw('som70')">TT Sớm 70%</button><button class="tb" data-t="som95" onclick="sw('som95')">TT Sớm 95%</button></div>
 <div class="tsec" id="tS" style="display:none"></div>
 <div class="card dinfo" id="dI" style="display:none"></div>
+<div class="card dinfo cmp" id="dI2" style="display:none"></div>
 <div class="card" id="pS" style="display:none"><button class="btn-p" onclick="window.print()">In bảng tính</button></div>
 </div>
 </div><script>
@@ -172,6 +174,23 @@ function showLayout(u,uk){
     lyW.style.display="none";
   }
 }
+
+const CMP_HO=19;
+const CMP_M={chuan:{n:"TT Chuẩn (30 ngày/đợt)",m:CMP_HO},vay30:{n:"Vay NH 30%",m:2},vay20:{n:"Vay NH 20%",m:CMP_HO},som70:{n:"Thanh toán sớm 70% (CK 4%)",m:CMP_HO},som95:{n:"Thanh toán sớm 95% (CK 8%)",m:1}};
+function cmpNH(t,p){return gS(t).reduce((a,r)=>a+(r.nh?p.h*r.nh:0),0)}
+function rCmp(lp,sel){
+  const ids=Object.keys(CMP_M),ps=sel&&CMP_M[sel]?calc(lp,sel):null;
+  if(!ps)return"";
+  const sm=CMP_M[sel].m;
+  const sg=(v,u)=>Math.abs(v)<1?'<span>–</span>':`<span class="${v>0?'up':'dn'}">${v>0?'+':'−'}${u(Math.abs(v))}</span>`;
+  let h='<h3>So sánh giá cuối &amp; thời hạn dòng tiền giữa các phương thức</h3><div class="cw"><table><thead><tr><th>Phương thức</th><th>Giá cuối (VNĐ)</th><th>Chênh lệch (VNĐ)</th><th>Chênh lệch (%)</th><th>Thời hạn dòng tiền</th><th>Chênh thời hạn</th><th>Vốn KH tự bỏ ra (VNĐ)</th></tr></thead><tbody>';
+  ids.forEach(t=>{
+    const p=calc(lp,t),d=p.f-ps.f,pc=d/ps.f*100,m=CMP_M[t].m,dm=m-sm,own=p.f-cmpNH(t,p);
+    h+=`<tr class="${t===sel?'sel':''}"><td>${CMP_M[t].n}${t===sel?' (đã chọn)':''}</td><td>${fm(p.f)}</td><td>${t===sel?'–':sg(d,v=>fm(v))}</td><td>${t===sel?'–':sg(pc,v=>v.toFixed(2)+'%')}</td><td>${m<=1?'~'+m+' tháng':'~'+m+' tháng'}</td><td>${t===sel?'–':sg(dm,v=>v+' tháng')}</td><td>${fm(own)}</td></tr>`;
+  });
+  h+='</tbody></table></div><div class="nt">Chênh lệch = giá cuối của phương thức đó − giá cuối phương thức đang chọn (xanh: rẻ hơn; đỏ: đắt hơn). Thời hạn tính từ ký TTĐC đến khi hoàn tất các đợt trước cấp GCN (đợt GCN 5% đóng sau, chưa tính); mốc bàn giao tạm tính ~'+CMP_HO+' tháng theo lịch 30 ngày/đợt; vay NH: HĐMB + 20 ngày làm việc ≈ tháng 2. Giá cuối = giá sau chiết khấu + VAT 10% + KPBT 2%.</div>';
+  return h;
+}
 function render(){
   if(!cU||!cUP)return;
   const u=U[cU];
@@ -185,6 +204,8 @@ function render(){
   document.getElementById("tS").style.display="block";
   document.getElementById("dI").innerHTML=rD(cT,p);
   document.getElementById("dI").style.display="block";
+  document.getElementById("dI2").innerHTML=rCmp(lp,cT);
+  document.getElementById("dI2").style.display="block";
   document.getElementById("pS").style.display="block";
   const twLabel=cTw==="G1"?"Tòa G1":"Tòa G2";
   document.getElementById("pU").textContent=`${twLabel} | Căn ${cU.split(".").slice(1).join(".")} | TT: ${u.t}m² | TTg: ${u.g}m² | Niêm yết: ${fm(lp)} đ`;
@@ -245,7 +266,7 @@ function oFC(){
 function clr(){
   cU=null;
   ["xTT","xTG","xLP"].forEach(i=>document.getElementById(i).value="");
-  ["sR","tB","tS","dI","pS","lyW"].forEach(i=>document.getElementById(i).style.display="none");
+  ["sR","tB","tS","dI","dI2","pS","lyW"].forEach(i=>document.getElementById(i).style.display="none");
 }
 
 function oUC(){

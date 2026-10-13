@@ -2,6 +2,10 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-13 — Nội dung: Nam Mekong Grand Plaza — thay bảng tính bằng bản mới của Tú
+- `assets/tools/nam-mekong-bang-tinh/index.html` thay bằng bản mới: thêm khối "So sánh giá cuối & thời hạn dòng tiền giữa các phương thức" (giá cuối, chênh lệch VNĐ và %, thời hạn dòng tiền, vốn khách tự bỏ ra của 5 phương thức; dòng đang chọn tô nổi).
+- Giữ nguyên các chỉnh sửa khung của site: `noindex, nofollow`, khung rộng 2 cột trên máy tính, tự phóng to ảnh mặt bằng (`zoom.js`). 26 ảnh nhúng base64 trong file mới trùng nội dung với ảnh WebP đang có (đã so sánh) nên dùng lại, không thêm ảnh; file HTML 80 KB thay vì 5,1 MB.
+
 ## 2026-10-12 (bảng tính) — Nội dung: Palm River — đưa bảng tính phương thức thanh toán vào web
 - Thêm công cụ tĩnh `assets/tools/palm-river-bang-tinh/` từ file `PalmRiver_BangTinh_PTTT.html` của Tú (noindex): giữ nguyên logic và giao diện; chỉ tách 21 ảnh Base64 (mẫu căn, mặt bằng tầng) thành 20 file WebP (620 KB, file HTML từ 2,1 MB còn 71 KB) và thêm thẻ noindex.
 - Trang `palm-river` mục Giá & Chính sách có khối nút "Mở bảng tính ngay" (mở tab mới), giống Nam Mekong và Norton Park; câu trả lời Hỏi & Đáp về giá dẫn tới bảng tính.
