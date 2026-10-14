@@ -51,7 +51,7 @@
   "icon": "💡",
   "title": "Tư Duy Đầu Tư Bất Động Sản",
   "tagline": "22 nguyên tắc · Dòng tiền · Tư duy nhà đầu tư chuyên nghiệp",
-  "badge": "3 bài phân tích",
+  "badge": "4 bài phân tích",
   "layout": "list",
   "items": [
    {
@@ -62,6 +62,9 @@
    },
    {
     "article": "dinh-kien-ve-dong-tien-bat-dong-san"
+   },
+   {
+    "article": "fed-fdi-etf-ty-gia-viet-nam"
    }
   ]
  },

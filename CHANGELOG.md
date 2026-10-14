@@ -2,6 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-10-13 — Nội dung: bài mới "Fed Tăng Lãi Suất: Vì Sao Việt Nam Chịu Áp Lực?" (chương Tư duy đầu tư)
+- Thêm bài `fed-fdi-etf-ty-gia-viet-nam` (`/cam-nang/fed-fdi-etf-ty-gia-viet-nam/`) từ gói hồ sơ Fed–FDI–ETF–tỷ giá của Tú; thêm vào cuối chương 03, badge "4 bài phân tích". Cấu trúc 7 mục theo gợi ý trong hồ sơ, kèm 3 kịch bản, bảng chỉ số theo dõi theo quý, hộp phân tầng nguồn và danh sách nguồn đối chiếu.
+- Đã kiểm chứng lại các số liệu mà hồ sơ cảnh báo chưa xác minh (đến 13/10/2026): Fed tăng 25 điểm cơ bản ngày 16/9 lên 3,75–4,00% (CNBC, Dân trí); FDI 9 tháng 50,36 tỷ USD đăng ký, 21,07 tỷ USD thực hiện (Cục Thống kê, 3/10); FTSE Russell nâng hạng hiệu lực 21/9/2026; NHNN giữ nguyên lãi suất điều hành, bơm thanh khoản 21/9 (họp báo 7/10); khối ngoại bán ròng hơn 100.000 tỷ đồng đến 7/10. Các số ETF 1,67 / 5–6 / 8 tỷ USD ghi rõ là dự báo của công ty chứng khoán.
+- 4 hình minh họa do tác giả dựng từ số liệu trên (sơ đồ chuỗi truyền dẫn, bảng so sánh FDI–ETF–quỹ chủ động, biểu đồ FDI 9 tháng, biểu đồ khối ngoại bán ròng), khổ dọc cho điện thoại; không dùng ảnh bên thứ ba. Ảnh OG cắt từ ảnh đầu bài.
+- Chưa có: số dự trữ ngoại hối, xuất nhập khẩu, kiều hối (ghi "Đang cập nhật" trong bảng chỉ số). Không đổi giao diện, CSS/JS hay version.
+
 ## 2026-10-13 — Nội dung: Nam Mekong Grand Plaza — thay bảng tính bằng bản mới của Tú
 - `assets/tools/nam-mekong-bang-tinh/index.html` thay bằng bản mới: thêm khối "So sánh giá cuối & thời hạn dòng tiền giữa các phương thức" (giá cuối, chênh lệch VNĐ và %, thời hạn dòng tiền, vốn khách tự bỏ ra của 5 phương thức; dòng đang chọn tô nổi).
 - Giữ nguyên các chỉnh sửa khung của site: `noindex, nofollow`, khung rộng 2 cột trên máy tính, tự phóng to ảnh mặt bằng (`zoom.js`). 26 ảnh nhúng base64 trong file mới trùng nội dung với ảnh WebP đang có (đã so sánh) nên dùng lại, không thêm ảnh; file HTML 80 KB thay vì 5,1 MB.
