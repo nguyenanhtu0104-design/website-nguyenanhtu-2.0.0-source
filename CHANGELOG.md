@@ -2,6 +2,11 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+
+## 2026-10-14 — Ấn phẩm: Chỉ số đô thị — thay báo cáo Mật độ Đô thị Nén bằng bản dựng lại
+- `publications/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/urban-compactness-report.html` thay bằng bản mới của Tú (14 khu đô thị, 5 chỉ số Core có nguồn, thay toàn bộ số ước lượng bản cũ). Giữ nguyên thư mục kỳ và URL (`/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/`), `bia.jpg`, trạng thái `cong-bo`.
+- `info.txt`: cập nhật tiêu đề, mô tả, trích đoạn, ngày 2026-10-14 (bản cũ ghi "ước lượng", "11 chỉ số", "Vũng Tàu" không còn đúng).
+
 ## 2026-10-13 — Nội dung: bài mới "Fed Tăng Lãi Suất: Vì Sao Việt Nam Chịu Áp Lực?" (chương Tư duy đầu tư)
 - Thêm bài `fed-fdi-etf-ty-gia-viet-nam` (`/cam-nang/fed-fdi-etf-ty-gia-viet-nam/`) từ gói hồ sơ Fed–FDI–ETF–tỷ giá của Tú; thêm vào cuối chương 03, badge "4 bài phân tích". Cấu trúc 7 mục theo gợi ý trong hồ sơ, kèm 3 kịch bản, bảng chỉ số theo dõi theo quý, hộp phân tầng nguồn và danh sách nguồn đối chiếu.
 - Đã kiểm chứng lại các số liệu mà hồ sơ cảnh báo chưa xác minh (đến 13/10/2026): Fed tăng 25 điểm cơ bản ngày 16/9 lên 3,75–4,00% (CNBC, Dân trí); FDI 9 tháng 50,36 tỷ USD đăng ký, 21,07 tỷ USD thực hiện (Cục Thống kê, 3/10); FTSE Russell nâng hạng hiệu lực 21/9/2026; NHNN giữ nguyên lãi suất điều hành, bơm thanh khoản 21/9 (họp báo 7/10); khối ngoại bán ròng hơn 100.000 tỷ đồng đến 7/10. Các số ETF 1,67 / 5–6 / 8 tỷ USD ghi rõ là dự báo của công ty chứng khoán.
