@@ -1,6 +1,6 @@
 tieu-de: Báo cáo Mật độ Đô thị Nén 2026: 14 khu đô thị, TP.HCM mới và Hà Nội so với Hong Kong, Tokyo, Singapore
 so: 01
-ngay: 2026-10-14
+ngay: 2026-10-15
 mo-ta: So sánh 14 khu đô thị theo 5 chỉ số Core từ nguồn công bố hoặc tính từ dữ liệu gốc (GHSL, Boeing, ITDP, UN-Habitat); TP.HCM mới xếp 12/14, Hong Kong dẫn đầu.
 trich-doan: Hong Kong dẫn đầu chỉ số nén (74,7). TP.HCM mới xếp 12/14 (31,9) dù mật độ dân số có trọng số đứng thứ 4: dân đông nhưng nhiều hẻm cụt và nhà chủ yếu thấp tầng. Mỗi chỉ số ghi rõ số công bố hay số tự tính.
 trang-thai: cong-bo

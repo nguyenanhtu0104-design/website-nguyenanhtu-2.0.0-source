@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-15 — Ấn phẩm: Chỉ số đô thị — báo cáo Mật độ Đô thị Nén thêm tab phân tích mô hình và clip bản đồ
+- `urban-compactness-report.html` thay bằng bản mới của Tú: thêm hai tab "Phân tích mô hình" và "Phố & nút giao", cùng 3 clip bản đồ Hong Kong, Tokyo, Singapore. Giữ nguyên thư mục kỳ, URL (`/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/`), `bia.jpg`, trạng thái `cong-bo`; `info.txt` đổi ngày 2026-10-15.
+- Clip (mp4 + ảnh poster, 3 × ~12–15 MB) đặt ở `assets/clips/do-thi-nen/`; đường dẫn trong báo cáo đổi thành `/assets/clips/do-thi-nen/…` vì build chỉ xuất file HTML của kỳ vào `/doc/`. Video `preload="none"` nên không tải khi chưa bấm phát.
+- Bản mới thiếu khung `<!doctype>/<head>/<body>`; đã thêm lại giống bản trước để trình duyệt không chạy chế độ quirks.
+- Dọn các bản sao clip thừa ở thư mục gốc kho (`clips/`, `bao-cao-do-thi-nen/`, `*.mp4`, `*.jpg` ở gốc) — xem `DELETED_FILES.txt`. Không đổi giao diện, CSS/JS hay version.
+
 ## 2026-10-14 — Ấn phẩm: Chỉ số đô thị — thay báo cáo Mật độ Đô thị Nén bằng bản dựng lại
 - `publications/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/urban-compactness-report.html` thay bằng bản mới của Tú (14 khu đô thị, 5 chỉ số Core có nguồn, thay toàn bộ số ước lượng bản cũ). Giữ nguyên thư mục kỳ và URL (`/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/`), `bia.jpg`, trạng thái `cong-bo`.
 - `info.txt`: cập nhật tiêu đề, mô tả, trích đoạn, ngày 2026-10-14 (bản cũ ghi "ước lượng", "11 chỉ số", "Vũng Tàu" không còn đúng).
