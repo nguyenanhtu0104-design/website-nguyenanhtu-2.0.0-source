@@ -5,6 +5,8 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 ## 2026-10-16 — Công cụ: Bản đồ dự án TP.HCM, metro và vành đai (bản xem thử, chưa gắn vào bài)
 
+- Vẽ lại đường đi theo tọa độ ga trên bản đồ quy hoạch (Ankapong, số hóa đồ án điều chỉnh quy hoạch chung TP.HCM sau sáp nhập): Tuyến 1 (vận hành, phía tây, kéo dài Biên Hòa – Long Thành), 3, 4, 5, 7, 8, 9, 10, Thủ Thiêm – Long Thành, Bến Thành – Cần Giờ. Tuyến 3A gộp vào Tuyến 3 theo quy hoạch mới. Vành đai 1 và 2 vẽ lại theo mốc nút giao. Cổng quyhoachquocgia.mpi.gov.vn không truy cập được từ môi trường làm việc.
+
 - Tú duyệt gắn bản đồ: thêm mục "Bản đồ" vào thanh điều hướng chung (templates/partials/global-nav.html) và khung nút "Mở bản đồ" trong 3 bài: truc-metro-so-1-hcm, muc-tieu-metro-hcm-2030, mo-hinh-tod-hanh-lang-metro.
 
 - Bổ sung đủ Tuyến 7, 8, 9, 10 (hướng tuyến sơ đồ, ghi chú nguồn hochiminhcitymetro.com). Tổng 18 tuyến metro và 4 vành đai.
