@@ -5,6 +5,12 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 ## 2026-10-16 — Công cụ: Bản đồ dự án TP.HCM, metro và vành đai (bản xem thử, chưa gắn vào bài)
 
+- Cửa sổ thông tin và danh sách tuyến của 9 dự án MAUR ghi thêm: chiều dài, số ga, tuyến nổi hay ngầm (số km và số ga), danh sách tên ga, depot. Ga Tuyến 1 và Tuyến 2 đoạn Thủ Thiêm ghi rõ ga ngầm hoặc ga trên cao. Dự án nào nguồn chưa nêu thì ghi "chưa rõ".
+
+- Theo yêu cầu của Tú, lớp metro chính hiển thị 9 dự án MAUR (Tuyến 1; Tuyến 2 Bến Thành – Tham Lương; Bến Thành – Cần Giờ; Bến Thành – Thủ Thiêm; Thủ Thiêm – Long Thành; Tuyến 6 giai đoạn 1; Tuyến 1 kéo dài Bình Dương – Suối Tiên; Thủ Dầu Một – Tao Đàn; Tuyến 2 nối dài Tham Lương – An Hạ – Tây Bắc). Các tuyến quy hoạch 2040 chuyển sang mục "Quy hoạch metro dài hạn", mặc định ẩn.
+
+- Vành đai 1–4 đổi kiểu hiển thị khác metro: dải màu rộng mô phỏng đường bộ, nét gạch chấm, không có vòng tròn ga; ô chú giải bên trái đổi theo.
+
 - Vẽ lại đường đi theo tọa độ ga trên bản đồ quy hoạch (Ankapong, số hóa đồ án điều chỉnh quy hoạch chung TP.HCM sau sáp nhập): Tuyến 1 (vận hành, phía tây, kéo dài Biên Hòa – Long Thành), 3, 4, 5, 7, 8, 9, 10, Thủ Thiêm – Long Thành, Bến Thành – Cần Giờ. Tuyến 3A gộp vào Tuyến 3 theo quy hoạch mới. Vành đai 1 và 2 vẽ lại theo mốc nút giao. Cổng quyhoachquocgia.mpi.gov.vn không truy cập được từ môi trường làm việc.
 
 - Tú duyệt gắn bản đồ: thêm mục "Bản đồ" vào thanh điều hướng chung (templates/partials/global-nav.html) và khung nút "Mở bản đồ" trong 3 bài: truc-metro-so-1-hcm, muc-tieu-metro-hcm-2030, mo-hinh-tod-hanh-lang-metro.

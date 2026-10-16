@@ -73,11 +73,12 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  </div>
  <div class="sec"><h2>Khu vực</h2><div class="zones" id="zones"></div></div>
  <div class="sec"><h2>Metro và vành đai</h2>
-  <p class="note" style="margin-bottom:6px">Nét liền: đang vận hành · nét đứt: đang xây · nét chấm: nghiên cứu, đề xuất. <b>Hướng tuyến sơ đồ</b>, không phải tim tuyến.</p>
+  <p class="note" style="margin-bottom:6px">Metro: nét liền là đang vận hành, nét đứt là đang xây, nét chấm là nghiên cứu, đề xuất, kèm vòng tròn ở mỗi ga. Vành đai (đường bộ): dải màu rộng, nét gạch chấm, không có ga. <b>Hướng tuyến sơ đồ</b>, không phải tim tuyến.</p>
   <p class="note" id="ln-stat" style="margin-bottom:6px"></p>
   <div class="bar"><button type="button" id="ln-all">Hiện tất cả</button><button type="button" id="ln-none">Ẩn tất cả</button></div>
-  <h2 style="margin-top:10px">Metro</h2><div id="ln-metro"></div>
+  <h2 style="margin-top:10px">Metro theo MAUR (9 dự án đang triển khai)</h2><div id="ln-metro"></div>
   <h2 style="margin-top:10px">Vành đai</h2><div id="ln-ring"></div>
+  <h2 style="margin-top:10px">Quy hoạch metro dài hạn (tham khảo, mặc định ẩn)</h2><div id="ln-plan"></div>
  </div>
  <div class="sec"><h2>Danh sách dự án</h2><div class="list" id="list"></div></div>
  <div class="sec note">
@@ -245,7 +246,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "note": "11 ga trên cao, 3 ga ngầm. Vị trí ga theo bản đồ My Maps (Bến Thành) và Ankapong; sai lệch ga trung vị khoảng 120 m.",
    "src": "Wikipedia; Tuổi Trẻ; Ankapong; My Maps",
    "pts": [[10.7703407,106.6967907],[10.77581,106.70259],[10.78587,106.71199],[10.79607,106.71554],[10.79859,106.72325],[10.80049,106.73366],[10.80213,106.74225],[10.80846,106.75522],[10.82133,106.75817],[10.83256,106.76384],[10.84635,106.7716],[10.85896,106.78878],[10.86631,106.80126],[10.87953,106.81409]],
-   "stations": [["Bến Thành",10.7703407,106.6967907],["Nhà hát Thành phố",10.77581,106.70259],["Ba Son",10.78587,106.71199],["Công viên Văn Thánh",10.79607,106.71554],["Tân Cảng",10.79859,106.72325],["Thảo Điền",10.80049,106.73366],["An Phú",10.80213,106.74225],["Rạch Chiếc",10.80846,106.75522],["Phước Long",10.82133,106.75817],["Bình Thái",10.83256,106.76384],["Thủ Đức",10.84635,106.7716],["Khu Công nghệ cao",10.85896,106.78878],["Đại học Quốc gia",10.86631,106.80126],["Bến xe Suối Tiên",10.87953,106.81409]]
+   "stations": [["Bến Thành",10.7703407,106.6967907],["Nhà hát Thành phố",10.77581,106.70259],["Ba Son",10.78587,106.71199],["Công viên Văn Thánh",10.79607,106.71554],["Tân Cảng",10.79859,106.72325],["Thảo Điền",10.80049,106.73366],["An Phú",10.80213,106.74225],["Rạch Chiếc",10.80846,106.75522],["Phước Long",10.82133,106.75817],["Bình Thái",10.83256,106.76384],["Thủ Đức",10.84635,106.7716],["Khu Công nghệ cao",10.85896,106.78878],["Đại học Quốc gia",10.86631,106.80126],["Bến xe Suối Tiên",10.87953,106.81409]],
+   "kind": "Đoạn ngầm 2,6 km (3 ga ngầm: Bến Thành, Nhà hát Thành phố, Ba Son); đoạn trên cao 17,1 km (11 ga trên cao). Depot Long Bình, tiếp điện trên cao.",
+   "ks": "ngầm 2,6 km · trên cao 17,1 km",
+   "ug": 3,
+   "names": ["Bến Thành","Nhà hát Thành phố","Ba Son","Công viên Văn Thánh","Tân Cảng","Thảo Điền","An Phú","Rạch Chiếc","Phước Long","Bình Thái","Thủ Đức","Khu Công nghệ cao","Đại học Quốc gia","Bến xe Suối Tiên"]
   },
   {
    "id": "m1x",
@@ -253,13 +258,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "name": "Tuyến TP mới Bình Dương – Suối Tiên (kéo dài Tuyến 1)",
    "status": "nghien-cuu",
    "color": "#d6336c",
-   "length": "khoảng 30,7–31,6 km · 17 ga trên cao",
+   "length": "khoảng 30,7–31,6 km · 17 ga",
    "state": "Chuẩn bị đầu tư; dự kiến khởi công cuối 2026, hoàn thành 2030",
    "note": "Đầu tư công, khoảng 55.000 tỷ đồng. Nối ga Suối Tiên của Tuyến 1; vị trí ga theo bản đồ My Maps (gần đúng, không phải bản đồ chính thức).",
    "src": "hochiminhcitymetro.com (My Maps); Kênh14 15/10/2026",
    "pts": [[11.0601497,106.6879175],[11.0501306,106.6804716],[11.040543,106.6766844],[11.0259308,106.678063],[11.0175456,106.676219],[10.9973494,106.6825702],[10.9878865,106.6896684],[10.9779604,106.7051432],[10.9646891,106.7203031],[10.9545298,106.7318252],[10.9456141,106.7406281],[10.9329653,106.7532806],[10.9254248,106.7638313],[10.9186993,106.7750462],[10.9076351,106.7960354],[10.9026309,106.8096717],[10.8949063,106.8201989],[10.8795175,106.8141018]],
    "ends": ["Ga S1 (TP mới Bình Dương)","Suối Tiên"],
-   "stations": [["Ga S1",11.0601497,106.6879175],["Ga S2",11.0501306,106.6804716],["Ga S3",11.040543,106.6766844],["Ga S4",11.0259308,106.678063],["Ga S5",11.0175456,106.676219],["Ga S6",10.9973494,106.6825702],["Ga S7",10.9878865,106.6896684],["Ga S8",10.9779604,106.7051432],["Ga S9",10.9646891,106.7203031],["Ga S10",10.9545298,106.7318252],["Ga S11",10.9456141,106.7406281],["Ga S12",10.9329653,106.7532806],["Ga S13",10.9254248,106.7638313],["Ga S14",10.9186993,106.7750462],["Ga S15",10.9076351,106.7960354],["Ga S16",10.9026309,106.8096717],["Ga S17",10.8949063,106.8201989],["Suối Tiên (Tuyến 1)",10.8795175,106.8141018]]
+   "stations": [["Ga S1",11.0601497,106.6879175],["Ga S2",11.0501306,106.6804716],["Ga S3",11.040543,106.6766844],["Ga S4",11.0259308,106.678063],["Ga S5",11.0175456,106.676219],["Ga S6",10.9973494,106.6825702],["Ga S7",10.9878865,106.6896684],["Ga S8",10.9779604,106.7051432],["Ga S9",10.9646891,106.7203031],["Ga S10",10.9545298,106.7318252],["Ga S11",10.9456141,106.7406281],["Ga S12",10.9329653,106.7532806],["Ga S13",10.9254248,106.7638313],["Ga S14",10.9186993,106.7750462],["Ga S15",10.9076351,106.7960354],["Ga S16",10.9026309,106.8096717],["Ga S17",10.8949063,106.8201989],["Suối Tiên (Tuyến 1)",10.8795175,106.8141018]],
+   "kind": "17 ga trên cao và 1 depot. Đầu tư công.",
+   "ks": "17 ga trên cao",
+   "names": ["Ga S1 đến Ga S17 (tên tạm theo bản đồ, chưa đặt tên chính thức)","Suối Tiên (Tuyến 1, ga nối)"]
   },
   {
    "id": "m2",
@@ -272,7 +280,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "note": "10 ga ngầm, 1 ga trên cao (Tân Bình). Đã bàn giao 100% mặt bằng.",
    "src": "Tuổi Trẻ 16/1/2026; Thanh Niên 9/10/2026; Kênh14 15/10/2026; bản đồ Google My Maps \"Line 2 HCMC Metro\" (vị trí gần đúng)",
    "pts": [[10.7703407,106.6967907],[10.772555,106.6918588],[10.77724,106.6821587],[10.7823098,106.6732239],[10.7858618,106.6657545],[10.7893397,106.6604859],[10.7924721,106.6538105],[10.7995514,106.6404665],[10.8069914,106.6349863],[10.8138966,106.6329427],[10.8200891,106.6305216]],
-   "stations": [["Bến Thành",10.7703407,106.6967907],["Tao Đàn",10.772555,106.6918588],["Dân Chủ",10.77724,106.6821587],["Hòa Hưng",10.7823098,106.6732239],["Lê Thị Riêng",10.7858618,106.6657545],["Phạm Văn Hai",10.7893397,106.6604859],["Bảy Hiền",10.7924721,106.6538105],["Nguyễn Hồng Đào",10.7995514,106.6404665],["Bà Quẹo",10.8069914,106.6349863],["Phạm Văn Bạch",10.8138966,106.6329427],["Tân Bình",10.8200891,106.6305216]]
+   "stations": [["Bến Thành",10.7703407,106.6967907],["Tao Đàn",10.772555,106.6918588],["Dân Chủ",10.77724,106.6821587],["Hòa Hưng",10.7823098,106.6732239],["Lê Thị Riêng",10.7858618,106.6657545],["Phạm Văn Hai",10.7893397,106.6604859],["Bảy Hiền",10.7924721,106.6538105],["Nguyễn Hồng Đào",10.7995514,106.6404665],["Bà Quẹo",10.8069914,106.6349863],["Phạm Văn Bạch",10.8138966,106.6329427],["Tân Bình",10.8200891,106.6305216]],
+   "kind": "Đoạn ngầm 9,3 km (10 ga ngầm); đoạn trên cao 2 km (1 ga trên cao). Depot Tham Lương, tiếp điện trên cao.",
+   "ks": "ngầm 9,3 km · trên cao 2 km",
+   "names": ["Bến Thành","Tao Đàn","Dân Chủ","Hòa Hưng","Lê Thị Riêng","Phạm Văn Hai","Bảy Hiền","Nguyễn Hồng Đào","Bà Quẹo","Phạm Văn Bạch","Tân Bình"]
   },
   {
    "id": "m2a",
@@ -286,7 +297,11 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "src": "Kênh14 15/10/2026; Tuổi Trẻ 16/1/2026; bản đồ Google My Maps \"Line 2 HCMC Metro\" (vị trí gần đúng)",
    "pts": [[10.7703407,106.6967907],[10.7708002,106.7053212],[10.7720017,106.7169942],[10.773667,106.7221011],[10.7777722,106.7314892],[10.7827246,106.7397439],[10.78664,106.7460417]],
    "ends": ["Bến Thành","Thủ Thiêm"],
-   "stations": [["Bến Thành",10.7703407,106.6967907],["Hàm Nghi",10.7708002,106.7053212],["Đại lộ Vòng Cung (Tố Hữu)",10.7720017,106.7169942],["Cung Thiếu Nhi",10.773667,106.7221011],["Bệnh viện Quốc tế",10.7777722,106.7314892],["Bình Khánh",10.7827246,106.7397439],["Thủ Thiêm",10.78664,106.7460417]]
+   "stations": [["Bến Thành",10.7703407,106.6967907],["Hàm Nghi",10.7708002,106.7053212],["Đại lộ Vòng Cung (Tố Hữu)",10.7720017,106.7169942],["Cung Thiếu Nhi",10.773667,106.7221011],["Bệnh viện Quốc tế",10.7777722,106.7314892],["Bình Khánh",10.7827246,106.7397439],["Thủ Thiêm",10.78664,106.7460417]],
+   "kind": "Đi ngầm hoàn toàn. Hợp đồng BT.",
+   "ks": "đi ngầm",
+   "ug": "all",
+   "names": ["Bến Thành (ga đầu)","Hàm Nghi","Đại lộ Vòng Cung","Cung Thiếu Nhi","Bệnh viện Quốc tế","Bình Khánh","Thủ Thiêm (ga cuối)"]
   },
   {
    "id": "m2b",
@@ -294,12 +309,15 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "name": "Tuyến 2 nối dài: Tham Lương – An Hạ – Khu đô thị Tây Bắc",
    "status": "nghien-cuu",
    "color": "#1971c2",
-   "length": "30 km",
+   "length": "khoảng 30 km",
    "state": "Đề xuất PPP; dự kiến khởi công cuối 2026",
    "note": "Đề xuất vốn khoảng 85.000 tỷ đồng.",
    "src": "Kênh14 15/10/2026",
    "pts": [[10.8200891,106.6305216],[10.85,106.58],[10.91,106.535],[10.97,106.495]],
-   "ends": ["Tham Lương","Tây Bắc (Củ Chi)"]
+   "ends": ["Tham Lương","Tây Bắc (Củ Chi)"],
+   "kind": "Chưa có thông tin đi nổi hay ngầm. Đầu tư PPP. Depot Tham Lương.",
+   "ks": "chưa rõ nổi/ngầm",
+   "names": ["Tham Lương (depot)","An Hạ","Khu đô thị Tây Bắc Củ Chi","Chưa có tên các ga"]
   },
   {
    "id": "m2c",
@@ -307,16 +325,19 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "name": "Thủ Dầu Một – Tao Đàn (số hiệu tuyến theo tài liệu mới)",
    "status": "nghien-cuu",
    "color": "#4263eb",
-   "length": "35,1 km · 24 ga (11 trên cao, 13 ngầm)",
+   "length": "35,1 km · 24 ga",
    "state": "Chuẩn bị đầu tư; dự kiến khởi công cuối 2026, hoàn thành 2030",
    "note": "Ga đầu C0 nối ga S5 của tuyến Bình Dương – Suối Tiên; ga cuối C23 tại công viên Tao Đàn, nối Tuyến 2 và Tuyến 3. Giao với Tuyến 6 tại cầu Bình Lợi. Vốn khoảng 113.000 tỷ đồng, đầu tư công. Hướng tuyến giữa các điểm neo là sơ đồ.",
    "src": "hochiminhcitymetro.com; Kênh14 15/10/2026; Tuổi Trẻ 13/8/2026",
    "pts": [[11.0175456,106.676219],[10.975,106.672],[10.93,106.69],[10.89,106.7],[10.8274213,106.7147029],[10.8,106.705],[10.772555,106.6918588]],
-   "ends": ["Thủ Dầu Một (ga C0)","Tao Đàn (ga C23)"]
+   "ends": ["Thủ Dầu Một (ga C0)","Tao Đàn (ga C23)"],
+   "kind": "11 ga trên cao, 13 ga ngầm; đi ngầm, trên cao và chuyển tiếp mặt đất.",
+   "ks": "11 ga trên cao · 13 ga ngầm",
+   "names": ["Thủ Dầu Một (ga đầu C0, nối ga S5 Bình Dương – Suối Tiên)","Cầu Bình Lợi (giao Tuyến 6)","Tao Đàn (ga cuối C23, nối Tuyến 2 và Tuyến 3)","Chưa có tên các ga còn lại"]
   },
   {
    "id": "m3",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 3 An Hạ – Tân Kiên – Tao Đàn – Hiệp Bình Phước (gồm 3A, 3B)",
    "status": "nghien-cuu",
    "color": "#e8a317",
@@ -330,7 +351,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m4",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 4 Thạnh Xuân – Hiệp Phước",
    "status": "nghien-cuu",
    "color": "#0ca678",
@@ -344,7 +365,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m4b",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 4B Công viên Gia Định – Lăng Cha Cả",
    "status": "nghien-cuu",
    "color": "#0ca678",
@@ -357,7 +378,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m5",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 5 (nhánh 2) Cụm ĐH Long Phước – Bảy Hiền – Làng ĐH Hưng Long",
    "status": "nghien-cuu",
    "color": "#7048e8",
@@ -381,7 +402,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "src": "hochiminhcitymetro.com (My Maps); Kênh14 15/10/2026; Tuổi Trẻ 13/8/2026",
    "pts": [[10.8037885,106.6356812],[10.8108124,106.6495536],[10.8148539,106.6645954],[10.8137524,106.676038],[10.8163448,106.6843314],[10.8202922,106.6933973],[10.8229913,106.7033411],[10.8266585,106.7152233],[10.834176,106.7287952],[10.8389126,106.7380381],[10.8345704,106.753084],[10.83204,106.7645437],[10.8298199,106.7787425],[10.8211278,106.7895604],[10.8127515,106.7925645],[10.803994,106.7923016],[10.7947567,106.7924894]],
    "ends": ["Bà Quẹo","Phú Hữu"],
-   "stations": [["Bà Quẹo",10.8037885,106.6356812],["Nhà ga T3 (sân bay Tân Sơn Nhất)",10.8108124,106.6495536],["Tân Sơn Nhất",10.8148539,106.6645954],["Công viên Gia Định",10.8137524,106.676038],["Gò Vấp",10.8163448,106.6843314],["Phan Văn Trị",10.8202922,106.6933973],["Nguyễn Xí",10.8229913,106.7033411],["Cầu Bình Lợi",10.8266585,106.7152233],["Bình Triệu",10.834176,106.7287952],["Cầu Gò Dưa",10.8389126,106.7380381],["Linh Đông",10.8345704,106.753084],["Bình Thái",10.83204,106.7645437],["Tăng Nhơn Phú",10.8298199,106.7787425],["Khu Công nghệ cao",10.8211278,106.7895604],["Cầu Phú Hữu",10.8127515,106.7925645],["Liên Phường",10.803994,106.7923016],["Phú Hữu",10.7947567,106.7924894]]
+   "stations": [["Bà Quẹo",10.8037885,106.6356812],["Nhà ga T3 (sân bay Tân Sơn Nhất)",10.8108124,106.6495536],["Tân Sơn Nhất",10.8148539,106.6645954],["Công viên Gia Định",10.8137524,106.676038],["Gò Vấp",10.8163448,106.6843314],["Phan Văn Trị",10.8202922,106.6933973],["Nguyễn Xí",10.8229913,106.7033411],["Cầu Bình Lợi",10.8266585,106.7152233],["Bình Triệu",10.834176,106.7287952],["Cầu Gò Dưa",10.8389126,106.7380381],["Linh Đông",10.8345704,106.753084],["Bình Thái",10.83204,106.7645437],["Tăng Nhơn Phú",10.8298199,106.7787425],["Khu Công nghệ cao",10.8211278,106.7895604],["Cầu Phú Hữu",10.8127515,106.7925645],["Liên Phường",10.803994,106.7923016],["Phú Hữu",10.7947567,106.7924894]],
+   "kind": "Giai đoạn 1: 13 ga ngầm, 4 ga trên cao (chưa có thông tin ga nào ngầm, ga nào trên cao). Phương án cũ Bà Quẹo – Phú Lâm 6,8 km đi ngầm.",
+   "ks": "13 ga ngầm · 4 ga trên cao",
+   "names": ["Bà Quẹo","Nhà ga T3 (sân bay Tân Sơn Nhất)","Tân Sơn Nhất","Công viên Gia Định","Gò Vấp","Phan Văn Trị","Nguyễn Xí","Cầu Bình Lợi","Bình Triệu","Cầu Gò Dưa","Linh Đông","Bình Thái","Tăng Nhơn Phú","Khu Công nghệ cao","Cầu Phú Hữu","Liên Phường","Phú Hữu"]
   },
   {
    "id": "mtl",
@@ -389,13 +413,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "name": "Đường sắt Thủ Thiêm – sân bay Long Thành",
    "status": "nghien-cuu",
    "color": "#5c940d",
-   "length": "khoảng 44,6 km · 20 ga (nguồn khác ghi 41,8–47 km)",
+   "length": "khoảng 47 km · 18 ga (sơ đồ MAUR); quy hoạch 2040: 44,6 km · 20 ga",
    "state": "Thaco / Đại Quang Minh đề xuất; dự kiến phê duyệt 11/2026",
    "note": "Vẽ đủ 20 ga theo bản đồ quy hoạch. Tên ga theo trang hochiminhcitymetro.com, ghép theo thứ tự với các ga S01–S20 trên bản đồ quy hoạch. Tọa độ hai ga cuối lệch khoảng 2 km so với bản đồ My Maps nháp. Hợp đồng BT, trên 134.000 tỷ đồng.",
    "src": "Ankapong (số hóa đồ án điều chỉnh quy hoạch chung TP.HCM 2040, sai lệch ga trung vị ~120 m); hochiminhcitymetro.com",
    "pts": [[10.78794,106.74527],[10.79421,106.76059],[10.79583,106.77662],[10.79592,106.78882],[10.79457,106.79884],[10.79278,106.80822],[10.79096,106.8192],[10.77856,106.83136],[10.75193,106.84893],[10.72966,106.85218],[10.7186,106.8615],[10.72431,106.88634],[10.7298,106.91051],[10.7343,106.92985],[10.7379,106.94685],[10.74162,106.96478],[10.74315,106.98012],[10.74282,106.99982],[10.77107,107.04229],[10.78324,107.05883]],
    "ends": ["Thủ Thiêm","Sân bay Long Thành"],
-   "stations": [["Thủ Thiêm",10.78794,106.74527],["Bình Trưng",10.79421,106.76059],["Đỗ Xuân Hợp",10.79583,106.77662],["Bà Hiện",10.79592,106.78882],["Phú Hữu",10.79457,106.79884],["Ông Nhiêu",10.79278,106.80822],["Long Trường",10.79096,106.8192],["Thiếc Dừa",10.77856,106.83136],["Long Tân",10.75193,106.84893],["Phú Thạnh",10.72966,106.85218],["Tuy Hạ",10.7186,106.8615],["Nhơn Trạch",10.72431,106.88634],["Phú Hội",10.7298,106.91051],["Phước Thiền",10.7343,106.92985],["Hiệp Phước",10.7379,106.94685],["S16",10.74162,106.96478],["S17",10.74315,106.98012],["S18",10.74282,106.99982],["Long Thành T1-2",10.77107,107.04229],["Long Thành T3-4",10.78324,107.05883]]
+   "stations": [["Thủ Thiêm",10.78794,106.74527],["Bình Trưng",10.79421,106.76059],["Đỗ Xuân Hợp",10.79583,106.77662],["Bà Hiện",10.79592,106.78882],["Phú Hữu",10.79457,106.79884],["Ông Nhiêu",10.79278,106.80822],["Long Trường",10.79096,106.8192],["Thiếc Dừa",10.77856,106.83136],["Long Tân",10.75193,106.84893],["Phú Thạnh",10.72966,106.85218],["Tuy Hạ",10.7186,106.8615],["Nhơn Trạch",10.72431,106.88634],["Phú Hội",10.7298,106.91051],["Phước Thiền",10.7343,106.92985],["Hiệp Phước",10.7379,106.94685],["S16",10.74162,106.96478],["S17",10.74315,106.98012],["S18",10.74282,106.99982],["Long Thành T1-2",10.77107,107.04229],["Long Thành T3-4",10.78324,107.05883]],
+   "kind": "16 ga trên cao, 2 ga ngầm (theo sơ đồ MAUR). Tốc độ 90–120 km/h. Depot Thủ Thiêm (TP.HCM) và Cẩm Đường (Đồng Nai).",
+   "ks": "16 ga trên cao · 2 ga ngầm",
+   "names": ["Thủ Thiêm","Bình Trưng","Đỗ Xuân Hợp","Bà Hiện","Phú Hữu","Ông Nhiêu","Long Trường","Thiếc Dừa","Long Tân","Phú Thạnh","Tuy Hạ","Nhơn Trạch","Phú Hội","Phước Thiền","Hiệp Phước","S16","S17","S18","Long Thành T1-2","Long Thành T3-4"]
   },
   {
    "id": "mcg",
@@ -403,13 +430,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "name": "Đường sắt tốc độ cao Bến Thành – Cần Giờ (VinSpeed)",
    "status": "dang-xay",
    "color": "#c2255c",
-   "length": "khoảng 54 km",
+   "length": "khoảng 54 km · 2 ga giai đoạn đầu",
    "state": "Đã động thổ 19/12/2025; Vingroup là nhà đầu tư; dự kiến hoàn thành 2028",
    "note": "Tốc độ thiết kế 350 km/h, khổ đường 1.435 mm, tổng vốn khoảng 115.214 tỷ đồng, depot Cần Giờ. Giai đoạn đầu 2 ga theo sơ đồ: Bến Thành và Tân Thuận; tàu 3 toa, sau này 6 toa. Vị trí ga Tân Thuận đến Cần Giờ theo bản đồ quy hoạch; đoạn Bến Thành – Tân Thuận nối thẳng.",
    "src": "Tuổi Trẻ 16/1/2026; Kênh14 15/10/2026; Ankapong (số hóa đồ án điều chỉnh quy hoạch chung TP.HCM 2040, sai lệch ga trung vị ~120 m)",
    "pts": [[10.7703407,106.6967907],[10.72412,106.72455],[10.70868,106.73188],[10.68982,106.73287],[10.64643,106.78579],[10.39393,106.93226]],
    "ends": ["Bến Thành","Cần Giờ"],
-   "stations": [["Bến Thành",10.7703407,106.6967907],["Tân Thuận",10.72412,106.72455],["Tân Mỹ",10.70868,106.73188],["Nhà Bè",10.68982,106.73287],["Bình Khánh",10.64643,106.78579],["Cần Giờ",10.39393,106.93226]]
+   "stations": [["Bến Thành",10.7703407,106.6967907],["Tân Thuận",10.72412,106.72455],["Tân Mỹ",10.70868,106.73188],["Nhà Bè",10.68982,106.73287],["Bình Khánh",10.64643,106.78579],["Cần Giờ",10.39393,106.93226]],
+   "kind": "Chưa có thông tin đi nổi hay ngầm trong tài liệu. Tốc độ thiết kế 350 km/h, khổ 1.435 mm, đường đôi, depot Cần Giờ.",
+   "ks": "chưa rõ nổi/ngầm",
+   "names": ["Bến Thành (ga đầu)","Tân Thuận (giai đoạn đầu: 2 ga)","Tân Mỹ","Nhà Bè","Bình Khánh","Cần Giờ (ga cuối)"]
   },
   {
    "id": "r1",
@@ -465,7 +495,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m7",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 7 Tân Kiên – Vinhomes Grand Park",
    "status": "nghien-cuu",
    "color": "#1098ad",
@@ -479,7 +509,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m8",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 8 Đa Phước – Bình Mỹ",
    "status": "nghien-cuu",
    "color": "#d9480f",
@@ -493,7 +523,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m9",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 9 Bình Triệu – An Hạ",
    "status": "nghien-cuu",
    "color": "#862e9c",
@@ -507,7 +537,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m10",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 10 vành đai ngoài",
    "status": "nghien-cuu",
    "color": "#495057",
@@ -521,7 +551,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m1w",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 1 kéo dài phía tây: Bến Thành – An Hạ",
    "status": "nghien-cuu",
    "color": "#d6336c",
@@ -535,7 +565,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   },
   {
    "id": "m1e",
-   "group": "metro",
+   "group": "plan",
    "name": "Tuyến 1 kéo dài: Suối Tiên – Biên Hòa – Long Thành",
    "status": "nghien-cuu",
    "color": "#d6336c",
@@ -562,26 +592,28 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  var SS={'van-hanh':{t:'Đang vận hành',d:null,w:5,o:.95},'dang-xay':{t:'Đang xây dựng',d:'9 8',w:5,o:.9},'nghien-cuu':{t:'Nghiên cứu, đề xuất',d:'1 9',w:5,o:.85}};
  var lineLayers={};
  D.lines.forEach(function(d){
-  var g=L.layerGroup(),ss=SS[d.status],tip='<b>'+esc(d.name)+'</b><br>'+ss.t+' · '+esc(d.length);
-  var pl=L.polyline(d.pts,{color:d.color,weight:d.group==='ring'?6:ss.w,opacity:ss.o,dashArray:ss.d,lineCap:d.status==='nghien-cuu'?'round':'butt'});
+  var g=L.layerGroup(),ss=SS[d.status],tip='<b>'+esc(d.name)+'</b><br>'+ss.t+' · '+esc(d.length)+(d.ks?'<br>'+esc(d.ks):'');
+  var isR=d.group==='ring';
+  if(isR){L.polyline(d.pts,{color:d.color,weight:13,opacity:.26,lineCap:'round',lineJoin:'round',interactive:false}).addTo(g)}
+  var pl=isR?L.polyline(d.pts,{color:d.color,weight:3,opacity:.95,dashArray:'16 6 3 6',lineCap:'butt',lineJoin:'round'}):L.polyline(d.pts,{color:d.color,weight:ss.w,opacity:ss.o,dashArray:ss.d,lineCap:d.status==='nghien-cuu'?'round':'butt'});
   pl.bindTooltip(tip,{sticky:true});
-  pl.bindPopup('<div class="pp-t">'+esc(d.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+ss.t+'</span><div class="pp-m">'+esc(d.length)+'<br>'+esc(d.state)+'<br>'+esc(d.note)+'<br><i>Hướng tuyến sơ đồ. Nguồn: '+esc(d.src)+'</i></div>');
+  pl.bindPopup('<div class="pp-t">'+esc(d.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+ss.t+'</span><div class="pp-m">'+esc(d.length)+'<br>'+esc(d.state)+(d.kind?'<br><b>Nổi/ngầm:</b> '+esc(d.kind):'')+(d.names?'<br><b>Ga:</b> '+d.names.map(esc).join(' – '):'')+'<br>'+esc(d.note)+'<br><i>Hướng tuyến sơ đồ. Nguồn: '+esc(d.src)+'</i></div>');
   pl.addTo(g);
-  if(d.stations){d.stations.forEach(function(s){
-   L.circleMarker([s[1],s[2]],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(s[0]),{className:'stn',direction:'top',offset:[0,-4]}).bindPopup('<div class="pp-t">Ga '+esc(s[0])+'</div><div class="pp-m">'+esc(d.name)+'<br>'+esc(d.state)+'<br><i>Vị trí tham chiếu</i></div>').addTo(g);
+  if(d.stations){d.stations.forEach(function(s,k){
+   L.circleMarker([s[1],s[2]],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(s[0]),{className:'stn',direction:'top',offset:[0,-4]}).bindPopup('<div class="pp-t">Ga '+esc(s[0])+'</div><div class="pp-m">'+esc(d.name)+'<br>'+esc(d.state)+(d.ug==='all'||(typeof d.ug==='number'&&k<d.ug)?'<br>Ga ngầm':(d.ug?'<br>Ga trên cao':''))+'<br><i>Vị trí tham chiếu</i></div>').addTo(g);
   });}
-  else if(d.ends){[0,d.pts.length-1].forEach(function(i,k){
+  else if(d.ends&&!isR){[0,d.pts.length-1].forEach(function(i,k){
    L.circleMarker(d.pts[i],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(d.ends[k]),{className:'stn',direction:'top',offset:[0,-4]}).addTo(g);
   });}
-  lineLayers[d.id]={g:g,on:true};g.addTo(map);
-  var box=document.getElementById(d.group==='ring'?'ln-ring':'ln-metro');
+  var on0=d.group!=='plan';lineLayers[d.id]={g:g,on:on0};if(on0)g.addTo(map);
+  var box=document.getElementById(d.group==='ring'?'ln-ring':d.group==='plan'?'ln-plan':'ln-metro');
   var lb=document.createElement('label');lb.className='flt';
-  lb.innerHTML='<input type="checkbox" data-ln="'+d.id+'" checked><span class="ln" style="border-color:'+d.color+';border-top-style:'+(d.status==='van-hanh'?'solid':d.status==='dang-xay'?'dashed':'dotted')+'"></span><span>'+esc(d.name)+'<small>'+ss.t+' · '+esc(d.length)+'</small></span>';
+  lb.innerHTML='<input type="checkbox" data-ln="'+d.id+'"'+(on0?' checked':'')+'>'+(isR?'<span class="ln" style="height:9px;border:0;border-radius:5px;background:'+d.color+'33;box-shadow:inset 0 0 0 1px '+d.color+'"></span>':'<span class="ln" style="border-color:'+d.color+';border-top-style:'+(d.status==='van-hanh'?'solid':d.status==='dang-xay'?'dashed':'dotted')+'"></span>')+'<span>'+esc(d.name)+'<small>'+ss.t+' · '+esc(d.length)+(d.ks?' · '+esc(d.ks):'')+'</small></span>';
   box.appendChild(lb);
  });
  function setLine(id,on){var o=lineLayers[id];o.on=on;on?o.g.addTo(map):map.removeLayer(o.g);var c=document.querySelector('[data-ln="'+id+'"]');if(c)c.checked=on;lnStat()}
  function lnStat(){var n={'van-hanh':0,'dang-xay':0,'nghien-cuu':0};D.lines.forEach(function(d){if(d.group==='metro'&&lineLayers[d.id].on)n[d.status]++});
-  document.getElementById('ln-stat').innerHTML='Metro đang hiển thị: <b>'+n['van-hanh']+'</b> vận hành · <b>'+n['dang-xay']+'</b> đang xây · <b>'+n['nghien-cuu']+'</b> nghiên cứu.'}
+  document.getElementById('ln-stat').innerHTML='Metro MAUR đang hiển thị: <b>'+n['van-hanh']+'</b> vận hành · <b>'+n['dang-xay']+'</b> đang xây · <b>'+n['nghien-cuu']+'</b> nghiên cứu.'}
  Array.prototype.forEach.call(document.querySelectorAll('[data-ln]'),function(c){c.addEventListener('change',function(){setLine(c.dataset.ln,c.checked)})});
  document.getElementById('ln-all').addEventListener('click',function(){D.lines.forEach(function(d){setLine(d.id,true)})});
  document.getElementById('ln-none').addEventListener('click',function(){D.lines.forEach(function(d){setLine(d.id,false)})});
