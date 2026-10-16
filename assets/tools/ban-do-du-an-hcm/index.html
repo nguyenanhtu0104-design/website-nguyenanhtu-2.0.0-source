@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Bản đồ dự án TP.HCM và metro</title>
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+:root{--bg:#12100d;--panel:#1b1812;--line:#3a3326;--text:#f1ece0;--muted:#a89f8a;--gold:#c8993a;--s-chua:#3b82f6;--s-dang:#22a06b;--s-da:#d9534f;--s-kxm:#9a9a9a;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;display:flex;flex-direction:column}
+.hdr{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline}
+.hdr h1{font-size:17px;font-weight:700;color:var(--gold)}
+.hdr p{font-size:12px;color:var(--muted)}
+.wrap{flex:1;min-height:0;display:flex}
+.side{width:320px;flex:none;overflow:auto;background:var(--panel);border-right:1px solid var(--line);padding:14px}
+#map{flex:1;min-width:0;background:#e8e4da}
+.sec{margin-bottom:16px}
+.sec h2{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{border:1px solid var(--line);border-radius:8px;padding:8px 6px;text-align:center;background:#15130e}
+.stat b{display:block;font-size:22px;line-height:1.1}
+.stat span{font-size:11px;color:var(--muted)}
+.flt{display:flex;align-items:center;gap:8px;padding:5px 0;cursor:pointer;user-select:none}
+.flt input{accent-color:var(--gold);width:16px;height:16px}
+.dot{width:14px;height:14px;border-radius:50%;flex:none;border:2px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+.flt em{font-style:normal;margin-left:auto;color:var(--muted);font-size:12px}
+.ln{display:inline-block;width:22px;height:0;border-top:4px solid;flex:none}
+.zones{display:flex;flex-wrap:wrap;gap:6px}
+.zones button{font:inherit;font-size:12px;color:var(--text);background:#15130e;border:1px solid var(--line);border-radius:999px;padding:4px 10px;cursor:pointer}
+.zones button[aria-pressed="true"]{background:var(--gold);color:#1a140a;border-color:var(--gold);font-weight:600}
+.list{border-top:1px solid var(--line)}
+.list button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;font:inherit;color:var(--text);background:none;border:0;border-bottom:1px solid var(--line);padding:8px 2px;cursor:pointer}
+.list button:hover,.list button:focus-visible{background:#221e15;outline:none}
+.list small{display:block;color:var(--muted);font-size:11px}
+.note{font-size:11.5px;line-height:1.6;color:var(--muted)}
+.note b{color:var(--text)}
+.bar{display:flex;gap:6px}.bar button{font:inherit;font-size:12px;color:var(--text);background:#15130e;border:1px solid var(--line);border-radius:6px;padding:3px 9px;cursor:pointer}
+.flt .ln{width:26px}
+.flt small{color:var(--muted);font-size:11px;display:block}
+.toggle{display:none}
+.leaflet-popup-content{font-family:var(--font);font-size:13px;line-height:1.5;margin:12px 14px;min-width:200px}
+.pp-t{font-weight:700;font-size:15px;margin-bottom:2px}
+.pp-b{display:inline-block;font-size:11px;font-weight:600;color:#fff;border-radius:999px;padding:1px 9px;margin:2px 0 6px}
+.pp-m{color:#555;font-size:12px}
+.pp-a{display:inline-block;margin-top:8px;font-weight:600;color:#8a5f10}
+.stn{background:rgba(255,255,255,.92);border:1px solid #888;border-radius:4px;color:#222;font-size:11px;font-weight:600;padding:1px 5px;box-shadow:none}
+.stn:before{display:none}
+@media (max-width:760px){
+ .wrap{flex-direction:column}
+ .side{width:auto;max-height:46vh;border-right:0;border-bottom:1px solid var(--line)}
+ .side.closed{display:none}
+ .toggle{display:block;font:inherit;font-size:13px;color:var(--text);background:var(--panel);border:0;border-bottom:1px solid var(--line);padding:9px 16px;text-align:left;cursor:pointer}
+ #map{min-height:360px}
+}
+</style></head>
+<body>
+<div class="hdr"><h1>Bản đồ dự án TP.HCM và metro</h1><p>Nguyễn Anh Tú · Cẩm Nang Bất Động Sản · cập nhật <span id="upd"></span></p></div>
+<button class="toggle" id="tg" type="button" aria-expanded="true">Ẩn bảng thống kê và bộ lọc</button>
+<div class="wrap">
+<aside class="side" id="side">
+ <div class="sec"><h2>Thống kê (đang hiển thị)</h2>
+  <div class="stats">
+   <div class="stat"><b id="n-chua" style="color:var(--s-chua)">0</b><span>Chưa mở bán</span></div>
+   <div class="stat"><b id="n-dang" style="color:var(--s-dang)">0</b><span>Đang mở bán</span></div>
+   <div class="stat"><b id="n-da" style="color:var(--s-da)">0</b><span>Đã mở bán</span></div>
+  </div>
+  <p class="note" style="margin-top:8px">Tổng <b id="n-all">0</b> dự án · <b id="n-kxm">0</b> dự án chưa xác minh tình trạng (vòng rỗng trên bản đồ).</p>
+ </div>
+ <div class="sec"><h2>Tình trạng mở bán</h2>
+  <label class="flt"><input type="checkbox" data-st="chua-mo-ban" checked><span class="dot" style="background:var(--s-chua)"></span>Chưa mở bán<em id="c-chua"></em></label>
+  <label class="flt"><input type="checkbox" data-st="dang-mo-ban" checked><span class="dot" style="background:var(--s-dang)"></span>Đang mở bán<em id="c-dang"></em></label>
+  <label class="flt"><input type="checkbox" data-st="da-mo-ban" checked><span class="dot" style="background:var(--s-da)"></span>Đã mở bán (đã bán xong hoặc đã bàn giao)<em id="c-da"></em></label>
+ </div>
+ <div class="sec"><h2>Khu vực</h2><div class="zones" id="zones"></div></div>
+ <div class="sec"><h2>Metro và vành đai</h2>
+  <p class="note" style="margin-bottom:6px">Nét liền: đang vận hành · nét đứt: đang xây · nét chấm: nghiên cứu, đề xuất. <b>Hướng tuyến sơ đồ</b>, không phải tim tuyến.</p>
+  <p class="note" id="ln-stat" style="margin-bottom:6px"></p>
+  <div class="bar"><button type="button" id="ln-all">Hiện tất cả</button><button type="button" id="ln-none">Ẩn tất cả</button></div>
+  <h2 style="margin-top:10px">Metro</h2><div id="ln-metro"></div>
+  <h2 style="margin-top:10px">Vành đai</h2><div id="ln-ring"></div>
+ </div>
+ <div class="sec"><h2>Danh sách dự án</h2><div class="list" id="list"></div></div>
+ <div class="sec note">
+  <b>Lưu ý:</b> vị trí dự án và nhà ga là <b>vị trí tham chiếu khu vực</b>, có thể lệch vài trăm mét đến vài km so với thực tế. Tình trạng mở bán lấy từ các bài trong Cẩm Nang và thông tin thị trường tại ngày cập nhật; thay đổi theo từng đợt hàng của chủ đầu tư, nên cần xác nhận trực tiếp trước khi quyết định. Nội dung chỉ mang tính tham khảo, không phải lời chào bán.<br><br>
+  Nền bản đồ © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:var(--gold)">OpenStreetMap</a>. Hiển thị bằng Leaflet.
+ </div>
+</aside>
+<div id="map" role="application" aria-label="Bản đồ dự án và metro TP.HCM"></div>
+</div>
+<script src="vendor/leaflet.js"></script>
+<script id="data" type="application/json">
+{
+ "updated": "16/10/2026",
+ "projects": [
+  {
+   "id": "the-marq",
+   "name": "The MarQ",
+   "zone": "Quận 1",
+   "lat": 10.7893,
+   "lng": 106.6989,
+   "status": "da-mo-ban",
+   "verified": true,
+   "note": "Căn hộ hàng hiệu 29 Nguyễn Đình Chiểu; thị trường thứ cấp."
+  },
+  {
+   "id": "grand-marina-saigon",
+   "name": "Saigon Grand Marina",
+   "zone": "Quận 1",
+   "lat": 10.7872,
+   "lng": 106.7062,
+   "status": "da-mo-ban",
+   "verified": false,
+   "note": "Marriott Bonvoy, Masterise Homes, bến Bạch Đằng; một số phân khu bàn giao kéo dài. Cần xác nhận phân khu còn hàng."
+  },
+  {
+   "id": "one-central-saigon",
+   "name": "The One Central Saigon",
+   "zone": "Quận 1",
+   "lat": 10.7694,
+   "lng": 106.6988,
+   "status": "chua-mo-ban",
+   "verified": true,
+   "note": "Tháp đôi 235 m tại Tứ giác Bến Thành; khởi công 14/3/2025; chưa có thông tin mở bán chính thức (đến 5/2026)."
+  },
+  {
+   "id": "sun-thu-thiem-2c",
+   "name": "Sun Thủ Thiêm (khu 2C)",
+   "zone": "Thủ Đức",
+   "lat": 10.7705,
+   "lng": 106.7245,
+   "status": "chua-mo-ban",
+   "verified": true,
+   "note": "Khu 2C, phường An Khánh; chưa công bố sản phẩm và giá; bàn giao mặt bằng dự kiến 10/2026."
+  },
+  {
+   "id": "the-petropolis",
+   "name": "The Petropolis",
+   "zone": "Thủ Đức",
+   "lat": 10.7712,
+   "lng": 106.7216,
+   "status": "chua-mo-ban",
+   "verified": true,
+   "note": "Sát khu vực ga đường sắt đô thị Thủ Thiêm; chủ đầu tư và quy mô chưa công bố."
+  },
+  {
+   "id": "global-city",
+   "name": "Global City",
+   "zone": "Thủ Đức",
+   "lat": 10.7905,
+   "lng": 106.7685,
+   "status": "dang-mo-ban",
+   "verified": false,
+   "note": "Masterplan 117 ha của Masterise Homes, dưới 500 m đến ga Rạch Chiếc; mở bán theo từng phân khu."
+  },
+  {
+   "id": "eaton-park",
+   "name": "Eaton Park",
+   "zone": "Thủ Đức",
+   "lat": 10.7962,
+   "lng": 106.7525,
+   "status": "da-mo-ban",
+   "verified": false,
+   "note": "Gamuda Land, khoảng 500 m đến ga Rạch Chiếc."
+  },
+  {
+   "id": "palm-river",
+   "name": "Palm River (Palm City)",
+   "zone": "Thủ Đức",
+   "lat": 10.7935,
+   "lng": 106.765,
+   "status": "dang-mo-ban",
+   "verified": true,
+   "note": "Hướng Việt Properties; bốn phương án thanh toán; ưu đãi Early Birds đã hết hạn 30/9/2026."
+  },
+  {
+   "id": "vinhome-green-paradise",
+   "name": "Vinhomes Green Paradise",
+   "zone": "Cần Giờ",
+   "lat": 10.413,
+   "lng": 106.979,
+   "status": "dang-mo-ban",
+   "verified": false,
+   "note": "Vingroup, 2.870 ha; bàn giao giai đoạn đầu từ 2030."
+  },
+  {
+   "id": "norton-park",
+   "name": "Norton Park",
+   "zone": "Bình Dương (cũ)",
+   "lat": 10.933,
+   "lng": 106.714,
+   "status": "dang-mo-ban",
+   "verified": true,
+   "note": "Gamuda Land, đại lộ Bình Dương cạnh AEON Mall; bàn giao dự kiến 9/2029."
+  },
+  {
+   "id": "skysolis",
+   "name": "SkySOLIS",
+   "zone": "Bình Dương (cũ)",
+   "lat": 10.925,
+   "lng": 106.712,
+   "status": "dang-mo-ban",
+   "verified": true,
+   "note": "Mở bán đợt 1; ưu đãi booking đến hết 23/10/2026."
+  },
+  {
+   "id": "artisan-park",
+   "name": "Artisan Park",
+   "zone": "Bình Dương (cũ)",
+   "lat": 10.981,
+   "lng": 106.669,
+   "status": "dang-mo-ban",
+   "verified": true,
+   "note": "Gamuda Land tại Thành phố mới Bình Dương, khoảng 300 m đến ga metro."
+  },
+  {
+   "id": "nam-mekong-grand-plaza",
+   "name": "Nam Mekong Grand Plaza",
+   "zone": "Bình Dương (cũ)",
+   "lat": 10.978,
+   "lng": 106.676,
+   "status": "dang-mo-ban",
+   "verified": true,
+   "note": "Mở bán giai đoạn 1; sáu quỹ đất ở quanh vòng xoay A1, gần WTC."
+  },
+  {
+   "id": "blanca-city",
+   "name": "Blanca City",
+   "zone": "Vũng Tàu (cũ)",
+   "lat": 10.366,
+   "lng": 107.095,
+   "status": "dang-mo-ban",
+   "verified": false,
+   "note": "Đô thị biển 5 phân khu tại Vũng Tàu."
+  }
+ ],
+ "lines": [
+  {
+   "id": "m1",
+   "group": "metro",
+   "name": "Tuyến 1 Bến Thành – Suối Tiên",
+   "status": "van-hanh",
+   "color": "#d6336c",
+   "length": "19,7 km · 14 ga",
+   "state": "Đang vận hành từ 22/12/2024",
+   "note": "11 ga trên cao, 3 ga ngầm. Vị trí ga Bến Thành, Bình Thái, Suối Tiên theo bản đồ My Maps; các ga còn lại là vị trí tham chiếu.",
+   "src": "Wikipedia; Tuổi Trẻ; My Maps (hochiminhcitymetro.com)",
+   "pts": [[10.7703407,106.6967907],[10.7769,106.7033],[10.7864,106.7066],[10.7962,106.715],[10.7993,106.7254],[10.8021,106.7395],[10.8029,106.7543],[10.8043,106.7618],[10.8185,106.763],[10.8325719,106.7638749],[10.84666,106.77894],[10.85839,106.7915],[10.87013,106.80406],[10.8795175,106.8141018]],
+   "stations": [["Bến Thành",10.7703407,106.6967907],["Nhà hát Thành phố",10.7769,106.7033],["Ba Son",10.7864,106.7066],["Công viên Văn Thánh",10.7962,106.715],["Tân Cảng",10.7993,106.7254],["Thảo Điền",10.8021,106.7395],["An Phú",10.8029,106.7543],["Rạch Chiếc",10.8043,106.7618],["Phước Long",10.8185,106.763],["Bình Thái",10.8325719,106.7638749],["Thủ Đức",10.84666,106.77894],["Khu Công nghệ cao",10.85839,106.7915],["Đại học Quốc gia",10.87013,106.80406],["Bến xe Suối Tiên",10.8795175,106.8141018]]
+  },
+  {
+   "id": "m1x",
+   "group": "metro",
+   "name": "Tuyến TP mới Bình Dương – Suối Tiên (kéo dài Tuyến 1)",
+   "status": "nghien-cuu",
+   "color": "#d6336c",
+   "length": "khoảng 30,7–31,6 km · 17 ga trên cao",
+   "state": "Chuẩn bị đầu tư; dự kiến khởi công cuối 2026, hoàn thành 2030",
+   "note": "Đầu tư công, khoảng 55.000 tỷ đồng. Nối ga Suối Tiên của Tuyến 1; vị trí ga theo bản đồ My Maps (gần đúng, không phải bản đồ chính thức).",
+   "src": "hochiminhcitymetro.com (My Maps); Kênh14 15/10/2026",
+   "pts": [[11.0601497,106.6879175],[11.0501306,106.6804716],[11.040543,106.6766844],[11.0259308,106.678063],[11.0175456,106.676219],[10.9973494,106.6825702],[10.9878865,106.6896684],[10.9779604,106.7051432],[10.9646891,106.7203031],[10.9545298,106.7318252],[10.9456141,106.7406281],[10.9329653,106.7532806],[10.9254248,106.7638313],[10.9186993,106.7750462],[10.9076351,106.7960354],[10.9026309,106.8096717],[10.8949063,106.8201989],[10.8795175,106.8141018]],
+   "ends": ["Ga S1 (TP mới Bình Dương)","Suối Tiên"],
+   "stations": [["Ga S1",11.0601497,106.6879175],["Ga S2",11.0501306,106.6804716],["Ga S3",11.040543,106.6766844],["Ga S4",11.0259308,106.678063],["Ga S5",11.0175456,106.676219],["Ga S6",10.9973494,106.6825702],["Ga S7",10.9878865,106.6896684],["Ga S8",10.9779604,106.7051432],["Ga S9",10.9646891,106.7203031],["Ga S10",10.9545298,106.7318252],["Ga S11",10.9456141,106.7406281],["Ga S12",10.9329653,106.7532806],["Ga S13",10.9254248,106.7638313],["Ga S14",10.9186993,106.7750462],["Ga S15",10.9076351,106.7960354],["Ga S16",10.9026309,106.8096717],["Ga S17",10.8949063,106.8201989],["Suối Tiên (Tuyến 1)",10.8795175,106.8141018]]
+  },
+  {
+   "id": "m2",
+   "group": "metro",
+   "name": "Tuyến 2 Bến Thành – Tham Lương",
+   "status": "dang-xay",
+   "color": "#1971c2",
+   "length": "11,3 km · 11 ga",
+   "state": "Đang xây dựng; khởi công 15/1/2026, dự kiến chạy cuối 2030",
+   "note": "10 ga ngầm, 1 ga trên cao (Tân Bình). Đã bàn giao 100% mặt bằng.",
+   "src": "Tuổi Trẻ 16/1/2026; Thanh Niên 9/10/2026; Kênh14 15/10/2026; bản đồ Google My Maps \"Line 2 HCMC Metro\" (vị trí gần đúng)",
+   "pts": [[10.7703407,106.6967907],[10.772555,106.6918588],[10.77724,106.6821587],[10.7823098,106.6732239],[10.7858618,106.6657545],[10.7893397,106.6604859],[10.7924721,106.6538105],[10.7995514,106.6404665],[10.8069914,106.6349863],[10.8138966,106.6329427],[10.8200891,106.6305216]],
+   "stations": [["Bến Thành",10.7703407,106.6967907],["Tao Đàn",10.772555,106.6918588],["Dân Chủ",10.77724,106.6821587],["Hòa Hưng",10.7823098,106.6732239],["Lê Thị Riêng",10.7858618,106.6657545],["Phạm Văn Hai",10.7893397,106.6604859],["Bảy Hiền",10.7924721,106.6538105],["Nguyễn Hồng Đào",10.7995514,106.6404665],["Bà Quẹo",10.8069914,106.6349863],["Phạm Văn Bạch",10.8138966,106.6329427],["Tân Bình",10.8200891,106.6305216]]
+  },
+  {
+   "id": "m2a",
+   "group": "metro",
+   "name": "Tuyến 2 Bến Thành – Thủ Thiêm",
+   "status": "dang-xay",
+   "color": "#1971c2",
+   "length": "khoảng 6 km · 6 ga",
+   "state": "Khởi công 29/4/2026; dự kiến hoàn thành 2030",
+   "note": "Giai đoạn 2 của Tuyến 2: Hàm Nghi, Tố Hữu, Cung Thiếu Nhi, Bệnh viện Quốc tế, Bình Khánh, Thủ Thiêm. Do Thaco đề xuất theo hình thức BT.",
+   "src": "Kênh14 15/10/2026; Tuổi Trẻ 16/1/2026; bản đồ Google My Maps \"Line 2 HCMC Metro\" (vị trí gần đúng)",
+   "pts": [[10.7703407,106.6967907],[10.7708002,106.7053212],[10.7720017,106.7169942],[10.773667,106.7221011],[10.7777722,106.7314892],[10.7827246,106.7397439],[10.78664,106.7460417]],
+   "ends": ["Bến Thành","Thủ Thiêm"],
+   "stations": [["Bến Thành",10.7703407,106.6967907],["Hàm Nghi",10.7708002,106.7053212],["Đại lộ Vòng Cung (Tố Hữu)",10.7720017,106.7169942],["Cung Thiếu Nhi",10.773667,106.7221011],["Bệnh viện Quốc tế",10.7777722,106.7314892],["Bình Khánh",10.7827246,106.7397439],["Thủ Thiêm",10.78664,106.7460417]]
+  },
+  {
+   "id": "m2b",
+   "group": "metro",
+   "name": "Tuyến 2 nối dài: Tham Lương – An Hạ – Khu đô thị Tây Bắc",
+   "status": "nghien-cuu",
+   "color": "#1971c2",
+   "length": "30 km",
+   "state": "Đề xuất PPP; dự kiến khởi công cuối 2026",
+   "note": "Đề xuất vốn khoảng 85.000 tỷ đồng.",
+   "src": "Kênh14 15/10/2026",
+   "pts": [[10.8200891,106.6305216],[10.85,106.58],[10.91,106.535],[10.97,106.495]],
+   "ends": ["Tham Lương","Tây Bắc (Củ Chi)"]
+  },
+  {
+   "id": "m2c",
+   "group": "metro",
+   "name": "Thủ Dầu Một – Tao Đàn (số hiệu tuyến theo tài liệu mới)",
+   "status": "nghien-cuu",
+   "color": "#4263eb",
+   "length": "35,1 km · 24 ga (11 trên cao, 13 ngầm)",
+   "state": "Chuẩn bị đầu tư; dự kiến khởi công cuối 2026, hoàn thành 2030",
+   "note": "Ga đầu C0 nối ga S5 của tuyến Bình Dương – Suối Tiên; ga cuối C23 tại công viên Tao Đàn, nối Tuyến 2 và Tuyến 3. Giao với Tuyến 6 tại cầu Bình Lợi. Vốn khoảng 113.000 tỷ đồng, đầu tư công. Hướng tuyến giữa các điểm neo là sơ đồ.",
+   "src": "hochiminhcitymetro.com; Kênh14 15/10/2026; Tuổi Trẻ 13/8/2026",
+   "pts": [[11.0175456,106.676219],[10.975,106.672],[10.93,106.69],[10.89,106.7],[10.8274213,106.7147029],[10.8,106.705],[10.772555,106.6918588]],
+   "ends": ["Thủ Dầu Một (ga C0)","Tao Đàn (ga C23)"]
+  },
+  {
+   "id": "m3",
+   "group": "metro",
+   "name": "Tuyến 3 An Hạ – Tân Kiên – Cộng Hòa – Hiệp Bình Phước (gồm đoạn 3B)",
+   "status": "nghien-cuu",
+   "color": "#e8a317",
+   "length": "45,8 km · khoảng 37 ga",
+   "state": "Đề xuất; cuối 12/2025 UBND TP.HCM cho Masterise khảo sát và lập đề xuất đầu tư bằng vốn doanh nghiệp",
+   "note": "Hành lang qua An Hạ (Bình Chánh), Lê Minh Xuân, Tân Kiên, Quốc lộ 1, Cộng Hòa, Tao Đàn đến Hiệp Bình Phước. Đoạn 3B cũ (Cộng Hòa – Hiệp Bình Phước, 12,2 km) đi dọc Nguyễn Thị Minh Khai, Xô Viết Nghệ Tĩnh, QL13. Số ga trong các nguồn không thống nhất.",
+   "src": "hochiminhcitymetro.com (3B); Tuổi Trẻ 16/1/2026; FPT Shop",
+   "pts": [[10.854,106.716],[10.82,106.709],[10.786,106.699],[10.772555,106.6918588],[10.783,106.66],[10.79,106.635],[10.765,106.61],[10.735,106.59],[10.709,106.589],[10.72,106.54],[10.73,106.51]],
+   "ends": ["Hiệp Bình Phước","An Hạ (Bình Chánh)"]
+  },
+  {
+   "id": "m3a",
+   "group": "metro",
+   "name": "Tuyến 3A Bến Thành – Tân Kiên",
+   "status": "nghien-cuu",
+   "color": "#2f9e44",
+   "length": "khoảng 19,6 km · 17 ga",
+   "state": "Nghiên cứu, tìm vốn; giai đoạn 1 (Bến Thành – Bến xe Miền Tây) kế hoạch 2025–2031",
+   "note": "Giai đoạn 1 (Bến Thành – Bến xe Miền Tây): 10 ga ngầm. Giai đoạn 2 (đến depot Tân Kiên): 7 ga trên cao. Dự án chưa được duyệt vì vướng vốn; khu đất depot Tân Kiên 26 ha còn bị lấn chiếm.",
+   "src": "hochiminhcitymetro.com; Hà Nội Mới; FPT Shop",
+   "pts": [[10.7703407,106.6967907],[10.76,106.68],[10.752,106.66],[10.7418,106.6347],[10.725,106.61],[10.709,106.589]],
+   "ends": ["Bến Thành","Tân Kiên"]
+  },
+  {
+   "id": "m4",
+   "group": "metro",
+   "name": "Tuyến 4 Thạnh Xuân – Hiệp Phước",
+   "status": "nghien-cuu",
+   "color": "#0ca678",
+   "length": "khoảng 35,75 km · 32 ga",
+   "state": "Nghiên cứu; đề xuất mở rộng Đông Thạnh – Hóc Môn (Sovico)",
+   "note": "Trang nguồn nêu 47,3 km và 37 ga, phần mô tả ghi khoảng 35,75 km (16,18 km ngầm, 17,77 km trên cao); hai con số chưa thống nhất. Các ga phía bắc theo thứ tự: Cầu Sáng, Bùi Công Trừng, Vòng Cung Tây Bắc, Thạnh Xuân, Ngã Tư Ga, An Lộc, An Nhơn, Phan Văn Trị, Tân Sơn Nhất, Công viên Hoàng Văn Thụ, Mai Văn Ngọc, Huỳnh Văn Bánh, Công viên Lê Văn Tám, Nhà Văn Hóa Thanh Niên, Bến Thành. Chưa có tọa độ ga, hướng tuyến là sơ đồ.",
+   "src": "hochiminhcitymetro.com; FPT Shop; Tuổi Trẻ 16/1/2026",
+   "pts": [[10.877,106.671],[10.835,106.67],[10.811,106.678],[10.795,106.6905],[10.779,106.695],[10.76,106.706],[10.728,106.719],[10.68,106.73],[10.635,106.745]],
+   "ends": ["Thạnh Xuân","Hiệp Phước"]
+  },
+  {
+   "id": "m4b",
+   "group": "metro",
+   "name": "Tuyến 4B Công viên Gia Định – Lăng Cha Cả",
+   "status": "nghien-cuu",
+   "color": "#0ca678",
+   "length": "khoảng 3,2 km",
+   "state": "Nghiên cứu",
+   "note": "Tuyến nhánh nối ga Công viên Gia Định (Tuyến 4) với sân bay Tân Sơn Nhất, 3 ga ngầm. Trang nguồn liệt kê 7 điểm dọc tuyến: Công viên Gia Định, Nguyễn Thái Sơn, Hồng Hà, Sân bay Tân Sơn Nhất, Trường Sơn, Công viên Hoàng Văn Thụ, Lăng Cha Cả.",
+   "src": "FPT Shop",
+   "pts": [[10.811,106.678],[10.805,106.666],[10.794,106.66]],
+   "ends": ["Công viên Gia Định","Lăng Cha Cả"]
+  },
+  {
+   "id": "m5",
+   "group": "metro",
+   "name": "Tuyến 5 Cầu Sài Gòn – Bảy Hiền – Cần Giuộc",
+   "status": "nghien-cuu",
+   "color": "#7048e8",
+   "length": "khoảng 23,4 km · 22 ga",
+   "state": "Giai đoạn 1 chờ chủ trương đầu tư; giai đoạn 2 kêu gọi đầu tư",
+   "note": "Nguồn nêu hai bộ số liệu khác nhau (53,9 km/39 ga và 23,4 km/22 ga). Giai đoạn 1: Ngã tư Bảy Hiền – cầu Sài Gòn, 8,89 km, 9 ga. Giai đoạn 2: Ngã tư Bảy Hiền – bến xe Can Giuộc mới, 14,5 km, 13 ga, depot Đa Phước. Bản đồ MAUR hiển thị phương án cũ.",
+   "src": "Hà Nội Mới; FPT Shop",
+   "pts": [[10.7993,106.7254],[10.807,106.685],[10.799,106.662],[10.7937,106.653],[10.765,106.635],[10.7,106.65],[10.64,106.66]],
+   "ends": ["Cầu Sài Gòn","Cần Giuộc"]
+  },
+  {
+   "id": "m6",
+   "group": "metro",
+   "name": "Tuyến 6 giai đoạn 1: Bà Quẹo – sân bay Tân Sơn Nhất – Phú Hữu",
+   "status": "nghien-cuu",
+   "color": "#e8590c",
+   "length": "khoảng 23 km · 17 ga",
+   "state": "Chuẩn bị đầu tư; dự kiến khởi công cuối 2026, hoàn thành 2030",
+   "note": "Đầu tư công, trên 86.000 tỷ đồng; kết nối tuyến Thủ Thiêm – Long Thành tại Phú Hữu. Vị trí ga theo bản đồ My Maps (gần đúng). Toàn tuyến vành đai trong dài khoảng 53,8 km, 43 ga.",
+   "src": "hochiminhcitymetro.com (My Maps); Kênh14 15/10/2026; Tuổi Trẻ 13/8/2026",
+   "pts": [[10.8037885,106.6356812],[10.8108124,106.6495536],[10.8148539,106.6645954],[10.8137524,106.676038],[10.8163448,106.6843314],[10.8202922,106.6933973],[10.8229913,106.7033411],[10.8266585,106.7152233],[10.834176,106.7287952],[10.8389126,106.7380381],[10.8345704,106.753084],[10.83204,106.7645437],[10.8298199,106.7787425],[10.8211278,106.7895604],[10.8127515,106.7925645],[10.803994,106.7923016],[10.7947567,106.7924894]],
+   "ends": ["Bà Quẹo","Phú Hữu"],
+   "stations": [["Bà Quẹo",10.8037885,106.6356812],["Nhà ga T3 (sân bay Tân Sơn Nhất)",10.8108124,106.6495536],["Tân Sơn Nhất",10.8148539,106.6645954],["Công viên Gia Định",10.8137524,106.676038],["Gò Vấp",10.8163448,106.6843314],["Phan Văn Trị",10.8202922,106.6933973],["Nguyễn Xí",10.8229913,106.7033411],["Cầu Bình Lợi",10.8266585,106.7152233],["Bình Triệu",10.834176,106.7287952],["Cầu Gò Dưa",10.8389126,106.7380381],["Linh Đông",10.8345704,106.753084],["Bình Thái",10.83204,106.7645437],["Tăng Nhơn Phú",10.8298199,106.7787425],["Khu Công nghệ cao",10.8211278,106.7895604],["Cầu Phú Hữu",10.8127515,106.7925645],["Liên Phường",10.803994,106.7923016],["Phú Hữu",10.7947567,106.7924894]]
+  },
+  {
+   "id": "mtl",
+   "group": "metro",
+   "name": "Đường sắt Thủ Thiêm – sân bay Long Thành",
+   "status": "nghien-cuu",
+   "color": "#5c940d",
+   "length": "khoảng 42–47 km · 18–20 ga",
+   "state": "Thaco / Đại Quang Minh đề xuất; dự kiến phê duyệt 11/2026",
+   "note": "Khoảng 11,5 km nằm trong TP.HCM. Các ga theo sơ đồ: Thủ Thiêm, Bình Trưng, Đỗ Xuân Hợp, Bà Hiện, Phú Hữu, Ông Nhiêu, Long Trường, Thiếc Dừa, Long Tân, Phú Thạnh, Tuy Hạ, Nhơn Trạch, Phú Hội, Phước Thiền, Hiệp Phước, S16, S17, S18, Long Thành T1-2, T3-4. Trên bản đồ chỉ có 4 ga có tọa độ My Maps; đoạn giữa là hướng sơ đồ. Hợp đồng BT, trên 134.000 tỷ đồng.",
+   "src": "hochiminhcitymetro.com (My Maps); Kênh14 15/10/2026; Tuổi Trẻ 16/1/2026",
+   "pts": [[10.7886508,106.7484911],[10.7948741,106.7907841],[10.76,106.82],[10.7,106.84],[10.67,106.9],[10.69,106.97],[10.7585066,107.0248728],[10.7699742,107.0416527]],
+   "ends": ["Thủ Thiêm","Sân bay Long Thành"],
+   "stations": [["Thủ Thiêm",10.7886508,106.7484911],["Phú Hữu",10.7948741,106.7907841],["Long Thành T1-2",10.7585066,107.0248728],["Long Thành T3-4",10.7699742,107.0416527]]
+  },
+  {
+   "id": "mcg",
+   "group": "metro",
+   "name": "Đường sắt tốc độ cao Bến Thành – Cần Giờ (VinSpeed)",
+   "status": "dang-xay",
+   "color": "#c2255c",
+   "length": "khoảng 54 km",
+   "state": "Đã động thổ 19/12/2025; Vingroup là nhà đầu tư; dự kiến hoàn thành 2028",
+   "note": "Tốc độ thiết kế 350 km/h, khổ đường 1.435 mm, tổng vốn khoảng 115.214 tỷ đồng, depot Cần Giờ. Giai đoạn đầu có 2 ga: Bến Thành và Tân Thuận (trên sơ đồ); tàu 3 toa, sau này 6 toa. Hướng tuyến là sơ đồ.",
+   "src": "Tuổi Trẻ 16/1/2026; Kênh14 15/10/2026; sơ đồ do Tú cung cấp",
+   "pts": [[10.7703407,106.6967907],[10.74,106.72],[10.69,106.74],[10.55,106.85],[10.413,106.979]],
+   "ends": ["Bến Thành","Cần Giờ"]
+  },
+  {
+   "id": "r1",
+   "group": "ring",
+   "name": "Vành đai 1",
+   "status": "dang-xay",
+   "color": "#8d6e63",
+   "length": "26,4 km",
+   "state": "Một phần hoàn thành; các đoạn còn lại chưa xong",
+   "note": "Đoạn Linh Đông – vòng xoay Nguyễn Thái Sơn (8,5 km, trùng Phạm Văn Đồng) đã hoàn thành; các đoạn Nguyễn Thái Sơn – Bảy Hiền – Hương lộ 2 – Nguyễn Văn Linh chưa hoàn chỉnh.",
+   "src": "Thư Viện Pháp Luật (2025)",
+   "pts": [[10.85,106.733],[10.835,106.71],[10.817,106.68],[10.807,106.661],[10.7937,106.653],[10.778,106.629],[10.772,106.602],[10.755,106.608],[10.733,106.63]],
+   "ends": ["Linh Đông","Nguyễn Văn Linh"]
+  },
+  {
+   "id": "r2",
+   "group": "ring",
+   "name": "Vành đai 2",
+   "status": "dang-xay",
+   "color": "#455a64",
+   "length": "hơn 64 km",
+   "state": "Đang xây từng đoạn; năm 2025 khởi công cầu Phú Hữu – Võ Nguyên Giáp – Phạm Văn Đồng",
+   "note": "Đi qua Quận 2, 7, 8, 9, Bình Tân, Bình Chánh, Thủ Đức; còn các nút Bình Thái, Gò Dưa.",
+   "src": "Thư Viện Pháp Luật (2025); Nhà Đầu Tư 3/1/2026",
+   "pts": [[10.727,106.62],[10.725,106.66],[10.74,106.7],[10.76,106.74],[10.79,106.778],[10.818,106.783],[10.829,106.788],[10.848,106.75],[10.87,106.74]],
+   "ends": ["Nguyễn Văn Linh","Gò Dưa"]
+  },
+  {
+   "id": "r3",
+   "group": "ring",
+   "name": "Vành đai 3",
+   "status": "dang-xay",
+   "color": "#1b3a57",
+   "length": "khoảng 76–89 km (đoạn TP.HCM khoảng 47,3 km)",
+   "state": "Khởi công 18/6/2023; mục tiêu hoàn thành 2026",
+   "note": "Bến Lức – Bình Chánh – Củ Chi – Hóc Môn – Bình Dương – Thủ Đức – Nhơn Trạch. Đoạn Bình Chuẩn – Tân Vạn (16,7 km) đã thông xe.",
+   "src": "Thư Viện Pháp Luật (2025); Rever (2023); Nhà Đầu Tư 3/1/2026",
+   "pts": [[10.635,106.488],[10.74,106.5],[10.84,106.49],[10.91,106.515],[10.887,106.58],[10.935,106.69],[10.915,106.74],[10.905,106.795],[10.87,106.825],[10.83,106.83],[10.74,106.825]],
+   "ends": ["Bến Lức","Nhơn Trạch"]
+  },
+  {
+   "id": "r4",
+   "group": "ring",
+   "name": "Vành đai 4",
+   "status": "dang-xay",
+   "color": "#6a1b9a",
+   "length": "khoảng 159 km",
+   "state": "Khởi công thành phần 1-2 tháng 6/2026 (đoạn Đồng Nai); mục tiêu vận hành 2029",
+   "note": "Đi qua Long An, TP.HCM, Bình Dương, Đồng Nai. Các đoạn còn lại đang bàn giao mặt bằng.",
+   "src": "Bnews 16/9/2026; Thư Viện Pháp Luật (2025)",
+   "pts": [[10.635,106.46],[10.83,106.415],[10.97,106.46],[11.05,106.57],[11.06,106.73],[11.0,106.83],[10.95,106.97],[10.83,107.04]],
+   "ends": ["Bến Lức","Long Thành"]
+  },
+  {
+   "id": "m7",
+   "group": "metro",
+   "name": "Tuyến 7 Tân Kiên – Thanh Đa – Long Bình",
+   "status": "nghien-cuu",
+   "color": "#1098ad",
+   "length": "51,2 km · 36 ga",
+   "state": "Quy hoạch; hướng tuyến khu Thủ Thiêm đang được điều chỉnh (2026)",
+   "note": "Hành lang Tân Kiên – Nguyễn Văn Linh – Thanh Đa – Vinhomes Grand Park (Phước Thiện) – Long Bình. Giao Tuyến 6 tại Khu Công nghệ cao (tọa độ từ My Maps Tuyến 6). Hướng tuyến là sơ đồ.",
+   "src": "hochiminhcitymetro.com",
+   "pts": [[10.709,106.589],[10.728,106.65],[10.73,106.7],[10.756,106.733],[10.813,106.727],[10.8194051,106.7903543],[10.839,106.845],[10.878,106.887]],
+   "ends": ["Tân Kiên","Long Bình"]
+  },
+  {
+   "id": "m8",
+   "group": "metro",
+   "name": "Tuyến 8 Đa Phước – Hòa Hưng – Gò Vấp – Bình Mỹ",
+   "status": "nghien-cuu",
+   "color": "#d9480f",
+   "length": "42,8 km · 40 ga",
+   "state": "Quy hoạch",
+   "note": "Hành lang Đa Phước – Hòa Hưng – Công viên Gia Định – Gò Vấp – Tân Chánh Hiệp – Bình Mỹ. Công viên Gia Định theo tọa độ My Maps Tuyến 6, Hòa Hưng theo My Maps Tuyến 2. Hướng tuyến là sơ đồ.",
+   "src": "hochiminhcitymetro.com",
+   "pts": [[10.665,106.6],[10.72,106.64],[10.7823098,106.6732239],[10.812551,106.6765101],[10.84,106.665],[10.865,106.627],[10.985,106.57]],
+   "ends": ["Đa Phước","Bình Mỹ"]
+  },
+  {
+   "id": "m9",
+   "group": "metro",
+   "name": "Tuyến 9 Bình Triệu – Hòa Hưng – Âu Cơ – An Hạ",
+   "status": "nghien-cuu",
+   "color": "#862e9c",
+   "length": "28,3 km · 23 ga",
+   "state": "Quy hoạch",
+   "note": "Hành lang Bình Triệu – Hòa Hưng – Âu Cơ – An Hạ (Bình Chánh). Bình Triệu theo My Maps Tuyến 6, Hòa Hưng theo My Maps Tuyến 2. Hướng tuyến là sơ đồ.",
+   "src": "hochiminhcitymetro.com",
+   "pts": [[10.8273107,106.7159599],[10.805,106.69],[10.7823098,106.6732239],[10.779,106.642],[10.76,106.6],[10.73,106.51]],
+   "ends": ["Bình Triệu","An Hạ"]
+  },
+  {
+   "id": "m10",
+   "group": "metro",
+   "name": "Tuyến 10 vành đai ngoài",
+   "status": "nghien-cuu",
+   "color": "#495057",
+   "length": "83,9 km · 69 ga",
+   "state": "Đề xuất",
+   "note": "Hành lang Thủ Thiêm – Cát Lái – Khu Công nghệ cao – Tham Lương – Phong Phú – Thủ Thiêm (đường khép kín). Hướng tuyến là sơ đồ.",
+   "src": "hochiminhcitymetro.com",
+   "pts": [[10.7886508,106.7484911],[10.77,106.79],[10.8194051,106.7903543],[10.845,106.73],[10.855,106.68],[10.84,106.63],[10.833,106.615],[10.76,106.59],[10.69,106.64],[10.7,106.7],[10.75,106.725],[10.7886508,106.7484911]],
+   "ends": ["Thủ Thiêm","Thủ Thiêm (khép vòng)"]
+  }
+ ]
+}
+</script>
+<script>
+(function(){
+ var D=JSON.parse(document.getElementById('data').textContent);
+ var ST={'chua-mo-ban':{t:'Chưa mở bán',c:'#3b82f6',k:'chua'},'dang-mo-ban':{t:'Đang mở bán',c:'#22a06b',k:'dang'},'da-mo-ban':{t:'Đã mở bán',c:'#d9534f',k:'da'}};
+ document.getElementById('upd').textContent=D.updated;
+ var map=L.map('map',{zoomControl:true,preferCanvas:false}).setView([10.82,106.72],11);
+ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ // metro và vành đai
+ var SS={'van-hanh':{t:'Đang vận hành',d:null,w:5,o:.95},'dang-xay':{t:'Đang xây dựng',d:'9 8',w:5,o:.9},'nghien-cuu':{t:'Nghiên cứu, đề xuất',d:'1 9',w:5,o:.85}};
+ var lineLayers={};
+ D.lines.forEach(function(d){
+  var g=L.layerGroup(),ss=SS[d.status],tip='<b>'+esc(d.name)+'</b><br>'+ss.t+' · '+esc(d.length);
+  var pl=L.polyline(d.pts,{color:d.color,weight:d.group==='ring'?6:ss.w,opacity:ss.o,dashArray:ss.d,lineCap:d.status==='nghien-cuu'?'round':'butt'});
+  pl.bindTooltip(tip,{sticky:true});
+  pl.bindPopup('<div class="pp-t">'+esc(d.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+ss.t+'</span><div class="pp-m">'+esc(d.length)+'<br>'+esc(d.state)+'<br>'+esc(d.note)+'<br><i>Hướng tuyến sơ đồ. Nguồn: '+esc(d.src)+'</i></div>');
+  pl.addTo(g);
+  if(d.stations){d.stations.forEach(function(s){
+   L.circleMarker([s[1],s[2]],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(s[0]),{className:'stn',direction:'top',offset:[0,-4]}).bindPopup('<div class="pp-t">Ga '+esc(s[0])+'</div><div class="pp-m">'+esc(d.name)+'<br>'+esc(d.state)+'<br><i>Vị trí tham chiếu</i></div>').addTo(g);
+  });}
+  else if(d.ends){[0,d.pts.length-1].forEach(function(i,k){
+   L.circleMarker(d.pts[i],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(d.ends[k]),{className:'stn',direction:'top',offset:[0,-4]}).addTo(g);
+  });}
+  lineLayers[d.id]={g:g,on:true};g.addTo(map);
+  var box=document.getElementById(d.group==='ring'?'ln-ring':'ln-metro');
+  var lb=document.createElement('label');lb.className='flt';
+  lb.innerHTML='<input type="checkbox" data-ln="'+d.id+'" checked><span class="ln" style="border-color:'+d.color+';border-top-style:'+(d.status==='van-hanh'?'solid':d.status==='dang-xay'?'dashed':'dotted')+'"></span><span>'+esc(d.name)+'<small>'+ss.t+' · '+esc(d.length)+'</small></span>';
+  box.appendChild(lb);
+ });
+ function setLine(id,on){var o=lineLayers[id];o.on=on;on?o.g.addTo(map):map.removeLayer(o.g);var c=document.querySelector('[data-ln="'+id+'"]');if(c)c.checked=on;lnStat()}
+ function lnStat(){var n={'van-hanh':0,'dang-xay':0,'nghien-cuu':0};D.lines.forEach(function(d){if(d.group==='metro'&&lineLayers[d.id].on)n[d.status]++});
+  document.getElementById('ln-stat').innerHTML='Metro đang hiển thị: <b>'+n['van-hanh']+'</b> vận hành · <b>'+n['dang-xay']+'</b> đang xây · <b>'+n['nghien-cuu']+'</b> nghiên cứu.'}
+ Array.prototype.forEach.call(document.querySelectorAll('[data-ln]'),function(c){c.addEventListener('change',function(){setLine(c.dataset.ln,c.checked)})});
+ document.getElementById('ln-all').addEventListener('click',function(){D.lines.forEach(function(d){setLine(d.id,true)})});
+ document.getElementById('ln-none').addEventListener('click',function(){D.lines.forEach(function(d){setLine(d.id,false)})});
+ lnStat();
+ // projects
+ var markers={},activeSt={},activeZone=null,zones=[];
+ Object.keys(ST).forEach(function(k){activeSt[k]=true});
+ D.projects.forEach(function(p){
+  if(zones.indexOf(p.zone)<0)zones.push(p.zone);
+  var s=ST[p.status];
+  var m=L.circleMarker([p.lat,p.lng],{radius:11,weight:3,color:p.verified?'#fff':s.c,fillColor:s.c,fillOpacity:p.verified?1:.25,dashArray:p.verified?null:'3 3'});
+  m.bindTooltip(esc(p.name),{direction:'top',offset:[0,-8]});
+  m.bindPopup('<div class="pp-t">'+esc(p.name)+'</div><span class="pp-b" style="background:'+s.c+'">'+s.t+(p.verified?'':' (chưa xác minh)')+'</span><div class="pp-m">'+esc(p.zone)+'<br>'+esc(p.note)+'<br><i>Vị trí tham chiếu khu vực</i></div><a class="pp-a" href="/cam-nang/'+esc(p.id)+'/" target="_blank" rel="noopener">Đọc phân tích →</a>');
+  markers[p.id]=m;
+ });
+ var zEl=document.getElementById('zones');
+ function zbtn(label,val){var b=document.createElement('button');b.type='button';b.textContent=label;b.setAttribute('aria-pressed',String(activeZone===val));b.addEventListener('click',function(){activeZone=val;refresh()});b.dataset.z=val===null?'':val;zEl.appendChild(b)}
+ zbtn('Tất cả',null);zones.forEach(function(z){zbtn(z,z)});
+ var list=document.getElementById('list');
+ function vis(p){return activeSt[p.status]&&(activeZone===null||p.zone===activeZone)}
+ function refresh(){
+  var cnt={'chua-mo-ban':0,'dang-mo-ban':0,'da-mo-ban':0},kxm=0,tot=0;
+  list.innerHTML='';
+  D.projects.forEach(function(p){
+   var m=markers[p.id],show=vis(p);
+   if(show){m.addTo(map);cnt[p.status]++;tot++;if(!p.verified)kxm++;
+    var b=document.createElement('button');b.type='button';
+    b.innerHTML='<span class="dot" style="background:'+ST[p.status].c+'"></span><span>'+esc(p.name)+'<small>'+esc(p.zone)+' · '+ST[p.status].t+(p.verified?'':' (chưa xác minh)')+'</small></span>';
+    b.addEventListener('click',function(){map.setView([p.lat,p.lng],Math.max(map.getZoom(),14));m.openPopup();if(window.innerWidth<=760)document.getElementById('side').classList.add('closed')});
+    list.appendChild(b);
+   } else map.removeLayer(m);
+  });
+  document.getElementById('n-chua').textContent=cnt['chua-mo-ban'];
+  document.getElementById('n-dang').textContent=cnt['dang-mo-ban'];
+  document.getElementById('n-da').textContent=cnt['da-mo-ban'];
+  document.getElementById('n-all').textContent=tot;document.getElementById('n-kxm').textContent=kxm;
+  var all={'chua-mo-ban':0,'dang-mo-ban':0,'da-mo-ban':0};
+  D.projects.forEach(function(p){if(activeZone===null||p.zone===activeZone)all[p.status]++});
+  document.getElementById('c-chua').textContent=all['chua-mo-ban'];document.getElementById('c-dang').textContent=all['dang-mo-ban'];document.getElementById('c-da').textContent=all['da-mo-ban'];
+  Array.prototype.forEach.call(zEl.children,function(b){b.setAttribute('aria-pressed',String((b.dataset.z===''&&activeZone===null)||b.dataset.z===activeZone))});
+ }
+ Array.prototype.forEach.call(document.querySelectorAll('[data-st]'),function(c){c.addEventListener('change',function(){activeSt[c.dataset.st]=c.checked;refresh()})});
+ refresh();
+ var tg=document.getElementById('tg'),side=document.getElementById('side');
+ tg.addEventListener('click',function(){var c=side.classList.toggle('closed');tg.setAttribute('aria-expanded',String(!c));tg.textContent=c?'Hiện bảng thống kê và bộ lọc':'Ẩn bảng thống kê và bộ lọc';setTimeout(function(){map.invalidateSize()},50)});
+ var b=L.latLngBounds(D.projects.filter(function(p){return p.zone!=='Cần Giờ'&&p.zone!=='Vũng Tàu (cũ)'}).map(function(p){return [p.lat,p.lng]}));
+ b.extend([10.8795,106.8150]);b.extend([10.8040,106.6230]);map.fitBounds(b.pad(.08));
+})();
+</script>
+</body></html>

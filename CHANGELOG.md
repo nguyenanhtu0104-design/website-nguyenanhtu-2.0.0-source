@@ -3,6 +3,20 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-16 — Công cụ: Bản đồ dự án TP.HCM, metro và vành đai (bản xem thử, chưa gắn vào bài)
+
+- Bổ sung đủ Tuyến 7, 8, 9, 10 (hướng tuyến sơ đồ, ghi chú nguồn hochiminhcitymetro.com). Tổng 18 tuyến metro và 4 vành đai.
+- Tuyến 6 giai đoạn 1 (17 ga), tuyến TP mới Bình Dương – Suối Tiên (17 ga) và 4 ga Thủ Thiêm – Long Thành dùng tọa độ từ bản đồ My Maps; Tuyến 1 lấy 3 ga có tọa độ, các ga còn lại nội suy.
+- Tuyến Thủ Dầu Một – Tao Đàn neo ga đầu (S5) và cầu Bình Lợi; đoạn giữa là sơ đồ (bản đồ My Maps của tuyến này chưa đọc được).
+- Sửa tên ga Tuyến 2 đoạn Thủ Thiêm thành Đại lộ Vòng Cung; cập nhật số liệu Cần Giờ, Tuyến 4, 4B, 5.
+- Thêm công cụ tĩnh `assets/tools/ban-do-du-an-hcm/` (noindex): bản đồ OpenStreetMap, 14 dự án trong Cẩm Nang đánh dấu theo tình trạng (chưa mở bán / đang mở bán / đã mở bán), thống kê số dự án theo bộ lọc tình trạng và khu vực. Dữ liệu nằm trong khối JSON ở đầu file.
+- Metro: Tuyến 1 (14 ga, đang chạy), Tuyến 2 (11 ga, đang xây), cùng Tuyến 2 Bến Thành – Thủ Thiêm, Tuyến 2 nối dài Tham Lương – Tây Bắc, Thủ Dầu Một – Tao Đàn, Tuyến 1 kéo dài về TP mới Bình Dương, Tuyến 3, 3A, 4, 4B, 5, 6, đường sắt Thủ Thiêm – Long Thành và Bến Thành – Cần Giờ; Vành đai 1, 2, 3, 4. Nét liền = đang vận hành, nét đứt = đang xây, nét chấm = nghiên cứu/đề xuất. Mỗi tuyến bật/tắt riêng, có chiều dài, tình trạng, nguồn.
+- Tuyến 2: 11 ga giai đoạn 1 và 6 ga giai đoạn 2 (Hàm Nghi – Thủ Thiêm) lấy theo bản đồ Google My Maps "Line 2 HCMC Metro" do Tú gửi link (ghi chú của bản đồ: vị trí gần đúng, không chính thức).
+- Tuyến 3 đổi hướng tuyến theo hochiminhcitymetro.com: An Hạ (Bình Chánh) – Tân Kiên – Cộng Hòa – Hiệp Bình Phước, 45,8 km (bản trước vẽ nhầm lên Củ Chi). Tuyến 3A: 17 ga (10 ngầm, 7 trên cao).
+- Chỉ Tuyến 1 và Tuyến 2 có tên ga; các tuyến còn lại là hướng tuyến sơ đồ nối các điểm đầu – cuối, vì tài liệu công bố chưa có tên ga hay tọa độ.
+- Thư viện Leaflet 1.9.4 (BSD-2) được lưu ngay trong `vendor/` của công cụ, không tải từ CDN; nền ô bản đồ lấy từ tile.openstreetmap.org (có ghi nguồn). Tú duyệt dùng Leaflet + OpenStreetMap ngày 2026-10-15.
+- Vị trí dự án và nhà ga là tham chiếu khu vực; 5/14 dự án chưa xác minh tình trạng mở bán và được vẽ bằng vòng rỗng. Chưa có nút mở bản đồ trong bài nào.
+
 ## 2026-10-15 — Ấn phẩm: Chỉ số đô thị — báo cáo Mật độ Đô thị Nén thêm tab phân tích mô hình và clip bản đồ
 - `urban-compactness-report.html` thay bằng bản mới của Tú: thêm hai tab "Phân tích mô hình" và "Phố & nút giao", cùng 3 clip bản đồ Hong Kong, Tokyo, Singapore. Giữ nguyên thư mục kỳ, URL (`/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/`), `bia.jpg`, trạng thái `cong-bo`; `info.txt` đổi ngày 2026-10-15.
 - Clip (mp4 + ảnh poster, 3 × ~12–15 MB) đặt ở `assets/clips/do-thi-nen/`; đường dẫn trong báo cáo đổi thành `/assets/clips/do-thi-nen/…` vì build chỉ xuất file HTML của kỳ vào `/doc/`. Video `preload="none"` nên không tải khi chưa bấm phát.
