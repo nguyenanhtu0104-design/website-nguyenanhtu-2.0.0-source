@@ -5,6 +5,8 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 ## 2026-10-16 — Công cụ: Bản đồ dự án TP.HCM, metro và vành đai (bản xem thử, chưa gắn vào bài)
 
+- Tú duyệt gắn bản đồ: thêm mục "Bản đồ" vào thanh điều hướng chung (templates/partials/global-nav.html) và khung nút "Mở bản đồ" trong 3 bài: truc-metro-so-1-hcm, muc-tieu-metro-hcm-2030, mo-hinh-tod-hanh-lang-metro.
+
 - Bổ sung đủ Tuyến 7, 8, 9, 10 (hướng tuyến sơ đồ, ghi chú nguồn hochiminhcitymetro.com). Tổng 18 tuyến metro và 4 vành đai.
 - Tuyến 6 giai đoạn 1 (17 ga), tuyến TP mới Bình Dương – Suối Tiên (17 ga) và 4 ga Thủ Thiêm – Long Thành dùng tọa độ từ bản đồ My Maps; Tuyến 1 lấy 3 ga có tọa độ, các ga còn lại nội suy.
 - Tuyến Thủ Dầu Một – Tao Đàn neo ga đầu (S5) và cầu Bình Lợi; đoạn giữa là sơ đồ (bản đồ My Maps của tuyến này chưa đọc được).
