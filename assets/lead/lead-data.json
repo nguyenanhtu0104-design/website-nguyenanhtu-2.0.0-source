@@ -1,37 +1,77 @@
 {
   "settings": {
     "siteUrl": "https://nguyenanhtu.vn",
-    "ga4": "",
+    "ga4": "G-TNQEQPFCKC",
     "clarity": "",
     "metaPixel": "",
-    "zaloPhone": "",
+    "zaloPhone": "0978618149",
     "privacyUrl": "/chinh-sach-bao-mat/"
   },
   "projects": {
+    "palm-river": {
+      "name": "Palm River",
+      "ready": true,
+      "region": "tp-thu-duc",
+      "url": "/cam-nang/palm-river/",
+      "docs": {
+        "bang-tinh": {
+          "label": "Bảng tính dự án",
+          "url": "/assets/tools/palm-river-bang-tinh/"
+        },
+        "tong-quan": {
+          "label": "Tổng quan dự án",
+          "url": "/cam-nang/palm-river/"
+        }
+      },
+      "video": "",
+      "areaArticle": {
+        "title": "Vùng Rạch Chiếc – Trường Thọ",
+        "url": "/cam-nang/vung-rach-chiec-truong-tho/"
+      },
+      "related": []
+    },
     "nam-mekong-grand-plaza": {
       "name": "Nam Mekong Grand Plaza",
       "ready": true,
-      "region": "",
-      "url": "",
+      "region": "binh-duong",
+      "url": "/cam-nang/nam-mekong-grand-plaza/",
       "docs": {
-        "bang-tinh": { "label": "Bảng tính dự án", "url": "" },
-        "tong-quan": { "label": "Tổng quan dự án", "url": "" }
+        "bang-tinh": {
+          "label": "Bảng tính dự án",
+          "url": "/assets/tools/nam-mekong-bang-tinh/"
+        },
+        "tong-quan": {
+          "label": "Tổng quan dự án",
+          "url": "/cam-nang/nam-mekong-grand-plaza/"
+        }
       },
       "video": "",
-      "areaArticle": { "title": "", "url": "" },
+      "areaArticle": {
+        "title": "Thành phố mới Bình Dương",
+        "url": "/cam-nang/thanh-pho-moi-binh-duong/"
+      },
       "related": []
     },
-    "artisan-park": {
-      "name": "Artisan Park",
+    "norton-park": {
+      "name": "Norton Park",
       "ready": true,
-      "region": "",
-      "url": "",
+      "region": "tp-thu-duc",
+      "url": "/cam-nang/norton-park/",
       "docs": {
-        "bang-tinh": { "label": "Bảng tính dự án", "url": "" },
-        "tong-quan": { "label": "Tổng quan dự án", "url": "" }
+        "bang-tinh": {
+          "label": "Bảng tính dự án",
+          "url": "/assets/tools/norton-park-bang-tinh/"
+        },
+        "tong-quan": {
+          "label": "Tổng quan dự án",
+          "url": "/cam-nang/norton-park/"
+        }
       },
       "video": "",
-      "areaArticle": { "title": "", "url": "" },
+      "areaArticle": {
+        "title": "Vùng Rạch Chiếc – Trường Thọ",
+        "url": "/cam-nang/vung-rach-chiec-truong-tho/"
+      },
       "related": []
     }
   }

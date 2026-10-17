@@ -338,9 +338,10 @@ for (const a of articles) {
     crumbLd(a, canonical),
   ] };
   const withCta = ctaCats.has(a.category);
+  const leadSnippet = (s) => `<meta name="lead-project" content="${s}"><link rel="stylesheet" href="${BASE}assets/lead/lead.css?v=${cfg.version}"><script src="${BASE}assets/lead/lead.js?v=${cfg.version}" defer></script><button type="button" data-lead-open style="position:fixed;right:14px;bottom:84px;z-index:9000;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận tài liệu</button><a href="#" data-cookie-settings style="position:fixed;left:14px;bottom:84px;z-index:9000;font-size:11px;color:#9a9a9a">Cài đặt cookie</a>\n`;
   const dec = decorate(a, contents.get(a.slug), withCta);
   write(`${SECTION}/${a.slug}/index.html`, fill(tplArticle, {
-    ...common, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(withSuffix(title)), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
+    ...common, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', leadBlock: a.lead ? leadSnippet(a.slug) : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(withSuffix(title)), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
     accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: renderContent(dec.html), hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,

@@ -1710,7 +1710,8 @@
     "n": "Q3/2029",
     "l": "bàn giao dự kiến"
    }
-  ]
+  ],
+  "lead": true
  },
  {
   "id": "the_solis",
@@ -4786,7 +4787,8 @@
     "n": "Q4/2028",
     "l": "bàn giao dự kiến"
    }
-  ]
+  ],
+  "lead": true
  },
  {
   "id": "palm_city",
@@ -5971,7 +5973,8 @@
     "n": "Q1/2029",
     "l": "bàn giao dự kiến"
    }
-  ]
+  ],
+  "lead": true
  },
  {
   "id": "blanca_casa_villa",
@@ -6292,43 +6295,6 @@
   "section": "💡 Tư Duy Chiến Lược",
   "accent": "#c89540",
   "searchKeywords": "định kiến dòng tiền bất động sản tín dụng bất động sản 25,73% dư nợ 5,146 triệu tỷ nợ xấu thặng dư xã hội đầu cơ thổi giá phát triển đô thị bộ lọc 3 tầng loại hình mục đích gắn kết lạm phát mất giá nội tệ FDI Ngân hàng Nhà nước nhu cầu ở thực nhà ở xã hội 145.000 tỷ trái phiếu bất động sản",
-  "legacy": null
- },
- {
-  "id": "fed_fdi_etf_ty_gia_viet_nam",
-  "slug": "fed-fdi-etf-ty-gia-viet-nam",
-  "status": "published",
-  "title": "Fed Tăng Lãi Suất: Vì Sao Việt Nam Chịu Áp Lực?",
-  "subtitle": "Tỷ giá · FDI · ETF · Tác động tới tín dụng và bất động sản",
-  "icon": "🏦",
-  "category": "tu-duy-dau-tu",
-  "parent": null,
-  "tags": [
-   "tu-duy-dau-tu",
-   "fed",
-   "ty-gia",
-   "fdi",
-   "etf",
-   "phan-tich-vi-mo"
-  ],
-  "description": "Fed tăng lãi suất không buộc Việt Nam tăng theo, nhưng tỷ giá và chi phí vốn chịu áp lực. Phân biệt FDI, ETF, quỹ chủ động và hệ quả với bất động sản.",
-  "thumbnail": "fed-fdi-etf-ty-gia-viet-nam/01",
-  "heroImage": "fed-fdi-etf-ty-gia-viet-nam/01",
-  "publishedDate": "2026-10-13",
-  "updatedDate": "2026-10-13",
-  "author": "nguyen-anh-tu",
-  "content": "content/articles/fed-fdi-etf-ty-gia-viet-nam.html",
-  "relatedArticles": [
-   "dinh-kien-ve-dong-tien-bat-dong-san",
-   "thi-truong-dan-trai-nhung-rat-tap-trung",
-   "22-nguyen-tac-tu-duy-dau-tu-bds"
-  ],
-  "seoTitle": "Fed tăng lãi suất: FDI, ETF có giúp Việt Nam giảm áp lực tỷ giá?",
-  "seoDescription": "Phân tích cơ chế Fed tác động đến tỷ giá VND, phân biệt FDI với ETF và quỹ chủ động, cùng hệ quả đối với tín dụng và bất động sản Việt Nam.",
-  "ogImage": "assets/images/og/fed-fdi-etf-ty-gia-viet-nam.jpg",
-  "section": "💡 Tư Duy Chiến Lược",
-  "accent": "#c89540",
-  "searchKeywords": "Fed tăng lãi suất tỷ giá USD/VND Ngân hàng Nhà nước FDI ETF quỹ chủ động FTSE Russell nâng hạng khối ngoại bán ròng dòng vốn ngoại FPI vốn đầu tư gián tiếp lãi suất vay mua nhà tín dụng bất động sản World Bank khác Fed kịch bản chỉ số theo dõi 2026",
   "legacy": null
  }
 ]
