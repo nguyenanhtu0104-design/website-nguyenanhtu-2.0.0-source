@@ -1,6 +1,6 @@
-# Ấn phẩm theo kỳ — World Atlas, Atlas VietNam, Nhật san & Chỉ số đô thị
+# Ấn phẩm theo kỳ — World Atlas, Atlas VietNam, Atlas Banking, Nhật san & Chỉ số đô thị
 
-Mỗi kỳ là **một thư mục** trong `publications/atlas/`, `publications/atlas-viet-nam/`, `publications/nhat-san/` hoặc `publications/chi-so-do-thi/`.
+Mỗi kỳ là **một thư mục** trong `publications/atlas/`, `publications/atlas-viet-nam/`, `publications/atlas-banking/`, `publications/nhat-san/` hoặc `publications/chi-so-do-thi/`.
 
 Tên thư mục trở thành đường dẫn. Chỉ dùng chữ thường không dấu, số và dấu `-`.
 Ví dụ: thư mục `2026-10-ky-01` sẽ có đường dẫn `nguyenanhtu.vn/atlas/2026-10-ky-01/`.

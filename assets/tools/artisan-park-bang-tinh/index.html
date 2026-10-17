@@ -691,6 +691,11 @@ const PRICE_LIST = {
   </div>
 </div>
 
+<div style="max-width:820px;margin:0 auto 14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+  <div class="input-group"><label for="custInp">Khách Hàng</label><input class="mini-inp" id="custInp" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
+  <div class="input-group"><label for="agentInp">Chuyên Viên Kinh Doanh</label><input class="mini-inp" id="agentInp" type="text" placeholder="Tên chuyên viên (hiện trên bản PDF)"></div>
+  <div class="input-group"><label for="agentPhone">Số điện thoại của người tư vấn</label><input class="mini-inp" id="agentPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Hiện trên PDF kèm mã QR Zalo tự tạo"></div>
+</div>
 <div style="text-align:center;margin:-8px 0 28px">
   <button id="export-pdf-btn" onclick="exportPDF()"
     style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;
@@ -698,6 +703,7 @@ const PRICE_LIST = {
     padding:12px 32px;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px rgba(201,168,76,.3);transition:transform .15s">
     ⬇ Xuất PDF Báo Giá
   </button>
+  <button onclick="pdfDeck()" style="margin-left:10px;background:transparent;color:var(--gold);border:1.5px solid var(--gold);font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px 26px;border-radius:8px;cursor:pointer">⬇ PDF Trình Bày (A4, có phương án vay)</button>
   <div style="font-size:11px;color:var(--mut);margin-top:8px">Bản in báo giá theo PTTT đang chọn — chọn “Save as PDF” trong hộp thoại in</div>
 </div>
 
@@ -823,6 +829,10 @@ const PRICE_LIST = {
   <div class="infra"><div class="infra-item"><div>🛣️</div><div><div class="ii-yr">2026</div><div class="ii-nm">Vành Đai 3 Hoàn Thiện</div></div></div><div class="infra-item"><div>🚗</div><div><div class="ii-yr">2027</div><div class="ii-nm">CT TP.HCM – Thủ Dầu Một / Vành Đai 4</div></div></div><div class="infra-item"><div>🚇</div><div><div class="ii-yr">2030</div><div class="ii-nm">Tuyến Metro Kết Nối Trung Tâm</div></div></div></div>
 </div>
 
+<!-- VAY NGÂN HÀNG -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Vay Ngân Hàng</div><div class="sec-div-line"></div></div>
+<div class="card" id="dL"></div>
+
 <div class="footer-note">
   * Tất cả ưu đãi tính trên Giá Bán chưa bao gồm thuế GTGT (giá gốc) theo quy định tại Phiếu Đăng Ký.<br>
   * Thuế GTGT 10% áp dụng trên giá cuối sau toàn bộ chiết khấu.<br>
@@ -835,6 +845,8 @@ const PRICE_LIST = {
 <!-- ══ BẢN IN BÁO GIÁ (ẩn trên màn hình, chỉ hiện khi in/xuất PDF) ══ -->
 <div id="print-sheet"></div>
 
+<script src="/assets/tools/shared/zalo-qr.js?v=2.16.0"></script>
+<script src="/assets/tools/shared/vay-ngan-hang.js?v=2.16.0"></script>
 <script>
 const VAT = 0.10;
 let price  = 7_549_251_018;
@@ -1081,6 +1093,7 @@ function recalc() {
   const tags = r.steps.map(s => s.label.split('·')[1]?.trim() || s.label);
   document.getElementById('tb-note').textContent  = tags.length ? tags.join(' · ') : 'Chưa áp dụng ưu đãi';
   renderAllPT(r.finalPre);
+  if(window.NATLoan)NATLoan.refresh();
 }
 
 const DEPOSIT = 100_000_000; // Tiền cọc cố định
@@ -1306,7 +1319,7 @@ function exportPDF() {
       <div class="ps-meta">
         Ngày lập: <b>${today}</b><br>
         Phương thức: <b>${PT_NAMES[idx]}</b><br>
-        Chuyên viên tư vấn: ______________
+        Chuyên viên tư vấn: <b>${(document.getElementById('agentInp').value||'').replace(/[<>&]/g,'')||'______________'}</b>
       </div>
     </div>
     ${soldWarn}
@@ -1345,6 +1358,7 @@ function exportPDF() {
       KPBT (2%) thu tại thời điểm bàn giao. Giá trị mang tính tham khảo theo CTBH số 15.2, không có giá trị quy đổi tiền mặt.
       Vui lòng liên hệ CĐT/CVTV để xác nhận thông tin chính thức.
     </div>
+    ${NATQR.contact({client:document.getElementById('custInp').value.trim(),phone:document.getElementById('agentPhone').value.trim()})}
     <div class="ps-foot">
       <div>Artisan Park — Gamuda Land · CTBH 15.2</div>
       <div>Xuất từ Bảng Tính Chiết Khấu & 5 PTTT · ${today}</div>
@@ -1353,8 +1367,49 @@ function exportPDF() {
   window.print();
 }
 
+
+// ══ VAY NGÂN HÀNG + PDF TRÌNH BÀY (module dùng chung) ══
+// Mốc tháng tính từ ngày đặt cọc (T0); bàn giao chính thức ước tính theo các mốc dự kiến trong bảng (Q4/2026 → T7).
+const LOAN_PT = [
+  [[.10,0,'k1'],[.10,1,'k2'],[.10,3,'k2'],[.10,5,'k2'],[.55,7,'k3'],[.05,13,'k4']],
+  [[.10,0,'k1'],[.10,1,'k2'],[.10,3,'k2'],[.10,5,'k2'],[.55,7,'k3'],[.05,13,'k4']],
+  [[.20,0,'k1'],[.20,1,'k2'],[.55,7,'k3'],[.05,13,'k4']],
+  [[.10,0,'k1'],[.10,5,'k2'],[.10,11,'k2'],[.08,17,'k2'],[.08,23,'k2'],[.08,29,'k2'],[.41,35,'k3'],[.05,41,'k4']],
+  [[.10,0,'k1'],[.10,5,'k2'],[.10,11,'k2'],[.05,17,'k2'],[.05,23,'k2'],[.05,29,'k2'],[.05,35,'k2'],[.05,41,'k2'],[.05,47,'k2'],[.05,53,'k2'],[.30,59,'k3'],[.05,65,'k4']]
+];
+function loanModel(i){
+  const keep=st.ptIdx;st.ptIdx=i;const r=computeSteps();st.ptIdx=keep;
+  const base=r.finalPre,rows=[];let n=0;
+  LOAN_PT[i].forEach(([pct,mo,k],j)=>{
+    const t=installAmt(base,pct);
+    if(j===0){
+      rows.push({n:++n,w:'T0',g:'',d:'Đặt cọc',pct:null,pre:null,vat:null,tot:DEPOSIT,bank:0,own:DEPOSIT,k:'k1',tag:'💰 Đặt cọc',mo:0});
+      rows.push({n:++n,w:'Ký HĐMB',g:'',d:'Đợt 1 — số còn lại sau khi trừ tiền cọc',pct,pre:t.pre,vat:t.vatAmt,tot:t.total-DEPOSIT,bank:0,own:t.total-DEPOSIT,k:'k1',tag:'📝 Ký HĐMB',mo:0});
+    }else rows.push({n:++n,w:'T'+mo,g:'',d:k==='k3'?'Bàn giao':(k==='k4'?'Sổ hồng':'Đợt '+(j+1)),pct,pre:t.pre,vat:t.vatAmt,tot:t.total,bank:0,own:t.total,k,tag:k==='k3'?'🏠 Nhận nhà':(k==='k4'?'📄 Sổ hồng':''),mo});
+  });
+  const sum=(f,fl)=>rows.filter(fl||(()=>true)).reduce((a,x)=>a+f(x),0);
+  return {r,rows,S:{rows,total:sum(x=>x.tot),ownTotal:sum(x=>x.own),bankTotal:0,ownPre:sum(x=>x.own,x=>x.k==='k1'||x.k==='k2'),ownHand:sum(x=>x.own,x=>x.k==='k3'),ownPink:sum(x=>x.own,x=>x.k==='k4')}};
+}
+function loanCtx(){
+  const methods=LOAN_PT.map((_,i)=>{
+    const M=loanModel(i),hr=M.rows.find(x=>x.k==='k3'),hand=hr.mo;
+    return {id:'a'+i,name:PT_SHORT[i],f:M.r.total,h:M.r.total,tr:[],ho:{m:hand,amt:hr.own},hand,htls:null,maxPct:null,
+      note:'Chính sách Artisan Park (CTBH 15.2) không có phương thức vay ngân hàng riêng. Phương án dưới đây là mô phỏng khách tự vay thêm tại đợt bàn giao; mốc tháng là ước tính theo các mốc dự kiến.'};
+  });
+  const key=(document.getElementById('unitInp')||{}).value||'';
+  return {sel:'a'+st.ptIdx,methods,brand:{project:'ARTISAN PARK',unit:key?('Căn '+key.trim().toUpperCase()):'Artisan Park',footer:'Bảng tính tham khảo · nguyenanhtu.vn'}};
+}
+function pdfDeck(){
+  const ctx=loanCtx(),idx=st.ptIdx,Ms=LOAN_PT.map((_,i)=>loanModel(i)),cur=Ms[idx],r=cur.r;
+  const kv=[['Căn',ctx.brand.unit.replace(/^Căn /,'')],['Giá bán trước VAT (gốc)',fmt(price)],['Phương thức đang chọn',PT_NAMES[idx]],['Giá sau CK (trước VAT)',fmt(r.finalPre)],['VAT (10% phần nhà)','+ '+fmt(r.vatAmt)],['Phí sử dụng đất (không VAT)',fmt(lurFee)],['Tổng thanh toán (gồm VAT)',fmt(r.total)],['Tiết kiệm so với niêm yết',fmt(r.savings)]];
+  const pages=NATLoan.deckPages({heading:ctx.brand.project+' · '+ctx.brand.unit,client:'',kv,extra:'',sel:idx,
+    methods:Ms.map((M,i)=>({no:'0'+(i+1),name:PT_SHORT[i],full:PT_NAMES[i],ck:PT_CK[i]>0?(PT_CK[i]*100)+'% PT':'0% PT',D:M.r.total,S:M.S}))});
+  NATLoan.printPdf(ctx,{pages,contact:NATQR.contact({client:document.getElementById('custInp').value.trim(),agent:document.getElementById('agentInp').value.trim(),phone:document.getElementById('agentPhone').value.trim()})});
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('#grp-pt .opt-btn')[2].classList.add('active-ck');
+  if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
   recalc();
 });
 

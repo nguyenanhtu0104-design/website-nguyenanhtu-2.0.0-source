@@ -1,0 +1,6 @@
+tieu-de: Atlas Banking: lãi suất ngân hàng Việt Nam
+so: 01
+ngay: 2026-10-17
+mo-ta: Báo cáo quét nguồn lãi suất 22 ngân hàng tại Việt Nam: mỗi mức lãi kèm nguồn chính thức, phạm vi áp dụng và ngày hiệu lực để tự đối chiếu.
+trich-doan: Lãi suất ngân hàng nào đã có nguồn chính thức, ngân hàng nào còn để trống? Một trang gom kết quả quét nguồn phiên bản 4.5, kèm cảnh báo cho từng trường hợp chưa xác minh được.
+trang-thai: nhap

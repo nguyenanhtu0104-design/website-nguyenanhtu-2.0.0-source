@@ -413,6 +413,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <div class="who-grid">
     <div class="input-group"><label>Khách Hàng</label><input class="mini-inp" id="custInp" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
     <div class="input-group"><label>Chuyên Viên Kinh Doanh</label><input class="mini-inp" id="agentInp" type="text" placeholder="Tên chuyên viên (hiện trên bản PDF)"></div>
+    <div class="input-group"><label for="agentPhone">Số điện thoại của người tư vấn</label><input class="mini-inp" id="agentPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Hiện trên PDF kèm mã QR Zalo tự tạo"></div>
   </div>
 </div>
 
@@ -537,6 +538,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <button onclick="exportPDF()"
     style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;
     letter-spacing:1px;text-transform:uppercase;padding:12px 32px;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px rgba(201,168,76,.3)">⬇ Xuất PDF Báo Giá</button>
+  <button onclick="pdfDeck()" style="margin-left:10px;background:transparent;color:var(--gold);border:1.5px solid var(--gold);font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px 26px;border-radius:8px;cursor:pointer">⬇ PDF Trình Bày (A4, có phương án vay)</button>
   <div style="font-size:11px;color:var(--mut);margin-top:8px">Bản in theo PTTT đang chọn — chọn “Save as PDF” trong hộp thoại in</div>
 </div>
 
@@ -549,6 +551,10 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 </div>
 <div id="pt-panels"></div>
 
+<!-- VAY NGÂN HÀNG -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Vay Ngân Hàng</div><div class="sec-div-line"></div></div>
+<div class="card" id="dL"></div>
+
 <div class="terms">
   <b>(*) Điều kiện &amp; điều khoản:</b> Bảng tiến độ thanh toán dự kiến chỉ dùng cho mục đích tham khảo; tiến độ chính thức sẽ nêu cụ thể tại TTKQ/HĐMB.<br>
   <b>(**)</b> VAT và Phí bảo trì có thể điều chỉnh theo quy định pháp luật và/hoặc văn bản của cơ quan Nhà nước có thẩm quyền tại thời điểm ký TTKQ/HĐMB.<br>
@@ -560,6 +566,8 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 
 <div id="print-sheet"></div>
 
+<script src="/assets/tools/shared/zalo-qr.js?v=2.16.0"></script>
+<script src="/assets/tools/shared/vay-ngan-hang.js?v=2.16.0"></script>
 <script>
 const PLANS={"f45":{"src":"Mặt bằng tầng 4-5 (tr.40)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-4-5.webp","units":[{"p":"Cx.03A","l":"Y8.1","t":"Dual Key","nsa":82.8,"nfa":92.5,"xy":[12.52,12.14]},{"p":"Cx.03","l":"Z5.1","t":"Dual Key","nsa":108.4,"nfa":119.0,"xy":[12.56,24.07]},{"p":"Cx.02","l":"Z5.1c","t":"Dual Key","nsa":110.1,"nfa":122.0,"xy":[12.56,39.71]},{"p":"Cx.01","l":"Z5.1d","t":"Dual Key","nsa":108.9,"nfa":120.8,"xy":[12.56,54.5]},{"p":"Cx.05","l":"Y7.1","t":"Dual Key","nsa":70.6,"nfa":78.8,"xy":[23.26,12.07]},{"p":"Cx.06","l":"Y6.1","t":"Dual Key","nsa":71.0,"nfa":78.1,"xy":[23.26,25.86]},{"p":"Cx.07","l":"Y5.1","t":"Dual Key","nsa":80.6,"nfa":89.1,"xy":[23.26,35.5]},{"p":"Cx.08","l":"X2.1a","t":"Mixed-used","nsa":85.0,"nfa":92.8,"xy":[28.8,49.36]},{"p":"Bx.03A","l":"Z1.1","t":"Dual Key","nsa":170.5,"nfa":181.7,"xy":[35.7,49.29]},{"p":"Bx.05","l":"X2.1b","t":"Mixed-used","nsa":87.2,"nfa":93.8,"xy":[41.28,49.29]},{"p":"Bx.06","l":"X2.1c","t":"Mixed-used","nsa":87.6,"nfa":94.8,"xy":[44.53,49.29]},{"p":"Ax.10","l":"Z2.1","t":"Dual Key","nsa":188.8,"nfa":202.2,"xy":[55.12,49.29]},{"p":"Ax.11","l":"Z3.1","t":"Dual Key","nsa":178.7,"nfa":192.4,"xy":[61.86,49.29]},{"p":"Ax.02","l":"Y9.1","t":"Dual Key","nsa":93.0,"nfa":102.7,"xy":[70.54,21.71]},{"p":"Ax.01","l":"Y4.1","t":"Dual Key","nsa":94.0,"nfa":103.3,"xy":[70.54,35.79]},{"p":"Ax.03","l":"Z5.1b","t":"Dual Key","nsa":110.9,"nfa":123.2,"xy":[81.28,23.57]},{"p":"Ax.03A","l":"Z5.1a","t":"Dual Key","nsa":107.0,"nfa":118.7,"xy":[81.28,38.21]},{"p":"Ax.05","l":"Z5.1e","t":"Dual Key","nsa":107.1,"nfa":118.8,"xy":[81.28,53.29]},{"p":"Cx.10","l":"Z9.1a","t":"Dual Key","nsa":124.9,"nfa":137.2,"xy":[14.69,69.43]},{"p":"Cx.09","l":"Z9.1","t":"Dual Key","nsa":107.4,"nfa":119.4,"xy":[24.19,69.43]},{"p":"Bx.03","l":"Z7.1c","t":"Dual Key","nsa":104.2,"nfa":113.1,"xy":[33.57,67.07]},{"p":"Bx.02","l":"Z7.1b","t":"Dual Key","nsa":105.5,"nfa":116.0,"xy":[42.29,67.07]},{"p":"Bx.01","l":"Z10.1a","t":"Dual Key","nsa":96.3,"nfa":105.3,"xy":[48.14,67.07]},{"p":"Ax.09","l":"Y3.1a","t":"Dual Key","nsa":84.9,"nfa":94.1,"xy":[57.25,68.93]},{"p":"Ax.08","l":"Y3.1","t":"Dual Key","nsa":85.2,"nfa":93.9,"xy":[65.0,68.93]},{"p":"Ax.07","l":"Z11.1","t":"Dual Key","nsa":101.6,"nfa":113.7,"xy":[73.49,69.0]},{"p":"Ax.06","l":"Y2.1","t":"Dual Key","nsa":86.6,"nfa":97.7,"xy":[82.13,68.93]}]},"f6":{"src":"Mặt bằng tầng 6 – tiện ích (tr.42)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-6.webp","units":[{"p":"Cx.03A","l":"C1.1a","t":"2PN2WC","nsa":86.2,"nfa":94.3,"pes":12.6,"xy":[12.04,12.93]},{"p":"Cx.03","l":"D1.1f","t":"3PN2WC","nsa":114.7,"nfa":124.5,"pes":26.6,"xy":[12.08,26.35]},{"p":"Cx.02","l":"D1.1d(M)","t":"3PN2WC","nsa":114.6,"nfa":124.6,"pes":26.6,"xy":[12.15,40.48]},{"p":"Cx.01","l":"D1.1e(M)","t":"3PN2WC","nsa":114.3,"nfa":125.4,"pes":26.6,"xy":[12.15,54.95]},{"p":"Cx.05","l":"C1.1d","t":"2PN2WC","nsa":71.5,"nfa":79.2,"pes":8.6,"xy":[21.08,15.53]},{"p":"Cx.06","l":"B2.1a","t":"2PN1WC","nsa":71.9,"nfa":78.8,"pes":8.6,"xy":[20.84,25.09]},{"p":"Cx.07","l":"B1.1b","t":"2PN1WC","nsa":72.5,"nfa":80.3,"pes":8.7,"xy":[20.92,36.12]},{"p":"Cx.10","l":"C3.1b","t":"2PN2WC","nsa":74.4,"nfa":82.5,"pes":null,"xy":[11.38,72.8]},{"p":"Cx.09","l":"C3.1c","t":"2PN2WC","nsa":74.4,"nfa":81.6,"pes":null,"xy":[19.83,72.8]},{"p":"Cx.08","l":"C3.1d","t":"2PN2WC","nsa":81.2,"nfa":89.1,"pes":null,"xy":[27.97,72.73]},{"p":"Ax.05","l":"B3.1b","t":"2PN1WC","nsa":64.0,"nfa":70.8,"pes":null,"xy":[70.0,72.59]},{"p":"Ax.03A","l":"B3.2","t":"2PN1WC","nsa":60.7,"nfa":67.4,"pes":null,"xy":[79.51,72.52]},{"p":"Ax.03","l":"C3.1f","t":"2PN2WC","nsa":68.5,"nfa":77.1,"pes":null,"xy":[85.43,72.59]},{"p":"Ax.01","l":"D1.1d","t":"3PN2WC","nsa":111.6,"nfa":121.6,"pes":23.9,"xy":[82.74,41.46]},{"p":"Ax.02","l":"D1.1e","t":"3PN2WC","nsa":111.9,"nfa":122.0,"pes":23.4,"xy":[82.74,56.22]}]},"ftyp":{"src":"Mặt bằng điển hình tầng 7-20 / 22-40 (tr.44)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-dien-hinh.webp","units":[{"p":"Cx.03A","l":"C1.1","t":"2PN2WC","nsa":74.3,"nfa":82.8,"nsa2":74.7,"nfa2":82.9,"xy":[13.61,10.88]},{"p":"Cx.05","l":"C1.1b","t":"2PN2WC","nsa":62.6,"nfa":69.9,"nsa2":62.6,"nfa2":69.9,"xy":[22.32,11.43]},{"p":"Cx.03","l":"D1.1c","t":"3PN2WC","nsa":93.8,"nfa":103.0,"nsa2":94.1,"nfa2":103.0,"xy":[13.61,25.0]},{"p":"Cx.06","l":"B2.1","t":"2PN1WC","nsa":63.7,"nfa":70.3,"nsa2":63.9,"nfa2":70.3,"xy":[22.32,27.69]},{"p":"Cx.02","l":"D1.1a(M)","t":"3PN2WC","nsa":93.5,"nfa":103.1,"nsa2":94.1,"nfa2":103.1,"xy":[13.61,38.71]},{"p":"Cx.07","l":"B1.1","t":"2PN1WC","nsa":64.2,"nfa":70.6,"nsa2":64.4,"nfa2":70.6,"xy":[22.32,36.02]},{"p":"Cx.08","l":"A1.1","t":"Studio","nsa":30.1,"nfa":34.0,"nsa2":30.1,"nfa2":34.0,"xy":[22.32,44.63]},{"p":"Cx.01","l":"D1.1b(M)","t":"3PN2WC","nsa":93.4,"nfa":103.2,"nsa2":93.9,"nfa2":103.2,"xy":[13.61,53.31]},{"p":"Cx.09","l":"E1.1","t":"Sky Villa","nsa":121.6,"nfa":131.9,"nsa2":121.7,"nfa2":131.9,"xy":[33.31,51.72]},{"p":"Bx.03A","l":"X1.1a","t":"Mixed-used","nsa":54.7,"nfa":59.8,"nsa2":55.2,"nfa2":59.9,"xy":[40.94,50.07]},{"p":"Bx.05","l":"X1.1b","t":"Mixed-used","nsa":54.7,"nfa":59.5,"nsa2":55.2,"nfa2":59.7,"xy":[46.41,50.07]},{"p":"Ax.12A","l":"C4.1","t":"2PN2WC","nsa":74.4,"nfa":82.4,"nsa2":74.9,"nfa2":82.4,"xy":[57.21,52.2]},{"p":"Ax.12","l":"C4.1a","t":"2PN2WC","nsa":74.5,"nfa":82.4,"nsa2":74.7,"nfa2":82.4,"xy":[62.41,52.2]},{"p":"Ax.03","l":"C1.1c","t":"2PN2WC","nsa":75.5,"nfa":83.6,"nsa2":75.7,"nfa2":83.6,"xy":[73.25,21.83]},{"p":"Ax.02","l":"C2.1","t":"2PN2WC","nsa":79.4,"nfa":86.7,"nsa2":79.6,"nfa2":86.7,"xy":[73.25,35.67]},{"p":"Ax.01","l":"A1.2","t":"Studio","nsa":30.6,"nfa":35.5,"nsa2":30.7,"nfa2":35.5,"xy":[73.25,44.7]},{"p":"Ax.03A","l":"D1.1","t":"3PN2WC","nsa":92.1,"nfa":102.8,"nsa2":92.6,"nfa2":102.8,"xy":[82.88,24.45]},{"p":"Ax.05","l":"D1.1a","t":"3PN2WC","nsa":93.2,"nfa":102.8,"nsa2":93.8,"nfa2":102.8,"xy":[82.85,39.33]},{"p":"Ax.06","l":"D1.1b","t":"3PN2WC","nsa":94.2,"nfa":103.7,"nsa2":94.7,"nfa2":103.7,"xy":[82.85,53.51]},{"p":"Cx.12","l":"C3.1b","t":"2PN2WC","nsa":74.4,"nfa":82.5,"nsa2":74.7,"nfa2":82.5,"xy":[11.41,68.46]},{"p":"Cx.11","l":"C3.1c","t":"2PN2WC","nsa":74.4,"nfa":81.6,"nsa2":74.8,"nfa2":81.6,"xy":[18.77,68.46]},{"p":"Cx.10","l":"C3.1d","t":"2PN2WC","nsa":77.5,"nfa":85.3,"nsa2":78.1,"nfa2":85.4,"xy":[28.49,68.39]},{"p":"Bx.03","l":"Z7.1a","t":"Dual Key","nsa":111.4,"nfa":121.4,"nsa2":111.8,"nfa2":121.3,"xy":[32.11,67.7]},{"p":"Bx.02","l":"Z7.1b","t":"Dual Key","nsa":106.2,"nfa":116.0,"nsa2":106.7,"nfa2":116.0,"xy":[41.09,67.7]},{"p":"Bx.01","l":"Z10.1","t":"Dual Key","nsa":107.4,"nfa":116.0,"nsa2":107.7,"nfa2":115.8,"xy":[48.34,67.7]},{"p":"Ax.11","l":"C3.1a","t":"2PN2WC","nsa":83.3,"nfa":91.2,"nsa2":84.0,"nfa2":91.4,"xy":[57.25,69.56]},{"p":"Ax.10","l":"C3.1","t":"2PN2WC","nsa":73.9,"nfa":81.2,"nsa2":74.5,"nfa2":81.3,"xy":[65.03,69.49]},{"p":"Ax.09","l":"B3.1b","t":"2PN1WC","nsa":63.6,"nfa":70.4,"nsa2":63.9,"nfa2":70.3,"xy":[71.36,68.11]},{"p":"Ax.08","l":"B3.2","t":"2PN1WC","nsa":60.7,"nfa":67.4,"nsa2":61.2,"nfa2":67.4,"xy":[78.03,69.56]},{"p":"Ax.07","l":"C3.1f","t":"2PN2WC","nsa":68.5,"nfa":77.1,"nsa2":68.8,"nfa2":77.1,"xy":[85.74,68.11]}]},"f21":{"src":"Mặt bằng tầng 21 (tr.46)","img":"/assets/tools/skysolis-bang-tinh/mat-bang-tang-21.webp","units":[{"p":"Cx.03A","l":"C1.1","t":"2PN2WC","nsa":74.3,"nfa":82.8,"xy":[11.68,13.61]},{"p":"Cx.03","l":"D1.1c","t":"3PN2WC","nsa":93.8,"nfa":103.0,"xy":[11.68,27.5]},{"p":"Cx.02","l":"D1.1a(M)","t":"3PN2WC","nsa":93.5,"nfa":103.1,"xy":[11.68,41.89]},{"p":"Cx.01","l":"D1.1b(M)","t":"3PN2WC","nsa":93.4,"nfa":103.2,"xy":[11.68,56.98]},{"p":"Cx.05","l":"B1.1","t":"2PN1WC","nsa":64.2,"nfa":70.6,"xy":[19.76,40.82]},{"p":"Cx.06","l":"A1.1","t":"Studio","nsa":30.1,"nfa":34.0,"xy":[19.76,49.04]},{"p":"Cx.09","l":"C3.1b","t":"2PN2WC","nsa":74.4,"nfa":82.5,"xy":[10.99,73.78]},{"p":"Cx.08","l":"C3.1c","t":"2PN2WC","nsa":74.4,"nfa":81.6,"xy":[18.94,73.78]},{"p":"Cx.07","l":"C3.1d","t":"2PN2WC","nsa":77.5,"nfa":85.3,"xy":[26.79,73.78]},{"p":"Bx.03","l":"Z7.1a","t":"Dual Key","nsa":111.4,"nfa":121.4,"xy":[32.14,70.87]},{"p":"Bx.02","l":"Z7.1b","t":"Dual Key","nsa":106.2,"nfa":116.0,"xy":[40.37,70.87]},{"p":"Bx.01","l":"Z10.1","t":"Dual Key","nsa":107.4,"nfa":116.0,"xy":[48.29,70.8]},{"p":"Ax.10","l":"C3.1e","t":"2PN2WC","nsa":83.3,"nfa":91.2,"xy":[57.34,70.8]},{"p":"Ax.09","l":"C3.1","t":"2PN2WC","nsa":73.9,"nfa":81.2,"xy":[65.3,70.8]},{"p":"Ax.08","l":"B3.1b","t":"2PN1WC","nsa":63.6,"nfa":70.4,"xy":[69.76,71.44]},{"p":"Ax.07","l":"B3.2","t":"2PN1WC","nsa":60.7,"nfa":67.4,"xy":[78.18,71.51]},{"p":"Ax.06","l":"C3.1f","t":"2PN2WC","nsa":68.5,"nfa":77.1,"xy":[83.42,70.87]},{"p":"Ax.02","l":"C2.1","t":"2PN2WC","nsa":79.4,"nfa":86.7,"xy":[73.52,40.33]},{"p":"Ax.01","l":"A1.2","t":"Studio","nsa":30.6,"nfa":35.5,"xy":[73.52,48.55]},{"p":"Ax.03","l":"D1.1","t":"3PN2WC","nsa":92.1,"nfa":102.8,"xy":[81.91,27.57]},{"p":"Ax.03A","l":"D1.1a","t":"3PN2WC","nsa":93.2,"nfa":102.8,"xy":[81.91,42.38]},{"p":"Ax.05","l":"D1.1b","t":"3PN2WC","nsa":94.2,"nfa":103.7,"xy":[81.91,57.76]}]}};
 </script>
@@ -903,6 +911,39 @@ function recalc(){
   $('tb-pre').textContent=fmt(R.A); $('tb-total').textContent=fmt(R.D);
   $('tb-note').textContent=(R.steps.length?R.steps.map(s=>s.label.replace(/\s*\(.*\)/,'')).join(' · '):'Chưa áp dụng ưu đãi')+` · ${PT_META[st.pt].name}`;
   [0,1,2].forEach(renderPanel);
+  if(window.NATLoan)NATLoan.refresh();
+}
+
+
+// ── VAY NGÂN HÀNG + PDF TRÌNH BÀY (module dùng chung) ──
+// Mốc tháng tính từ đợt ký quỹ đầu (T10/2026 = tháng 0); “Q2/2029” tính theo cuối quý (T06/2029).
+const moSky=w=>{let m=/T(\d\d)\/(\d{4})/.exec(w||'');if(m)return((+m[2])-2026)*12+(+m[1])-10;m=/Q(\d)\/(\d{4})/.exec(w||'');return m?((+m[2])-2026)*12+(+m[1])*3-10:null;};
+function skyNorm(S){
+  const rows=S.rows.map(x=>({n:x.n,w:x.when,g:'',d:x.desc,pct:x.pct,pre:x.pre,vat:x.vat,tot:x.tot,bank:x.bank||0,own:x.own!=null?x.own:x.tot,k:x.k,tag:x.tag||'',mo:moSky(x.when)}));
+  const sum=(f,fl)=>rows.filter(fl||(()=>true)).reduce((a,x)=>a+f(x),0);
+  return {rows,total:sum(x=>x.tot),ownTotal:sum(x=>x.own),bankTotal:sum(x=>x.bank),ownPre:sum(x=>x.own,x=>x.k==='k1'||x.k==='k2'),ownHand:sum(x=>x.own,x=>x.k==='k3'),ownPink:sum(x=>x.own,x=>x.k==='k4')};
+}
+const PT_FULL=['PTTT Chuẩn','PTTT Nhanh','PTTT Vay ngân hàng'];
+function loanCtx(){
+  if(!LAST[0]||!(st.price>0))return null;
+  const methods=PT_META.map((pm,i)=>{
+    const R=LAST[i].R,S=skyNorm(LAST[i].S),hr=S.rows.find(x=>x.k==='k3'&&x.n!=='+'),hand=hr&&hr.mo!=null?hr.mo:32;
+    const tr=[];S.rows.forEach(x=>{if(x.bank>0)tr.push({m:x.mo!=null?x.mo:hand,amt:x.bank});});
+    const iv=tr.length>0;
+    return {id:'s'+i,name:pm.name.replace('PTTT ',''),f:R.D,h:R.A+R.C,tr,ho:hr?{m:hand,amt:hr.own}:null,hand,htls:null,maxPct:iv?.75:null,
+      note:iv?'Bảng chính sách SkySOLIS không ghi chủ đầu tư hỗ trợ lãi suất; nếu có chính sách hỗ trợ, nhập số tháng ở ô “CĐT hỗ trợ lãi”':''};
+  });
+  const u=curUnit();
+  return {sel:'s'+st.pt,methods,brand:{project:'SKYSOLIS',unit:u?('Căn '+u.code+' · '+u.type):'Căn hộ SkySOLIS',footer:'Bảng tính tham khảo · nguyenanhtu.vn'}};
+}
+function pdfDeck(){
+  const ctx=loanCtx();if(!ctx)return;
+  const u=curUnit(),R=LAST[st.pt].R,cl=$('custInp').value.trim(),co=$('agentInp').value.trim();
+  const kv=[['Mã căn / Loại căn',u?u.code+' · '+u.type:'Giá nhập tay'],['Tầng / Layout',u?u.floor+' · '+u.layout:'—'],['DT thông thủy (NSA)',u?u.nsa+' m²':'—'],['DT tim tường (NFA)',u?u.nfa+' m²':'—'],['Giá niêm yết (chưa VAT & KPBT)',fmt(R.list)],['Phương thức đang chọn',PT_META[st.pt].full],['Tổng chiết khấu','- '+fmt(R.totalDisc)],['Giá bán sau CK (A)',fmt(R.A)],['VAT + KPBT','+ '+fmt(R.B+R.C)],['Tổng giá bán (D)',fmt(R.D)]];
+  const pages=NATLoan.deckPages({heading:ctx.brand.project+' · '+ctx.brand.unit,client:cl,kv,extra:'',sel:st.pt,
+    methods:PT_META.map((pm,i)=>({no:String(i+1).padStart(2,'0'),name:pm.full,full:'Phương thức '+String(i+1).padStart(2,'0')+' — '+pm.full,ck:st.ptck&&pm.ck>0?(pm.ck*100).toFixed(0)+'% PT':'0% PT',D:LAST[i].R.D,S:skyNorm(LAST[i].S)}))});
+  const contact=NATQR.contact({client:cl,agent:co,phone:$('agentPhone').value.trim()});
+  NATLoan.printPdf(ctx,{pages,contact});
 }
 
 // ── UNIT DROPDOWN ──
@@ -1016,6 +1057,7 @@ function exportPDF(){
    <tr><td></td><td><b>Tổng</b></td><td></td>${own?`<td class="r"><b>${fmtS(S.ownTotal)}</b></td><td class="r"><b>${fmtS(S.bankTotal)}</b></td>`:''}<td class="r"><b>${fmtS(S.total)}</b></td></tr></tbody></table>
   <div class="ps-note">(*) Bảng tiến độ dùng cho mục đích tham khảo; tiến độ chính thức nêu tại TTKQ/HĐMB. (**) VAT và Phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký TTKQ/HĐMB.
   Khoản quan tâm ${fmtS(BOOKING_FEE)} đ có hoàn lại, không tính vào tổng. ${own?'Hỗ trợ vay do ngân hàng khách hàng chọn quyết định; Chủ đầu tư không cam kết khách hàng được cấp tín dụng.':''}</div>
+  ${NATQR.contact({phone:$('agentPhone').value.trim()})}
   <div class="ps-foot"><div>SkySOLIS · Bảng tính theo mã căn</div><div>Xuất ngày ${today}</div></div>`;
   window.print();
 }
@@ -1023,6 +1065,7 @@ function exportPDF(){
 // ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
   loadCfg(); buildPanels(); floorOptions(); buildCfg();
+  if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
   $('dd-tab-listed').textContent=`💰 Có giá sẵn (${LISTED_N})`;
   $('unitInp').value='C.07.06'; selectUnit('C.07.06');
   setPT(0);

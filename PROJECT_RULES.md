@@ -20,12 +20,12 @@
 | Dữ liệu (Data) | `data/*.json`, `site.config.json` | Metadata, menu, ảnh, chuyển hướng |
 | Nội dung (Content) | `content/articles/<slug>.html` | Mỗi bài một file, chỉ chứa HTML thân bài |
 | Ảnh (Media) | `assets/images/` | WebP, tách file, không Base64 |
-| Ấn phẩm theo kỳ | `publications/<mục>/<kỳ>/` | World Atlas, Atlas VietNam, Nhật san, Chỉ số đô thị — mỗi kỳ một thư mục, Tú tự đăng (§6A) |
+| Ấn phẩm theo kỳ | `publications/<mục>/<kỳ>/` | World Atlas, Atlas VietNam, Atlas Banking, Nhật san, Chỉ số đô thị — mỗi kỳ một thư mục, Tú tự đăng (§6A) |
 
 **Mô hình hoạt động:** đây là website tĩnh sinh sẵn (static site generator), chạy bằng Node ≥ 18 và **không dùng thư viện ngoài nào**. Lệnh `node scripts/build.mjs` đọc dữ liệu, nội dung và template rồi sinh ra thư mục `dist/`. Hosting (Cloudflare Pages) tự chạy lệnh build mỗi khi có commit mới lên `main`.
 
 - **Trang chủ** gồm menu 5 chương render sẵn thành HTML tĩnh. Trang chủ không tải nội dung bài, không tải ảnh bài, không tải search index.
-- **Thanh menu NAT** (`templates/partials/global-nav.html`) nằm trên mọi trang: Cẩm nang · World Atlas · Atlas VietNam · Nhật san · Chỉ số đô thị · YouTube · Liên hệ ▾. Giữ đúng bản đang chạy trước 2.0.
+- **Thanh menu NAT** (`templates/partials/global-nav.html`) nằm trên mọi trang: Cẩm nang · World Atlas · Atlas VietNam · Atlas Banking · Nhật san · Chỉ số đô thị · YouTube · Liên hệ ▾. Giữ đúng bản đang chạy trước 2.0.
 - **Trang bài** là một trang thật tại `/cam-nang/<slug>/` (giữ nguyên địa chỉ bản trước đã công khai), có sẵn toàn bộ nội dung và thẻ SEO/OG. Trang dùng lại khung "panel" của v57 (dải màu, thanh tiêu đề, nút PDF, footer tác giả) nhưng ở dạng trang, không phải modal.
 - **World Atlas** `/atlas/` và **Nhật san** `/nhat-san/`: trang thư viện và trang từng kỳ, sinh tự động từ `publications/`.
 - **Search** dùng `dist/data/search-index.json` (chỉ chứa metadata). File này chỉ được tải khi người dùng bấm vào ô tìm kiếm.
@@ -262,6 +262,9 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-10-17 — Không đổi nguyên tắc nào (Tú yêu cầu): thêm khối "Vay ngân hàng" cho bảng tính dự án bằng một file JS dùng chung `assets/tools/shared/vay-ngan-hang.js` (ngoại lệ có chủ đích của §9 "không nhân bản JS", cùng tinh thần `zoom.js`: chỉ nạp ở trang công cụ `noindex`, không tăng trang chủ, không thư viện ngoài). Lãi suất trong khối này là giả định người dùng nhập, không được ghi như báo giá ngân hàng. Sửa file này thì tăng `?v=` trong các bảng tính gọi nó.
+- 2026-10-17 — **2.15.0** (Tú yêu cầu): thêm menu "Atlas Banking" `/atlas-banking/` (mục ấn phẩm thứ năm, cùng cơ chế §6A, nằm sau Atlas VietNam trên thanh NAT; địa chỉ mới là vĩnh viễn, §6B nếu đổi). Kỳ đầu để `nhap`. Không đổi nguyên tắc nào khác.
+- 2026-10-17 — **2.16.0** (Tú yêu cầu): chuẩn hoá bảng tính các dự án theo Norton Park; thêm khối vay ngân hàng + PDF trình bày cho Nam Mekong, Norton Park, Palm River, SkySOLIS, Artisan Park. Ngoại lệ §9 (đã ghi ở mục trước) mở rộng thêm tệp dùng chung `assets/tools/shared/bang-tinh.css` (bản sao CSS Norton Park) và `assets/tools/shared/zalo-qr.js` (mã QR Zalo tự viết cho PDF) — vẫn không thư viện ngoài, không theo dõi. Khi đổi JS/CSS dùng chung phải tăng `?v=` ở các trang bảng tính.
 - 2026-10-08 — **2.13.0** (Tú yêu cầu): mọi trang bài và trang riêng hiện **watermark chân dung tác giả** (ảnh `assets/images/site/tac-gia-nguyen-anh-tu.webp` của trang chủ) mờ phía sau nội dung, góc dưới bên phải khung bài. Làm bằng một khối CSS cuối `main.css` (`#panel.page::after`, `z-index:-1`, độ mờ .07, ẩn khi in/xuất PDF); không sửa template hay nội dung bài. Đổi ảnh chân dung ở trang chủ thì watermark đổi theo.
 - 2026-10-07 — **2.12.0** (Tú ủy quyền SEO "tự làm"): thẻ `<title>` chỉ gắn hậu tố "| Nguyễn Anh Tú" khi tổng ≤ 60 ký tự (hàm `withSuffix` trong `build.mjs`); khi viết `seoTitle` nên giữ ≤ 52 ký tự để còn chỗ cho hậu tố. Không đổi URL, giao diện hay nguyên tắc nào khác.
 - 2026-10-06 — **2.11.1** (Tú yêu cầu): bài Norton Park dùng giao diện riêng theo nhận diện dự án (nền xanh rêu đậm, chữ kem, dải họa tiết lá #545748 ở đầu trang). Thêm trường `theme` trong `articles.json` + class `theme-<tên>` ở build; chỉ bài có `theme` mới đổi, các bài khác và trang chủ giữ nguyên giao diện đã duyệt (§12.5). Menu NAT giữ nguyên.

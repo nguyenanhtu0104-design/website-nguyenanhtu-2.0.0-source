@@ -3,6 +3,28 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-17 — 2.16.0: Chuẩn hoá bảng tính các dự án theo phong cách Norton Park + khối vay ngân hàng cho cả 5 dự án
+- Bảng tính Nam Mekong dựng lại theo bố cục/giao diện Norton Park (dùng chung `assets/tools/shared/bang-tinh.css`): thông tin căn, thuế & phí, chiết khấu, thanh tổng giá bán, so sánh 5 phương thức, lịch thanh toán theo giai đoạn, điều khoản. Giữ nguyên chọn tòa/tầng/căn, mặt bằng, ghim vị trí, phóng to ảnh.
+- Sửa số liệu Nam Mekong: tiền booking 50.000.000 đ trước đây bị cộng dư vào tổng lịch thanh toán (tổng lệch giá cuối đúng 50 triệu). Nay booking được trừ vào Đợt 1; tổng lịch thanh toán khớp tổng giá bán ở cả 5 phương thức. VAT, KPBT, tiền booking giờ chỉnh được.
+- Norton Park, Palm River, SkySOLIS, Artisan Park: thêm khối "Vay Ngân Hàng" (module dùng chung) theo chính sách từng phương thức, kèm nút "PDF Trình Bày (A4, có phương án vay)". Các nút/PDF báo giá cũ giữ nguyên.
+- Module vay: thêm `NATLoan.deckPages` (trang báo giá, lịch thanh toán, so sánh dùng chung); nới dung sai 1.000 đ khi so với trần vay để tránh cảnh báo sai do làm tròn.
+- Artisan Park chưa có phương thức vay riêng → khối vay mô phỏng khách tự vay thêm tại đợt bàn giao. SkySOLIS không có hỗ trợ lãi trong bảng chính sách → mặc định không hỗ trợ lãi.
+- Ô "Số điện thoại của người tư vấn" (đổi tên từ "SĐT Chuyên Viên") có ở cả 5 bảng tính; khi xuất PDF (cả bản trình bày lẫn bản báo giá cũ) tự hiện số điện thoại kèm mã QR Zalo `zalo.me/<số>`. Mã QR tự viết trong `assets/tools/shared/zalo-qr.js` (không thư viện ngoài, tạo ngay trên máy người dùng, không gửi số đi đâu); đã quét thử cả 9 bản PDF đều ra đúng liên kết. Artisan Park thêm ô nhập khách hàng/tư vấn/số điện thoại.
+
+## 2026-10-17 — Công cụ: Bảng tính Nam Mekong — khối vay ngân hàng + xuất PDF A4 (bản mẫu, chưa nhân sang dự án khác)
+- Thêm module dùng chung `assets/tools/shared/vay-ngan-hang.js` (không thư viện ngoài, biểu đồ SVG tự vẽ, chỉ nạp ở trang bảng tính). Bảng tính Nam Mekong gắn khối "Phương án vay ngân hàng theo từng phương thức" dưới phần so sánh.
+- Khoản vay lấy theo chính sách từng phương thức: Vay NH 30% (ngân hàng giải ngân 65% giá trị căn, T2) và Vay NH 20% (50%, T2), kèm hỗ trợ lãi suất của chủ đầu tư (tối đa 70% giá trị căn, 24 tháng, vay tối đa 35 năm). TT Chuẩn, TT Sớm 70%, TT Sớm 95% không có vay theo chính sách; TT Chuẩn và TT Sớm 70% có ô "vay thêm tại đợt bàn giao" (mặc định 0%) để xem phương án tự vay.
+- Lãi suất là giả định do người dùng nhập (mặc định ưu đãi 7%/năm trong 12 tháng, thả nổi 10,5%/năm, vay 25 năm), không gắn tên ngân hàng; có cách trả gốc + lãi chia đều hoặc gốc đều lãi giảm dần, ân hạn gốc, tỷ lệ và số tháng chủ đầu tư hỗ trợ lãi (mặc định giả định chịu 100% lãi trong 24 tháng, sửa được). Cảnh báo khi khoản vay vượt mức tối đa theo chính sách.
+- Khoản khách trả hàng tháng: bảng theo giai đoạn (được hỗ trợ lãi / ưu đãi / thả nổi, gốc đều hiện mức đầu → cuối), bảng trả nợ từng tháng đầy đủ trong trang và 30 tháng đầu trong PDF.
+- Hiển thị: 5 chỉ số chính, dòng thời gian khoản vay, biểu đồ tiền trả mỗi năm (gốc, lãi khách trả, lãi chủ đầu tư hỗ trợ), dư nợ theo năm, bảng trả nợ theo năm, so sánh tổng chi phí sở hữu giữa 5 phương thức.
+- Nút "Xuất PDF trình bày (A4)": 8 trang dọc (báo giá căn kèm mặt bằng, lịch thanh toán, so sánh phương thức, phương án vay, bảng trả nợ từng tháng, bảng trả nợ theo năm, so sánh tổng chi phí, lưu ý). Dùng hộp thoại in của trình duyệt, chọn "Lưu dạng PDF".
+- Kiểm tra: công thức niên kim, gốc đều và tổng lãi hỗ trợ khớp tính tay; chạy thử trên trình duyệt (máy tính, điện thoại), không lỗi JS, không tràn ngang.
+
+## 2026-10-17 — 2.15.0: Menu mới "Atlas Banking" (bản nháp)
+- Thêm mục **Atlas Banking** (`/atlas-banking/`) vào thanh menu NAT, nằm sau "Atlas VietNam". Cùng cơ chế ấn phẩm theo kỳ: khai báo trong `site.config.json` → `publications` (`navKey: nav_atlasbank`), nội dung ở `publications/atlas-banking/<kỳ>/`. Không đổi CSS/JS.
+- Kỳ đầu `lai-suat-ngan-hang`: dựng từ báo cáo quét nguồn ATLAS_BANKING v4.5 (quét 17/10/2026): 22 ngân hàng theo dõi, 12 có số huy động, 7 có bình quân cho vay chung, 10 chưa điền; hai chỉ số bổ sung của LPBank; ba cảnh báo nguồn (UOB, HDBank, VIB). Trang chỉ trình bày số có trong file, không thêm số mới.
+- Trạng thái **nháp** (`trang-thai: nhap`): trang không hiện trong thư viện, không vào Google, có dải "BẢN NHÁP". Menu hiện ngay khi đẩy lên GitHub, thư viện hiện "Chưa có ấn phẩm được công bố" cho tới khi công bố kỳ. Ảnh bìa tạm dùng ảnh trang chủ.
+
 ## 2026-10-17 — Công cụ: Bản đồ dự án — nền vệ tinh, sửa vị trí dự án Bình Dương
 
 - Nền bản đồ: thêm nút chọn nền ở góc phải, mặc định "Vệ tinh" (ảnh Esri World Imagery kèm lớp tên đường, địa danh của Esri), vẫn chọn được "Bản đồ đường" (OpenStreetMap). Trình duyệt nhớ lựa chọn của người xem. Đoạn vành đai có viền trắng để nổi trên ảnh vệ tinh.
