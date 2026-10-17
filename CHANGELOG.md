@@ -3,6 +3,9 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-17 — Công bố Atlas Banking số 01
+- Kỳ `lai-suat-ngan-hang` (số 01) chuyển từ nháp sang công bố: hiện trong thư viện `/atlas-banking/`, vào sitemap, bỏ `noindex`.
+
 ## 2026-10-17 — 2.16.0: Chuẩn hoá bảng tính các dự án theo phong cách Norton Park + khối vay ngân hàng cho cả 5 dự án
 - Khôi phục sau sự cố triển khai: `data/articles.json` và `data/images.json` trên GitHub bị mất bài "Fed tăng lãi suất…" (còn trong `categories.json`) nên build báo lỗi và trang web không cập nhật; đã trả lại. Ba bảng tính Nam Mekong, Norton Park, Palm River được ghép lại giữ nguyên các điểm đo lead (`data-lead-input`, `data-lead-result`, nút "Nhận phương án này") của hệ thống lead.
 - Bảng tính Nam Mekong dựng lại theo bố cục/giao diện Norton Park (dùng chung `assets/tools/shared/bang-tinh.css`): thông tin căn, thuế & phí, chiết khấu, thanh tổng giá bán, so sánh 5 phương thức, lịch thanh toán theo giai đoạn, điều khoản. Giữ nguyên chọn tòa/tầng/căn, mặt bằng, ghim vị trí, phóng to ảnh.
