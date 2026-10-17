@@ -3,6 +3,21 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-17 — Công cụ: Bản đồ dự án — lớp "Dự án mở bán từ 2017" (đợt 1: TP.HCM cũ)
+
+- Thêm dữ liệu `assets/tools/ban-do-du-an-hcm/du-an-2017.json`: 55 dự án căn hộ và thấp tầng ở TP.HCM cũ, mỗi dự án có chủ đầu tư, vị trí, quy mô, khởi công, mở bán và giá mở bán, bàn giao, giá hiện tại (giá rao/giá chào kèm thời điểm), tọa độ (CBRE hoặc Guland; 9 dự án ước lượng theo địa chỉ), độ tin cậy và nguồn.
+- Bản đồ thêm lớp ô vuông màu theo tình trạng bàn giao, lọc theo năm mở bán, loại hình, bàn giao; popup có ga gần nhất, khoảng cách tới tuyến, nguồn; tìm kiếm và liên kết chia sẻ dạng #q=…
+- File rà soát cho Tú: ra-soat-du-an-2017-nay-dot-1.xlsx (không đưa vào kho).
+
+## 2026-10-17 — Công cụ: Bản đồ dự án TP.HCM — cập nhật dữ liệu và tăng tương tác
+
+- Đánh dấu đoạn ngầm (gạch đen hai bên tuyến) và đoạn trên cao (viền trắng) cho Tuyến 1, Tuyến 2 (cả đoạn Thủ Thiêm), Thủ Dầu Một – Tao Đàn, Bến Thành – Cần Giờ, Bình Dương – Suối Tiên; có nút bật/tắt và chú giải. Tuyến 6, Thủ Thiêm – Long Thành và Tuyến 2 nối dài chưa công bố vị trí đoạn ngầm nên chưa tô.
+
+- Rà lại vị trí ga: Tuyến 1 lấy đủ 14 ga theo bản đồ ga của hochiminhcitymetro.com (sửa ga Ba Son lệch khoảng 650 m và ga Bình Thái lệch khoảng 470 m); ga Thủ Thiêm (Tuyến 2 và Thủ Thiêm – Long Thành) theo bản đồ riêng của ga; đối chiếu ga Bà Quẹo khớp trong 10 m. Mỗi tuyến ghi rõ nguồn và độ tin cậy của vị trí ga trong cửa sổ thông tin.
+
+- Dữ liệu: Metro số 2 Thủ Dầu Một – Tao Đàn theo hướng tuyến UBND TP.HCM duyệt (33,2 km, 24 ga, C0–C10 trên cao, C11–C23 ngầm, depot Hiệp Bình Phước); Metro số 2 nối dài đến ranh Tây Ninh (Viet Him Lam đề xuất, khởi công quý IV/2026); Bến Thành – Cần Giờ: đoạn Bến Thành – Tân Thuận đi ngầm, Tân Thuận – Cần Giờ trên cao; Tuyến 6: hướng tuyến nối ba nhà ga Tân Sơn Nhất, depot Bình Triệu, khoảng 3,3 tỷ USD. Eaton Park xác minh đã bán hết (bàn giao từ quý III/2027).
+- Tương tác: ô tìm dự án/ga/tuyến (gõ không dấu được, dùng phím mũi tên); nút "Xem" đưa bản đồ tới từng tuyến; tên ga hiện khi phóng to từ mức 14; ga ngầm tô đặc; bật vòng 500 m quanh ga (TOD); popup dự án có ga gần nhất và khoảng cách tới hướng tuyến; vẽ vòng 500 m/1 km quanh dự án hoặc ga; công cụ đo khoảng cách, vị trí của tôi, về toàn cảnh; thước tỷ lệ; liên kết chia sẻ (#p=…, #l=…, #s=…) để mở thẳng một dự án, tuyến hoặc ga; popup gọn hơn và cuộn được trên điện thoại.
+
 ## 2026-10-16 — Công cụ: Bản đồ dự án TP.HCM, metro và vành đai (bản xem thử, chưa gắn vào bài)
 
 - Cửa sổ thông tin và danh sách tuyến của 9 dự án MAUR ghi thêm: chiều dài, số ga, tuyến nổi hay ngầm (số km và số ga), danh sách tên ga, depot. Ga Tuyến 1 và Tuyến 2 đoạn Thủ Thiêm ghi rõ ga ngầm hoặc ga trên cao. Dự án nào nguồn chưa nêu thì ghi "chưa rõ".
