@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-17 — Công cụ: Bản đồ dự án — vành đai và metro theo đường thật
+
+- Lấy hình học đường từ OpenStreetMap qua dịch vụ định tuyến OSRM (router.project-osrm.org; ODbL), kiểm tra từng đoạn bằng chiều dài trả về: Vành đai 2 đoạn Quốc lộ 1 (Gò Dưa – An Sương – An Lạc) và Nguyễn Văn Linh – cầu Phú Mỹ – Võ Chí Công; Vành đai 1 đoạn Phạm Văn Đồng và Bạch Đằng – Trường Sơn – Trần Quốc Hoàn – Hoàng Văn Thụ; Vành đai 3 đoạn Long Trường – cầu Nhơn Trạch; Metro Thủ Dầu Một – Tao Đàn đoạn Đại lộ Bình Dương.
+- Vành đai 1 sửa thành tuyến hở 4 đoạn (khoảng 26,4 km) thay vì vòng khép kín; nút Linh Đông và Gò Dưa đặt lại theo đường thật.
+- Vành đai hiển thị hai mức: dải đậm là đoạn theo đường thật, dải mờ nét chấm là đoạn ước lượng hoặc chưa xây.
+
 ## 2026-10-17 — Công cụ: Bản đồ dự án — lớp "Dự án mở bán từ 2017" (đợt 1: TP.HCM cũ)
 
 - Thêm dữ liệu `assets/tools/ban-do-du-an-hcm/du-an-2017.json`: 55 dự án căn hộ và thấp tầng ở TP.HCM cũ, mỗi dự án có chủ đầu tư, vị trí, quy mô, khởi công, mở bán và giá mở bán, bàn giao, giá hiện tại (giá rao/giá chào kèm thời điểm), tọa độ (CBRE hoặc Guland; 9 dự án ước lượng theo địa chỉ), độ tin cậy và nguồn.
