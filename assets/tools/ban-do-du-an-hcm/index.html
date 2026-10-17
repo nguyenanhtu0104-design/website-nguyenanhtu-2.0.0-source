@@ -97,7 +97,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    <div class="stat"><b id="n-dang" style="color:var(--s-dang)">0</b><span>Đang mở bán</span></div>
    <div class="stat"><b id="n-da" style="color:var(--s-da)">0</b><span>Đã mở bán</span></div>
   </div>
-  <p class="note" style="margin-top:8px">Tổng <b id="n-all">0</b> dự án · <b id="n-kxm">0</b> dự án chưa xác minh tình trạng (vòng rỗng trên bản đồ).</p>
+  <p class="note" style="margin-top:8px">Tổng <b id="n-all">0</b> dự án · <b id="n-kxm">0</b> dự án chưa xác minh tình trạng (vòng rỗng trên bản đồ). Chấm nhỏ mờ viền đứt: vị trí ước lượng, chưa có tọa độ có nguồn.</p>
  </div>
  <div class="sec"><h2>Tình trạng mở bán</h2>
   <label class="flt"><input type="checkbox" data-st="chua-mo-ban" checked><span class="dot" style="background:var(--s-chua)"></span>Chưa mở bán<em id="c-chua"></em></label>
@@ -109,15 +109,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   <label class="flt"><input type="checkbox" id="q-on" checked>Hiện trên bản đồ<em id="q-n"></em></label>
   <div class="qf"><label>Mở bán từ <select id="q-y1"></select></label> <label>đến <select id="q-y2"></select></label></div>
   <label class="flt"><input type="checkbox" id="q-unk" checked>Gồm dự án chưa rõ năm mở bán</label>
+  <label class="flt"><input type="checkbox" id="q-apx">Gồm dự án vị trí ước lượng (chưa có tọa độ có nguồn)</label>
   <div class="qf"><label>Loại hình <select id="q-t"><option value="">Tất cả</option><option>Căn hộ</option><option>Thấp tầng</option><option>Hỗn hợp</option></select></label></div>
   <div class="qf"><label>Bàn giao <select id="q-h"><option value="">Tất cả</option><option>Đã bàn giao</option><option>Một phần</option><option>Chưa</option><option>Chưa rõ</option></select></label></div>
-  <p class="note"><span class="qk" style="background:#7b4fa3"></span>đã bàn giao · <span class="qk" style="background:#e67e22"></span>một phần · <span class="qk" style="background:#0f9d8a"></span>chưa · <span class="qk" style="background:#8a8f98"></span>chưa rõ. Ô vuông viền đứt: tọa độ ước lượng. Giá hiện tại là giá rao bán hoặc giá chào, kèm thời điểm.</p>
+  <p class="note"><span class="qk" style="background:#7b4fa3"></span>đã bàn giao · <span class="qk" style="background:#e67e22"></span>một phần · <span class="qk" style="background:#0f9d8a"></span>chưa · <span class="qk" style="background:#8a8f98"></span>chưa rõ. Ô vuông viền đứt: tọa độ ước lượng (mặc định ẩn). Dự án đã có trong lớp Cẩm Nang chỉ hiện một lần. Giá hiện tại là giá rao bán hoặc giá chào, kèm thời điểm.</p>
  </div>
  <div class="sec"><h2>Metro và vành đai</h2>
   <p class="note" style="margin-bottom:6px">Metro: nét liền là đang vận hành, nét đứt là đang xây, nét chấm là nghiên cứu, đề xuất, kèm vòng tròn ở mỗi ga. Vành đai (đường bộ): dải màu rộng, nét gạch chấm, không có ga; dải đậm là đoạn vẽ theo đường thật (OpenStreetMap), dải mờ nét chấm là đoạn ước lượng hoặc chưa xây. <b>Hướng tuyến sơ đồ</b>, không phải tim tuyến.</p>
   <p class="note" style="margin-bottom:6px">Ga tô đặc: ga ngầm · ga rỗng: ga trên cao hoặc chưa rõ. Phóng to từ mức 14 để hiện tên ga. Nút <b>Xem</b> đưa bản đồ tới tuyến.</p>
   <p class="note" style="margin-bottom:4px"><span class="sw sw-n"></span>gạch đen hai bên: đoạn đi ngầm · <span class="sw sw-c"></span>viền trắng: đoạn trên cao · không viền: chưa công bố.</p>
   <label class="flt"><input type="checkbox" id="segtg" checked>Tô đoạn ngầm và đoạn trên cao</label>
+  <label class="flt"><input type="checkbox" id="apxtg">Hiện cả đoạn vành đai ước lượng, chưa xác minh</label>
   <label class="flt"><input type="checkbox" id="tod">Vòng 500 m quanh các ga (vùng TOD)</label>
   <p class="note" id="ln-stat" style="margin-bottom:6px"></p>
   <div class="bar"><button type="button" id="ln-all">Hiện tất cả</button><button type="button" id="ln-none">Ẩn tất cả</button></div>
@@ -128,7 +130,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  <div class="sec"><h2>Danh sách dự án</h2><div class="list" id="list"></div></div>
  <div class="sec note">
   <b>Lưu ý:</b> vị trí dự án và nhà ga là <b>vị trí tham chiếu khu vực</b>, có thể lệch vài trăm mét đến vài km so với thực tế. Tình trạng mở bán lấy từ các bài trong Cẩm Nang và thông tin thị trường tại ngày cập nhật; thay đổi theo từng đợt hàng của chủ đầu tư, nên cần xác nhận trực tiếp trước khi quyết định. Nội dung chỉ mang tính tham khảo, không phải lời chào bán.<br><br>
-  Nền bản đồ và hình học một số đoạn đường © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:var(--gold)">OpenStreetMap</a> (ODbL), lấy qua dịch vụ định tuyến OSRM. Hiển thị bằng Leaflet.
+  Nền vệ tinh và nhãn đường © Esri, Vantor, Earthstar Geographics, HERE, Garmin. Nền bản đồ đường và hình học một số đoạn đường © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:var(--gold)">OpenStreetMap</a> (ODbL), lấy qua dịch vụ định tuyến OSRM. Hiển thị bằng Leaflet.
  </div>
 </aside>
 <div id="map" role="application" aria-label="Bản đồ dự án và metro TP.HCM"></div>
@@ -143,31 +145,37 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "id": "the-marq",
    "name": "The MarQ",
    "zone": "Quận 1",
-   "lat": 10.7893,
-   "lng": 106.6989,
+   "lat": 10.787613,
+   "lng": 106.699268,
    "status": "da-mo-ban",
    "verified": true,
-   "note": "Căn hộ hàng hiệu 29 Nguyễn Đình Chiểu; thị trường thứ cấp."
+   "note": "Căn hộ hàng hiệu 29 Nguyễn Đình Chiểu; thị trường thứ cấp.",
+   "pos": "Tọa độ theo Guland",
+   "posApprox": false
   },
   {
    "id": "grand-marina-saigon",
    "name": "Saigon Grand Marina",
    "zone": "Quận 1",
-   "lat": 10.7872,
-   "lng": 106.7062,
+   "lat": 10.782432,
+   "lng": 106.706071,
    "status": "da-mo-ban",
    "verified": false,
-   "note": "Marriott Bonvoy, Masterise Homes, bến Bạch Đằng; một số phân khu bàn giao kéo dài. Cần xác nhận phân khu còn hàng."
+   "note": "Marriott Bonvoy, Masterise Homes, bến Bạch Đằng; một số phân khu bàn giao kéo dài. Cần xác nhận phân khu còn hàng.",
+   "pos": "Tọa độ theo CBRE",
+   "posApprox": false
   },
   {
    "id": "one-central-saigon",
    "name": "The One Central Saigon",
    "zone": "Quận 1",
-   "lat": 10.7694,
-   "lng": 106.6988,
+   "lat": 10.77083,
+   "lng": 106.69898,
    "status": "chua-mo-ban",
    "verified": true,
-   "note": "Tháp đôi 235 m tại Tứ giác Bến Thành; khởi công 14/3/2025; chưa có thông tin mở bán chính thức (đến 5/2026)."
+   "note": "Tháp đôi 235 m tại Tứ giác Bến Thành; khởi công 14/3/2025; chưa có thông tin mở bán chính thức (đến 5/2026).",
+   "posApprox": false,
+   "pos": "Tọa độ theo Guland (khu đất giới hạn bởi Calmette, Lê Thị Hồng Gấm, Phó Đức Chính, Phạm Ngũ Lão)"
   },
   {
    "id": "sun-thu-thiem-2c",
@@ -177,7 +185,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "lng": 106.7245,
    "status": "chua-mo-ban",
    "verified": true,
-   "note": "Khu 2C, phường An Khánh; chưa công bố sản phẩm và giá; bàn giao mặt bằng dự kiến 10/2026."
+   "note": "Khu 2C, phường An Khánh; chưa công bố sản phẩm và giá; bàn giao mặt bằng dự kiến 10/2026.",
+   "posApprox": true,
+   "pos": "Vị trí gần đúng: khu 2C Thủ Thiêm; chưa có tọa độ có nguồn"
   },
   {
    "id": "the-petropolis",
@@ -187,47 +197,57 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "lng": 106.7216,
    "status": "chua-mo-ban",
    "verified": true,
-   "note": "Sát khu vực ga đường sắt đô thị Thủ Thiêm; chủ đầu tư và quy mô chưa công bố."
+   "note": "Sát khu vực ga đường sắt đô thị Thủ Thiêm; chủ đầu tư và quy mô chưa công bố.",
+   "posApprox": true,
+   "pos": "Vị trí gần đúng: sát ga Thủ Thiêm; chưa có tọa độ có nguồn"
   },
   {
    "id": "global-city",
    "name": "Global City",
    "zone": "Thủ Đức",
-   "lat": 10.7905,
-   "lng": 106.7685,
+   "lat": 10.8017,
+   "lng": 106.7753,
    "status": "dang-mo-ban",
    "verified": false,
-   "note": "Masterplan 117 ha của Masterise Homes, dưới 500 m đến ga Rạch Chiếc; mở bán theo từng phân khu."
+   "note": "Masterplan 117 ha của Masterise Homes, dưới 500 m đến ga Rạch Chiếc; mở bán theo từng phân khu.",
+   "pos": "Tọa độ theo CBRE",
+   "posApprox": false
   },
   {
    "id": "eaton-park",
    "name": "Eaton Park",
    "zone": "Thủ Đức",
-   "lat": 10.7962,
-   "lng": 106.7525,
+   "lat": 10.794512,
+   "lng": 106.751849,
    "status": "da-mo-ban",
    "verified": true,
-   "note": "Gamuda Land, 2.052 sản phẩm, 6 tháp; ba đợt mở bán đều bán gần hết trong vài giờ, phần còn lại bán hết sau khoảng một tháng. Cất nóc toàn bộ 8/2026, bàn giao từ quý III/2027. Khoảng 500 m đến ga Rạch Chiếc."
+   "note": "Gamuda Land, 2.052 sản phẩm, 6 tháp; ba đợt mở bán đều bán gần hết trong vài giờ, phần còn lại bán hết sau khoảng một tháng. Cất nóc toàn bộ 8/2026, bàn giao từ quý III/2027. Khoảng 500 m đến ga Rạch Chiếc.",
+   "pos": "Tọa độ theo CBRE",
+   "posApprox": false
   },
   {
    "id": "palm-river",
    "name": "Palm River (Palm City)",
    "zone": "Thủ Đức",
-   "lat": 10.7935,
-   "lng": 106.765,
+   "lat": 10.79134,
+   "lng": 106.760695,
    "status": "dang-mo-ban",
    "verified": true,
-   "note": "Hướng Việt Properties; bốn phương án thanh toán; ưu đãi Early Birds đã hết hạn 30/9/2026."
+   "note": "Hướng Việt Properties; bốn phương án thanh toán; ưu đãi Early Birds đã hết hạn 30/9/2026.",
+   "pos": "Tọa độ theo Guland (khu Palm City)",
+   "posApprox": false
   },
   {
    "id": "vinhome-green-paradise",
    "name": "Vinhomes Green Paradise",
    "zone": "Cần Giờ",
-   "lat": 10.413,
-   "lng": 106.979,
+   "lat": 10.390448,
+   "lng": 106.932734,
    "status": "dang-mo-ban",
    "verified": false,
-   "note": "Vingroup, 2.870 ha; bàn giao giai đoạn đầu từ 2030."
+   "note": "Vingroup, 2.870 ha; bàn giao giai đoạn đầu từ 2030.",
+   "pos": "Tọa độ theo Guland",
+   "posApprox": false
   },
   {
    "id": "norton-park",
@@ -237,37 +257,45 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "lng": 106.714,
    "status": "dang-mo-ban",
    "verified": true,
-   "note": "Gamuda Land, đại lộ Bình Dương cạnh AEON Mall; bàn giao dự kiến 9/2029."
+   "note": "Gamuda Land, đại lộ Bình Dương cạnh AEON Mall; bàn giao dự kiến 9/2029.",
+   "posApprox": true,
+   "pos": "Vị trí gần đúng: mặt tiền Đại lộ Bình Dương, liền kề AEON Mall Bình Dương Canary (10.9323, 106.7119 theo malls.com), đối diện ga C8; chưa có tọa độ riêng của dự án"
   },
   {
    "id": "skysolis",
    "name": "SkySOLIS",
    "zone": "Bình Dương (cũ)",
-   "lat": 10.925,
-   "lng": 106.712,
+   "lat": 10.907344,
+   "lng": 106.709905,
    "status": "dang-mo-ban",
    "verified": true,
-   "note": "Mở bán đợt 1; ưu đãi booking đến hết 23/10/2026."
+   "note": "Mở bán đợt 1; ưu đãi booking đến hết 23/10/2026.",
+   "pos": "Tọa độ theo CBRE",
+   "posApprox": false
   },
   {
    "id": "artisan-park",
    "name": "Artisan Park",
    "zone": "Bình Dương (cũ)",
-   "lat": 10.981,
-   "lng": 106.669,
+   "lat": 11.0652541,
+   "lng": 106.6853829,
    "status": "dang-mo-ban",
    "verified": true,
-   "note": "Gamuda Land tại Thành phố mới Bình Dương, khoảng 300 m đến ga metro."
+   "note": "Gamuda Land tại Thành phố mới Bình Dương, khoảng 300 m đến ga metro.",
+   "posApprox": false,
+   "pos": "Tọa độ theo liên kết Google Maps trên trang chính thức Gamuda Land"
   },
   {
    "id": "nam-mekong-grand-plaza",
    "name": "Nam Mekong Grand Plaza",
    "zone": "Bình Dương (cũ)",
-   "lat": 10.978,
-   "lng": 106.676,
+   "lat": 11.0596,
+   "lng": 106.6872,
    "status": "dang-mo-ban",
    "verified": true,
-   "note": "Mở bán giai đoạn 1; sáu quỹ đất ở quanh vòng xoay A1, gần WTC."
+   "note": "Mở bán giai đoạn 1; sáu quỹ đất ở quanh vòng xoay A1, gần WTC.",
+   "posApprox": true,
+   "pos": "Vị trí gần đúng: lô A4 quanh vòng xoay WTC, trung tâm Thành phố mới Bình Dương; chưa có tọa độ có nguồn"
   },
   {
    "id": "blanca-city",
@@ -277,7 +305,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
    "lng": 107.095,
    "status": "dang-mo-ban",
    "verified": false,
-   "note": "Đô thị biển 5 phân khu tại Vũng Tàu."
+   "note": "Đô thị biển 5 phân khu tại Vũng Tàu.",
+   "posApprox": true,
+   "pos": "Vị trí gần đúng: đường 3 Tháng 2, phường 10 và 11 (Vũng Tàu cũ); chưa có tọa độ có nguồn"
   }
  ],
  "lines": [
@@ -755,10 +785,23 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  var TY={n:'Ga ngầm',c:'Ga trên cao'};
  var PO={maxWidth:Math.min(330,window.innerWidth-90),maxHeight:Math.max(240,Math.min(420,Math.round(window.innerHeight*.55))),autoPanPaddingTopLeft:[56,12],autoPanPaddingBottomRight:[12,12]};
  document.getElementById('upd').textContent=D.updated;
- var map=L.map('map',{zoomControl:true}).setView([10.82,106.72],11);
- L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);
+ var map=L.map('map',{zoomControl:true,preferCanvas:true,renderer:L.canvas({padding:.4,tolerance:7}),zoomSnap:.5,wheelPxPerZoomLevel:90}).setView([10.82,106.72],11);
+ map.createPane('lbl').style.zIndex=250;map.getPane('lbl').style.pointerEvents='none';
+ var TO={maxZoom:19,updateWhenZooming:false,keepBuffer:2},EB='https://server.arcgisonline.com/ArcGIS/rest/services/';
+ function xt(a,b){var o={};for(var k in a)o[k]=a[k];for(k in b)o[k]=b[k];return o}
+ var BASES={
+  'Vệ tinh':L.layerGroup([
+   L.tileLayer(EB+'World_Imagery/MapServer/tile/{z}/{y}/{x}',xt(TO,{maxNativeZoom:18,attribution:'Ảnh vệ tinh © Esri, Vantor, Earthstar Geographics; nhãn © Esri, HERE, Garmin, OpenStreetMap'})),
+   L.tileLayer(EB+'Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',xt(TO,{maxNativeZoom:18,pane:'lbl',opacity:.85})),
+   L.tileLayer(EB+'Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',xt(TO,{maxNativeZoom:18,pane:'lbl'}))]),
+  'Bản đồ đường':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',xt(TO,{attribution:'© OpenStreetMap'}))};
+ var baseName='Vệ tinh';try{var bs=localStorage.getItem('bdda-base');if(BASES[bs])baseName=bs}catch(e){}
+ BASES[baseName].addTo(map);
+ L.control.layers(BASES,null,{position:'topright',collapsed:false}).addTo(map);
+ map.on('baselayerchange',function(e){try{localStorage.setItem('bdda-base',e.name)}catch(x){}});
  L.control.scale({imperial:false,position:'bottomleft'}).addTo(map);
  map.createPane('casing').style.zIndex=395;
+ var casingR=L.canvas({pane:'casing',padding:.4});
  var isMobile=function(){return window.innerWidth<=760};
  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
  function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/đ/g,'d')}
@@ -773,25 +816,27 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  map.on('popupclose',function(){setHash('')});
 
  // ---------- tuyến, ga ----------
- var lineLayers={},stations=[],labelLayer=L.layerGroup().addTo(map),todLayer=L.layerGroup().addTo(map),showTod=false;
+ var showApx=false,lineLayers={},stations=[],labelLayer=L.layerGroup().addTo(map),todLayer=L.layerGroup().addTo(map),showTod=false;
  function slicePts(p,a,b){function at(t){var i=Math.min(Math.floor(t),p.length-1),f=t-i;if(f<=0||i>=p.length-1)return p[i];return [p[i][0]+(p[i+1][0]-p[i][0])*f,p[i][1]+(p[i+1][1]-p[i][1])*f]}
   var out=[at(a)];for(var i=Math.floor(a)+1;i<b;i++)out.push(p[i]);out.push(at(b));return out}
  function stName(s){return s.name+(s.type?' · '+TY[s.type]:'')}
  D.lines.forEach(function(d){
   var g=L.layerGroup(),ss=SS[d.status],isR=d.group==='ring',lab=[];
   var tip='<b>'+esc(d.name)+'</b><br>'+ss.t+' · '+esc(d.length)+(d.ks?'<br>'+esc(d.ks):'');
-  if(isR){(d.parts||[{exact:true,pts:d.pts}]).forEach(function(pt){
-   L.polyline(pt.pts,{color:d.color,weight:pt.exact?13:9,opacity:pt.exact?.3:.12,lineCap:'round',lineJoin:'round',interactive:false}).addTo(g);
-   L.polyline(pt.pts,{color:d.color,weight:pt.exact?3:2,opacity:pt.exact?.95:.55,dashArray:pt.exact?'16 6 3 6':'3 7',lineCap:'butt',lineJoin:'round',interactive:false}).addTo(g)})}
+  var apx=L.layerGroup();
+  if(isR){(d.parts||[{exact:true,pts:d.pts}]).forEach(function(pt){var t=pt.exact?g:apx;
+   L.polyline(pt.pts,{color:d.color,weight:pt.exact?13:9,opacity:pt.exact?.3:.12,lineCap:'round',lineJoin:'round',interactive:false}).addTo(t);
+   if(pt.exact)L.polyline(pt.pts,{color:'#fff',weight:6,opacity:.85,lineCap:'butt',lineJoin:'round',interactive:false}).addTo(t);
+   L.polyline(pt.pts,{color:d.color,weight:pt.exact?3:2,opacity:pt.exact?.95:.55,dashArray:pt.exact?'16 6 3 6':'3 7',lineCap:'butt',lineJoin:'round',interactive:false}).addTo(t)})}
+  if(showApx)g.addLayer(apx);
   var segG=L.layerGroup();
   if(d.seg)d.seg.forEach(function(sg){var pp=slicePts(d.pts,sg[0],sg[1]),ug=sg[2]==='n';
-   L.polyline(pp,ug?{pane:'casing',interactive:false,color:'#111',weight:13,opacity:.85,dashArray:'3 4',lineCap:'butt',lineJoin:'round'}:{pane:'casing',interactive:false,color:'#ffffff',weight:12,opacity:.95,lineCap:'butt',lineJoin:'round'}).addTo(segG)});
+   L.polyline(pp,ug?{pane:'casing',renderer:casingR,interactive:false,color:'#111',weight:13,opacity:.85,dashArray:'3 4',lineCap:'butt',lineJoin:'round'}:{pane:'casing',renderer:casingR,interactive:false,color:'#ffffff',weight:12,opacity:.95,lineCap:'butt',lineJoin:'round'}).addTo(segG)});
   segG.addTo(g);
-  var pl=isR?L.polyline(d.pts,{color:d.color,weight:3,opacity:0,lineCap:'butt',lineJoin:'round'}):L.polyline(d.pts,{color:d.color,weight:ss.w,opacity:ss.o,dashArray:ss.d,lineCap:d.status==='nghien-cuu'?'round':'butt'});
+  var pl=isR?L.polyline(d.pts,{color:d.color,weight:10,opacity:0,lineCap:'butt',lineJoin:'round'}):L.polyline(d.pts,{color:d.color,weight:ss.w,opacity:ss.o,dashArray:ss.d,lineCap:d.status==='nghien-cuu'?'round':'butt'});
   // vùng bấm rộng hơn cho điện thoại
-  var hit=L.polyline(d.pts,{color:'#000',opacity:0,weight:18});
   var pop='<div class="pp-t">'+esc(d.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+(isR?'Vành đai · ':'')+ss.t+'</span><div class="pp-m"><b>'+esc(d.length)+'</b><br>'+esc(d.state)+(d.kind?'<br><b>Nổi/ngầm:</b> '+esc(d.kind):'')+(d.pos?'<br><b>Vị trí ga:</b> '+esc(d.pos):'')+'</div>'+(d.names?'<details class="pp-d"><summary>Danh sách ga ('+d.names.length+')</summary>'+d.names.map(esc).join(' – ')+'</details>':'')+'<details class="pp-d"><summary>Ghi chú và nguồn</summary>'+esc(d.note)+'<br><i>Hướng tuyến sơ đồ. Nguồn: '+esc(d.src)+'</i></details><div class="pp-row">'+linkBtn('l='+d.id)+'</div>';
-  [pl,hit].forEach(function(x){x.bindTooltip(tip,{sticky:true});x.bindPopup(pop,PO);x.addTo(g)});
+  [pl].forEach(function(x){x.bindTooltip(tip,{sticky:true});x.bindPopup(pop,PO);x.addTo(g)});
   if(d.stations){d.stations.forEach(function(s,k){
    var st={name:s[0],lat:s[1],lng:s[2],line:d,k:k,type:d.stype?d.stype[k]||'':''};
    st.id=d.id+'.'+k;stations.push(st);
@@ -801,7 +846,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   else if(d.ends&&!isR){[0,d.pts.length-1].forEach(function(i,k){
    L.circleMarker(d.pts[i],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(d.ends[k]),{className:'stn',direction:'top',offset:[0,-4]}).addTo(g);
   });}
-  var on0=d.group!=='plan';lineLayers[d.id]={g:g,on:on0,pl:pl,lab:lab,d:d,seg:segG};if(on0)g.addTo(map);
+  var on0=d.group!=='plan';lineLayers[d.id]={g:g,on:on0,pl:pl,lab:lab,d:d,seg:segG,apx:apx};if(on0)g.addTo(map);
   var box=document.getElementById(isR?'ln-ring':d.group==='plan'?'ln-plan':'ln-metro');
   var row=document.createElement('div');row.className='lrow';
   row.innerHTML='<label class="flt"><input type="checkbox" data-ln="'+d.id+'"'+(on0?' checked':'')+'>'+(isR?'<span class="ln" style="height:9px;border:0;border-radius:5px;background:'+d.color+'33;box-shadow:inset 0 0 0 1px '+d.color+'"></span>':'<span class="ln" style="border-color:'+d.color+';border-top-style:'+(d.status==='van-hanh'?'solid':d.status==='dang-xay'?'dashed':'dotted')+'"></span>')+'<span>'+esc(d.name)+'<small>'+ss.t+' · '+esc(d.length)+(d.ks?' · '+esc(d.ks):'')+'</small></span></label><button type="button" class="zoom" data-zl="'+d.id+'" title="Xem tuyến trên bản đồ" aria-label="Xem '+esc(d.name)+' trên bản đồ">Xem</button>';
@@ -819,16 +864,17 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  function setLine(id,on){var o=lineLayers[id];o.on=on;on?o.g.addTo(map):map.removeLayer(o.g);var c=document.querySelector('[data-ln="'+id+'"]');if(c)c.checked=on;lnStat();labels();tod()}
  function lnStat(){var n={'van-hanh':0,'dang-xay':0,'nghien-cuu':0};D.lines.forEach(function(d){if(d.group==='metro'&&lineLayers[d.id].on)n[d.status]++});
   document.getElementById('ln-stat').innerHTML='Metro MAUR đang hiển thị: <b>'+n['van-hanh']+'</b> vận hành · <b>'+n['dang-xay']+'</b> đang xây · <b>'+n['nghien-cuu']+'</b> nghiên cứu.'}
- function labels(){labelLayer.clearLayers();if(map.getZoom()<14)return;var b=map.getBounds().pad(.2);
+ function labels(){if(map.getZoom()<14){if(labelLayer.getLayers().length)labelLayer.clearLayers();return}labelLayer.clearLayers();var b=map.getBounds().pad(.2);
   Object.keys(lineLayers).forEach(function(id){var o=lineLayers[id];if(!o.on)return;o.lab.forEach(function(m){if(b.contains(m.getLatLng()))labelLayer.addLayer(m)})})}
  function tod(){todLayer.clearLayers();if(!showTod)return;stations.forEach(function(s){if(!lineLayers[s.line.id].on||s.line.group==='plan')return;
   L.circle([s.lat,s.lng],{radius:500,color:s.line.color,weight:1,opacity:.6,dashArray:'4 4',fillColor:s.line.color,fillOpacity:.07,interactive:false}).addTo(todLayer)})}
- map.on('zoomend moveend',labels);
+ var labT=null;map.on('zoomend moveend',function(){clearTimeout(labT);labT=setTimeout(labels,180)});
  Array.prototype.forEach.call(document.querySelectorAll('[data-ln]'),function(c){c.addEventListener('change',function(){setLine(c.dataset.ln,c.checked)})});
  Array.prototype.forEach.call(document.querySelectorAll('[data-zl]'),function(b){b.addEventListener('click',function(){focusLine(b.dataset.zl)})});
  document.getElementById('ln-all').addEventListener('click',function(){D.lines.forEach(function(d){setLine(d.id,true)})});
  document.getElementById('ln-none').addEventListener('click',function(){D.lines.forEach(function(d){setLine(d.id,false)})});
  document.getElementById('tod').addEventListener('change',function(){showTod=this.checked;tod()});
+ document.getElementById('apxtg').addEventListener('change',function(){showApx=this.checked;Object.keys(lineLayers).forEach(function(id){var o=lineLayers[id];showApx?o.g.addLayer(o.apx):o.g.removeLayer(o.apx)})});
  document.getElementById('segtg').addEventListener('change',function(){var on=this.checked;Object.keys(lineLayers).forEach(function(id){var o=lineLayers[id];on?o.g.addLayer(o.seg):o.g.removeLayer(o.seg)})});
  function closeSide(){if(isMobile()){side.classList.add('closed');tg.setAttribute('aria-expanded','false');tg.textContent='Hiện bảng thống kê và bộ lọc';setTimeout(function(){map.invalidateSize()},50)}}
  function focusLine(id){var o=lineLayers[id];if(!o)return;if(!o.on)setLine(id,true);closeSide();map.fitBounds(o.pl.getBounds().pad(.1));setTimeout(function(){o.pl.openPopup(o.pl.getCenter())},350)}
@@ -849,9 +895,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  D.projects.forEach(function(p){
   if(zones.indexOf(p.zone)<0)zones.push(p.zone);
   var s=ST[p.status];
-  var m=L.circleMarker([p.lat,p.lng],{radius:11,weight:3,color:p.verified?'#fff':s.c,fillColor:s.c,fillOpacity:p.verified?1:.25,dashArray:p.verified?null:'3 3'});
+  var m=L.circleMarker([p.lat,p.lng],{radius:p.posApprox?8:11,weight:3,color:p.verified&&!p.posApprox?'#fff':s.c,fillColor:s.c,fillOpacity:p.posApprox?.15:(p.verified?1:.25),dashArray:p.verified&&!p.posApprox?null:'3 3'});
   m.bindTooltip(esc(p.name),{direction:'top',offset:[0,-8]});
-  m.bindPopup(function(){return '<div class="pp-t">'+esc(p.name)+'</div><span class="pp-b" style="background:'+s.c+'">'+s.t+(p.verified?'':' (chưa xác minh)')+'</span><div class="pp-m">'+esc(p.zone)+'<br>'+esc(p.note)+nearHtml([p.lat,p.lng])+'<br><i>Vị trí tham chiếu khu vực</i></div><a class="pp-a" href="/cam-nang/'+esc(p.id)+'/" target="_blank" rel="noopener">Đọc phân tích →</a><div class="pp-row"><button type="button" class="pp-c2" data-rad="p='+p.id+'">Vẽ vòng 500 m / 1 km</button>'+linkBtn('p='+p.id)+'</div>'},PO);
+  m.bindPopup(function(){return '<div class="pp-t">'+esc(p.name)+'</div><span class="pp-b" style="background:'+s.c+'">'+s.t+(p.verified?'':' (chưa xác minh)')+'</span><div class="pp-m">'+esc(p.zone)+'<br>'+esc(p.note)+nearHtml([p.lat,p.lng])+'<br><i>'+esc(p.pos||'Vị trí tham chiếu khu vực')+'</i>'+(QX[p.id]?qExtra(QX[p.id]):'')+'</div><a class="pp-a" href="/cam-nang/'+esc(p.id)+'/" target="_blank" rel="noopener">Đọc phân tích →</a><div class="pp-row"><button type="button" class="pp-c2" data-rad="p='+p.id+'">Vẽ vòng 500 m / 1 km</button>'+linkBtn('p='+p.id)+'</div>'},PO);
   markers[p.id]=m;
  });
  var zEl=document.getElementById('zones');
@@ -887,6 +933,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
  function focusProject(id){var p=D.projects.filter(function(x){return x.id===id})[0];if(!p)return;if(!vis(p)){activeZone=null;activeSt[p.status]=true;document.querySelector('[data-st="'+p.status+'"]').checked=true;refresh()}closeSide();map.setView([p.lat,p.lng],Math.max(map.getZoom(),14));setTimeout(function(){labels();markers[p.id].openPopup()},350)}
 
  // ---------- dự án mở bán từ 2017 ----------
+ var QDUP={'the-marq':'the-marq','grand-marina-saigon':'grand-marina-saigon','eaton-park':'eaton-park','palm-river':'palm-river','the-global-city':'global-city'},QX={};
+ function qExtra(p){return '<br><b>Mở bán:</b> '+esc((p.launch||'chưa có nguồn')+(p.launch_price?' · '+p.launch_price:''))+(p.handover?'<br><b>Bàn giao:</b> '+esc(p.handover):'')+(p.price_now?'<br><b>Giá hiện tại:</b> '+esc(p.price_now):'')}
  var QH={'Đã bàn giao':'#7b4fa3','Một phần':'#e67e22','Chưa':'#0f9d8a','Chưa rõ':'#8a8f98'};
  function qKey(h){h=h||'';if(h.indexOf('Đã')===0)return 'Đã bàn giao';if(h.indexOf('Một phần')===0)return 'Một phần';if(h==='Chưa')return 'Chưa';return 'Chưa rõ'}
  var Q=[],qLayer=L.layerGroup().addTo(map),qOn=true,y1=document.getElementById('q-y1'),y2=document.getElementById('q-y2');
@@ -896,15 +944,16 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
   return '<div class="pp-t">'+esc(p.name)+'</div><span class="pp-b" style="background:'+c+'">Bàn giao: '+esc(p.hstatus||'chưa rõ')+'</span><div class="pp-m">'+esc(p.dev||'')+qRow('Vị trí',p.dist)+qRow('Loại hình',p.type+(p.scale?' · '+p.scale:''))+qRow('Khởi công',p.start)+qRow('Mở bán',(p.launch||'chưa có nguồn')+(p.launch_price?' · '+p.launch_price:''))+qRow('Bàn giao',p.handover)+qRow('Giá hiện tại',p.price_now||'chưa có nguồn')+nearHtml([p.lat,p.lng])+'<br><i>Tọa độ: '+esc(p.coord_src)+'. Độ tin cậy dữ liệu: '+esc(p.conf)+'.</i>'+(p.notes?'<br><small>'+esc(p.notes)+'</small>':'')+'</div><details class="pp-d"><summary>Nguồn ('+p.src.length+')</summary>'+p.src.map(function(u){return '<a href="'+esc(u)+'" target="_blank" rel="noopener noreferrer">'+esc(u.replace(/^https?:\/\/(www\.)?/,'').slice(0,60))+'</a>'}).join('<br>')+'</details>'+(p.article?'<a class="pp-a" href="/cam-nang/'+esc(p.article)+'/" target="_blank" rel="noopener">Đọc phân tích →</a>':'')+'<div class="pp-row"><button type="button" class="pp-c2" data-rad="q='+p.id+'">Vẽ vòng 500 m / 1 km</button>'+linkBtn('q='+p.id)+'</div>'}
  function qVis(p){var a=+y1.value,b=+y2.value,t=document.getElementById('q-t').value,h=document.getElementById('q-h').value;
   if(p.year){if(p.year<Math.min(a,b)||p.year>Math.max(a,b))return false}else if(!document.getElementById('q-unk').checked)return false;
+  if(QDUP[p.id])return false;if(p.approx&&!document.getElementById('q-apx').checked)return false;
   if(t&&String(p.type).indexOf(t)!==0)return false;if(h&&qKey(p.hstatus)!==h)return false;return true}
  function qRefresh(){qLayer.clearLayers();var n=0;if(!qOn){document.getElementById('q-n').textContent='';return}
   Q.forEach(function(p){if(qVis(p)){qLayer.addLayer(p.m);n++}});document.getElementById('q-n').textContent=n+'/'+Q.length}
- ['q-y1','q-y2','q-t','q-h','q-unk'].forEach(function(id){document.getElementById(id).addEventListener('change',qRefresh)});
+ ['q-y1','q-y2','q-t','q-h','q-unk','q-apx'].forEach(function(id){document.getElementById(id).addEventListener('change',qRefresh)});
  document.getElementById('q-on').addEventListener('change',function(){qOn=this.checked;qRefresh()});
- function focusQ(id){var p=Q.filter(function(x){return x.id===id})[0];if(!p)return;if(!qOn){qOn=true;document.getElementById('q-on').checked=true}
+ function focusQ(id){if(QDUP[id]){focusProject(QDUP[id]);return}var p=Q.filter(function(x){return x.id===id})[0];if(!p)return;if(p.approx)document.getElementById('q-apx').checked=true;if(!qOn){qOn=true;document.getElementById('q-on').checked=true}
   if(!qVis(p)){y1.value='2017';y2.value='2026';document.getElementById('q-t').value='';document.getElementById('q-h').value='';document.getElementById('q-unk').checked=true}qRefresh();closeSide();map.setView([p.lat,p.lng],Math.max(map.getZoom(),15));setTimeout(function(){labels();p.m.openPopup()},350)}
  var qReady=fetch('du-an-2017.json').then(function(r){return r.json()}).then(function(J){
-  Q=J.projects;Q.forEach(function(p){p.m=L.marker([p.lat,p.lng],{icon:L.divIcon({className:'qmk'+(p.approx?' qa':''),html:'<span style="background:'+QH[qKey(p.hstatus)]+'"></span>',iconSize:[16,16],iconAnchor:[8,8]}),title:p.name,keyboard:true});
+  Q=J.projects;Q.forEach(function(p){if(QDUP[p.id])QX[QDUP[p.id]]=p;p.m=L.marker([p.lat,p.lng],{icon:L.divIcon({className:'qmk'+(p.approx?' qa':''),html:'<span style="background:'+QH[qKey(p.hstatus)]+'"></span>',iconSize:[16,16],iconAnchor:[8,8]}),title:p.name,keyboard:true});
    p.m.bindTooltip(esc(p.name)+(p.year?' · mở bán '+p.year:''),{direction:'top',offset:[0,-8]});p.m.bindPopup(function(){return qPopup(p)},PO);
    idx.push({k:'q='+p.id,t:p.name,s:'Dự án 2017–nay · '+(p.dist||'')+(p.year?' · mở bán '+p.year:''),n:norm(p.name+' '+(p.dev||'')+' '+(p.dist||''))})});
   qRefresh()}).catch(function(){document.getElementById('q-n').textContent='không tải được dữ liệu'});

@@ -3,6 +3,18 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-17 — Công cụ: Bản đồ dự án — nền vệ tinh, sửa vị trí dự án Bình Dương
+
+- Nền bản đồ: thêm nút chọn nền ở góc phải, mặc định "Vệ tinh" (ảnh Esri World Imagery kèm lớp tên đường, địa danh của Esri), vẫn chọn được "Bản đồ đường" (OpenStreetMap). Trình duyệt nhớ lựa chọn của người xem. Đoạn vành đai có viền trắng để nổi trên ảnh vệ tinh.
+- Vị trí dự án: Artisan Park lấy tọa độ từ liên kết Google Maps trên trang chính thức Gamuda Land (vị trí cũ lệch khoảng 9,5 km); One Central Saigon theo Guland (lệch khoảng 160 m); Nam Mekong Grand Plaza dời về khu vòng xoay WTC, Thành phố mới Bình Dương (vị trí cũ lệch khoảng 9 km), vẫn ghi là vị trí gần đúng. Norton Park, Blanca City, Sun Thủ Thiêm 2C, The Petropolis ghi rõ mốc vị trí gần đúng.
+- Rà các dự án lớp 2017 ở Thủ Đức theo ranh giới phường (dữ liệu Free-GIS-Data): tọa độ CBRE/Guland khớp phường ghi trong địa chỉ hoặc nằm sát ranh giới.
+
+## 2026-10-17 — Công cụ: Bản đồ dự án — nhẹ hơn khi phóng to, chỉ hiện dữ liệu đã xác minh
+
+- Hiệu năng: chuyển các lớp tuyến, ga, vòng bán kính sang vẽ bằng canvas, bỏ lớp bấm trùng, nhãn ga cập nhật trễ 0,18 giây, nền bản đồ không tải lại ô trong lúc đang phóng. Đo thử 20 lần phóng to/thu nhỏ: khung hình chậm nhất giảm từ khoảng 730 ms xuống khoảng 33 ms; số phần tử trên bản đồ giảm từ 449 xuống 157.
+- Vành đai: mặc định chỉ hiện các đoạn vẽ theo đường thật; đoạn ước lượng ẩn, bật lại bằng ô "Hiện cả đoạn vành đai ước lượng".
+- Vị trí dự án: 7 dự án Cẩm Nang lấy lại tọa độ có nguồn (CBRE, Guland): The MarQ, Grand Marina, Eaton Park, Palm River, Global City (lệch khoảng 1,45 km), SkySOLIS (lệch khoảng 2 km), Vinhomes Green Paradise (lệch khoảng 5,6 km). 7 dự án còn lại chưa có tọa độ có nguồn, hiện bằng chấm nhỏ mờ viền đứt. Lớp dự án 2017 bỏ các dự án trùng với lớp Cẩm Nang (thông tin mở bán đưa vào popup dự án gốc) và mặc định ẩn 9 dự án vị trí ước lượng.
+
 ## 2026-10-17 — Công cụ: Bản đồ dự án — vành đai và metro theo đường thật
 
 - Lấy hình học đường từ OpenStreetMap qua dịch vụ định tuyến OSRM (router.project-osrm.org; ODbL), kiểm tra từng đoạn bằng chiều dài trả về: Vành đai 2 đoạn Quốc lộ 1 (Gò Dưa – An Sương – An Lạc) và Nguyễn Văn Linh – cầu Phú Mỹ – Võ Chí Công; Vành đai 1 đoạn Phạm Văn Đồng và Bạch Đằng – Trường Sơn – Trần Quốc Hoàn – Hoàng Văn Thụ; Vành đai 3 đoạn Long Trường – cầu Nhơn Trạch; Metro Thủ Dầu Một – Tao Đàn đoạn Đại lộ Bình Dương.
