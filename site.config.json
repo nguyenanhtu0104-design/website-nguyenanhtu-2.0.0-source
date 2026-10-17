@@ -1,5 +1,5 @@
 {
-  "version": "2.16.0",
+  "version": "2.15.0",
   "ctaCategories": [
     "du-an-chon-loc"
   ],
@@ -48,16 +48,6 @@
       "pageTitle": "Atlas VietNam | Nguyễn Anh Tú",
       "label": "KINH TẾ · DÂN SỐ · ĐÔ THỊ HÓA",
       "description": "Atlas kinh tế Việt Nam theo quý: tăng trưởng, dòng vốn FDI, dân số và đô thị hóa, mỗi số liệu kèm nguồn để đối chiếu."
-    },
-    {
-      "id": "atlas-banking",
-      "path": "atlas-banking",
-      "cover": false,
-      "navKey": "nav_atlasbank",
-      "title": "Atlas Banking",
-      "pageTitle": "Atlas Banking | Nguyễn Anh Tú",
-      "label": "LÃI SUẤT · TÍN DỤNG · NGÂN HÀNG",
-      "description": "Atlas lãi suất ngân hàng Việt Nam: lãi suất huy động và cho vay của từng ngân hàng, mỗi mức lãi kèm nguồn chính thức và ngày áp dụng để tự đối chiếu."
     },
     {
       "id": "nhat-san",
