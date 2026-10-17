@@ -417,25 +417,26 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <div class="prop-grid">
     <div>
       <div class="input-group" style="margin-bottom:12px"><label for="unitInp">Mã căn / Unit No.</label>
-        <input class="price-inp" id="unitInp" data-lead-input="unit" data-lead-label="Mã căn" type="text" placeholder="VD: T3-1205" style="font-size:15px;text-align:left;text-transform:uppercase" oninput="onUnit(this)" autocomplete="off"></div>
+        <input class="price-inp" id="unitInp" type="text" placeholder="VD: T3-1205" style="font-size:15px;text-align:left;text-transform:uppercase" oninput="onUnit(this)" autocomplete="off"></div>
       <div class="input-group" style="margin-bottom:12px"><label for="typeInp">Loại căn</label>
         <input class="price-inp" id="typeInp" type="text" placeholder="VD: 2PN góc" style="font-size:15px;text-align:left" oninput="onType(this)" autocomplete="off"></div>
       <div class="input-group"><label for="areaInp">Diện tích thông thủy — NSA (m²)</label>
-        <input class="price-inp" id="areaInp" data-lead-input="area" data-lead-label="Diện tích (m²)" type="text" inputmode="decimal" placeholder="VD: 76,3" style="font-size:16px" oninput="onArea(this)" autocomplete="off">
+        <input class="price-inp" id="areaInp" type="text" inputmode="decimal" placeholder="VD: 76,3" style="font-size:16px" oninput="onArea(this)" autocomplete="off">
         <div class="inp-note" id="gsa-note">Giá niêm yết tính trên diện tích thông thủy (NSA). Chọn mẫu hoặc nhập mã căn để tự điền.</div></div>
     </div>
     <div>
       <div class="input-group" style="margin-bottom:12px"><label for="ppmInp">Đơn giá niêm yết / m² (VND)</label>
-        <input class="price-inp" id="ppmInp" data-lead-input="ppm" data-lead-label="Đơn giá (đ/m²)" type="text" inputmode="numeric" placeholder="VD: 50.000.000" style="font-size:16px" oninput="onPPM(this)" autocomplete="off">
+        <input class="price-inp" id="ppmInp" type="text" inputmode="numeric" placeholder="VD: 50.000.000" style="font-size:16px" oninput="onPPM(this)" autocomplete="off">
         <div class="inp-note">Giá niêm yết = đơn giá × diện tích thông thủy (NSA)</div></div>
       <div class="input-group"><label for="priceInp">Giá niêm yết căn hộ — chưa VAT &amp; KPBT, chưa chiết khấu (VND)</label>
-        <input class="price-inp" id="priceInp" data-lead-input="price" data-lead-label="Giá bán" type="text" inputmode="numeric" style="font-size:16px" oninput="onPrice(this)" onblur="syncPrice()" autocomplete="off">
+        <input class="price-inp" id="priceInp" type="text" inputmode="numeric" style="font-size:16px" oninput="onPrice(this)" onblur="syncPrice()" autocomplete="off">
         <div class="inp-note" id="price-note"></div></div>
     </div>
   </div>
   <div class="who-grid">
     <div class="input-group"><label for="custInp">Khách Hàng</label><input class="mini-inp" id="custInp" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
     <div class="input-group"><label for="agentInp">Chuyên Viên Kinh Doanh</label><input class="mini-inp" id="agentInp" type="text" placeholder="Tên chuyên viên (hiện trên bản PDF)"></div>
+    <div class="input-group"><label for="agentPhone">Số điện thoại của người tư vấn</label><input class="mini-inp" id="agentPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Hiện trên PDF kèm mã QR Zalo tự tạo"></div>
   </div>
 </div>
 
@@ -486,7 +487,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   </div>
   <div class="tb-parts"><div>
     <div class="tb-sub">Giá bán sau ưu đãi (chưa VAT): <span id="tb-pre">—</span></div>
-    <div class="tb-val" id="tb-total" data-lead-result data-lead-label="Tổng thanh toán">—</div>
+    <div class="tb-val" id="tb-total">—</div>
   </div></div>
 </div>
 
@@ -494,6 +495,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <button onclick="exportPDF()"
     style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;
     letter-spacing:1px;text-transform:uppercase;padding:12px 32px;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px rgba(201,168,76,.3)">⬇ Xuất PDF Báo Giá</button>
+  <button onclick="pdfDeck()" style="margin-left:10px;background:transparent;color:var(--gold);border:1.5px solid var(--gold);font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px 26px;border-radius:8px;cursor:pointer">⬇ PDF Trình Bày (A4, có phương án vay)</button>
   <div style="font-size:11px;color:var(--mut);margin-top:8px">Bản in theo phương thức đang chọn — chọn “Save as PDF” trong hộp thoại in</div>
 </div>
 
@@ -509,6 +511,10 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 <div class="pt-tabs" id="pt-tabs"></div>
 <div id="pt-panels"></div>
 
+<!-- VAY NGÂN HÀNG -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Vay Ngân Hàng</div><div class="sec-div-line"></div></div>
+<div class="card" id="dL"></div>
+
 <div class="terms">
   <b>(*) Điều kiện &amp; điều khoản:</b> giá bán và các phương thức thanh toán chỉ mang tính chất tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. Tiến độ chính thức nêu cụ thể tại hợp đồng.<br>
   <b>(**)</b> VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng.<br>
@@ -523,6 +529,8 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 
 <div id="print-sheet"></div>
 
+<script src="/assets/tools/shared/zalo-qr.js?v=2.16.0"></script>
+<script src="/assets/tools/shared/vay-ngan-hang.js?v=2.16.0"></script>
 <script>
 const r=Math.round;
 const fmt=n=>r(n).toLocaleString('vi-VN')+' đ';
@@ -735,7 +743,7 @@ function schedule(si,R){
     let w,g='';
     if(x.gcn){w='Khi nhận GCN';}
     else{w=ML(x.m);g=prevM===null?'+5 ngày sau XNĐK':(x.m>prevM?`+${x.m-prevM} tháng`:'');prevM=x.m;}
-    rows.push({n,w,g,d:x.d,pct:x.p,pre,vat,tot,bank,own:tot-bank,k:x.k,tag:x.tag||''});
+    rows.push({mo:x.gcn?null:x.m,n,w,g,d:x.d,pct:x.p,pre,vat,tot,bank,own:tot-bank,k:x.k,tag:x.tag||''});
     if(x.hand&&R.B>0) rows.push({n:'+',w:'Cùng đợt bàn giao',g:'',d:`Phí bảo trì ${pc(st.kpbt)}`,pct:st.kpbt,pre:R.B,vat:0,tot:R.B,bank:0,own:R.B,k:'k3',tag:''});
   });
   // XNĐK: khấu trừ vào Đợt 1
@@ -875,6 +883,7 @@ function recalc(){
   $('tb-note').textContent=`Giá PT ${SC[st.pt].no} ${SC[st.pt].short} · ${adjText(st.pt)}`;
   SC.forEach((_,i)=>renderPanel(i));
   renderCompare();
+  if(window.NATLoan)NATLoan.refresh();
 }
 
 // ── EXPORT PDF ──
@@ -907,16 +916,43 @@ function exportPDF(){
   <table><thead><tr>${sh}</tr></thead><tbody>${sched}
    <tr><td></td><td><b>Tổng</b></td><td></td>${bank?`<td class="r"><b>${fmtS(S.ownTotal)}</b></td><td class="r"><b>${fmtS(S.bankTotal)}</b></td>`:''}<td class="r"><b>${fmtS(S.total)}</b></td></tr></tbody></table>
   <div class="ps-note">${esc(sc.hint)}. (*) Giá bán và phương thức thanh toán chỉ mang tính tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. (**) VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng. Các mốc tháng được suy ra từ khoảng cách ghi trên leaflet, tính từ tháng VBTT dự kiến ${ML(0)}.${bank?' Khả năng được duyệt vay và hạn mức do ngân hàng quyết định.':''}</div>
+  ${NATQR.contact({phone:$('agentPhone').value.trim()})}
   <div class="ps-foot"><div>Palm River · Bảng tính phương thức thanh toán</div><div>Xuất ngày ${today}</div></div>`;
   window.print();
+}
+
+
+// ── VAY NGÂN HÀNG + PDF TRÌNH BÀY (module dùng chung) ──
+const moOf=x=>{if(x.mo!=null)return x.mo;const m=/^T(\d\d)\/(\d{4})$/.exec(x.w||'');if(!m)return null;const a=SC[0].rows[0].w.match(/^T(\d\d)\/(\d{4})$/);return a?((+m[2])-(+a[2]))*12+(+m[1])-(+a[1]):null;};
+function loanCtx(){
+  if(!LAST[0]||!(st.price>0))return null;
+  const methods=SC.map((sc,i)=>{
+    const {R,S}=LAST[i],hr=S.rows.find(x=>x.k==='k3'&&x.n!=='+'),hm=hr?moOf(hr):null,hand=hm!=null?hm:24;
+    const tr=[];S.rows.forEach(x=>{if(x.bank>0){const m=moOf(x);tr.push({m:m!=null?m:hand+6,amt:x.bank});}});
+    const iv=tr.length>0;
+    return {id:'p'+i,name:sc.short,f:R.D,h:R.A+R.C,tr,ho:hr?{m:hand,amt:hr.own}:null,hand,
+      htls:iv?{m:24,pct:100}:null,maxPct:iv?.75:null,
+      note:iv?'Chính sách ghi hỗ trợ lãi suất 24 tháng; bảng tính giả định chủ đầu tư chịu toàn bộ lãi trong thời gian này (chỉnh ở ô “CĐT hỗ trợ lãi” cho đúng văn bản chính sách)':''};
+  });
+  return {sel:'p'+st.pt,methods,brand:{project:'PALM RIVER',unit:(st.unit||'Căn hộ')+(st.type?' · '+st.type:''),footer:'Bảng tính tham khảo · nguyenanhtu.vn'}};
+}
+function pdfDeck(){
+  const ctx=loanCtx();if(!ctx)return;
+  const R=LAST[st.pt].R,cl=$('custInp').value.trim(),co=$('agentInp').value.trim();
+  const kv=[['Mã căn / Loại căn',(st.unit||'—')+(st.type?' · '+st.type:'')],['Diện tích',st.area?st.area.toLocaleString('vi-VN')+' m²':'—'],['Đơn giá / m²',st.ppm?fmtS(st.ppm)+' đ':'—'],['Giá niêm yết (chưa VAT & KPBT)',fmt(R.list)],['Phương thức đang chọn',SC[st.pt].full],['Tổng chiết khấu',(R.totalDisc>=0?'- ':'+ ')+fmt(Math.abs(R.totalDisc))],['Giá bán sau CK (A)',fmt(R.A)],['VAT '+pc(st.vat)+' + KPBT '+pc(st.kpbt),'+ '+fmt(R.B+R.C)],['Tổng giá bán (D)',fmt(R.D)]];
+  const extra=st.loc?`<div style="text-align:center"><div style="position:relative;display:inline-block;line-height:0;max-width:100%"><img src="${st.loc.img}" style="width:420px;max-width:100%;border:1px solid #dee2e6"><div style="position:absolute;left:${st.loc.x}%;top:${st.loc.y}%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #e8381b;background:rgba(232,56,27,.25)"></div></div><div style="font-size:10px;color:#6c757d;margin-top:3px">Mặt bằng: ${esc(st.loc.plan||'')}</div></div>`:'';
+  const pages=NATLoan.deckPages({heading:ctx.brand.project+' · '+ctx.brand.unit,client:cl,kv,extra,sel:st.pt,
+    methods:SC.map((sc,i)=>({no:sc.no,name:sc.name,full:sc.full,ck:adjText(i),D:LAST[i].R.D,S:LAST[i].S}))});
+  const contact=NATQR.contact({client:cl,agent:co,phone:$('agentPhone').value.trim()});
+  NATLoan.printPdf(ctx,{pages,contact});
 }
 
 // ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
   buildUI();syncPrice();setPT(0);
+  if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
+  recalc();
 });
 </script>
-<meta name="lead-project" content="palm-river"><link rel="stylesheet" href="/assets/lead/lead.css"><script src="/assets/lead/lead.js" defer></script>
-<button type="button" data-lead-open style="position:fixed;right:14px;bottom:14px;z-index:90;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận phương án này</button>
 </body>
 </html>

@@ -384,7 +384,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 <div class="hdr">
   <div class="hdr-badge">Norton Park · Bảng Tính Thanh Toán</div>
   <h1>Bảng Tính Phương Thức Thanh Toán</h1>
-  <div class="hdr-sub">Căn hộ · 5 phương thức: Chuẩn · 10% HĐMB – 10 Điểm · 10% HĐMB – Nửa Năm Vô Ưu · Nhanh · Ngân Hàng Hỗ Trợ<br>Ký HĐMB dự kiến T12/2026 · Bàn giao dự kiến T09/2029</div>
+  <div class="hdr-sub">Căn hộ · 5 phương thức: Chuẩn · 10% HĐMB – 10 Điểm · 10% HĐMB – Nửa Năm Vô Ưu · Nhanh · Thanh Toán Vay<br>Ký HĐMB dự kiến T12/2026 · Bàn giao dự kiến T09/2029</div>
   <div class="div-gold"></div>
 </div>
 
@@ -412,24 +412,25 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <div class="prop-grid">
     <div>
       <div class="input-group" style="margin-bottom:12px"><label for="unitInp">Mã căn / Unit No.</label>
-        <input class="price-inp" id="unitInp" data-lead-input="unit" data-lead-label="Mã căn" type="text" placeholder="VD: A1-1205" style="font-size:15px;text-align:left;text-transform:uppercase" oninput="onUnit(this)" autocomplete="off"></div>
+        <input class="price-inp" id="unitInp" type="text" placeholder="VD: A1-1205" style="font-size:15px;text-align:left;text-transform:uppercase" oninput="onUnit(this)" autocomplete="off"></div>
       <div class="input-group" style="margin-bottom:12px"><label for="typeInp">Loại căn</label>
         <input class="price-inp" id="typeInp" type="text" placeholder="VD: 2PN · 2WC" style="font-size:15px;text-align:left" oninput="onType(this)" autocomplete="off"></div>
       <div class="input-group"><label for="areaInp">Diện tích tim tường (m²)</label>
-        <input class="price-inp" id="areaInp" data-lead-input="area" data-lead-label="Diện tích (m²)" type="text" inputmode="decimal" placeholder="VD: 75,5" style="font-size:16px" oninput="onArea(this)" autocomplete="off"></div>
+        <input class="price-inp" id="areaInp" type="text" inputmode="decimal" placeholder="VD: 75,5" style="font-size:16px" oninput="onArea(this)" autocomplete="off"></div>
     </div>
     <div>
       <div class="input-group" style="margin-bottom:12px"><label for="ppmInp">Đơn giá / m² tim tường (VND)</label>
-        <input class="price-inp" id="ppmInp" data-lead-input="ppm" data-lead-label="Đơn giá (đ/m²)" type="text" inputmode="numeric" placeholder="VD: 45.000.000" style="font-size:16px" oninput="onPPM(this)" autocomplete="off">
+        <input class="price-inp" id="ppmInp" type="text" inputmode="numeric" placeholder="VD: 45.000.000" style="font-size:16px" oninput="onPPM(this)" autocomplete="off">
         <div class="inp-note">Giá đề xuất = đơn giá × diện tích tim tường</div></div>
-      <div class="input-group"><label for="priceInp" id="price-lbl">Giá đề xuất PT 01 — đã trừ mọi CK, chưa VAT &amp; KPBT, chưa tính booking sớm (VND)</label>
-        <input class="price-inp" id="priceInp" data-lead-input="price" data-lead-label="Giá bán" type="text" inputmode="numeric" style="font-size:16px" oninput="onPrice(this)" onblur="syncPrice()" autocomplete="off">
+      <div class="input-group"><label for="priceInp" id="price-lbl">Giá PT 01 sau CK 5% — chưa VAT &amp; KPBT, chưa booking 1% (VND)</label>
+        <input class="price-inp" id="priceInp" type="text" inputmode="numeric" style="font-size:16px" oninput="onPrice(this)" onblur="syncPrice()" autocomplete="off">
         <div class="inp-note" id="price-note"></div></div>
     </div>
   </div>
   <div class="who-grid">
     <div class="input-group"><label for="custInp">Khách Hàng</label><input class="mini-inp" id="custInp" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
     <div class="input-group"><label for="agentInp">Chuyên Viên Kinh Doanh</label><input class="mini-inp" id="agentInp" type="text" placeholder="Tên chuyên viên (hiện trên bản PDF)"></div>
+    <div class="input-group"><label for="agentPhone">Số điện thoại của người tư vấn</label><input class="mini-inp" id="agentPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Hiện trên PDF kèm mã QR Zalo tự tạo"></div>
   </div>
 </div>
 
@@ -442,13 +443,13 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
     <div class="input-group"><label for="kpbtInp">Phí bảo trì — KPBT (%)</label>
       <input class="price-inp" id="kpbtInp" type="text" inputmode="decimal" value="2" oninput="onKPBT(this)" style="font-size:16px"></div>
   </div>
-  <div class="terms" style="margin-top:14px"><b>Cách tính:</b> giá đề xuất nhập ở trên là giá của <b>PT 01 (Thanh toán chuẩn)</b>, đã trừ mọi chiết khấu, chưa VAT &amp; KPBT — chính là giá bán (A) của PT 01. Tỷ lệ % của từng đợt tính trên A; VAT cộng vào từng đợt; phí bảo trì cộng vào đợt bàn giao. Mặc định VAT 10%, KPBT 2% — sửa theo thông báo của CĐT, đặt 0 nếu không áp dụng.</div>
+  <div class="terms" style="margin-top:14px"><b>Cách tính:</b> giá nhập ở trên là giá <b>PT 01 (Thanh toán chuẩn) sau khi trừ CK PT 01 (mặc định 5%)</b>, chưa VAT &amp; KPBT, chưa booking sớm 1%. Bảng tự suy ra đơn giá niêm yết (= đơn giá nhập ÷ (1 − 5%)) rồi nhân diện tích ra giá niêm yết, rồi trừ CK của từng phương thức, sau đó trừ booking sớm 1% (nếu chọn) để ra giá bán (A) của mỗi PT. Tỷ lệ % của từng đợt tính trên A; VAT cộng vào từng đợt; phí bảo trì cộng vào đợt bàn giao. Mặc định VAT 10%, KPBT 2% — sửa theo thông báo của CĐT, đặt 0 nếu không áp dụng.</div>
 </div>
 
 <!-- SECTION 2: ĐIỀU CHỈNH GIÁ THEO PTTT -->
 <div class="card">
   <div class="card-title">🎯 Giá Theo Phương Thức &amp; Chiết Khấu Booking Sớm</div>
-  <div class="inp-note" style="margin-bottom:14px;font-size:12px">Giá đề xuất đã là giá PT 01 nên PT 01 giữ nguyên. Với PT 02–05, nhập mức chênh <strong>so với PT 01</strong> (%): số dương = giảm thêm, số âm = tăng giá. Để trống = bằng giá PT 01.</div>
+  <div class="inp-note" style="margin-bottom:14px;font-size:12px">Nhập <strong>mức chiết khấu (%) của từng phương thức</strong> trên giá niêm yết. Theo chính sách bán hàng: PT 01 = 5% (giá nhập chính là giá PT 01 sau CK này), PT 02 = 1%, PT 03 = 2%, PT 04 = 10%, PT 05 = 0% (chỉ hỗ trợ lãi suất tối đa 10% trong 24 tháng, không trừ vào giá). Giá cuối các PT hiện ngay bên dưới.</div>
   <div class="ck-grid" id="ck-grid"></div>
   <div style="margin-top:16px"><span class="lbl">Chính sách booking sớm — chiết khấu 1% (áp dụng cho cả 5 PT, tính sau điều chỉnh PT)</span>
     <div class="radio-group horizontal" id="grp-bk"><button class="opt-btn active-ck" onclick="setBK(true)">Áp dụng CK 1%</button><button class="opt-btn" onclick="setBK(false)">Không áp dụng</button></div></div>
@@ -465,7 +466,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   </div>
   <div class="tb-parts"><div>
     <div class="tb-sub">Giá bán sau CK (chưa VAT): <span id="tb-pre">—</span></div>
-    <div class="tb-val" id="tb-total" data-lead-result data-lead-label="Tổng thanh toán">—</div>
+    <div class="tb-val" id="tb-total">—</div>
   </div></div>
 </div>
 
@@ -473,6 +474,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <button onclick="exportPDF()"
     style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;
     letter-spacing:1px;text-transform:uppercase;padding:12px 32px;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px rgba(201,168,76,.3)">⬇ Xuất PDF Báo Giá</button>
+  <button onclick="pdfDeck()" style="margin-left:10px;background:transparent;color:var(--gold);border:1.5px solid var(--gold);font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:11px 26px;border-radius:8px;cursor:pointer">⬇ PDF Trình Bày (A4, có phương án vay)</button>
   <div style="font-size:11px;color:var(--mut);margin-top:8px">Bản in theo phương thức đang chọn — chọn “Save as PDF” trong hộp thoại in</div>
 </div>
 
@@ -488,17 +490,23 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 <div class="pt-tabs" id="pt-tabs"></div>
 <div id="pt-panels"></div>
 
+<!-- VAY NGÂN HÀNG -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Vay Ngân Hàng</div><div class="sec-div-line"></div></div>
+<div class="card" id="dL"></div>
+
 <div class="terms">
   <b>(*) Điều kiện &amp; điều khoản:</b> giá bán và các phương thức thanh toán chỉ mang tính chất tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. Tiến độ chính thức nêu cụ thể tại hợp đồng.<br>
   <b>(**)</b> VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng.<br>
   <b>Mốc thời gian:</b> các tháng trong bảng được suy ra từ khoảng cách (3 / 6 / 9 / 17 / 23 tháng) ghi trên bảng chính sách, tính từ mốc ký HĐMB dự kiến T12/2026.<br>
-  <b>Ngân hàng hỗ trợ (PT 05):</b> ngân hàng giải ngân 75% giá bán; khả năng được duyệt và hạn mức do ngân hàng quyết định theo chính sách tín dụng.
+  <b>Thanh toán vay (PT 05):</b> không chiết khấu giá; chủ đầu tư hỗ trợ lãi suất tối đa 10% trong vòng 24 tháng. Ngân hàng giải ngân 75% giá bán; khả năng được duyệt và hạn mức do ngân hàng quyết định theo chính sách tín dụng.
 </div>
 <div class="footer-note">Norton Park · Bảng tính phương thức thanh toán · Số liệu theo bảng chính sách 5 phương thức (ký HĐMB dự kiến T12/2026, bàn giao dự kiến T09/2029)</div>
 </div>
 
 <div id="print-sheet"></div>
 
+<script src="/assets/tools/shared/zalo-qr.js?v=2.16.0"></script>
+<script src="/assets/tools/shared/vay-ngan-hang.js?v=2.16.0"></script>
 <script>
 const r=Math.round;
 const fmt=n=>r(n).toLocaleString('vi-VN')+' đ';
@@ -541,7 +549,7 @@ const SC=[
    SIGN(.15),
    INST('T03/2027','+3 tháng',.20),INST('T06/2027','+3 tháng',.20),INST('T09/2027','+3 tháng',.15),
    HAND('+23 tháng',.25),PINK()]},
- {no:'05',short:'Ngân hàng',name:'Ngân Hàng Hỗ Trợ',full:'Phương thức 05 — Ngân hàng hỗ trợ',bank:true,rows:[
+ {no:'05',short:'Vay NH',name:'Thanh Toán Vay',full:'Phương thức 05 — Thanh toán vay (ngân hàng giải ngân)',bank:true,rows:[
    SIGN(.10),
    BANKI('T09/2027','+9 tháng',.20),BANKI('T12/2027','+3 tháng',.20),BANKI('T03/2028','+3 tháng',.20),
    HAND('+17 tháng',.25,{d:'Bàn giao — NH giải ngân 15% · KH thanh toán 10%',bankP:.15}),PINK()]}
@@ -617,7 +625,7 @@ function onMau(v){
 }
 // ── STATE ──
 const st={unit:'',type:'',area:0,ppm:0,price:3_000_000_000,priceManual:true,sample:true,
-  vat:.10,kpbt:.02,ckPT:[0,0,0,0,0],pt:0,bk:true,mau:null,loc:null};
+  vat:.10,kpbt:.02,ckPT:[.05,.01,.02,.10,0],pt:0,bk:true,mau:null,loc:null};
 
 // ── INPUTS ──
 function autoPriceValue(){return (st.area>0&&st.ppm>0)?r(st.ppm*st.area):0;}
@@ -653,7 +661,7 @@ function setBK(on){
   document.querySelectorAll('#grp-bk .opt-btn').forEach((b,j)=>b.classList.toggle('active-ck',(j===0)===on));
   recalc();
 }
-function onCKPT(el,i){st.ckPT[i]=i===0?0:Math.min(Math.max(parseDec(el.value),-50),50)/100;recalc();}
+function onCKPT(el,i){st.ckPT[i]=Math.min(Math.max(parseDec(el.value),0),50)/100;recalc();}
 
 function setPT(i){
   st.pt=i;
@@ -664,14 +672,18 @@ function setPT(i){
 }
 
 // ── CASCADE: mỗi CK = ROUND(giá còn lại × %) ──
-function adjText(i){const p=st.ckPT[i];return i===0?'Giá chuẩn':(p===0?'= PT 01':(p>0?`Giảm ${pc(p)}`:`Tăng ${pc(-p)}`));}
+function adjText(i){return `CK ${pc(st.ckPT[i])}`;}
 function compute(pt){
-  const base=st.price,steps=[];let run=base;
-  const p=pt===0?0:st.ckPT[pt];
-  if(p!==0){const amt=r(run*p);steps.push({id:'pt',label:`${p>0?'Giảm thêm':'Tăng giá'} PT ${SC[pt].no} so với PT 01 (${pc(Math.abs(p))})`,pct:p,amt,before:run,after:run-amt});run-=amt;}
+  // Giá nhập = giá PT 01 sau CK PT 01 (chưa VAT/KPBT, chưa booking) → suy ngược giá niêm yết
+  const p1=Math.min(st.ckPT[0],.99),byUnit=(!st.priceManual&&st.ppm>0&&st.area>0&&p1>0);
+  const unitList=byUnit?r(st.ppm/(1-p1)):0;   // đơn giá niêm yết/m² = đơn giá nhập ÷ (1 − CK PT01)
+  const L=byUnit?r(unitList*st.area):(p1>0?r(st.price/(1-p1)):st.price),steps=[];let run=L;
+  const p=st.ckPT[pt];
+  if(pt===0){const amt=L-st.price;if(amt!==0||p1>0)steps.push({id:'pt',label:`CK PT 01 (${pc(p1)})`,pct:p1,amt,before:run,after:st.price});run=st.price;}
+  else if(p!==0){const amt=r(run*p);steps.push({id:'pt',label:`CK PT ${SC[pt].no} (${pc(p)})`,pct:p,amt,before:run,after:run-amt});run-=amt;}
   if(st.bk){const amt=r(run*.01);steps.push({id:'bk',label:'CK booking sớm (1%)',pct:.01,amt,before:run,after:run-amt});run-=amt;}
   const A=run,B=r(A*st.kpbt),C=r(A*st.vat),D=A+B+C;
-  return {inp:st.price,list:base,steps,A,B,C,D,totalDisc:base-A};
+  return {inp:st.price,list:L,unitList,steps,A,B,C,D,totalDisc:L-A};
 }
 
 // ── LỊCH THANH TOÁN ──
@@ -698,7 +710,7 @@ function schedule(si,R){
 
 // ── RENDER ──
 function buildUI(){
-  $('ck-grid').innerHTML=SC.map((s,i)=>`<div><label for="ck${i}">${s.no} · ${s.short}</label><input id="ck${i}" class="mini-inp right" type="text" inputmode="decimal" ${i===0?'value="Giá chuẩn" disabled':'placeholder="0"'} oninput="onCKPT(this,${i})"><div class="ck-res" id="ck-res-${i}"></div></div>`).join('');
+  $('ck-grid').innerHTML=SC.map((s,i)=>`<div><label for="ck${i}">${s.no} · ${s.short}</label><input id="ck${i}" class="mini-inp right" type="text" inputmode="decimal" value="${[5,1,2,10,0][i]}" oninput="onCKPT(this,${i})"><div class="ck-res" id="ck-res-${i}"></div></div>`).join('');
   $('grp-pt').innerHTML=SC.map((s,i)=>`<button class="opt-btn${i===0?' active-ck':''}" onclick="setPT(${i})">PT ${s.no}<br><span style="font-size:10px" id="grp-ck-${i}"></span></button>`).join('');
   $('pt-tabs').innerHTML=SC.map((s,i)=>`<button class="pt-tab${i===0?' active':''}" onclick="setPT(${i})"><span class="tn">${s.no}</span><span class="tx">${s.name}</span><span class="tb" id="tab-b-${i}"></span></button>`).join('');
   $('pt-panels').innerHTML=SC.map((s,i)=>`
@@ -706,7 +718,7 @@ function buildUI(){
     <div class="pt-info">
       <div class="pi-item"><label>Căn Hộ</label><div class="piv" id="pt${i}-prod"></div></div>
       <div class="pi-item"><label>Ký HĐMB · Bàn Giao</label><div class="piv">T12/2026 · T09/2029</div></div>
-      <div class="pi-item"><label>Giá So Với PT 01</label><div class="piv" id="pt${i}-ckbadge"></div></div>
+      <div class="pi-item"><label>Chiết khấu PT</label><div class="piv" id="pt${i}-ckbadge"></div></div>
       <div class="pi-item big"><label>Tổng Giá Bán (VAT + KPBT)</label><div class="piv" id="pt${i}-total-info">—</div></div>
     </div>
     <div class="refund-note"><span id="pt${i}-note1"></span><b id="pt${i}-note2"></b></div>
@@ -738,7 +750,7 @@ function renderPanel(i){
   const sc=SC[i],R=compute(i),S=schedule(i,R);LAST[i]={R,S};
   const bank=!!sc.bank,ckp=st.ckPT[i];
   $(`pt${i}-prod`).textContent=(st.unit||'Căn hộ Norton Park')+(st.type?` · ${st.type}`:'');
-  $(`pt${i}-ckbadge`).innerHTML=`<span class="${i===0||ckp>0?'badge-green':'badge-orange'}">${adjText(i)}</span>`;
+  $(`pt${i}-ckbadge`).innerHTML=`<span class="${ckp>0?'badge-green':'badge-orange'}">${adjText(i)}</span>`;
   $(`pt${i}-total-info`).textContent=fmt(R.D);
   if(bank){
     $(`pt${i}-note1`).textContent=`Ngân hàng giải ngân ${pc(S.pctBank)} giá bán · khách hàng tự có ${pc(1-S.pctBank)}`;
@@ -774,18 +786,18 @@ function renderPanel(i){
   if(bank) note+=` · NH giải ngân ${fmtS(S.bankTotal)} đ (${(S.bankTotal/R.D*100).toFixed(1)}% tổng giá)`;
   $(`pt${i}-tn`).textContent=note;
   // tab badge + nút CK
-  $(`tab-b-${i}`).textContent=(bank?`Vay ${pc(S.pctBank)}`:`${nInst} đợt`)+(i>0&&ckp!==0?` · ${adjText(i)}`:'');
+  $(`tab-b-${i}`).textContent=(bank?`Vay ${pc(S.pctBank)}`:`${nInst} đợt`)+(ckp!==0?` · ${adjText(i)}`:'');
   $(`grp-ck-${i}`).textContent=adjText(i);
   {const Rr=compute(i);$(`ck-res-${i}`).innerHTML=`<div class="a">Giá cuối (chưa VAT &amp; KPBT)${st.bk?' · sau CK 1%':''}</div><div class="v">${fmtS(Rr.A)} đ</div><div class="t">Gồm VAT + KPBT: <b>${fmtS(Rr.D)} đ</b></div>`;}
 }
 
 function renderCompare(){
   const ds=SC.map((_,i)=>LAST[i].R.D),minD=Math.min(...ds),maxD=Math.max(...ds);
-  $('cmp-wrap').innerHTML=`<table class="cmp-table"><thead><tr><th>Phương thức</th><th>So với PT 01</th><th>Tổng giá bán (D)</th><th>Tự có trước bàn giao</th><th>Đợt bàn giao</th><th>Sổ hồng</th><th>NH giải ngân</th></tr></thead><tbody>`+
+  $('cmp-wrap').innerHTML=`<table class="cmp-table"><thead><tr><th>Phương thức</th><th>CK PT</th><th>Tổng giá bán (D)</th><th>Tự có trước bàn giao</th><th>Đợt bàn giao</th><th>Sổ hồng</th><th>NH giải ngân</th></tr></thead><tbody>`+
   SC.map((s,i)=>{
     const {R,S}=LAST[i],ckp=st.ckPT[i];
     const best=(minD<maxD&&R.D===minD)?'<span class="best">THẤP NHẤT</span>':'';
-    return `<tr class="${i===st.pt?'sel':''}" onclick="setPT(${i})"><td>${s.no} · ${s.name}</td><td>${i===0?'—':adjText(i)}</td>
+    return `<tr class="${i===st.pt?'sel':''}" onclick="setPT(${i})"><td>${s.no} · ${s.name}</td><td>${adjText(i)}</td>
       <td>${fmtS(R.D)}${best}</td>
       <td>${fmtS(S.ownPre)}<span class="cmp-sub">${(S.ownPre/(R.D||1)*100).toFixed(1)}% tổng giá</span></td>
       <td>${fmtS(S.ownHand)}</td><td>${fmtS(S.ownPink)}</td><td>${S.bankTotal?fmtS(S.bankTotal):'—'}</td></tr>`;
@@ -793,7 +805,7 @@ function renderCompare(){
 }
 
 function summaryHTML(R){
-  let h=`<div class="sum-row"><span class="sum-lbl" style="font-weight:700;color:rgba(255,255,255,.9)">Giá đề xuất PT 01 (chưa VAT &amp; KPBT, chưa booking sớm)</span>
+  let h=`<div class="sum-row"><span class="sum-lbl" style="font-weight:700;color:rgba(255,255,255,.9)">Giá niêm yết${R.unitList?` = ${fmtS(R.unitList)} đ/m² × ${st.area.toLocaleString('vi-VN')} m²`:' (= giá PT 01 ÷ (1 − CK PT 01))'}</span>
     <span class="sum-val" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--gold-l)">${fmt(R.list)}</span></div>`;
   R.steps.forEach(s=>{h+=`<div class="sum-row pct-ck" style="flex-direction:column;align-items:flex-start;gap:2px;padding:8px 0">
     <div style="display:flex;justify-content:space-between;width:100%;align-items:center"><span class="sum-lbl" style="font-weight:600;color:#6EC6E8">${s.label}</span><span class="sum-val" style="color:#6EC6E8;font-size:14px">${s.amt>=0?'- ':'+ '}${fmt(Math.abs(s.amt))}</span></div>
@@ -812,6 +824,7 @@ function recalc(){
   $('tb-note').textContent=`Giá PT ${SC[st.pt].no} ${SC[st.pt].short} · ${adjText(st.pt)}`;
   SC.forEach((_,i)=>renderPanel(i));
   renderCompare();
+  if(window.NATLoan)NATLoan.refresh();
 }
 
 // ── EXPORT PDF ──
@@ -820,7 +833,7 @@ function exportPDF(){
   const cust=esc($('custInp').value.trim()),agent=esc($('agentInp').value.trim());
   const bank=!!sc.bank;
   const dc=R.steps.map(s=>`<tr><td>${s.label}</td><td class="r">${pc(Math.abs(s.pct))}</td><td class="r ps-ded">${s.amt>=0?'- ':'+ '}${fmtS(Math.abs(s.amt))} đ</td></tr>`).join('')
-    ||`<tr><td colspan="3" style="color:#999">Bằng giá đề xuất PT 01 (không điều chỉnh, không CK booking)</td></tr>`;
+    ||`<tr><td colspan="3" style="color:#999">Không có chiết khấu</td></tr>`;
   const sched=S.rows.map(x=>bank
     ?`<tr><td>${x.n}</td><td>${x.w} — ${x.d}</td><td class="r">${pc(x.pct)}</td><td class="r">${x.own?fmtS(x.own):'—'}</td><td class="r">${x.bank?fmtS(x.bank):'—'}</td><td class="r">${fmtS(x.tot)}</td></tr>`
     :`<tr><td>${x.n}</td><td>${x.w} — ${x.d}</td><td class="r">${pc(x.pct)}</td><td class="r">${fmtS(x.tot)}</td></tr>`).join('');
@@ -832,11 +845,11 @@ function exportPDF(){
   <div class="ps-hd"><div><div class="ps-brand">Norton Park</div><div class="ps-badge">Bảng Tiến Độ Thanh Toán Dự Kiến</div></div>
    <div class="ps-meta">Ngày lập: <b>${today}</b><br>Phương thức: <b>${sc.full}</b><br>Khách hàng: <b>${cust||'______________'}</b><br>Chuyên viên: <b>${agent||'______________'}</b></div></div>
   <h2>Thông Tin Căn Hộ</h2>${info}${st.loc?`<div style="margin:10px 0;text-align:center"><div style="position:relative;display:inline-block;line-height:0;max-width:100%"><img src="${st.loc.img}" style="width:560px;max-width:100%"><div style="position:absolute;left:${st.loc.x}%;top:${st.loc.y}%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;border:3px solid #e8381b;background:rgba(232,56,27,.3)"></div></div><div style="font-size:10px;color:#777">Vị trí căn ${esc(st.unit)} trên mặt bằng ${st.loc.plan} · DT sử dụng ${st.loc.use.toLocaleString('vi-VN')} m²${st.loc.levels?' · '+st.loc.levels:''} (mang tính minh họa)</div></div>`:''}${st.mau?`<div style="text-align:center;margin:10px 0"><img src="${st.mau.img}" style="max-height:230px;max-width:100%"><div style="font-size:10px;color:#777">Layout mẫu ${st.mau.code} — DT sử dụng ${st.mau.use.toLocaleString('vi-VN')} m²${st.mau.levels?' · '+st.mau.levels:''} (mang tính minh họa)</div></div>`:''}
-  <h2>Điều Chỉnh &amp; Chiết Khấu Thêm</h2>
+  <h2>Chiết Khấu Áp Dụng</h2>
   <table><thead><tr><th>Nội dung</th><th class="r">Mức</th><th class="r">Số tiền</th></tr></thead><tbody>${dc}</tbody></table>
   <h2>Chi Tiết Báo Giá</h2>
   <div class="ps-grid" style="grid-template-columns:1fr 1fr">
-    <div><span>Giá đề xuất PT 01 (chưa VAT &amp; KPBT)</span><b>${fmtS(R.list)} đ</b></div><div><span>Tổng điều chỉnh &amp; chiết khấu</span><b>${R.totalDisc>=0?'- ':'+ '}${fmtS(Math.abs(R.totalDisc))} đ</b></div>
+    <div><span>Giá niêm yết (chưa VAT &amp; KPBT)</span><b>${fmtS(R.list)} đ</b></div><div><span>Tổng chiết khấu</span><b>${R.totalDisc>=0?'- ':'+ '}${fmtS(Math.abs(R.totalDisc))} đ</b></div>
     <div><span>Giá bán (A)</span><b>${fmtS(R.A)} đ</b></div><div><span>Phí bảo trì (B) ${pc(st.kpbt)}</span><b>+ ${fmtS(R.B)} đ</b></div>
     <div><span>VAT (C) ${pc(st.vat)}</span><b>+ ${fmtS(R.C)} đ</b></div><div></div></div>
   <div class="ps-final"><div class="l">Tổng giá bán căn hộ (gồm VAT &amp; KPBT)</div><div class="v">${fmtS(R.D)} đ</div></div>
@@ -844,16 +857,43 @@ function exportPDF(){
   <table><thead><tr>${sh}</tr></thead><tbody>${sched}
    <tr><td></td><td><b>Tổng</b></td><td></td>${bank?`<td class="r"><b>${fmtS(S.ownTotal)}</b></td><td class="r"><b>${fmtS(S.bankTotal)}</b></td>`:''}<td class="r"><b>${fmtS(S.total)}</b></td></tr></tbody></table>
   <div class="ps-note">(*) Giá bán và phương thức thanh toán chỉ mang tính tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. (**) VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng. Các mốc tháng được suy ra từ khoảng cách ghi trên bảng chính sách, tính từ mốc ký HĐMB dự kiến T12/2026.${bank?' Khả năng được duyệt vay và hạn mức do ngân hàng quyết định.':''}</div>
+  ${NATQR.contact({phone:$('agentPhone').value.trim()})}
   <div class="ps-foot"><div>Norton Park · Bảng tính phương thức thanh toán</div><div>Xuất ngày ${today}</div></div>`;
   window.print();
+}
+
+
+// ── VAY NGÂN HÀNG + PDF TRÌNH BÀY (module dùng chung) ──
+const moOf=x=>{if(x.mo!=null)return x.mo;const m=/^T(\d\d)\/(\d{4})$/.exec(x.w||'');if(!m)return null;const a=SC[0].rows[0].w.match(/^T(\d\d)\/(\d{4})$/);return a?((+m[2])-(+a[2]))*12+(+m[1])-(+a[1]):null;};
+function loanCtx(){
+  if(!LAST[0]||!(st.price>0))return null;
+  const methods=SC.map((sc,i)=>{
+    const {R,S}=LAST[i],hr=S.rows.find(x=>x.k==='k3'&&x.n!=='+'),hm=hr?moOf(hr):null,hand=hm!=null?hm:24;
+    const tr=[];S.rows.forEach(x=>{if(x.bank>0){const m=moOf(x);tr.push({m:m!=null?m:hand+6,amt:x.bank});}});
+    const iv=tr.length>0;
+    return {id:'p'+i,name:sc.short,f:R.D,h:R.A+R.C,tr,ho:hr?{m:hand,amt:hr.own}:null,hand,
+      htls:iv?{m:24,pct:100}:null,maxPct:iv?.75:null,
+      note:iv?'Chính sách ghi hỗ trợ lãi suất 24 tháng; bảng tính giả định chủ đầu tư chịu toàn bộ lãi trong thời gian này (chỉnh ở ô “CĐT hỗ trợ lãi” cho đúng văn bản chính sách)':''};
+  });
+  return {sel:'p'+st.pt,methods,brand:{project:'NORTON PARK',unit:(st.unit||'Căn hộ')+(st.type?' · '+st.type:''),footer:'Bảng tính tham khảo · nguyenanhtu.vn'}};
+}
+function pdfDeck(){
+  const ctx=loanCtx();if(!ctx)return;
+  const R=LAST[st.pt].R,cl=$('custInp').value.trim(),co=$('agentInp').value.trim();
+  const kv=[['Mã căn / Loại căn',(st.unit||'—')+(st.type?' · '+st.type:'')],['Diện tích',st.area?st.area.toLocaleString('vi-VN')+' m²':'—'],['Đơn giá / m²',st.ppm?fmtS(st.ppm)+' đ':'—'],['Giá niêm yết (chưa VAT & KPBT)',fmt(R.list)],['Phương thức đang chọn',SC[st.pt].full],['Tổng chiết khấu',(R.totalDisc>=0?'- ':'+ ')+fmt(Math.abs(R.totalDisc))],['Giá bán sau CK (A)',fmt(R.A)],['VAT '+pc(st.vat)+' + KPBT '+pc(st.kpbt),'+ '+fmt(R.B+R.C)],['Tổng giá bán (D)',fmt(R.D)]];
+  const extra=st.loc?`<div style="text-align:center"><div style="position:relative;display:inline-block;line-height:0;max-width:100%"><img src="${st.loc.img}" style="width:420px;max-width:100%;border:1px solid #dee2e6"><div style="position:absolute;left:${st.loc.x}%;top:${st.loc.y}%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;border:3px solid #e8381b;background:rgba(232,56,27,.25)"></div></div><div style="font-size:10px;color:#6c757d;margin-top:3px">Mặt bằng: ${esc(st.loc.plan||'')}</div></div>`:'';
+  const pages=NATLoan.deckPages({heading:ctx.brand.project+' · '+ctx.brand.unit,client:cl,kv,extra,sel:st.pt,
+    methods:SC.map((sc,i)=>({no:sc.no,name:sc.name,full:sc.full,ck:adjText(i),D:LAST[i].R.D,S:LAST[i].S}))});
+  const contact=NATQR.contact({client:cl,agent:co,phone:$('agentPhone').value.trim()});
+  NATLoan.printPdf(ctx,{pages,contact});
 }
 
 // ── INIT ──
 window.addEventListener('DOMContentLoaded',()=>{
   buildUI();syncPrice();setPT(0);
+  if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
+  recalc();
 });
 </script>
-<meta name="lead-project" content="norton-park"><link rel="stylesheet" href="/assets/lead/lead.css"><script src="/assets/lead/lead.js" defer></script>
-<button type="button" data-lead-open style="position:fixed;right:14px;bottom:14px;z-index:90;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận phương án này</button>
 </body>
 </html>
