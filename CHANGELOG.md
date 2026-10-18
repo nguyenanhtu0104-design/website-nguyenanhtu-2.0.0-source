@@ -3,10 +3,16 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-18 — Bản tính tài chính: IRR, hỗ trợ lãi của chủ đầu tư, chi phí bán mặc định 2%, ghi chú cho người lập
+- Cột "Quy năm" thay bằng **IRR %/năm** tính theo dòng tiền từng tháng (cột cũ coi mọi vốn bỏ từ đầu nên thấp hơn thực tế, ví dụ kỳ 120: 3,4% so với IRR 6,4%).
+- Thêm ô "Số tháng đầu lãi vay do chủ đầu tư chịu" (mặc định 0); phần lãi đó không tính vào tiền của người mua (cột "Anh trả ngân hàng", vốn cá nhân, quỹ và IRR).
+- Chi phí/thuế khi bán mặc định 2% (trước là 0) kèm gợi ý; có thể sửa.
+- Thêm khung ghi chú cho người lập bản tính: định nghĩa từng cột, công thức, cách đọc IRR và các giả định/giới hạn. Đổi chân trang theo tên mới.
+
 ## 2026-10-18 — Bản tính tài chính: nối bản tính vay với tích góp, thêm phí tất toán và tỷ suất lợi nhuận
 - Thông số ở mục 02 (ngày vay, thời hạn, phương pháp, lãi, ân hạn, các đợt giải ngân, tổng lãi, tổng trả) tự chuyển sang mục 03, hiện dạng thẻ màu xanh "từ mục 02". Vốn tự có tự tính = giá mua − tổng giải ngân (có thể bỏ chọn để tự nhập).
 - Mục 03 thêm phần bổ sung màu cam: bảng phí tất toán trước hạn theo từng đợt giải ngân (theo năm kể từ ngày nhận nợ, mặc định 3/2/1/0/0% là giả định để minh họa) và chi phí/thuế khi bán.
-- Bảng dòng tiền thêm 7 cột màu cam: vốn gộp lũy kế (gồm phí tất toán), thuê ròng lũy kế, phí tất toán nếu bán, tiền thu về nếu bán, lãi/lỗ, tỷ suất lợi nhuận trên vốn, tỷ suất quy năm. Bán tại kỳ nào thì trừ dư nợ, phần đợt giải ngân chưa tới hạn và chi phí bán; phí tất toán từng đợt được cộng vào vốn gộp để tính tỷ suất lợi nhuận. Các ô nhập tiền hiển thị dấu phẩy ngăn cách hàng nghìn (kết quả cũng dùng dấu phẩy). Phương án JSON và CSV lưu thêm các trường mới (file JSON cũ vẫn mở được). Đã đối chiếu độc lập các cột với công thức, sai lệch bằng 0.
+- Bảng dòng tiền thêm 7 cột màu cam: vốn gộp lũy kế (gồm phí tất toán), thuê ròng lũy kế, phí tất toán nếu bán, tiền thu về nếu bán, lãi/lỗ, tỷ suất lợi nhuận trên vốn, tỷ suất quy năm. Bán tại kỳ nào thì trừ dư nợ, phần đợt giải ngân chưa tới hạn và chi phí bán; phí tất toán từng đợt được cộng vào vốn gộp để tính tỷ suất lợi nhuận. Cách tính cuối (theo yêu cầu của Tú): vốn cá nhân đã chi = vốn ban đầu + gốc và lãi đã trả + chi phí giữ nhà + phí tất toán + chi phí bán; doanh thu thuần = giá bán + thuê ròng lũy kế − dư nợ còn lại − phần chưa thanh toán cho chủ đầu tư; lợi nhuận ròng = doanh thu thuần − vốn cá nhân; tỷ suất = lợi nhuận ròng ÷ vốn cá nhân. Các ô nhập tiền hiển thị dấu phẩy ngăn cách hàng nghìn (kết quả cũng dùng dấu phẩy). Phương án JSON và CSV lưu thêm các trường mới (file JSON cũ vẫn mở được). Đã đối chiếu độc lập các cột với công thức, sai lệch bằng 0.
 
 ## 2026-10-18 — 2.17.0: Menu "Atlas" xổ xuống + "Bản tính tài chính" (thay Atlas Banking)
 - Thanh menu: World Atlas và Atlas VietNam gộp thành một mục "Atlas ▾" xổ xuống (mục tự sáng khi đang ở một trong hai trang). Bấm ra ngoài thì menu tự đóng.
