@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+
+## 2026-10-18 — Nội dung: 3 phân khu Waterpoint (Rivera Nagomi, The Aqua, Park Village)
+- Thêm 3 trang dự án thuộc `water-point`: `/cam-nang/rivera-nagomi/`, `/cam-nang/the-aqua/`, `/cam-nang/park-village/`. Khung mục 01 Tổng quan · 02 Chi tiết · 04 SWOT + Hỏi & Đáp, dải số liệu `facts`, ảnh OG thẻ thương hiệu. Chưa có mục 03 "Vì sao tôi chọn" và thang điểm 1–5 (chờ Tú); chưa có ảnh, clip giới thiệu (chờ Tú).
+- Rivera Nagomi có giá tham khảo, 2 tiến độ thanh toán, lịch vay BS01 theo chính sách Southgate; The Aqua và Park Village ghi "chờ chủ đầu tư công bố" cho giá và tiến độ.
+- `water-point` (vẫn `stub`, noindex): thêm khối "Các Phân Khu" liên kết tới 3 trang con.
+
 ## 2026-10-18 — 2.17.0: Menu "Atlas" xổ xuống + "Bản tính tài chính" (thay Atlas Banking)
 - Thanh menu: World Atlas và Atlas VietNam gộp thành một mục "Atlas ▾" xổ xuống (mục tự sáng khi đang ở một trong hai trang). Bấm ra ngoài thì menu tự đóng.
 - "Atlas Banking" đổi tên thành **Bản tính tài chính**, địa chỉ mới `/ban-tinh-tai-chinh/`. Không chia kỳ: bấm menu là vào thẳng trang (mục cấu hình `direct: true` trong `site.config.json`; nguồn vẫn ở `publications/atlas-banking/lai-suat-ngan-hang/`, khai báo bằng `src`).
