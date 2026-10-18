@@ -3,6 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2.17.2 — Lead: tự tạo PDF phương án của khách
+- Khi khách tick "gửi kèm phương án", trình duyệt tự tạo file PDF đúng bảng tính khách đã nhập (Palm River, Norton Park, Nam Mekong).
+- Email báo lead đính kèm file PDF; file cũng lưu vào Google Drive (thư mục "Lead - Phương án PDF") kèm link ở cột "File PDF phương án" trong Sheet và tin WhatsApp.
+- Thư viện tạo PDF (html2canvas, jsPDF) nằm trong assets/vendor, chỉ tải khi khách gửi phương án.
+
 ## 2.17.1 — Lead: WhatsApp, PDF sẵn, sổ lead theo cấu phần
 - Báo lead qua WhatsApp (CallMeBot: WHATSAPP_PHONE, WHATSAPP_APIKEY).
 - Email báo lead có nút "Xuất PDF sẵn của khách" (bảng tính tự điền số khách và mở hộp thoại lưu PDF).

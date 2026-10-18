@@ -14,7 +14,9 @@ const GROUPS = [
   ['NGUỒN', '#5b2c6f', ['Nguồn', 'Kênh', 'Chiến dịch', 'Trang vào']],
   ['XỬ LÝ', '#b8894a', ['Trạng thái', 'Người phụ trách', 'Ghi chú']],
   ['PHÁP LÝ', '#566573', ['Đồng ý xử lý dữ liệu']],
+  ['FILE', '#117a65', ['File PDF phương án']],
 ];
+const PDF_FOLDER = 'Lead - Phương án PDF';
 const HEAD = GROUPS.reduce((a, g) => a.concat(g[2]), []);
 
 function doPost(e) {
@@ -31,11 +33,20 @@ function doPost(e) {
       d.source, d.medium || '', d.campaign, d.page,
       'Mới', '', '',
       d.consent,
+      '',
     ];
+    let pdfUrl = '';
+    if (d.pdf) {
+      try {
+        const f = getFolder().createFile(Utilities.newBlob(Utilities.base64Decode(d.pdf), 'application/pdf', d.pdfName || ('PhuongAn-' + d.id + '.pdf')));
+        pdfUrl = f.getUrl();
+        row[row.length - 1] = pdfUrl;
+      } catch (err2) { row[row.length - 1] = 'Lỗi lưu PDF: ' + err2; }
+    }
     getSheet(ss, ALL).appendRow(row);
     getSheet(ss, String(d.project || 'Khác').slice(0, 90)).appendRow(row);
     ensureOverview(ss);
-    return out({ ok: true });
+    return out({ ok: true, pdfUrl: pdfUrl });
   } catch (err) {
     return out({ ok: false, error: String(err) });
   }
@@ -43,7 +54,7 @@ function doPost(e) {
 
 function getSheet(ss, name) {
   let sh = ss.getSheetByName(name);
-  if (sh) return sh;
+  if (sh) { ensureLastColumn(sh); return sh; }
   sh = ss.insertSheet(name);
   const n = HEAD.length;
   // Hàng 1: tên nhóm; hàng 2: tiêu đề cột
@@ -69,6 +80,21 @@ function getSheet(ss, name) {
   sh.setColumnWidth(HEAD.indexOf('Phương án khách tính') + 1, 280);
   sh.setColumnWidth(HEAD.indexOf('Ghi chú') + 1, 220);
   return sh;
+}
+
+function getFolder() {
+  const it = DriveApp.getFoldersByName(PDF_FOLDER);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(PDF_FOLDER);
+}
+
+// Sheet tạo từ phiên bản cũ: thêm cột "File PDF phương án" vào cuối
+function ensureLastColumn(sh) {
+  const n = HEAD.length;
+  if (sh.getLastColumn() >= n) return;
+  const g = GROUPS[GROUPS.length - 1];
+  sh.getRange(1, n).setValue(g[0]).setBackground(g[1]).setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+  sh.getRange(2, n).setValue(g[2][0]).setBackground(g[1]).setFontColor('#ffffff').setFontWeight('bold').setWrap(true);
+  sh.setColumnWidth(n, 220);
 }
 
 // Tab "Tổng quan": đếm lead theo dự án và mức độ (công thức, tự cập nhật)
