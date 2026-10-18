@@ -221,7 +221,8 @@
       var v = (el.textContent || '').trim();
       if (v) results.push({ l: el.getAttribute('data-lead-label') || '', v: v });
     });
-    return inputs.length ? { inputs: inputs, results: results } : null;
+    var real = inputs.filter(function (i) { return i.k !== 'pt' && i.k !== 'cust'; });
+    return real.length ? { inputs: inputs, results: results } : null;
   }
   // Link "Mở lại bảng tính": điền lại các ô từ ?calc={...}
   function restoreCalc() {
@@ -377,6 +378,9 @@
         website: f.website.value,
         t: Date.now() - openedAt,
         score: currentScore(),
+        visits: analyticsOn() ? scoreState().visits : 0,
+        interactions: analyticsOn() ? Object.keys(scoreState().seen).filter(function (k) { return k.indexOf('form_submit') !== 0; }).length : 0,
+        projectsViewed: analyticsOn() ? scoreState().projects.length : 0,
         utm: session.get(K_UTM) || {},
         page: location.pathname
       };
@@ -468,7 +472,8 @@
   /* ---------- Khởi động ---------- */
   function init() {
     captureUtm();
-    restoreCalc();
+    if (qs('calc') || qs('pdf') === '1') window.addEventListener('load', function () { setTimeout(restoreCalc, 300); });
+    if (qs('pdf') === '1') window.addEventListener('load', function () { setTimeout(function () { try { (typeof window.exportPDF === 'function') ? window.exportPDF() : window.print(); } catch (e) { /* bỏ qua */ } }, 1500); });
     bindTracking();
     fetch(DATA_URL, { cache: 'no-cache' })
       .then(function (r) { return r.json(); })

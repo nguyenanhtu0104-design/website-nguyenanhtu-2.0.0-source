@@ -181,7 +181,7 @@ ${zaloLine}
   return { subject, html, text };
 }
 
-function notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus, calc, reopen }) {
+function notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus, calc, reopen, pdfUrl }) {
   const zaloLink = `https://zalo.me/${lead.phone}`;
   const zaloMsg =
     `Chào ${lead.name}, mình là Tú (ERA Vietnam). Mình gửi bạn ${docLabel} của ${project.name}: ${reopen || docUrlTracked || '(tài liệu đang cập nhật)'}`;
@@ -209,11 +209,11 @@ function notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus
 <table cellpadding="6" style="border-collapse:collapse;width:100%">${rows
     .map(([k, v]) => `<tr><td style="color:#5b6770;white-space:nowrap;vertical-align:top">${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`)
     .join('')}</table>
-<p style="margin:14px 0"><a href="${esc(zaloLink)}" style="background:#0b5d56;color:#fff;text-decoration:none;padding:10px 14px;border-radius:4px;font-weight:700">Mở Zalo của khách</a></p>
+<p style="margin:14px 0"><a href="${esc(zaloLink)}" style="background:#0b5d56;color:#fff;text-decoration:none;padding:10px 14px;border-radius:4px;font-weight:700">Mở Zalo của khách</a>${pdfUrl ? ` <a href="${esc(pdfUrl)}" style="background:#b8894a;color:#fff;text-decoration:none;padding:10px 14px;border-radius:4px;font-weight:700">Xuất PDF sẵn của khách</a>` : ''}</p>${pdfUrl ? '<p style="margin:0 0 10px;color:#5b6770;font-size:13px">Bấm nút vàng: bảng tính tự điền số khách đã nhập và mở hộp thoại in. Chọn "Lưu dạng PDF" rồi gửi cho khách.</p>' : ''}
 <p><b>Việc cần làm:</b> ${esc(action)}</p>
 <p style="margin:14px 0 4px;color:#5b6770">Tin nhắn Zalo gợi ý (sao chép và dán):</p>
 <div style="background:#f4f6f7;padding:10px 12px;border-radius:4px">${esc(zaloMsg)}</div></div>`;
-  const text = [...rows.map(([k, v]) => `${k}: ${v}`), '', `Mở Zalo: ${zaloLink}`, `Việc cần làm: ${action}`, '', 'Tin nhắn Zalo gợi ý:', zaloMsg].join('\n');
+  const text = [...rows.map(([k, v]) => `${k}: ${v}`), '', `Mở Zalo: ${zaloLink}`, ...(pdfUrl ? [`Xuất PDF sẵn: ${pdfUrl}`] : []), `Việc cần làm: ${action}`, '', 'Tin nhắn Zalo gợi ý:', zaloMsg].join('\n');
   return { subject, html, text };
 }
 
@@ -226,6 +226,14 @@ async function sendMail(env, { to, subject, html, text, replyTo }) {
   });
   if (!res.ok) return { ok: false, error: `mail_${res.status}` };
   return { ok: true };
+}
+
+// Báo lead nhanh qua WhatsApp (CallMeBot). Cần biến WHATSAPP_PHONE (+84...) và WHATSAPP_APIKEY.
+async function sendWhatsApp(env, text) {
+  if (!env.WHATSAPP_PHONE || !env.WHATSAPP_APIKEY) return { ok: false, error: 'wa_not_configured' };
+  const u = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(env.WHATSAPP_PHONE) + '&text=' + encodeURIComponent(text.slice(0, 1500)) + '&apikey=' + encodeURIComponent(env.WHATSAPP_APIKEY);
+  const res = await fetch(u);
+  return { ok: res.ok };
 }
 
 async function appendSheet(env, row) {
@@ -290,6 +298,8 @@ export async function onRequestPost({ request, env }) {
   const utm = b.utm && typeof b.utm === 'object' ? b.utm : {};
   const calc = b.calcConsent === true ? cleanCalc(b.calc) : null; // chỉ nhận khi khách tick đồng ý riêng
   const score = Math.max(0, Math.min(200, (Number(b.score) || 0) + (calc ? 25 : 0)));
+  const nz = (v) => Math.max(0, Math.min(999, Math.floor(Number(v) || 0)));
+  const visits = nz(b.visits), interactions = nz(b.interactions), projectsViewed = nz(b.projectsViewed);
   const temp = score >= 60 ? 'Nóng' : score >= 30 ? 'Ấm' : 'Mới';
   const lead = {
     id, name, phone, email, channel,
@@ -317,6 +327,9 @@ export async function onRequestPost({ request, env }) {
     project: project.name, doc: docLabel,
     purpose: lead.purpose, budget: lead.budget,
     score, temp,
+    area: (project.areaArticle && project.areaArticle.title) || project.region || '',
+    visits, interactions, projectsViewed,
+    medium: lead.utm.utm_medium,
     source: lead.utm.utm_source, campaign: lead.utm.utm_campaign,
     page: String(b.page || '').slice(0, 200),
     consent: 'Đã đồng ý (' + new Date().toISOString() + ')',
@@ -334,7 +347,19 @@ export async function onRequestPost({ request, env }) {
   const custRes = channel === 'email' ? (settled[1].status === 'fulfilled' ? settled[1].value : { ok: false }) : { ok: false };
 
   // Báo cho Tú sau cùng để ghi rõ email khách đã gửi được hay chưa
-  const note = notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus: custRes, calc, reopen });
+  const pdfUrl = reopenUrl(project, calc, siteUrl, { utm_source: 'owner', utm_medium: 'lead', utm_campaign: b.project, pdf: '1' });
+  const note = notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus: custRes, calc, reopen, pdfUrl });
+  const waText = [
+    `🔔 Lead ${temp}: ${name} – ${project.name}`,
+    `SĐT: ${phone}${email ? ' | ' + email : ''}`,
+    `Nhu cầu: ${lead.purpose || '-'} | Ngân sách: ${lead.budget || '-'}`,
+    `Khu vực: ${sheetRow.area || '-'}`,
+    `Quan tâm: ${score} điểm · ${visits} lần vào · ${interactions} tương tác · xem ${projectsViewed} dự án`,
+    `Nhận: ${channel === 'email' ? 'Email' : 'Zalo'}${calc ? ' | Có phương án tính: ' + calcText(calc) : ''}`,
+    `Zalo khách: https://zalo.me/${phone.replace(/^\+?84/, '0')}`,
+    ...(pdfUrl ? [`PDF: ${pdfUrl}`] : []),
+  ].join('\n');
+  const waRes = await sendWhatsApp(env, waText).catch(() => ({ ok: false }));
   let notifyRes = { ok: false };
   if (env.NOTIFY_TO) {
     try {
@@ -345,7 +370,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   // Lead không được mất: phải lưu được ít nhất một nơi
-  if (!sheetRes.ok && !notifyRes.ok) return json({ ok: false, error: 'storage' }, 502);
+  if (!sheetRes.ok && !notifyRes.ok && !waRes.ok) return json({ ok: false, error: 'storage' }, 502);
 
   return json({ ok: true, id, emailed: channel === 'email' && custRes.ok });
 }

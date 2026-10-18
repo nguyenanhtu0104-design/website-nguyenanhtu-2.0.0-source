@@ -29,6 +29,8 @@ Vào project `website-nguyenanhtu-2-0-0-source` > **Settings > Variables and Sec
 |---|---|
 | `RESEND_API_KEY` | khoá ở bước 2 (loại Secret) |
 | `MAIL_FROM` | `Nguyễn Anh Tú <lead@nguyenanhtu.vn>` |
+| `WHATSAPP_PHONE` | (tùy chọn) số WhatsApp nhận báo lead, dạng +84978618149 |
+| `WHATSAPP_APIKEY` | (tùy chọn) mã nhận từ CallMeBot: nhắn "I allow callmebot to send me messages" tới +34 644 51 95 23 trên WhatsApp |
 | `NOTIFY_TO` | email bạn muốn nhận thông báo lead |
 | `SHEET_WEBHOOK_URL` | địa chỉ Web app ở bước 1 |
 | `SHEET_SECRET` | chuỗi `SECRET` ở bước 1 (loại Secret) |
