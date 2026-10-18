@@ -258,9 +258,11 @@
     changed.forEach(function (r) { r.media.mediaText = on ? 'all' : 'print'; });
     return changed.length;
   }
+  var pdfWhy = '';
   function buildPdf() {
+    pdfWhy = '';
     var fn = (typeof window.exportPDF === 'function') ? window.exportPDF : (typeof window.pdfDeck === 'function' ? window.pdfDeck : null);
-    if (!fn) return Promise.resolve(null);
+    if (!fn) { pdfWhy = 'khong-co-ham-xuat-pdf'; return Promise.resolve(null); }
     return Promise.all([loadLib('/assets/vendor/html2canvas.min.js'), loadLib('/assets/vendor/jspdf.umd.min.js')]).then(function () {
       var origPrint = window.print, printed = false;
       window.print = function () { printed = true; };
@@ -270,9 +272,9 @@
         (function poll() { if (printed || waited >= 1500) return res(); waited += 50; setTimeout(poll, 50); })();
       }).then(function () {
       window.print = origPrint;
-      if (!printed) return null;
+      if (!printed) { pdfWhy = 'bang-tinh-chua-san-sang'; return null; }
       var box = document.getElementById('nlPdf') && document.body.classList.contains('nl-pdfmode') ? document.getElementById('nlPdf') : document.getElementById('print-sheet');
-      if (!box) return null;
+      if (!box) { pdfWhy = 'khong-thay-ban-in'; return null; }
       var isDeck = box.id === 'nlPdf', cap = null;
       if (isDeck) {
         // Bảng tính có bản in riêng (@media print): dựng bản sao ngoài màn hình với đúng các quy tắc đó
@@ -326,14 +328,14 @@
       return chain.then(function () {
         var uri = doc.output('datauristring');
         return uri.slice(uri.indexOf(',') + 1);
-      }).catch(function (e) { try { console.warn('lead pdf:', e); } catch (x) { /* bỏ qua */ } return null; })
+      }).catch(function (e) { pdfWhy = 'loi-tao-pdf: ' + String(e && e.message || e).slice(0, 60); try { console.warn('lead pdf:', e); } catch (x) { /* bỏ qua */ } return null; })
         .then(function (b64) {
           if (isDeck) { if (cap && cap.parentNode) cap.parentNode.removeChild(cap); }
           else { setPrintMedia(false); box.innerHTML = ''; }
           return b64;
         });
       });
-    }).catch(function () { return null; });
+    }).catch(function (e) { pdfWhy = 'khong-tai-duoc-thu-vien'; return null; });
   }
 
   /* ---------- Form nhận tài liệu ---------- */
@@ -484,8 +486,8 @@
 
       if (calc && f.calcConsent && f.calcConsent.checked) { payload.calc = calc; payload.calcConsent = true; }
 
-      var pdfStep = (payload.calcConsent ? Promise.race([buildPdf(), new Promise(function (r) { setTimeout(function () { r(null); }, 25000); })]) : Promise.resolve(null))
-        .then(function (b64) { if (b64 && b64.length < 12000000) payload.pdf = b64; });
+      var pdfStep = (payload.calcConsent ? Promise.race([buildPdf(), new Promise(function (r) { setTimeout(function () { pdfWhy = pdfWhy || 'qua-25-giay'; r(null); }, 25000); })]) : Promise.resolve(null))
+        .then(function (b64) { if (b64 && b64.length < 12000000) payload.pdf = b64; else if (payload.calcConsent && !pdfWhy) pdfWhy = 'file-qua-lon'; if (payload.calcConsent) payload.pdfWhy = pdfWhy; });
       if (payload.calcConsent) btn.textContent = 'Đang tạo file PDF…';
       pdfStep.then(function () {
         btn.textContent = 'Đang gửi…';

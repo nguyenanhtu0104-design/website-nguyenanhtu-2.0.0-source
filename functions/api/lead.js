@@ -181,7 +181,7 @@ ${zaloLine}
   return { subject, html, text };
 }
 
-function notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus, calc, reopen, pdfUrl, hasPdf, driveUrl }) {
+function notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus, calc, reopen, pdfUrl, hasPdf, pdfWhy, driveUrl }) {
   const zaloLink = `https://zalo.me/${lead.phone}`;
   const zaloMsg =
     `Chào ${lead.name}, mình là Tú (ERA Vietnam). Mình gửi bạn ${docLabel} của ${project.name}: ${reopen || docUrlTracked || '(tài liệu đang cập nhật)'}`;
@@ -209,7 +209,7 @@ function notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus
 <table cellpadding="6" style="border-collapse:collapse;width:100%">${rows
     .map(([k, v]) => `<tr><td style="color:#5b6770;white-space:nowrap;vertical-align:top">${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`)
     .join('')}</table>
-<p style="margin:14px 0"><a href="${esc(zaloLink)}" style="background:#0b5d56;color:#fff;text-decoration:none;padding:10px 14px;border-radius:4px;font-weight:700">Mở Zalo của khách</a>${pdfUrl ? ` <a href="${esc(pdfUrl)}" style="background:#b8894a;color:#fff;text-decoration:none;padding:10px 14px;border-radius:4px;font-weight:700">Xuất PDF sẵn của khách</a>` : ''}</p>${hasPdf ? `<p style="margin:0 0 10px;font-size:14px"><b>File PDF phương án của khách đã đính kèm trong email này.</b> Tải về rồi gửi khách qua Zalo.${driveUrl ? ` Bản lưu trong Google Drive: <a href="${esc(driveUrl)}">mở file</a>.` : ''}</p>` : pdfUrl ? '<p style="margin:0 0 10px;color:#5b6770;font-size:13px">Chưa tạo được file PDF tự động. Bấm nút vàng: bảng tính tự điền số khách và mở hộp thoại in, chọn "Lưu dạng PDF".</p>' : ''}
+<p style="margin:14px 0"><a href="${esc(zaloLink)}" style="background:#0b5d56;color:#fff;text-decoration:none;padding:10px 14px;border-radius:4px;font-weight:700">Mở Zalo của khách</a>${pdfUrl ? ` <a href="${esc(pdfUrl)}" style="background:#b8894a;color:#fff;text-decoration:none;padding:10px 14px;border-radius:4px;font-weight:700">Xuất PDF sẵn của khách</a>` : ''}</p>${hasPdf ? `<p style="margin:0 0 10px;font-size:14px"><b>File PDF phương án của khách đã đính kèm trong email này.</b> Tải về rồi gửi khách qua Zalo.${driveUrl ? ` Bản lưu trong Google Drive: <a href="${esc(driveUrl)}">mở file</a>.` : ''}</p>` : pdfUrl ? `<p style="margin:0 0 10px;color:#5b6770;font-size:13px">Chưa tạo được file PDF tự động (lý do: ${esc(pdfWhy || 'trình duyệt của khách chưa nạp bản mới')}). Bấm nút vàng: bảng tính tự điền số khách và mở hộp thoại in, chọn "Lưu dạng PDF".</p>` : ''}
 <p><b>Việc cần làm:</b> ${esc(action)}</p>
 <p style="margin:14px 0 4px;color:#5b6770">Tin nhắn Zalo gợi ý (sao chép và dán):</p>
 <div style="background:#f4f6f7;padding:10px 12px;border-radius:4px">${esc(zaloMsg)}</div></div>`;
@@ -351,7 +351,7 @@ export async function onRequestPost({ request, env }) {
 
   // Báo cho Tú sau cùng để ghi rõ email khách đã gửi được hay chưa
   const pdfUrl = reopenUrl(project, calc, siteUrl, { utm_source: 'owner', utm_medium: 'lead', utm_campaign: b.project, pdf: '1' });
-  const note = notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus: custRes, calc, reopen, pdfUrl, hasPdf: !!pdfB64, driveUrl: sheetRes.pdfUrl || '' });
+  const note = notifyEmail({ lead, project, docLabel, docUrlTracked, temp, emailStatus: custRes, calc, reopen, pdfUrl, hasPdf: !!pdfB64, pdfWhy: String(b.pdfWhy || '').slice(0, 80), driveUrl: sheetRes.pdfUrl || '' });
   const waText = [
     `🔔 Lead ${temp}: ${name} – ${project.name}`,
     `SĐT: ${phone}${email ? ' | ' + email : ''}`,

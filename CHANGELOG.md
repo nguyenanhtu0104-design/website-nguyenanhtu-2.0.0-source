@@ -3,6 +3,10 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2.17.3 — Lead: chống trình duyệt giữ bản cũ, báo lý do khi chưa tạo được PDF
+- Trang bảng tính nạp lead.js kèm số phiên bản; thư mục assets/lead luôn kiểm tra bản mới.
+- Email báo lead ghi rõ lý do khi chưa tạo được file PDF.
+
 ## 2.17.2 — Lead: tự tạo PDF phương án của khách
 - Khi khách tick "gửi kèm phương án", trình duyệt tự tạo file PDF đúng bảng tính khách đã nhập (Palm River, Norton Park, Nam Mekong).
 - Email báo lead đính kèm file PDF; file cũng lưu vào Google Drive (thư mục "Lead - Phương án PDF") kèm link ở cột "File PDF phương án" trong Sheet và tin WhatsApp.
