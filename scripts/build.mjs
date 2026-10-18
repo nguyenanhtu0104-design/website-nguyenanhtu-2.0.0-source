@@ -156,11 +156,12 @@ const PUB_ROOT = path.join(ROOT, 'publications');
 const pubSections = (cfg.publications || []).map((sec) => ({ ...sec, issues: [] }));
 const IMG_EXT = /\.(jpe?g|png|webp)$/i;
 for (const sec of pubSections) {
-  const dir = path.join(PUB_ROOT, sec.path);
+  const srcName = sec.src || sec.path; // 2.17.0: thư mục nguồn có thể khác địa chỉ web (vd nguồn atlas-banking → web /ban-tinh-tai-chinh/)
+  const dir = path.join(PUB_ROOT, srcName);
   if (!fs.existsSync(dir)) continue;
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     if (!e.isDirectory()) continue;
-    const slug = e.name, where = `publications/${sec.path}/${slug}`, d = path.join(dir, slug);
+    const slug = e.name, where = `publications/${srcName}/${slug}`, d = path.join(dir, slug);
     if (!SLUG_RE.test(slug)) { errors.push(`${where}: tên thư mục chỉ gồm a-z, 0-9, dấu - (vd 2026-10-ky-01)`); continue; }
     const infoPath = path.join(d, 'info.txt');
     if (!fs.existsSync(infoPath)) { errors.push(`${where}: thiếu info.txt`); continue; }
@@ -207,7 +208,7 @@ const fanFoot = au.fanpage ? `\n      <a class="pf-btn pf-btn-fb" href="${esc(au
 const navTpl = rd('templates/partials/global-nav.html');
 const NAV_KEYS = ['nav_camnang', ...(cfg.publications || []).map((p) => p.navKey)];
 const navHtml = (active) => fill(navTpl, { base: BASE, youtube: esc(au.youtube), phone: au.phone.replace('+84', '0'), phoneDisplay: esc(au.phoneDisplay), zalo: esc(au.zalo),
-  ...Object.fromEntries(NAV_KEYS.map((k) => [k, k === active ? ' is-active' : ''])) });
+  ...Object.fromEntries(NAV_KEYS.map((k) => [k, k === active ? ' is-active' : ''])), nav_atlasgroup: ['nav_atlas', 'nav_atlasvn'].includes(active) ? ' is-active' : '' });
 const header = fill(rd('templates/partials/home-header.html'), { ...common, fanpage_home: fanHome });
 const footer = fill(rd('templates/partials/article-footer.html'), { ...common, fanpage_footer: fanFoot });
 const search = rd('templates/partials/search.html');
@@ -465,6 +466,20 @@ for (const sec of pubSections) {
   const secUrl = `${BASE}${sec.path}/`;
   const showCover = sec.cover !== false; // site.config.json → publications[].cover=false: không hiện ảnh bìa trên web (ảnh vẫn dùng làm ảnh chia sẻ Facebook/Zalo)
   const listed = sec.issues.filter((i) => i.published);
+  // 2.17.0: mục "trang đơn" (direct:true) — không chia kỳ, không thư viện: địa chỉ mục /<path>/ chính là trang nội dung (file .html duy nhất trong kỳ đầu tiên)
+  if (sec.direct) {
+    const is = sec.issues.find((i) => i.html);
+    if (!is) throw new Error(`publications/${srcName}: mục direct cần 1 kỳ có file .html`);
+    const out = path.join(DIST, sec.path); fs.mkdirSync(out, { recursive: true });
+    if (is.cover) fs.copyFileSync(path.join(is.dir, is.cover), path.join(out, is.cover));
+    let docHtml = externalizeBase64(fs.readFileSync(path.join(is.dir, is.html), 'utf8'), out, secUrl);
+    const ogImg = is.cover ? SITE + secUrl + encodeURI(is.cover) : abs('assets/images/og/trang-chu.jpg');
+    const tags = `<meta property="og:type" content="website">\n<meta property="og:site_name" content="${esc(cfg.siteName)}">\n<meta property="og:title" content="${esc(sec.pageTitle)}">\n<meta property="og:description" content="${esc(sec.description)}">\n<meta property="og:url" content="${SITE + secUrl}">\n<meta property="og:image" content="${ogImg}">\n<meta name="twitter:card" content="summary_large_image">\n<link rel="canonical" href="${SITE + secUrl}">\n` + (is.published ? '' : '<meta name="robots" content="noindex, nofollow">\n');
+    docHtml = docHtml.replace(/<\/head>/i, tags + '</head>');
+    write(`${sec.path}/index.html`, docHtml);
+    if (is.published) pubUrls.push({ loc: SITE + secUrl, lastmod: is.date });
+    continue;
+  }
   for (const is of sec.issues) {
     const rel = `${sec.path}/${is.slug}/`, url = BASE + rel, out = path.join(DIST, rel);
     fs.mkdirSync(out, { recursive: true });

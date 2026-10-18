@@ -3,6 +3,21 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-18 — 2.17.0: Menu "Atlas" xổ xuống + "Bản tính tài chính" (thay Atlas Banking)
+- Thanh menu: World Atlas và Atlas VietNam gộp thành một mục "Atlas ▾" xổ xuống (mục tự sáng khi đang ở một trong hai trang). Bấm ra ngoài thì menu tự đóng.
+- "Atlas Banking" đổi tên thành **Bản tính tài chính**, địa chỉ mới `/ban-tinh-tai-chinh/`. Không chia kỳ: bấm menu là vào thẳng trang (mục cấu hình `direct: true` trong `site.config.json`; nguồn vẫn ở `publications/atlas-banking/lai-suat-ngan-hang/`, khai báo bằng `src`).
+- Đầu trang thêm khung "LƯU Ý QUAN TRỌNG · BẢN MÔ PHỎNG THAM KHẢO": không phải bản tính chính thức/báo giá của ngân hàng, tác giả và website không chịu trách nhiệm. Thêm thanh liên kết nhỏ về các mục của website; đổi tên tiêu đề trang.
+- Chuyển hướng 301: `/atlas-banking/`, `/atlas-banking/lai-suat-ngan-hang/` và `/doc/` → `/ban-tinh-tai-chinh/` (`data/redirects.json`).
+
+## 2026-10-17 — Atlas Banking số 01: thay bằng bản v4.6 (đủ 3 thẻ)
+- Trang `/atlas-banking/lai-suat-ngan-hang/doc/` thay bằng bản Atlas Banking Vietnam v4.6 do Tú cung cấp: thẻ 01 Lãi suất (22 ngân hàng, mỗi mức kèm nguồn và ngày), thẻ 02 Khoản vay nhiều đợt (mô phỏng vay mua nhà), thẻ 03 Tích góp. Độ phủ: 14/22 ngân hàng có số huy động, 7 có thống kê cho vay bình quân (không phải báo giá vay mua nhà). Lãi suất sau ưu đãi do người dùng tự điền, bảng tính không phải báo giá ngân hàng.
+- Lưu nhật ký nguồn dữ liệu v4.6 vào `data/atlas-banking/DATA_SOURCES_v4_6_2026-10-17.json` (chỉ để lưu trong repo, không đưa lên website). Kỳ tiếp theo thêm file mới cùng thư mục, không ghi đè bản cũ.
+
+## 2026-10-17 — Công cụ: Bảng tính Palm River — thay bằng bản mới (bảng giá CĐT 17/10)
+- Thay bảng tính Palm River bằng bản Tú cung cấp: chọn căn có giá trong bảng giá CĐT 17/10/2026, gợi ý đơn giá, Early Bird/KH thân thiết không cộng dồn, gói nội thất 268 triệu, quà tặng, hỗ trợ lãi suất 0% trong 24 tháng.
+- Bản gửi nhúng 20 ảnh dạng Base64 (~2 MB); đã trả về file WebP tách riêng `img-01…20.webp` sẵn có (giống hệt, không đổi) để trang nhẹ (~90 KB), đúng quy tắc không Base64.
+- Giữ nguyên các phần đã ghép: khối Vay Ngân Hàng + PDF trình bày, ô số điện thoại người tư vấn kèm mã QR Zalo, điểm đo lead, `noindex`.
+
 ## 2026-10-17 — Công bố Atlas Banking số 01
 - Kỳ `lai-suat-ngan-hang` (số 01) chuyển từ nháp sang công bố: hiện trong thư viện `/atlas-banking/`, vào sitemap, bỏ `noindex`.
 

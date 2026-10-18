@@ -6,9 +6,14 @@
     </a>
     <div class="rei-global-nav__links">
       <a class="rei-global-nav__link{{nav_camnang}}" href="{{base}}">Cẩm nang <span class="rei-global-nav__home-note">HOME</span></a>
-      <a class="rei-global-nav__link{{nav_atlas}}" href="{{base}}atlas/">World Atlas</a>
-      <a class="rei-global-nav__link{{nav_atlasvn}}" href="{{base}}atlas-viet-nam/">Atlas VietNam</a>
-      <a class="rei-global-nav__link{{nav_atlasbank}}" href="{{base}}atlas-banking/">Atlas Banking</a>
+      <details class="rei-menu">
+        <summary class="rei-global-nav__link{{nav_atlasgroup}}">Atlas <span aria-hidden="true">▾</span></summary>
+        <div class="rei-menu__panel">
+          <a class="{{nav_atlas}}" href="{{base}}atlas/">World Atlas</a>
+          <a class="{{nav_atlasvn}}" href="{{base}}atlas-viet-nam/">Atlas VietNam</a>
+        </div>
+      </details>
+      <a class="rei-global-nav__link{{nav_bantinh}}" href="{{base}}ban-tinh-tai-chinh/">Bản tính tài chính</a>
       <a class="rei-global-nav__link{{nav_nhatsan}}" href="{{base}}nhat-san/">Nhật san</a>
       <a class="rei-global-nav__link{{nav_chisodothi}}" href="{{base}}chi-so-do-thi/">Chỉ số đô thị</a>
       <a class="rei-global-nav__link" href="{{base}}assets/tools/ban-do-du-an-hcm/" target="_blank" rel="noopener">Bản đồ</a>
@@ -23,3 +28,4 @@
     </div>
   </div>
 </div>
+<script>document.addEventListener("click",function(e){document.querySelectorAll(".rei-menu[open],.rei-contact[open]").forEach(function(d){if(!d.contains(e.target))d.removeAttribute("open")})});</script>

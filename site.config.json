@@ -1,5 +1,5 @@
 {
-  "version": "2.16.0",
+  "version": "2.17.0",
   "ctaCategories": [
     "du-an-chon-loc"
   ],
@@ -50,14 +50,16 @@
       "description": "Atlas kinh tế Việt Nam theo quý: tăng trưởng, dòng vốn FDI, dân số và đô thị hóa, mỗi số liệu kèm nguồn để đối chiếu."
     },
     {
-      "id": "atlas-banking",
-      "path": "atlas-banking",
+      "id": "ban-tinh-tai-chinh",
+      "path": "ban-tinh-tai-chinh",
+      "src": "atlas-banking",
+      "direct": true,
       "cover": false,
-      "navKey": "nav_atlasbank",
-      "title": "Atlas Banking",
-      "pageTitle": "Atlas Banking | Nguyễn Anh Tú",
-      "label": "LÃI SUẤT · TÍN DỤNG · NGÂN HÀNG",
-      "description": "Atlas lãi suất ngân hàng Việt Nam: lãi suất huy động và cho vay của từng ngân hàng, mỗi mức lãi kèm nguồn chính thức và ngày áp dụng để tự đối chiếu."
+      "navKey": "nav_bantinh",
+      "title": "Bản tính tài chính",
+      "pageTitle": "Bản tính tài chính | Nguyễn Anh Tú",
+      "label": "LÃI SUẤT · VAY NGÂN HÀNG · TÀI CHÍNH MUA NHÀ",
+      "description": "Bản tính tài chính mô phỏng mua nhà: tra cứu lãi suất 22 ngân hàng kèm nguồn, bảng tính khoản vay nhiều đợt giải ngân, tích góp và dòng tiền. Chỉ mang tính tham khảo, không phải báo giá của ngân hàng."
     },
     {
       "id": "nhat-san",

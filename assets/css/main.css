@@ -928,3 +928,13 @@ body.theme-norton-park .pf-btn-phone{color:#e6c58f;border-color:rgba(230,197,143
 .p-hscroll figure img{width:100%;display:block;border-radius:6px;background:#fff}
 .p-hscroll figcaption{font-size:11.5px;color:var(--muted);font-style:italic;margin-top:6px;text-align:center}
 .p-hscroll:focus-visible{outline:2px solid #e7c680;outline-offset:2px}
+/* 2.17.0: mục "Atlas" xổ xuống (World Atlas + Atlas VietNam) — cùng kiểu với "Liên hệ" */
+.rei-menu{position:relative}
+.rei-menu summary{cursor:pointer;list-style:none;gap:8px}
+.rei-menu summary::-webkit-details-marker{display:none}
+.rei-menu summary:focus-visible{outline:2px solid #d9b467;outline-offset:-3px}
+.rei-menu[open] summary{color:#d9b467!important}
+.rei-menu__panel{position:absolute;left:0;top:100%;min-width:210px;max-width:calc(100vw - 28px);padding:6px;background:#14171c;border:1px solid #51452c;box-shadow:0 12px 30px #0008;border-radius:4px;z-index:30}
+.rei-menu__panel a{display:block;padding:12px;color:#f5f3ee;font-size:14px;text-decoration:none;line-height:1.4;white-space:nowrap}
+.rei-menu__panel a:hover{background:#24252a}
+.rei-menu__panel a.is-active{color:#d9b467;background:rgba(215,173,85,.075)}

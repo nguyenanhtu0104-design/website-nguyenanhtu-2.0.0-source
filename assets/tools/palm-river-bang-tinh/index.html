@@ -378,7 +378,12 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 .ck-grid{grid-template-columns:repeat(4,minmax(120px,1fr))}
 @media(max-width:700px){.ck-grid{grid-template-columns:repeat(2,1fr)}}
 .sub-lbl{font-size:11px;color:var(--mut);margin-top:6px;line-height:1.6}
-.dl-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px}
+.dl-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.bench{margin-top:12px;padding:10px 12px;border-radius:8px;background:rgba(110,198,232,.07);border:1px dashed rgba(110,198,232,.35);font-size:12px;line-height:1.7;color:rgba(255,255,255,.85)}
+.bench b{color:#6EC6E8}
+.bench button{margin-top:6px}
+.listed-tag{display:inline-block;font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;background:rgba(27,107,74,.3);color:var(--grn-l);margin-left:6px;letter-spacing:.5px}
+.mdot.dupu{background:rgba(201,168,76,.55);border:1.5px dashed #fff}
 @media(max-width:800px){.dl-row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -397,12 +402,22 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 <div class="card">
   <div class="card-title">🏢 Thông Tin Căn Hộ</div>
   <span class="lbl">Cách chọn căn</span>
-  <div class="radio-group horizontal" id="mode-sw" style="margin-bottom:14px"><button class="opt-btn active-ck" onclick="setMode('mau')">🏠 Theo mẫu căn (tên layout)</button><button class="opt-btn" onclick="setMode('code')">📍 Theo mã căn (xem vị trí trên mặt bằng)</button></div>
+  <div class="radio-group horizontal" id="mode-sw" style="margin-bottom:14px"><button class="opt-btn active-ck" onclick="setMode('mau')">🏠 Theo mẫu căn (tên layout)</button><button class="opt-btn" onclick="setMode('code')">📍 Theo mã căn (xem vị trí trên mặt bằng)</button><button class="opt-btn" onclick="setMode('price')">💰 Căn có giá CĐT (<span id="pl-count">52</span> căn)</button></div>
   <div id="mode-code" style="display:none">
     <div class="lay-wrap" style="align-items:start">
       <div id="map-box"></div>
-      <div><label class="lbl" for="codeInp" style="display:block;margin-bottom:6px">Nhập mã căn</label>
-        <input id="codeInp" class="lay-sel" type="text" placeholder="VD: T3.15.02 hoặc T4.21.04" autocomplete="off" style="text-transform:uppercase" oninput="onCode(this.value)">
+      <div>
+        <div id="price-pick" style="display:none;margin-bottom:14px">
+          <label class="lbl" for="pricedSel" style="display:block;margin-bottom:6px">Chọn căn có giá trong bảng giá CĐT</label>
+          <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+            <select id="plTw" class="lay-sel" style="flex:1;min-width:110px" onchange="fillPriced()"><option value="">Tất cả tháp</option><option value="T3">Tháp 3</option><option value="T4">Tháp 4</option></select>
+            <select id="plLy" class="lay-sel" style="flex:1;min-width:130px" onchange="fillPriced()"><option value="">Tất cả layout</option></select>
+          </div>
+          <select id="pricedSel" class="lay-sel" onchange="onPriced(this.value)"><option value="">— Chọn căn —</option></select>
+          <div class="sub-lbl" id="pl-note"></div>
+        </div>
+        <label class="lbl" for="codeInp" style="display:block;margin-bottom:6px">Nhập mã căn</label>
+        <input id="codeInp" class="lay-sel" type="text" placeholder="VD: T3-09-01 hoặc T4-30-02" autocomplete="off" style="text-transform:uppercase" oninput="onCode(this.value)">
         <div class="lay-info" id="code-info"></div></div>
     </div>
   </div>
@@ -417,7 +432,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <div class="prop-grid">
     <div>
       <div class="input-group" style="margin-bottom:12px"><label for="unitInp">Mã căn / Unit No.</label>
-        <input class="price-inp" id="unitInp" data-lead-input="unit" data-lead-label="Mã căn" type="text" placeholder="VD: T3-1205" style="font-size:15px;text-align:left;text-transform:uppercase" oninput="onUnit(this)" autocomplete="off"></div>
+        <input class="price-inp" id="unitInp" data-lead-input="unit" data-lead-label="Mã căn" type="text" placeholder="VD: T3-09-01" style="font-size:15px;text-align:left;text-transform:uppercase" oninput="onUnit(this)" autocomplete="off"></div>
       <div class="input-group" style="margin-bottom:12px"><label for="typeInp">Loại căn</label>
         <input class="price-inp" id="typeInp" type="text" placeholder="VD: 2PN góc" style="font-size:15px;text-align:left" oninput="onType(this)" autocomplete="off"></div>
       <div class="input-group"><label for="areaInp">Diện tích thông thủy — NSA (m²)</label>
@@ -431,6 +446,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
       <div class="input-group"><label for="priceInp">Giá niêm yết căn hộ — chưa VAT &amp; KPBT, chưa chiết khấu (VND)</label>
         <input class="price-inp" id="priceInp" data-lead-input="price" data-lead-label="Giá bán" type="text" inputmode="numeric" style="font-size:16px" oninput="onPrice(this)" onblur="syncPrice()" autocomplete="off">
         <div class="inp-note" id="price-note"></div></div>
+      <div id="bench" class="bench" style="display:none"></div>
     </div>
   </div>
   <div class="who-grid">
@@ -455,24 +471,31 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
       <input class="price-inp" id="startInp" type="month" value="2026-10" oninput="onStart(this)" style="font-size:16px;text-align:left">
       <div class="inp-note">Các đợt sau được suy ra từ khoảng cách (3 / 6 / 15 / 24 tháng) trên leaflet; bàn giao = VBTT + 27 tháng.</div></div>
   </div>
-  <div class="terms" style="margin-top:14px"><b>Cách tính:</b> giá niêm yết nhập ở trên trừ lần lượt các ưu đãi (theo phương thức, rồi sỉ / Early Birds / KH thân thiết) cho ra giá bán <b>A</b> (chưa VAT &amp; KPBT). Tỷ lệ % của từng đợt tính trên A; VAT cộng vào từng đợt; phí bảo trì cộng vào đợt bàn giao. Leaflet không nêu VAT &amp; KPBT — mặc định 10% và 2%, sửa theo thông báo của CĐT, đặt 0 nếu không áp dụng.</div>
+  <div class="terms" style="margin-top:14px"><b>Cách tính:</b> giá niêm yết nhập ở trên trừ lần lượt các ưu đãi (theo phương thức, Early Bird hoặc KH thân thiết, mua sỉ, gói nội thất quy đổi) cho ra giá bán <b>A</b> (chưa VAT &amp; KPBT). Tỷ lệ % của từng đợt tính trên A; VAT cộng vào từng đợt; phí bảo trì cộng vào đợt bàn giao. VAT 10% khớp bảng giá CĐT (giá gồm VAT = giá chưa VAT × 1,1); phí bảo trì mặc định 2% (chưa có thông tin từ CĐT) — sửa theo thông báo, đặt 0 nếu không áp dụng.</div>
 </div>
 
 <!-- SECTION 2: ƯU ĐÃI -->
 <div class="card">
   <div class="card-title">🎯 Ưu Đãi Theo Phương Thức &amp; Chính Sách Cộng Thêm</div>
-  <div class="inp-note" style="margin-bottom:14px;font-size:12px">Mỗi phương thức có mức <strong>ưu đãi (%) trên giá niêm yết</strong>. Ô được điền sẵn mức “ưu đãi lên đến” ghi trên leaflet (PT Vay không ghi mức nào nên để 0%) — sửa theo mức thực tế của căn / đợt bán hàng. Số dương = giảm giá, số âm = tăng giá.</div>
+  <div class="inp-note" style="margin-bottom:14px;font-size:12px">Mỗi phương thức có mức <strong>ưu đãi (%) trên giá niêm yết</strong>, điền sẵn theo tóm tắt chính sách: Chuẩn 11%, Đặc biệt 6,5%, Nhanh 13%; PT Vay không giảm giá mà được hỗ trợ lãi suất 0% trong 24 tháng nên để 0%. Sửa được nếu thực tế khác. Số dương = giảm giá, số âm = tăng giá.</div>
   <div class="ck-grid" id="ck-grid"></div>
 
   <div class="dl-row">
-    <div><span class="lbl">Chiết khấu sỉ (mua nhiều căn)</span>
+    <div><span class="lbl">Early Bird / KH thân thiết — không cộng dồn với nhau</span>
+      <div class="radio-group horizontal" id="grp-eb"></div>
+      <div class="sub-lbl">KH thân thiết 1,0% áp dụng cho: cư dân Palm, phụ huynh TAS, KH/đối tác OCB, KH/đối tác Hướng Việt Holdings.</div></div>
+    <div><span class="lbl">Chiết khấu mua sỉ (cộng dồn)</span>
       <div class="radio-group horizontal" id="grp-si"></div></div>
-    <div><span class="lbl">Early Birds</span>
-      <div class="radio-group horizontal" id="grp-eb"></div></div>
-    <div><span class="lbl">Ưu đãi KH thân thiết (có điều kiện)</span>
-      <div class="radio-group horizontal" id="grp-kh"></div></div>
   </div>
-  <div class="sub-lbl">Các ưu đãi cộng thêm được tính cascade sau ưu đãi phương thức, áp dụng cho cả 4 phương thức. Leaflet ghi thời hạn: Early Birds GĐ1 đến 31/08 (1%), GĐ2 01/09–30/09 (0,5%); KH thân thiết đến 30/09. Mặc định để “Không áp dụng” — chỉ bật khi CĐT còn cho phép.</div>
+  <div class="dl-row">
+    <div><span class="lbl">Gói nội thất 268 triệu</span>
+      <div class="radio-group horizontal" id="grp-fn"></div>
+      <div class="sub-lbl" id="fn-note"></div></div>
+    <div><span class="lbl">Quà tặng kèm (không trừ vào giá)</span>
+      <div class="radio-group horizontal" id="grp-gift"></div>
+      <div class="sub-lbl">Sổ tiết kiệm 68 triệu áp dụng cho KH cọc mới (168 khách hàng). iPhone 18 Duo 65 triệu áp dụng giai đoạn 01–08/10/2026.</div></div>
+  </div>
+  <div class="sub-lbl">Theo tóm tắt chính sách: toàn bộ chính sách được cộng dồn và trừ vào giá bán khi ký HĐMB (bảng tính trừ lần lượt từng khoản). Riêng Early Bird và KH thân thiết ghi “không được cộng dồn” nên chỉ chọn một. Mặc định để “Không áp dụng” — chỉ bật khi căn đủ điều kiện và CĐT còn cho phép.</div>
 
   <div style="margin-top:16px"><span class="lbl">Xem bảng tính theo phương thức</span>
     <div class="radio-group horizontal" id="grp-pt"></div></div>
@@ -521,8 +544,9 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <b>Viết tắt theo leaflet:</b> XNĐK – xác nhận đăng ký · VBTT – văn bản thỏa thuận · HĐMB – hợp đồng mua bán · GCN – giấy chứng nhận. Ký HĐMB chỉ cần 10% (Đợt 1 + Đợt 2).<br>
   <b>Diện tích tính giá:</b> đơn giá nhân với diện tích thông thủy (NSA) theo mặt bằng tầng điển hình của CĐT; diện tích chính thức theo hợp đồng. Căn duplex tính tổng NSA hai tầng.<br>
   <b>Mốc thời gian:</b> các tháng trong bảng được suy ra từ khoảng cách ghi trên leaflet (5 ngày / 3 / 6 / 15 / 24 tháng), tính từ tháng XNĐK/VBTT bạn chọn. Bàn giao nằm ở tháng thứ 27 kể từ Đợt 1 ở cả 4 phương thức.<br>
-  <b>Ưu đãi “lên đến”:</b> 11% (Chuẩn), 6,5% (Đặc biệt), 13% (Nhanh) là mức tối đa theo leaflet; chưa rõ cấu phần chiết khấu — kiểm tra với CĐT trước khi báo giá cho khách.<br>
-  <b>Vay (PT 03):</b> ngân hàng giải ngân 75% giá bán (OCB theo leaflet); hỗ trợ lãi suất 24 tháng; ân hạn nợ gốc 36–60 tháng. Khả năng được duyệt và hạn mức do ngân hàng quyết định theo chính sách tín dụng.
+  <b>Ưu đãi theo phương thức:</b> 11% (Chuẩn), 6,5% (Đặc biệt), 13% (Nhanh); PT Vay: hỗ trợ lãi suất 0% trong 24 tháng. Toàn bộ chính sách được cộng dồn và trừ vào giá bán khi ký HĐMB (riêng Early Bird và KH thân thiết không cộng dồn với nhau).<br>
+  <b>Bảng giá CĐT:</b> các căn có giá lấy từ bảng giá ngày 17/10/2026 (giá chưa VAT là giá niêm yết, VAT 10%); căn chưa có giá nhập đơn giá thủ công. Đơn giá/m² quy về diện tích thông thủy (NSA).<br>
+  <b>Vay (PT 03):</b> ngân hàng giải ngân 75% giá bán (OCB theo leaflet); hỗ trợ lãi suất 0% trong 24 tháng; ân hạn nợ gốc 36–60 tháng. Khả năng được duyệt và hạn mức do ngân hàng quyết định theo chính sách tín dụng.
 </div>
 <div class="footer-note">Palm River · Bảng tính phương thức thanh toán · Số liệu theo leaflet chính sách bán hàng 4 phương thức (ERA Real Estate)</div>
 </div>
@@ -553,101 +577,48 @@ const GCN=(p,extra)=>Object.assign({gcn:true,p,k:'k4',d:'Nhận giấy chứng n
 
 const SC=[
  {no:'01',short:'Chuẩn',name:'Thanh Toán Chuẩn',full:'Phương thức 01 — Thanh toán chuẩn',def:.11,
-  hint:'Thanh toán trong 27 tháng đến khi nhận nhà · ưu đãi lên đến 11%',rows:[
+  hint:'Thanh toán trong 27 tháng đến khi nhận nhà · ưu đãi 11%',rows:[
    VBTT(.05),HDMB(.05),INST(6,.05),INST(9,.05),
    INST(12,.10),INST(15,.10),INST(18,.10),INST(21,.10),INST(24,.10),
    HAND(.25),GCN(.05)]},
  {no:'02',short:'Đặc biệt',name:'Thanh Toán Đặc Biệt',full:'Phương thức 02 — Thanh toán đặc biệt',def:.065,
-  hint:'Hoàn tất 30% rồi 0% trong 15 tháng đến khi nhận nhà · ưu đãi lên đến 6,5%',rows:[
+  hint:'Thanh toán 30% đến khi nhận nhà, 0% trong 15 tháng sau khi hoàn tất 30% · ưu đãi 6,5%',rows:[
    VBTT(.05),HDMB(.05),INST(6,.10),INST(12,.10),
    HAND(.65),GCN(.05)]},
- {no:'03',short:'Vay',name:'Thanh Toán Vay (NH Hỗ Trợ)',full:'Phương thức 03 — Thanh toán vay (ngân hàng hỗ trợ)',def:0,bank:true,
-  hint:'NH hỗ trợ đến 75% · hỗ trợ lãi suất 24 tháng · ân hạn nợ gốc 36–60 tháng · KH tự có 10% đến khi nhận nhà',rows:[
+ {no:'03',short:'Vay',name:'Thanh Toán Vay Ngân Hàng',full:'Phương thức 03 — Thanh toán vay (ngân hàng hỗ trợ)',def:0,bank:true,
+  hint:'NH hỗ trợ đến 75% · HTLS 0% trong 24 tháng · ân hạn nợ gốc 36–60 tháng · KH tự có 10% đến khi nhận nhà',rows:[
    VBTT(.05),
    HDMB(.60,{bankP:.55,d:'Ký HĐMB — NH giải ngân 55% · KH thanh toán 5%'}),
    HAND(.30,{bankP:.15,d:'Bàn giao — NH giải ngân 15% · KH thanh toán 15%'}),
    GCN(.05,{bankP:.05,d:'Nhận GCN — NH giải ngân 5%'})]},
  {no:'04',short:'Nhanh',name:'Thanh Toán Nhanh',full:'Phương thức 04 — Thanh toán nhanh',def:.13,
-  hint:'70% trong 3 tháng đầu, sau đó 24 tháng chưa phải thanh toán đợt nào · ưu đãi lên đến 13%',rows:[
+  hint:'70% trong 3 tháng đầu, sau đó 24 tháng chưa phải thanh toán đợt nào · ưu đãi 13%',rows:[
    VBTT(.05),HDMB(.65),HAND(.25),GCN(.05)]}
 ];
 const PH_COL={k1:'var(--ph1)',k2:'var(--ph2)',k3:'var(--ph3)',k4:'var(--ph4)'};
 const SI_OPT=[['Không',0],['Từ 2 căn · 0,5%',.005],['Từ 3 căn · 1,0%',.01],['Từ 5 căn · 1,5%',.015]];
-const EB_OPT=[['Không',0],['GĐ1 · 1% (đến 31/08)',.01],['GĐ2 · 0,5% (01–30/09)',.005]];
-const KH_OPT=[['Không',0],['Áp dụng 1% (đến 30/09)',.01]];
+const EB_OPT=[
+ {t:'Không',p:0},
+ {t:'Early Bird GĐ1 · 1,0% (12/08–31/08)',p:.01,lab:'Early Bird GĐ1'},
+ {t:'Early Bird GĐ2 · 0,5% (01/09–30/09)',p:.005,lab:'Early Bird GĐ2'},
+ {t:'Early Bird GĐ3 · iPhone 18 Duo 65 triệu (01–08/10)',p:0,gift:'iPhone 18 Duo (65 triệu) — Early Bird 01–08/10/2026'},
+ {t:'KH thân thiết · 1,0%',p:.01,lab:'Ưu đãi KH thân thiết'}];
+const FN_OPT=['Không','Nhận gói (quà tặng)','Quy đổi trừ 268 triệu vào giá'];
+const FN_VAL=268000000;
+const FN_OK=['3BR Ba','3BR B1a','3BR Aa','2BR C1a']; // 3PN thường, 3PN góc nhỏ, 2PN đặc biệt
 
 const UNITS=[{"code":"2BR-Ba","name":"2BR Ba","tw":"T3 & T4","gsa":84.9,"nsa":76.3,"img":"/assets/tools/palm-river-bang-tinh/img-01.webp","levels":"","note":"NSA tiêu biểu từ tầng 21 trở lên; tầng thấp (5/6–19) là 75,8 m²."},{"code":"2BR-Aa","name":"2BR Aa","tw":"T3 & T4","gsa":85.9,"nsa":77.3,"img":"/assets/tools/palm-river-bang-tinh/img-02.webp","levels":"","note":"NSA tiêu biểu từ tầng 21 trở lên; tầng thấp (5/6–19) là 76,6 m²."},{"code":"2BR-B","name":"2BR B","tw":"T4 · tầng 6–19","gsa":121.9,"nsa":111.3,"img":"/assets/tools/palm-river-bang-tinh/img-03.webp","levels":"","note":"Layout căn 02 tháp 4 ở tầng thấp (tên layout do bảng tính tự đặt — leaflet không ghi)."},{"code":"2BR-C1a","name":"2BR C1a","tw":"T3 & T4","gsa":120.2,"nsa":111.5,"img":"/assets/tools/palm-river-bang-tinh/img-04.webp","levels":"","note":"NSA tiêu biểu T4 từ tầng 21; T3 là 110,6 (tầng 5–19) / 111,1 (tầng 21–26); T4 tầng 6–19 là 111,1 m²."},{"code":"3BR-Aa","name":"3BR Aa","tw":"T3","gsa":125.3,"nsa":116.0,"img":"/assets/tools/palm-river-bang-tinh/img-05.webp","levels":"","note":"NSA tiêu biểu từ tầng 21; tầng 5–19 là 115,3 m²."},{"code":"3BR-Ba","name":"3BR Ba","tw":"T3","gsa":126.1,"nsa":116.2,"img":"/assets/tools/palm-river-bang-tinh/img-06.webp","levels":"","note":"NSA tiêu biểu từ tầng 21; tầng 5–19 là 115,5 m²."},{"code":"3BR-B1a","name":"3BR B1a","tw":"T4","gsa":126.1,"nsa":116.2,"img":"/assets/tools/palm-river-bang-tinh/img-06.webp","levels":"","note":"NSA tiêu biểu từ tầng 21; tầng 6–19 là 115,5 m²."},{"code":"3BR-C1a","name":"3BR C1a","tw":"T4","gsa":157.0,"nsa":144.8,"img":"/assets/tools/palm-river-bang-tinh/img-07.webp","levels":"","note":"NSA tiêu biểu từ tầng 21; tầng 6–19 là 143,7 m²."},{"code":"DUP-A","name":"DUP A","tw":"T3 · tầng 27–34","gsa":229.5,"nsa":209.7,"img":"/assets/tools/palm-river-bang-tinh/img-08.webp","levels":"Duplex 2 tầng: dưới 126,8/116,7 m² + trên 102,7/93,0 m² (GSA/NSA)","note":""},{"code":"DUP-B","name":"DUP B","tw":"T4 · tầng 21–34","gsa":234.2,"nsa":215.0,"img":"/assets/tools/palm-river-bang-tinh/img-09.webp","levels":"Duplex 2 tầng: dưới 127,4/116,8 m² + trên 106,8/98,2 m² (GSA/NSA)","note":""},{"code":"DUP-C","name":"DUP C","tw":"T4 · tầng 21–34","gsa":238.3,"nsa":219.3,"img":"/assets/tools/palm-river-bang-tinh/img-10.webp","levels":"Duplex 2 tầng: dưới 136,1/125,3 m² + trên 102,2/94,0 m² (GSA/NSA)","note":""},{"code":"DUP-D","name":"DUP D","tw":"T4 · tầng 23–32","gsa":301.6,"nsa":280.2,"img":"/assets/tools/palm-river-bang-tinh/img-11.webp","levels":"Duplex 2 tầng: dưới 167,3/155,1 m² + trên 134,3/125,1 m² (GSA/NSA)","note":""}];
 const PLANIMG={"T4c":"/assets/tools/palm-river-bang-tinh/img-12.webp","T4e":"/assets/tools/palm-river-bang-tinh/img-13.webp","T4d":"/assets/tools/palm-river-bang-tinh/img-14.webp","T3d":"/assets/tools/palm-river-bang-tinh/img-15.webp","T4b":"/assets/tools/palm-river-bang-tinh/img-16.webp","T3c":"/assets/tools/palm-river-bang-tinh/img-17.webp","T3a":"/assets/tools/palm-river-bang-tinh/img-18.webp","T3b":"/assets/tools/palm-river-bang-tinh/img-19.webp","T4a":"/assets/tools/palm-river-bang-tinh/img-20.webp"};
 // Mặt bằng: mỗi nhóm tầng → căn số 1–6 = [loại, GSA, NSA, x%, y%, (GSA tầng trên, NSA tầng trên) | tầng trên của duplex]
-const PU={"T3a":{"1":["2BR Aa",85.9,76.6,60.37,45.45],"2":["2BR C1a",120.2,110.6,81.63,45.45],"3":["2BR Ba",84.9,75.8,83.33,74.75],"4":["3BR Ba",126.1,115.5,49.32,74.75],"5":["3BR Aa",125.3,115.3,22.11,74.75],"6":["2BR Ba",84.9,75.8,16.16,45.45]},"T3b":{"1":["2BR Aa",85.9,77.3,61.48,45.45],"2":["2BR C1a",120.2,111.1,82.79,45.45],"3":["2BR Ba",84.9,76.3,85.25,74.75],"4":["3BR Ba",126.1,116.2,50.82,74.75],"5":["3BR Aa",125.3,116.0,24.59,74.75],"6":["2BR Ba",84.9,76.3,18.03,45.45]},"T3c":{"1":["2BR Aa",85.9,77.3,54.63,41.18],"2":["DUP A",126.8,116.7,66.85,41.18,102.7,93.0],"3":["2BR Ba",84.9,76.3,67.59,58.82],"4":["3BR Ba",126.1,116.2,50.0,58.82],"5":["3BR Aa",125.3,116.0,33.8,58.82],"6":["2BR Ba",84.9,76.3,29.63,41.18]},"T3d":{"1":["2BR Aa",85.9,77.3,54.63,41.28],"2":["DUP A",102.7,93.0,66.85,41.28,null,null,1],"3":["2BR Ba",84.9,76.3,67.59,58.98],"4":["3BR Ba",126.1,116.2,50.0,58.98],"5":["3BR Aa",125.3,116.0,33.8,58.98],"6":["2BR Ba",84.9,76.3,29.63,41.28]},"T4a":{"1":["2BR Aa",85.9,76.6,61.67,45.45],"2":["2BR B",121.9,111.3,83.33,45.45],"3":["2BR C1a",120.2,111.1,85.0,74.75],"4":["3BR B1a",126.1,115.5,50.0,74.75],"5":["3BR C1a",157.0,143.7,23.33,74.75],"6":["2BR Ba",84.9,75.8,20.83,45.45]},"T4b":{"1":["2BR Aa",85.9,77.3,56.3,41.39],"2":["DUP B",127.4,116.8,69.26,41.39,106.8,98.2],"3":["2BR C1a",120.2,111.5,69.91,59.79],"4":["DUP C",136.1,125.3,50.46,59.79,102.2,94.0],"5":["3BR C1a",157.0,144.8,31.94,59.79],"6":["2BR Ba",84.9,76.3,31.02,41.39]},"T4c":{"1":["2BR Aa",85.9,77.3,56.3,41.34],"2":["DUP B",106.8,98.2,69.26,41.34,null,null,1],"3":["2BR C1a",120.2,111.5,69.91,59.71],"4":["DUP C",102.2,94.0,50.46,59.71,null,null,1],"5":["3BR C1a",157.0,144.8,31.94,59.71],"6":["2BR Ba",84.9,76.3,31.02,41.34]},"T4d":{"1":["2BR Aa",85.9,77.3,56.3,41.61],"2":["DUP B",127.4,116.8,69.26,41.61,106.8,98.2],"3":["2BR C1a",120.2,111.5,69.91,60.11],"4":["3BR B1a",126.1,116.2,50.46,60.11],"5":["DUP D",167.3,155.1,31.94,60.11,134.3,125.1],"6":["2BR Ba",84.9,76.3,31.02,41.61]},"T4e":{"1":["2BR Aa",85.9,77.3,56.3,41.39],"2":["DUP B",106.8,98.2,69.26,41.39,null,null,1],"3":["2BR C1a",120.2,111.5,69.91,59.79],"4":["3BR B1a",126.1,116.2,50.46,59.79],"5":["DUP D",134.3,125.1,31.94,59.79,null,null,1],"6":["2BR Ba",84.9,76.3,31.02,41.39]}};
-const GM={"T3a":{"tw":"T3","name":"Tầng 5–19","floors":[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],"rep":12},"T3b":{"tw":"T3","name":"Tầng 21–26","floors":[21,22,23,24,25,26],"rep":23},"T3c":{"tw":"T3","name":"Tầng 27·29·31·33","floors":[27,29,31,33],"rep":27},"T3d":{"tw":"T3","name":"Tầng 28·30·32·34","floors":[28,30,32,34],"rep":28},"T4a":{"tw":"T4","name":"Tầng 6–19","floors":[6,7,8,9,10,11,12,13,14,15,16,17,18,19],"rep":12},"T4b":{"tw":"T4","name":"Tầng 21·25·29·33","floors":[21,25,29,33],"rep":21},"T4c":{"tw":"T4","name":"Tầng 22·26·30·34","floors":[22,26,30,34],"rep":22},"T4d":{"tw":"T4","name":"Tầng 23·27·31","floors":[23,27,31],"rep":23},"T4e":{"tw":"T4","name":"Tầng 24·28·32","floors":[24,28,32],"rep":24}};
+const PU={"T3a":{"1":["2BR Aa",85.9,76.6,60.37,45.45],"2":["2BR C1a",120.2,110.6,81.63,45.45],"3":["2BR Ba",84.9,75.8,83.33,74.75],"4":["3BR Ba",126.1,115.5,49.32,74.75],"5":["3BR Aa",125.3,115.3,22.11,74.75],"6":["2BR Ba",84.9,75.8,16.16,45.45]},"T3b":{"1":["2BR Aa",85.9,77.3,61.48,45.45],"2":["2BR C1a",120.2,111.1,82.79,45.45],"3":["2BR Ba",84.9,76.3,85.25,74.75],"4":["3BR Ba",126.1,116.2,50.82,74.75],"5":["3BR Aa",125.3,116.0,24.59,74.75],"6":["2BR Ba",84.9,76.3,18.03,45.45]},"T3c":{"1":["2BR Aa",85.9,77.3,54.63,41.18],"2":["DUP A",126.8,116.7,66.85,41.18,102.7,93.0],"3":["2BR Ba",84.9,76.3,67.59,58.82],"4":["3BR Ba",126.1,116.2,50.0,58.82],"5":["3BR Aa",125.3,116.0,33.8,58.82],"6":["2BR Ba",84.9,76.3,29.63,41.18]},"T3d":{"1":["2BR Aa",85.9,77.3,54.63,41.28],"u2":["DUP A",102.7,93.0,66.85,41.28,null,null],"2":["2BR Ba",84.9,76.3,67.59,58.98],"3":["3BR Ba",126.1,116.2,50.0,58.98],"4":["3BR Aa",125.3,116.0,33.8,58.98],"5":["2BR Ba",84.9,76.3,29.63,41.28]},"T4a":{"1":["2BR Aa",85.9,76.6,61.67,45.45],"2":["2BR B",121.9,111.3,83.33,45.45],"3":["2BR C1a",120.2,111.1,85.0,74.75],"4":["3BR B1a",126.1,115.5,50.0,74.75],"5":["3BR C1a",157.0,143.7,23.33,74.75],"6":["2BR Ba",84.9,75.8,20.83,45.45]},"T4b":{"1":["2BR Aa",85.9,77.3,56.3,41.39],"2":["DUP B",127.4,116.8,69.26,41.39,106.8,98.2],"3":["2BR C1a",120.2,111.5,69.91,59.79],"4":["DUP C",136.1,125.3,50.46,59.79,102.2,94.0],"5":["3BR C1a",157.0,144.8,31.94,59.79],"6":["2BR Ba",84.9,76.3,31.02,41.39]},"T4c":{"1":["2BR Aa",85.9,77.3,56.3,41.34],"u2":["DUP B",106.8,98.2,69.26,41.34,null,null],"2":["2BR C1a",120.2,111.5,69.91,59.71],"u4":["DUP C",102.2,94.0,50.46,59.71,null,null],"3":["3BR C1a",157.0,144.8,31.94,59.71],"4":["2BR Ba",84.9,76.3,31.02,41.34]},"T4d":{"1":["2BR Aa",85.9,77.3,56.3,41.61],"2":["DUP B",127.4,116.8,69.26,41.61,106.8,98.2],"3":["2BR C1a",120.2,111.5,69.91,60.11],"4":["3BR B1a",126.1,116.2,50.46,60.11],"5":["DUP D",167.3,155.1,31.94,60.11,134.3,125.1],"6":["2BR Ba",84.9,76.3,31.02,41.61]},"T4e":{"1":["2BR Aa",85.9,77.3,56.3,41.39],"u2":["DUP B",106.8,98.2,69.26,41.39,null,null],"2":["2BR C1a",120.2,111.5,69.91,59.79],"3":["3BR B1a",126.1,116.2,50.46,59.79],"u5":["DUP D",134.3,125.1,31.94,59.79,null,null],"4":["2BR Ba",84.9,76.3,31.02,41.39]}};
+const GM={"T3a":{"tw":"T3","name":"Tầng 5–19","floors":[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19],"rep":12},"T3b":{"tw":"T3","name":"Tầng 21–26","floors":[21,22,23,24,25,26],"rep":23},"T3c":{"tw":"T3","name":"Tầng 27·29·31·33","floors":[27,29,31,33],"rep":27},"T3d":{"tw":"T3","name":"Tầng 28·30·32·34","floors":[28,30,32,34],"rep":28,"dupUp":true},"T4a":{"tw":"T4","name":"Tầng 6–19","floors":[6,7,8,9,10,11,12,13,14,15,16,17,18,19],"rep":12},"T4b":{"tw":"T4","name":"Tầng 21·25·29·33","floors":[21,25,29,33],"rep":21},"T4c":{"tw":"T4","name":"Tầng 22·26·30·34","floors":[22,26,30,34],"rep":22,"dupUp":true},"T4d":{"tw":"T4","name":"Tầng 23·27·31","floors":[23,27,31],"rep":23},"T4e":{"tw":"T4","name":"Tầng 24·28·32","floors":[24,28,32],"rep":24,"dupUp":true}};
+// Bảng giá CĐT 17/10/2026: c=mã căn, l=layout, g=GSA, s=NSA, ex=giá chưa VAT, inc=giá gồm VAT, dg=đơn giá chưa VAT / NSA
+const PRICED=[{"c":"T3-30-01","t":"T3","f":"30","fn":30,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":14367592259,"inc":15804351485,"dg":185867946},{"c":"T3-30-03","t":"T3","f":"30","fn":30,"n":3,"l":"3BR Ba","g":126.1,"s":116.2,"ex":22413330375,"inc":24654663413,"dg":192885804},{"c":"T3-30-04","t":"T3","f":"30","fn":30,"n":4,"l":"3BR Aa","g":125.3,"s":116.0,"ex":22985306786,"inc":25283837465,"dg":198149196},{"c":"T3-29-01","t":"T3","f":"29","fn":29,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":14294357411,"inc":15723793152,"dg":184920536},{"c":"T3-29-03","t":"T3","f":"29","fn":29,"n":3,"l":"2BR Ba","g":84.9,"s":76.3,"ex":15180361875,"inc":16698398063,"dg":198956250},{"c":"T3-29-04","t":"T3","f":"29","fn":29,"n":4,"l":"3BR Ba","g":126.1,"s":116.2,"ex":22303241250,"inc":24533565375,"dg":191938393},{"c":"T3-29-05","t":"T3","f":"29","fn":29,"n":5,"l":"3BR Aa","g":125.3,"s":116.0,"ex":22875407143,"inc":25162947857,"dg":197201786},{"c":"T3-28-03","t":"T3","f":"28","fn":28,"n":3,"l":"3BR Ba","g":126.1,"s":116.2,"ex":22498955250,"inc":24748850775,"dg":193622679},{"c":"T3-28-04","t":"T3","f":"28","fn":28,"n":4,"l":"3BR Aa","g":125.3,"s":116.0,"ex":23070784286,"inc":25377862715,"dg":198886071},{"c":"T3-27-05","t":"T3","f":"27","fn":27,"n":5,"l":"3BR Aa","g":125.3,"s":116.0,"ex":22655607858,"inc":24921168644,"dg":195306964},{"c":"T3-25-04","t":"T3","f":"25","fn":25,"n":4,"l":"3BR Ba","g":126.1,"s":116.2,"ex":21862884750,"inc":24049173225,"dg":188148750},{"c":"T3-25-05","t":"T3","f":"25","fn":25,"n":5,"l":"3BR Aa","g":125.3,"s":116.0,"ex":22435808572,"inc":24679389429,"dg":193412143},{"c":"T3-24-01","t":"T3","f":"24","fn":24,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":13928183170,"inc":15321001487,"dg":180183482},{"c":"T3-24-03","t":"T3","f":"24","fn":24,"n":3,"l":"2BR Ba","g":84.9,"s":76.3,"ex":14818924688,"inc":16300817157,"dg":194219196},{"c":"T3-24-05","t":"T3","f":"24","fn":24,"n":5,"l":"3BR Aa","g":125.3,"s":116.0,"ex":22325908929,"inc":24558499822,"dg":192464732},{"c":"T3-21-01","t":"T3","f":"21","fn":21,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":13708478625,"inc":15079326488,"dg":177341250},{"c":"T3-21-03","t":"T3","f":"21","fn":21,"n":3,"l":"2BR Ba","g":84.9,"s":76.3,"ex":14602062375,"inc":16062268613,"dg":191376964},{"c":"T3-19-01","t":"T3","f":"19","fn":19,"n":1,"l":"2BR Aa","g":85.9,"s":76.6,"ex":13573588393,"inc":14930947232,"dg":177200893},{"c":"T3-19-05","t":"T3","f":"19","fn":19,"n":5,"l":"3BR Aa","g":125.3,"s":115.3,"ex":21847291072,"inc":24032020179,"dg":189482143},{"c":"T3-18-05","t":"T3","f":"18","fn":18,"n":5,"l":"3BR Aa","g":125.3,"s":115.3,"ex":21839199483,"inc":24023119431,"dg":189411964},{"c":"T3-17-01","t":"T3","f":"17","fn":17,"n":1,"l":"2BR Aa","g":85.9,"s":76.6,"ex":13294053108,"inc":14623458419,"dg":173551607},{"c":"T3-17-05","t":"T3","f":"17","fn":17,"n":5,"l":"3BR Aa","g":125.3,"s":115.3,"ex":21426528429,"inc":23569181272,"dg":185832857},{"c":"T3-16-01","t":"T3","f":"16","fn":16,"n":1,"l":"2BR Aa","g":85.9,"s":76.6,"ex":13423069393,"inc":14765376332,"dg":175235893},{"c":"T3-16-04","t":"T3","f":"16","fn":16,"n":4,"l":"3BR Ba","g":126.1,"s":115.5,"ex":21050308125,"inc":23155338938,"dg":182253750},{"c":"T3-12A-01","t":"T3","f":"12A","fn":12,"n":1,"l":"2BR Aa","g":85.9,"s":76.6,"ex":12734982536,"inc":14008480790,"dg":166253036},{"c":"T3-12A-04","t":"T3","f":"12A","fn":12,"n":4,"l":"3BR Ba","g":126.1,"s":115.5,"ex":20012788125,"inc":22014066938,"dg":173270893},{"c":"T3-12A-05","t":"T3","f":"12A","fn":12,"n":5,"l":"3BR Aa","g":125.3,"s":115.3,"ex":20585003143,"inc":22643503457,"dg":178534286},{"c":"T3-12S-04","t":"T3","f":"12S","fn":12,"n":4,"l":"3BR Ba","g":126.1,"s":115.5,"ex":20122214063,"inc":22134435469,"dg":174218304},{"c":"T3-12S-05","t":"T3","f":"12S","fn":12,"n":5,"l":"3BR Aa","g":125.3,"s":115.3,"ex":20694239599,"inc":22763663559,"dg":179481696},{"c":"T3-11-01","t":"T3","f":"11","fn":11,"n":1,"l":"2BR Aa","g":85.9,"s":76.6,"ex":12858623143,"inc":14144485457,"dg":167867143},{"c":"T3-09-01","t":"T3","f":"09","fn":9,"n":1,"l":"2BR Aa","g":85.9,"s":76.6,"ex":12847871786,"inc":14132658965,"dg":167726786},{"c":"T3-08-04","t":"T3","f":"08","fn":8,"n":4,"l":"3BR Ba","g":126.1,"s":115.5,"ex":20073580313,"inc":22080938344,"dg":173797232},{"c":"T3-06-02","t":"T3","f":"06","fn":6,"n":2,"l":"2BR C1a","g":120.2,"s":110.6,"ex":18430275375,"inc":20273302913,"dg":166639018},{"c":"T3-06-05","t":"T3","f":"06","fn":6,"n":5,"l":"3BR Aa","g":125.3,"s":115.3,"ex":20427217152,"inc":22469938867,"dg":177165804},{"c":"T3-05-01","t":"T3","f":"05","fn":5,"n":1,"l":"2BR Aa","g":85.9,"s":76.6,"ex":12423193179,"inc":13665512497,"dg":162182679},{"c":"T4-32-03","t":"T4","f":"32","fn":32,"n":3,"l":"3BR B1a","g":126.1,"s":116.2,"ex":21648344788,"inc":23813179267,"dg":186302451},{"c":"T4-30-01","t":"T4","f":"30","fn":30,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":13576609307,"inc":14934270238,"dg":175635308},{"c":"T4-30-02","t":"T4","f":"30","fn":30,"n":2,"l":"2BR C1a","g":120.2,"s":111.5,"ex":20952696215,"inc":23047965837,"dg":187916558},{"c":"T4-29-03","t":"T4","f":"29","fn":29,"n":3,"l":"2BR C1a","g":120.2,"s":111.5,"ex":20847059921,"inc":22931765913,"dg":186969147},{"c":"T4-29-06","t":"T4","f":"29","fn":29,"n":6,"l":"2BR Ba","g":84.9,"s":76.3,"ex":13596417812,"inc":14956059593,"dg":178196826},{"c":"T4-28-02","t":"T4","f":"28","fn":28,"n":2,"l":"2BR C1a","g":120.2,"s":111.5,"ex":21034857778,"inc":23138343556,"dg":188653433},{"c":"T4-28-04","t":"T4","f":"28","fn":28,"n":4,"l":"2BR Ba","g":84.9,"s":76.3,"ex":13724928812,"inc":15097421693,"dg":179881112},{"c":"T4-26-01","t":"T4","f":"26","fn":26,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":13487100048,"inc":14835810053,"dg":174477362},{"c":"T4-25-03","t":"T4","f":"25","fn":25,"n":3,"l":"2BR C1a","g":120.2,"s":111.5,"ex":20424514742,"inc":22466966216,"dg":183179504},{"c":"T4-24-01","t":"T4","f":"24","fn":24,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":13137200218,"inc":14450920240,"dg":169950844},{"c":"T4-24-02","t":"T4","f":"24","fn":24,"n":2,"l":"2BR C1a","g":120.2,"s":111.5,"ex":20318878447,"inc":22350766292,"dg":182232094},{"c":"T4-23-01","t":"T4","f":"23","fn":23,"n":1,"l":"2BR Aa","g":85.9,"s":77.3,"ex":13063965370,"inc":14370361907,"dg":169003433},{"c":"T4-23-03","t":"T4","f":"23","fn":23,"n":3,"l":"2BR C1a","g":120.2,"s":111.5,"ex":20213242153,"inc":22234566368,"dg":181284683},{"c":"T4-22-02","t":"T4","f":"22","fn":22,"n":2,"l":"2BR C1a","g":120.2,"s":111.5,"ex":20107605858,"inc":22118366444,"dg":180337272},{"c":"T4-17-03","t":"T4","f":"17","fn":17,"n":3,"l":"2BR C1a","g":120.2,"s":111.1,"ex":19509184298,"inc":21460102728,"dg":175600219},{"c":"T4-12A-03","t":"T4","f":"12A","fn":12,"n":3,"l":"2BR C1a","g":120.2,"s":111.1,"ex":18698313012,"inc":20568144313,"dg":168301647},{"c":"T4-12A-06","t":"T4","f":"12A","fn":12,"n":6,"l":"2BR Ba","g":84.9,"s":75.8,"ex":12092322899,"inc":13301555189,"dg":159529326}];
 
 // ── STATE ──
 const st={unit:'',type:'',area:0,gsa:0,ppm:0,price:3_000_000_000,priceManual:true,sample:true,
   vat:.10,kpbt:.02,xn:100_000_000,start:'2026-10',
-  ckPT:SC.map(s=>s.def),si:0,eb:0,kh:0,pt:0,mau:null,loc:null};
-
-const nf1=x=>x.toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1});
-function bedOf(ty){return ty.startsWith('DUP')?'Duplex':ty[0]==='3'?'3PN':'2PN';}
-function grpOf(t,f){for(const k in GM){if(GM[k].tw===t&&GM[k].floors.includes(f))return k;}return null;}
-function floorsText(t){return t==='T3'?'5–19 và 21–34':'6–19 và 21–34';}
-function parseCode(v){
-  const raw=String(v).toUpperCase().replace(/\s+/g,'');
-  const m=raw.match(/^T([34])[.\-_/]?(\d{1,2})[.\-_/]?(\d{1,2})$/);
-  if(!m)return null;let a=m[2],b=m[3];
-  const rest=raw.slice(2);
-  if(!/[.\-_/]/.test(rest)){const dg=rest;if(dg.length===4){a=dg.slice(0,2);b=dg.slice(2);}else if(dg.length===3){a=dg.slice(0,1);b=dg.slice(1);}else if(dg.length===2){a=dg[0];b=dg[1];}}
-  return {t:'T'+m[1],fl:+a,n:+b};
-}
-let CURG='T3a',LASTFL=12;
-function planHTML(g,sel){
-  const chips=['T3','T4'].map(t=>`<div class="radio-group horizontal" style="margin-bottom:6px;flex-wrap:wrap"><span class="lbl" style="margin:0 4px 0 0;align-self:center;min-width:34px">${t}</span>`+
-    Object.keys(GM).filter(k=>GM[k].tw===t).map(k=>`<button class="opt-btn${k===g?' active-ck':''}" style="padding:6px 10px;font-size:12px" onclick="showPlan('${k}')">${GM[k].name}</button>`).join('')+`</div>`).join('');
-  const dots=[];
-  for(const n in PU[g]){const r=PU[g][n];const on=sel&&sel.n==n;const nn=String(n).padStart(2,'0');
-    dots.push(on?`<div class="mpin" style="left:${r[3]}%;top:${r[4]}%"><span></span></div>`:`<div class="mdot" style="left:${r[3]}%;top:${r[4]}%" title="${GM[g].tw} · căn ${nn} · ${r[0]}" onclick="pickMap('${g}',${n})"></div>`);}
-  return `<div style="margin-bottom:10px">${chips}</div><div class="mapbox"><img src="${PLANIMG[g]}" alt="Mặt bằng ${GM[g].tw} ${GM[g].name}">${dots.join('')}</div>`;
-}
-function showPlan(g){CURG=g;const pc_=parseCode($('codeInp').value);
-  const sel=(pc_&&pc_.t===GM[g].tw&&grpOf(pc_.t,pc_.fl)===g)?pc_:null;$('map-box').innerHTML=planHTML(g,sel);}
-function pickMap(g,n){const fl=GM[g].floors.includes(LASTFL)?LASTFL:GM[g].rep;
-  $('codeInp').value=`${GM[g].tw}.${fl}.${String(n).padStart(2,'0')}`;onCode($('codeInp').value);}
-function onCode(v){
-  const info=$('code-info'),pc_=parseCode(v);st.loc=null;
-  const bad=m=>{info.innerHTML=`<span style="color:#ff9f8a">${m}</span>`;$('map-box').innerHTML=planHTML(CURG,null);};
-  const hint='Nhập mã căn dạng <b>Tháp.Tầng.Căn</b>, ví dụ <b>T3.15.02</b> hoặc <b>T4.21.04</b> (căn số 01–06 theo mặt bằng). Hoặc bấm vào chấm trên mặt bằng.';
-  if(!v.trim()){info.innerHTML=hint;$('map-box').innerHTML=planHTML(CURG,null);return;}
-  if(!pc_){bad('Chưa nhận dạng được mã căn. Dạng đúng: T3/T4 + tầng + căn số, ví dụ T3.15.02.');return;}
-  let g=grpOf(pc_.t,pc_.fl);
-  if(!g){bad(`Tháp ${pc_.t.slice(1)} có tầng ${floorsText(pc_.t)} (không có tầng ${pc_.fl}).`);return;}
-  let rec=PU[g][pc_.n];
-  if(!rec){bad(`Mỗi tầng chỉ có căn số 01–06 (không có căn số ${pc_.n}).`);return;}
-  let note='';
-  if(rec[7]){ // tầng trên của duplex → quy về mã tầng dưới
-    const up=pc_.fl;pc_.fl=up-1;g=grpOf(pc_.t,pc_.fl);rec=PU[g][pc_.n];
-    note=`<div style="font-size:12px;color:var(--gold-l);margin-bottom:6px">Tầng ${up} là tầng trên của căn duplex — mã căn tính theo tầng dưới.</div>`;
-  }
-  CURG=g;LASTFL=pc_.fl;
-  const code=`${pc_.t}.${pc_.fl}.${String(pc_.n).padStart(2,'0')}`;
-  const dup=rec.length>5&&!rec[7];
-  const G=dup?+(rec[1]+rec[5]).toFixed(2):rec[1],N=dup?+(rec[2]+rec[6]).toFixed(2):rec[2];
-  const bed=bedOf(rec[0]);
-  st.mau=null;st.unit=code;$('unitInp').value=code;
-  st.type=`${bed} (${rec[0]})`;$('typeInp').value=st.type;
-  st.area=N;st.gsa=G;$('areaInp').value=String(N).replace('.',',');
-  st.loc={x:rec[3],y:rec[4],img:PLANIMG[g],plan:`${GM[g].tw} · ${GM[g].name}`,gsa:G,nsa:N,
-    levels:dup?`Tầng dưới ${nf1(rec[1])}/${nf1(rec[2])} m² · Tầng trên ${nf1(rec[5])}/${nf1(rec[6])} m² (GSA/NSA)`:''};
-  info.innerHTML=note+`Căn <b>${code}</b> · Tháp <b>${pc_.t.slice(1)}</b> · Tầng <b>${pc_.fl}</b>${dup?` + <b>${pc_.fl+1}</b>`:''} · Căn số <b>${String(pc_.n).padStart(2,'0')}</b><br>Layout: <b>${rec[0]}</b> (${bed})<br>Diện tích sàn (GSA): <b>${nf1(G)} m²</b><br>Diện tích thông thủy (NSA): <b>${nf1(N)} m²</b> <span style="font-size:11px;color:var(--mut)">— dùng để tính giá</span>`
-   +(dup?`<br><span style="font-size:12px">Duplex 2 tầng: dưới ${nf1(rec[2])} m² + trên ${nf1(rec[6])} m² (NSA)</span>`:'')
-   +`<br><span style="font-size:11px;color:var(--mut)">Theo mặt bằng ${GM[g].tw} ${GM[g].name} (leaflet CĐT) — diện tích tham khảo, lấy theo hợp đồng.</span>`;
-  $('map-box').innerHTML=planHTML(g,pc_);
-  autoPrice();recalc();
-}
-function setMode(m){
-  document.querySelectorAll('#mode-sw .opt-btn').forEach((b,j)=>b.classList.toggle('active-ck',(j===0)===(m==='mau')));
-  $('mode-mau').style.display=m==='mau'?'':'none';$('mode-code').style.display=m==='code'?'':'none';
-  if(m==='code'&&!$('codeInp').value)onCode('');
-}
+  ckPT:SC.map(s=>s.def),si:0,eb:0,fn:0,sv:false,pt:0,mau:null,loc:null,layout:'',tw:'',flN:0,listed:null};
 
 // tháng dạng Txx/yyyy cách mốc đầu m tháng
 function ML(m){
@@ -656,10 +627,126 @@ function ML(m){
   const t=y*12+(mo-1)+m;
   return 'T'+String(t%12+1).padStart(2,'0')+'/'+Math.floor(t/12);
 }
-
+const nf1=x=>x.toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1});
+function bedOf(ty){return ty.startsWith('DUP')?'Duplex':ty[0]==='3'?'3PN':'2PN';}
+const pad2=n=>String(n).padStart(2,'0');
+const fmtCode=(t,fl,L,n)=>`${t}-${pad2(fl)}${L||''}-${pad2(n)}`;
+function grpOf(t,f,L){
+  if(L&&f!==12)return null;
+  for(const k in GM){if(GM[k].tw===t&&GM[k].floors.includes(f))return k;}return null;}
+function floorsText(t){return t==='T3'?'5–19 (kèm 12A, 12S) và 21–34':'6–19 (kèm 12A, 12S) và 21–34';}
+const maxN=g=>Object.keys(PU[g]).filter(k=>/^\d+$/.test(k)).length;
+function parseCode(v){
+  const raw=String(v).toUpperCase().replace(/\s+/g,'');
+  const m=raw.match(/^(T[34])(.*)$/);
+  if(!m)return null;
+  const body=m[2];let a,b,L='';
+  if(/[.\-_/]/.test(body)){
+    const parts=body.split(/[.\-_/]+/).filter(x=>x!=='');
+    if(parts.length!==2)return null;
+    const mm=parts[0].match(/^(\d{1,2})([AS]?)$/);if(!mm||!/^\d{1,2}$/.test(parts[1]))return null;
+    a=mm[1];L=mm[2];b=parts[1];
+  }else{
+    const mm=body.match(/^(\d{1,2})([AS])(\d{1,2})$/);
+    if(mm){a=mm[1];L=mm[2];b=mm[3];}
+    else if(/^\d+$/.test(body)){
+      if(body.length===4){a=body.slice(0,2);b=body.slice(2);}
+      else if(body.length===3){a=body[0];b=body.slice(1);}
+      else if(body.length===2){a=body[0];b=body[1];}
+      else return null;
+    }else return null;
+  }
+  return {t:m[1],fl:+a,L,n:+b};
+}
+let CURG='T3a',LASTFL=12;
+function planHTML(g,sel){
+  const chips=['T3','T4'].map(t=>`<div class="radio-group horizontal" style="margin-bottom:6px;flex-wrap:wrap"><span class="lbl" style="margin:0 4px 0 0;align-self:center;min-width:34px">${t}</span>`+
+    Object.keys(GM).filter(k=>GM[k].tw===t).map(k=>`<button class="opt-btn${k===g?' active-ck':''}" style="padding:6px 10px;font-size:12px" onclick="showPlan('${k}')">${GM[k].name}</button>`).join('')+`</div>`).join('');
+  const dots=[];
+  for(const n in PU[g]){const r=PU[g][n];
+    if(n[0]==='u'){dots.push(`<div class="mdot dupu" style="left:${r[3]}%;top:${r[4]}%" title="${r[0]} · tầng trên của căn duplex — bấm để chọn căn duplex (mã theo tầng dưới)" onclick="pickMap('${g}','${n}')"></div>`);continue;}
+    const on=sel&&sel.n==n;
+    dots.push(on?`<div class="mpin" style="left:${r[3]}%;top:${r[4]}%"><span></span></div>`:`<div class="mdot" style="left:${r[3]}%;top:${r[4]}%" title="${GM[g].tw} · căn ${pad2(n)} · ${r[0]}" onclick="pickMap('${g}',${n})"></div>`);}
+  return `<div style="margin-bottom:10px">${chips}</div><div class="mapbox"><img src="${PLANIMG[g]}" alt="Mặt bằng ${GM[g].tw} ${GM[g].name}">${dots.join('')}</div>`;
+}
+function showPlan(g){CURG=g;const pc_=parseCode($('codeInp').value);
+  const sel=(pc_&&pc_.t===GM[g].tw&&grpOf(pc_.t,pc_.fl,pc_.L)===g)?pc_:null;$('map-box').innerHTML=planHTML(g,sel);}
+function pickMap(g,n){
+  const fl=GM[g].floors.includes(LASTFL)?LASTFL:GM[g].rep;
+  let code;
+  if(typeof n==='string'&&n[0]==='u')code=fmtCode(GM[g].tw,fl-1,'',+n.slice(1)); // duplex: mã theo tầng dưới
+  else code=fmtCode(GM[g].tw,fl,'',n);
+  $('codeInp').value=code;onCode(code);}
+function onCode(v){
+  const info=$('code-info'),pc_=parseCode(v);st.loc=null;
+  const bad=m=>{info.innerHTML=`<span style="color:#ff9f8a">${m}</span>`;$('map-box').innerHTML=planHTML(CURG,null);};
+  const hint='Nhập mã căn dạng <b>Tháp-Tầng-Căn</b> như bảng giá CĐT, ví dụ <b>T3-09-01</b>, <b>T4-30-02</b>, <b>T3-12A-05</b>. Hoặc bấm vào chấm trên mặt bằng.';
+  if(!v.trim()){info.innerHTML=hint;$('map-box').innerHTML=planHTML(CURG,null);return;}
+  if(!pc_){bad('Chưa nhận dạng được mã căn. Dạng đúng: T3/T4 + tầng + căn, ví dụ T3-09-01.');return;}
+  const g=grpOf(pc_.t,pc_.fl,pc_.L);
+  if(!g){bad(`Tháp ${pc_.t.slice(1)} có tầng ${floorsText(pc_.t)} (không có tầng ${pc_.fl}${pc_.L}).`);return;}
+  const rec=PU[g][pc_.n];
+  if(!rec){bad(`Tầng ${pc_.fl}${pc_.L} tháp ${pc_.t.slice(1)} chỉ có căn số 01–${pad2(maxN(g))} (không có căn số ${pc_.n}).`);return;}
+  CURG=g;LASTFL=pc_.fl;
+  const code=fmtCode(pc_.t,pc_.fl,pc_.L,pc_.n);
+  const dup=rec.length>5;
+  const G=dup?+(rec[1]+rec[5]).toFixed(2):rec[1],N=dup?+(rec[2]+rec[6]).toFixed(2):rec[2];
+  const bed=bedOf(rec[0]);
+  const lst=PRICED.find(x=>x.c===code)||null;
+  st.mau=null;st.unit=code;$('unitInp').value=code;
+  st.type=`${bed} (${rec[0]})`;$('typeInp').value=st.type;
+  st.layout=rec[0];st.tw=pc_.t;st.flN=pc_.fl;
+  st.area=N;st.gsa=G;$('areaInp').value=String(N).replace('.',',');
+  st.listed=lst;
+  if(lst){st.price=lst.ex;st.priceManual=true;st.sample=false;st.ppm=lst.dg;$('ppmInp').value=lst.dg.toLocaleString('vi-VN');}
+  st.loc={x:rec[3],y:rec[4],img:PLANIMG[g],plan:`${GM[g].tw} · ${GM[g].name}`,gsa:G,nsa:N,
+    levels:dup?`Tầng dưới ${nf1(rec[1])}/${nf1(rec[2])} m² · Tầng trên ${nf1(rec[5])}/${nf1(rec[6])} m² (GSA/NSA)`:''};
+  info.innerHTML=`Căn <b>${code}</b> · Tháp <b>${pc_.t.slice(1)}</b> · Tầng <b>${pc_.fl}${pc_.L}</b>${dup?` + <b>${pc_.fl+1}</b>`:''} · Căn <b>${pad2(pc_.n)}</b>${lst?'<span class="listed-tag">CÓ GIÁ CĐT</span>':''}<br>Layout: <b>${rec[0]}</b> (${bed})<br>Diện tích sàn (GSA): <b>${nf1(G)} m²</b><br>Diện tích thông thủy (NSA): <b>${nf1(N)} m²</b> <span style="font-size:11px;color:var(--mut)">— dùng để tính giá</span>`
+   +(dup?`<br><span style="font-size:12px">Duplex 2 tầng: dưới ${nf1(rec[2])} m² + trên ${nf1(rec[6])} m² (NSA)</span>`:'')
+   +(lst?`<br>Giá bán chưa VAT: <b>${fmtS(lst.ex)} đ</b> · gồm VAT: <b>${fmtS(lst.inc)} đ</b><br>Đơn giá: <b>${fmtS(lst.dg)} đ/m²</b> NSA (chưa VAT)`:'<br><span style="font-size:12px;color:var(--gold-l)">Căn chưa có giá trong bảng giá CĐT — nhập đơn giá thủ công (xem benchmark bên dưới).</span>')
+   +(GM[g].dupUp?`<br><span style="font-size:11px;color:var(--mut)">Tầng có căn duplex ở tầng trên: số căn được đánh lại liên tục theo bảng giá CĐT (các chấm vàng đứt nét là duplex tầng trên).</span>`:'')
+   +`<br><span style="font-size:11px;color:var(--mut)">Theo mặt bằng ${GM[g].tw} ${GM[g].name} (leaflet CĐT) — diện tích tham khảo, lấy theo hợp đồng.</span>`;
+  $('map-box').innerHTML=planHTML(g,pc_);
+  autoPrice();recalc();
+}
+// ── BẢNG GIÁ CĐT (benchmark) ──
+function fillPriced(){
+  const tw=$('plTw').value,ly=$('plLy').value;
+  const L=PRICED.filter(x=>(!tw||x.t===tw)&&(!ly||x.l===ly));
+  $('pricedSel').innerHTML='<option value="">— Chọn căn ('+L.length+') —</option>'+L.map(x=>`<option value="${x.c}">${x.c} · ${x.l} · NSA ${nf1(x.s)} m² · ${(x.ex/1e9).toFixed(2).replace('.',',')} tỷ</option>`).join('');
+  $('pl-note').textContent=`Bảng giá CĐT ngày 17/10/2026 · giá bán chưa VAT = giá niêm yết · ${PRICED.length} căn có giá. Căn chưa có giá: chọn theo mẫu / mã căn rồi nhập đơn giá thủ công.`;
+}
+function onPriced(code){if(!code)return;$('codeInp').value=code;onCode(code);}
+function useBench(v){st.listed=null;st.ppm=v;$('ppmInp').value=v.toLocaleString('vi-VN');autoPrice();recalc();}
+function renderBench(){
+  const el=$('bench');
+  if(!st.layout){el.style.display='none';return;}
+  const same=PRICED.filter(x=>x.l===st.layout&&!(st.listed&&st.listed.c===x.c));
+  let h=`<b>Benchmark bảng giá CĐT</b> · layout <b>${st.layout}</b>`;
+  if(!same.length){h+='<br>Chưa có căn cùng layout trong bảng giá — nhập đơn giá thủ công.';}
+  else{
+    const d=same.map(x=>x.dg),min=Math.min(...d),max=Math.max(...d),avg=r(d.reduce((a,b)=>a+b,0)/d.length);
+    h+=` · ${same.length} căn có giá${st.listed?' khác':''}: đơn giá/NSA <b>${fmtS(min)}</b> – <b>${fmtS(max)}</b> đ (TB <b>${fmtS(avg)}</b>)`;
+    let btn=`<button class="opt-btn" onclick="useBench(${avg})">Dùng đơn giá TB ${fmtS(avg)}</button>`;
+    if(st.flN){
+      const pool=same.filter(x=>!st.tw||x.t===st.tw),P=pool.length?pool:same;
+      const near=P.slice().sort((a,b)=>Math.abs(a.fn-st.flN)-Math.abs(b.fn-st.flN)||a.fn-b.fn)[0];
+      h+=`<br>Căn cùng layout gần tầng nhất: <b>${near.c}</b> — ${fmtS(near.dg)} đ/m² NSA · giá ${fmtS(near.ex)} đ`;
+      btn=`<button class="opt-btn" onclick="useBench(${near.dg})">Dùng đơn giá ${near.c}</button> `+btn;
+    }
+    h+='<br>'+btn;
+  }
+  el.innerHTML=h;el.style.display='';
+}
+function setMode(m){
+  document.querySelectorAll('#mode-sw .opt-btn').forEach((b,j)=>b.classList.toggle('active-ck',['mau','code','price'][j]===m));
+  $('mode-mau').style.display=m==='mau'?'':'none';$('mode-code').style.display=m==='mau'?'none':'';
+  $('price-pick').style.display=m==='price'?'':'none';
+  if(m!=='mau'&&!$('codeInp').value)onCode('');
+}
 // ── MẪU CĂN ──
 function onMau(v){
-  const u=UNITS.find(x=>x.code===v);st.mau=u||null;st.loc=null;
+  const u=UNITS.find(x=>x.code===v);st.mau=u||null;st.loc=null;st.listed=null;st.layout=u?u.name:'';st.tw='';st.flN=0;
   const im=$('lay-img'),inf=$('lay-info');
   if(!u){im.innerHTML='<div class="ph">Chọn mẫu căn để xem layout</div>';inf.textContent='Chọn mẫu để tự điền loại căn & diện tích thông thủy (NSA). Sau đó chỉ cần nhập đơn giá/m².';recalc();return;}
   im.innerHTML=`<img src="${u.img}" alt="Layout ${u.name}">`;
@@ -675,22 +762,24 @@ function autoPriceValue(){return (st.area>0&&st.ppm>0)?r(st.ppm*st.area):0;}
 function syncPrice(){
   $('priceInp').value=st.price?st.price.toLocaleString('vi-VN'):'';
   let note;
-  if(st.sample) note='Giá minh họa — thay bằng giá thực tế của căn';
+  if(st.listed) note=`Giá bảng giá CĐT 17/10/2026 (chưa VAT) · gồm VAT ${fmtS(st.listed.inc)} đ · ${fmtS(st.listed.dg)} đ/m² NSA`;
+  else if(st.sample) note='Giá minh họa — thay bằng giá thực tế của căn';
   else if(!st.priceManual&&st.area>0&&st.ppm>0) note=`= ${fmtS(st.ppm)} × ${st.area.toLocaleString('vi-VN')} m² NSA · sửa tay để ghi đè`;
   else if(st.priceManual&&st.area>0&&st.price>0) note=`Giá nhập tay · tương đương ${fmtS(st.price/st.area)} đ/m²`;
   else note='Nhập trực tiếp, hoặc nhập diện tích + giá/m² để tự tính';
   $('price-note').textContent=note;
 }
 function autoPrice(){
+  if(st.listed){syncPrice();return;}
   if(st.area>0&&st.ppm>0){st.price=autoPriceValue();st.priceManual=false;st.sample=false;}
   syncPrice();
 }
 function onUnit(el){st.unit=el.value.trim().toUpperCase();recalc();}
 function onType(el){st.type=el.value.trim();recalc();}
-function onArea(el){st.area=parseDec(el.value);st.gsa=0;autoPrice();recalc();}
-function onPPM(el){const v=parseNum(el.value);st.ppm=v;el.value=v?v.toLocaleString('vi-VN'):'';autoPrice();recalc();}
+function onArea(el){st.area=parseDec(el.value);st.gsa=0;st.listed=null;autoPrice();recalc();}
+function onPPM(el){const v=parseNum(el.value);st.ppm=v;st.listed=null;el.value=v?v.toLocaleString('vi-VN'):'';autoPrice();recalc();}
 function onPrice(el){
-  const v=parseNum(el.value); st.sample=false;
+  const v=parseNum(el.value); st.sample=false;st.listed=null;
   if(v){st.price=v;st.priceManual=true;el.value=v.toLocaleString('vi-VN');}
   else{st.priceManual=false;st.price=autoPriceValue();}
   $('price-note').textContent=v?(st.area>0?`Giá nhập tay · tương đương ${fmtS(v/st.area)} đ/m²`:'Giá nhập tay'):'Để trống: sẽ tự tính từ diện tích × giá/m² (nếu có)';
@@ -701,6 +790,13 @@ function onKPBT(el){st.kpbt=clampPct(parseDec(el.value),20);recalc();}
 function onBKF(el){const v=parseNum(el.value);st.xn=v;el.value=v?v.toLocaleString('vi-VN'):'';recalc();}
 function onStart(el){if(/^\d{4}-\d{2}$/.test(el.value)){st.start=el.value;recalc();}}
 function onCKPT(el,i){st.ckPT[i]=Math.min(Math.max(parseDec(el.value),-50),50)/100;recalc();}
+function toggleSv(){st.sv=!st.sv;$('btn-sv').classList.toggle('active-ck',st.sv);recalc();}
+function updFn(){
+  const ok=fnOK(),bs=document.querySelectorAll('#grp-fn .opt-btn');
+  if(ok===false&&st.fn){st.fn=0;}
+  bs.forEach((b,j)=>{b.classList.toggle('active-ck',j===st.fn);if(j>0)b.classList.toggle('disabled',ok===false);});
+  $('fn-note').textContent=ok===false?`Layout ${st.layout} không thuộc diện áp dụng — gói chỉ áp dụng cho 3PN thường, 3PN góc nhỏ (3BR Ba / B1a / Aa) và 2PN đặc biệt (2BR C1a).`:(ok?`Layout ${st.layout} đủ điều kiện nhận gói nội thất.`:'Áp dụng cho 3PN thường, 3PN góc nhỏ và 2PN đặc biệt — chọn mẫu hoặc mã căn để tự kiểm tra điều kiện.');
+}
 function setOpt(key,grp,i){
   st[key]=i;
   document.querySelectorAll(`#grp-${grp} .opt-btn`).forEach((b,j)=>b.classList.toggle('active-ck',j===i));
@@ -716,14 +812,17 @@ function setPT(i){
 
 // ── CASCADE: mỗi bước = ROUND(giá còn lại × %) ──
 function adjText(i){const p=st.ckPT[i];return p===0?'Không ưu đãi PT':(p>0?`Ưu đãi ${pc(p)}`:`Tăng ${pc(-p)}`);}
+function fnOK(){return st.layout?FN_OK.includes(st.layout):null;}
+function gifts(){const g=[];const eb=EB_OPT[st.eb];if(eb.gift)g.push(eb.gift);if(st.fn===1&&fnOK()!==false)g.push('Gói nội thất trị giá 268 triệu');if(st.sv)g.push('Sổ tiết kiệm 68 triệu (KH cọc mới — 168 khách hàng)');return g;}
 function compute(pt){
   const base=st.price,steps=[];let run=base;
   const add=(id,label,p)=>{if(!p)return;const amt=r(run*p);steps.push({id,label,pct:p,amt,before:run,after:run-amt});run-=amt;};
   const p=st.ckPT[pt];
   add('pt',`${p>0?'Ưu đãi':'Tăng giá'} PT ${SC[pt].no} — ${SC[pt].short} (${pc(Math.abs(p))})`,p);
-  add('si',`Chiết khấu sỉ (${pc(SI_OPT[st.si][1])})`,SI_OPT[st.si][1]);
-  add('eb',`Early Birds (${pc(EB_OPT[st.eb][1])})`,EB_OPT[st.eb][1]);
-  add('kh',`Ưu đãi KH thân thiết (${pc(KH_OPT[st.kh][1])})`,KH_OPT[st.kh][1]);
+  const eb=EB_OPT[st.eb];
+  if(eb.p)add('eb',`${eb.lab} (${pc(eb.p)})`,eb.p);
+  add('si',`Chiết khấu mua sỉ (${pc(SI_OPT[st.si][1])})`,SI_OPT[st.si][1]);
+  if(st.fn===2&&fnOK()!==false){steps.push({id:'fn',label:'Quy đổi gói nội thất (trừ thẳng vào giá bán)',pct:null,amt:FN_VAL,before:run,after:run-FN_VAL});run-=FN_VAL;}
   const A=run,B=r(A*st.kpbt),C=r(A*st.vat),D=A+B+C;
   return {inp:st.price,list:base,steps,A,B,C,D,totalDisc:base-A};
 }
@@ -767,8 +866,11 @@ function buildUI(){
   $('mauSel').innerHTML+=UNITS.map(u=>`<option value="${u.code}">${u.name} · ${u.tw} — NSA ${nf1(u.nsa)} m²</option>`).join('');
   $('ck-grid').innerHTML=SC.map((s,i)=>`<div><label for="ck${i}">${s.no} · ${s.short}</label><input id="ck${i}" class="mini-inp right" type="text" inputmode="decimal" value="${String(+(s.def*100).toFixed(2)).replace('.',',')}" placeholder="0" oninput="onCKPT(this,${i})"><div class="ck-res" id="ck-res-${i}"></div></div>`).join('');
   $('grp-si').innerHTML=optBtns(SI_OPT,'si','si');
-  $('grp-eb').innerHTML=optBtns(EB_OPT,'eb','eb');
-  $('grp-kh').innerHTML=optBtns(KH_OPT,'kh','kh');
+  $('grp-eb').innerHTML=EB_OPT.map((o,i)=>`<button class="opt-btn${i===0?' active-ck':''}" onclick="setOpt('eb','eb',${i})">${o.t}</button>`).join('');
+  $('grp-fn').innerHTML=FN_OPT.map((o,i)=>`<button class="opt-btn${i===0?' active-ck':''}" onclick="setOpt('fn','fn',${i})">${o}</button>`).join('');
+  $('grp-gift').innerHTML=`<button class="opt-btn" id="btn-sv" onclick="toggleSv()">Sổ tiết kiệm 68 triệu (KH cọc mới)</button>`;
+  $('plLy').innerHTML+=[...new Set(PRICED.map(x=>x.l))].sort().map(l=>`<option value="${l}">${l}</option>`).join('');
+  fillPriced();$('pl-count').textContent=PRICED.length;
   $('grp-pt').innerHTML=SC.map((s,i)=>`<button class="opt-btn${i===0?' active-ck':''}" onclick="setPT(${i})">PT ${s.no}<br><span style="font-size:10px">${s.short}</span></button>`).join('');
   $('pt-tabs').innerHTML=SC.map((s,i)=>`<button class="pt-tab${i===0?' active':''}" onclick="setPT(${i})"><span class="tn">${s.no}</span><span class="tx">${s.name}</span><span class="tb" id="tab-b-${i}"></span></button>`).join('');
   $('pt-panels').innerHTML=SC.map((s,i)=>`
@@ -867,15 +969,17 @@ function summaryHTML(R){
     <span class="sum-val" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--gold-l)">${fmt(R.list)}</span></div>`;
   R.steps.forEach(s=>{h+=`<div class="sum-row pct-ck" style="flex-direction:column;align-items:flex-start;gap:2px;padding:8px 0">
     <div style="display:flex;justify-content:space-between;width:100%;align-items:center"><span class="sum-lbl" style="font-weight:600;color:#6EC6E8">${s.label}</span><span class="sum-val" style="color:#6EC6E8;font-size:14px">${s.amt>=0?'- ':'+ '}${fmt(Math.abs(s.amt))}</span></div>
-    <div style="display:flex;justify-content:space-between;width:100%;font-size:11px;color:var(--mut)"><span>${pc(Math.abs(s.pct))} × ${fmtS(s.before)} đ</span><span>→ Còn lại: <strong style="color:rgba(255,255,255,.75)">${fmt(s.after)}</strong></span></div></div>`;});
+    <div style="display:flex;justify-content:space-between;width:100%;font-size:11px;color:var(--mut)"><span>${s.pct==null?'Giá trị cố định':pc(Math.abs(s.pct))+' × '+fmtS(s.before)+' đ'}</span><span>→ Còn lại: <strong style="color:rgba(255,255,255,.75)">${fmt(s.after)}</strong></span></div></div>`;});
   h+=`<div class="sum-row final-pre" style="margin-top:8px"><span class="sum-lbl">Giá bán PT ${SC[st.pt].no} (A, chưa VAT &amp; KPBT)</span><span class="sum-val">${fmt(R.A)}</span></div>
    <div class="sum-row vat-row"><span class="sum-lbl">Phí bảo trì (B) = ${pc(st.kpbt)} × A</span><span class="sum-val">+ ${fmt(R.B)}</span></div>
    <div class="sum-row vat-row"><span class="sum-lbl">VAT (C) = ${pc(st.vat)} × A</span><span class="sum-val">+ ${fmt(R.C)}</span></div>
    <div class="sum-row total-row"><span class="sum-lbl">Tổng giá bán căn hộ (D) = A + B + C</span><span class="sum-val">${fmt(R.D)}</span></div>`;
+  const gf=gifts();if(gf.length)h+=`<div class="sum-row savings-row" style="align-items:flex-start"><span class="sum-lbl">Quà tặng kèm (không trừ giá)</span><span class="sum-val" style="font-size:12px;text-align:right">${gf.map(esc).join('<br>')}</span></div>`;
   return h;
 }
 
 function recalc(){
+  updFn();
   const R=compute(st.pt);
   $('hdr-dates').textContent=`VBTT dự kiến ${ML(0)} · Bàn giao dự kiến ${ML(HAND_M)} (27 tháng)`;
   $('sum-box').innerHTML=summaryHTML(R);
@@ -883,6 +987,7 @@ function recalc(){
   $('tb-note').textContent=`Giá PT ${SC[st.pt].no} ${SC[st.pt].short} · ${adjText(st.pt)}`;
   SC.forEach((_,i)=>renderPanel(i));
   renderCompare();
+  renderBench();
   if(window.NATLoan)NATLoan.refresh();
 }
 
@@ -891,7 +996,7 @@ function exportPDF(){
   const sc=SC[st.pt],R=LAST[st.pt].R,S=LAST[st.pt].S,today=new Date().toLocaleDateString('vi-VN');
   const cust=esc($('custInp').value.trim()),agent=esc($('agentInp').value.trim());
   const bank=!!sc.bank;
-  const dc=R.steps.map(s=>`<tr><td>${s.label}</td><td class="r">${pc(Math.abs(s.pct))}</td><td class="r ps-ded">${s.amt>=0?'- ':'+ '}${fmtS(Math.abs(s.amt))} đ</td></tr>`).join('')
+  const dc=R.steps.map(s=>`<tr><td>${s.label}</td><td class="r">${s.pct==null?'—':pc(Math.abs(s.pct))}</td><td class="r ps-ded">${s.amt>=0?'- ':'+ '}${fmtS(Math.abs(s.amt))} đ</td></tr>`).join('')
     ||`<tr><td colspan="3" style="color:#999">Bằng giá niêm yết (không ưu đãi, không chiết khấu)</td></tr>`;
   const sched=S.rows.map(x=>bank
     ?`<tr><td>${x.n}</td><td>${x.w} — ${x.d}</td><td class="r">${x.pct==null?'—':pc(x.pct)}</td><td class="r">${x.own?fmtS(x.own):'—'}</td><td class="r">${x.bank?fmtS(x.bank):'—'}</td><td class="r">${fmtS(x.tot)}</td></tr>`
@@ -915,7 +1020,7 @@ function exportPDF(){
   <h2>Lịch Thanh Toán — ${sc.full}</h2>
   <table><thead><tr>${sh}</tr></thead><tbody>${sched}
    <tr><td></td><td><b>Tổng</b></td><td></td>${bank?`<td class="r"><b>${fmtS(S.ownTotal)}</b></td><td class="r"><b>${fmtS(S.bankTotal)}</b></td>`:''}<td class="r"><b>${fmtS(S.total)}</b></td></tr></tbody></table>
-  <div class="ps-note">${esc(sc.hint)}. (*) Giá bán và phương thức thanh toán chỉ mang tính tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. (**) VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng. Các mốc tháng được suy ra từ khoảng cách ghi trên leaflet, tính từ tháng VBTT dự kiến ${ML(0)}.${bank?' Khả năng được duyệt vay và hạn mức do ngân hàng quyết định.':''}</div>
+  <div class="ps-note">${st.listed?'Giá niêm yết theo bảng giá CĐT ngày 17/10/2026. ':''}${gifts().length?'Quà tặng kèm (không trừ giá): '+gifts().map(esc).join('; ')+'. ':''}${esc(sc.hint)}. (*) Giá bán và phương thức thanh toán chỉ mang tính tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. (**) VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng. Các mốc tháng được suy ra từ khoảng cách ghi trên leaflet, tính từ tháng VBTT dự kiến ${ML(0)}.${bank?' Khả năng được duyệt vay và hạn mức do ngân hàng quyết định.':''}</div>
   ${NATQR.contact({phone:$('agentPhone').value.trim()})}
   <div class="ps-foot"><div>Palm River · Bảng tính phương thức thanh toán</div><div>Xuất ngày ${today}</div></div>`;
   window.print();
