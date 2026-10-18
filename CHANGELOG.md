@@ -3,11 +3,10 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-
-## 2026-10-18 — Nội dung: 3 phân khu Waterpoint (Rivera Nagomi, The Aqua, Park Village)
-- Thêm 3 trang dự án thuộc `water-point`: `/cam-nang/rivera-nagomi/`, `/cam-nang/the-aqua/`, `/cam-nang/park-village/`. Khung mục 01 Tổng quan · 02 Chi tiết · 04 SWOT + Hỏi & Đáp, dải số liệu `facts`, ảnh OG thẻ thương hiệu. Chưa có mục 03 "Vì sao tôi chọn" và thang điểm 1–5 (chờ Tú); chưa có ảnh, clip giới thiệu (chờ Tú).
-- Rivera Nagomi có giá tham khảo, 2 tiến độ thanh toán, lịch vay BS01 theo chính sách Southgate; The Aqua và Park Village ghi "chờ chủ đầu tư công bố" cho giá và tiến độ.
-- `water-point` (vẫn `stub`, noindex): thêm khối "Các Phân Khu" liên kết tới 3 trang con.
+## 2026-10-18 — Bản tính tài chính: nối bản tính vay với tích góp, thêm phí tất toán và tỷ suất lợi nhuận
+- Thông số ở mục 02 (ngày vay, thời hạn, phương pháp, lãi, ân hạn, các đợt giải ngân, tổng lãi, tổng trả) tự chuyển sang mục 03, hiện dạng thẻ màu xanh "từ mục 02". Vốn tự có tự tính = giá mua − tổng giải ngân (có thể bỏ chọn để tự nhập).
+- Mục 03 thêm phần bổ sung màu cam: bảng phí tất toán trước hạn theo từng đợt giải ngân (theo năm kể từ ngày nhận nợ, mặc định 3/2/1/0/0% là giả định để minh họa) và chi phí/thuế khi bán.
+- Bảng dòng tiền thêm 7 cột màu cam: vốn gộp lũy kế (gồm phí tất toán), thuê ròng lũy kế, phí tất toán nếu bán, tiền thu về nếu bán, lãi/lỗ, tỷ suất lợi nhuận trên vốn, tỷ suất quy năm. Bán tại kỳ nào thì trừ dư nợ, phần đợt giải ngân chưa tới hạn và chi phí bán; phí tất toán từng đợt được cộng vào vốn gộp để tính tỷ suất lợi nhuận. Các ô nhập tiền hiển thị dấu phẩy ngăn cách hàng nghìn (kết quả cũng dùng dấu phẩy). Phương án JSON và CSV lưu thêm các trường mới (file JSON cũ vẫn mở được). Đã đối chiếu độc lập các cột với công thức, sai lệch bằng 0.
 
 ## 2026-10-18 — 2.17.0: Menu "Atlas" xổ xuống + "Bản tính tài chính" (thay Atlas Banking)
 - Thanh menu: World Atlas và Atlas VietNam gộp thành một mục "Atlas ▾" xổ xuống (mục tự sáng khi đang ở một trong hai trang). Bấm ra ngoài thì menu tự đóng.
