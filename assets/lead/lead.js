@@ -261,7 +261,7 @@
   var pdfWhy = '';
   function buildPdf() {
     pdfWhy = '';
-    var fn = (typeof window.exportPDF === 'function') ? window.exportPDF : (typeof window.pdfDeck === 'function' ? window.pdfDeck : null);
+    var fn = (typeof window.pdfDeck === 'function') ? window.pdfDeck : (typeof window.exportPDF === 'function' ? window.exportPDF : null);
     if (!fn) { pdfWhy = 'khong-co-ham-xuat-pdf'; return Promise.resolve(null); }
     return Promise.all([loadLib('/assets/vendor/html2canvas.min.js'), loadLib('/assets/vendor/jspdf.umd.min.js')]).then(function () {
       var origPrint = window.print, printed = false;
@@ -312,7 +312,8 @@
             var pageH = Math.floor(W * 273 / 186); // phần nội dung cao 273mm khi rộng 186mm
             if (isDeck) {
               if (!first) doc.addPage(); first = false;
-              doc.addImage(cv.toDataURL('image/jpeg', 0.8), 'JPEG', 12, 12, 186, Math.min(273, H * 186 / W));
+              var hmm = H * 186 / W, k = hmm > 273 ? 273 / hmm : 1;
+              doc.addImage(cv.toDataURL('image/jpeg', 0.82), 'JPEG', 12 + (186 - 186 * k) / 2, 12, 186 * k, hmm * k);
               return;
             }
             for (var y = 0; y < H; y += pageH) {
