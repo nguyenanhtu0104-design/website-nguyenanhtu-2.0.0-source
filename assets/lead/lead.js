@@ -473,7 +473,7 @@
   function init() {
     captureUtm();
     if (qs('calc') || qs('pdf') === '1') window.addEventListener('load', function () { setTimeout(restoreCalc, 300); });
-    if (qs('pdf') === '1') window.addEventListener('load', function () { setTimeout(function () { try { (typeof window.exportPDF === 'function') ? window.exportPDF() : window.print(); } catch (e) { /* bỏ qua */ } }, 1500); });
+    if (qs('pdf') === '1') window.addEventListener('load', function () { setTimeout(function () { try { (typeof window.exportPDF === 'function') ? window.exportPDF() : (typeof window.pdfDeck === 'function') ? window.pdfDeck() : window.print(); } catch (e) { /* bỏ qua */ } }, 1500); });
     bindTracking();
     fetch(DATA_URL, { cache: 'no-cache' })
       .then(function (r) { return r.json(); })

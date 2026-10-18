@@ -1,54 +1,135 @@
 <!DOCTYPE html>
-<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Bảng tính – Nam Mekong Grand Plaza</title>
-<style>
-:root{--b9:#0c2340;--b7:#1a3a5c;--b5:#2563eb;--g5:#d4a843;--g3:#e8cc7a;--f50:#f8f9fa;--f1:#f1f3f5;--f2:#e9ecef;--f3:#dee2e6;--f5:#868e96;--f7:#495057;--f9:#212529;--gn:#16a34a;--w:#fff;--font:'Segoe UI',system-ui,-apple-system,sans-serif;--r:6px}
-*{margin:0;padding:0;box-sizing:border-box}body{font-family:var(--font);background:var(--f1);color:var(--f9);font-size:14px;line-height:1.5}
-.hdr{background:linear-gradient(135deg,var(--b9),var(--b7));color:var(--w);padding:18px 24px;text-align:center}.hdr h1{font-size:20px;font-weight:700}.hdr .sub{color:var(--g3);font-size:12px;margin-top:3px}
-.ctn{max-width:960px;margin:0 auto;padding:14px}.card{background:var(--w);border-radius:var(--r);padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.igrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px}.ig{display:flex;flex-direction:column;gap:3px}.ig label{font-size:11px;font-weight:600;color:var(--f7)}.ig input,.ig select{padding:7px 9px;border:1px solid var(--f3);border-radius:var(--r);font-size:13px;font-family:var(--font)}.ig input:focus,.ig select:focus{outline:none;border-color:var(--b5);box-shadow:0 0 0 2px rgba(37,99,235,.15)}.ig input[readonly]{background:var(--f50);color:var(--f7)}
-.srow{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}.sc{background:var(--w);border-radius:var(--r);padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08)}.sc .lb{font-size:10px;color:var(--f5);text-transform:uppercase}.sc .vl{font-size:16px;font-weight:700;color:var(--b9);margin-top:2px}.sc .vl.gn{color:var(--gn)}.sc .vl.gl{color:var(--g5)}
-.fp-wrap{position:relative;margin-bottom:14px;background:var(--w);border-radius:var(--r);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.08)}.fp-wrap img{width:100%;display:block}.fp-m{position:absolute;width:28px;height:28px;border-radius:50%;background:rgba(220,38,38,.85);border:2px solid var(--w);transform:translate(-50%,-50%);pointer-events:none;animation:pulse 1.5s ease-in-out infinite;z-index:10;box-shadow:0 2px 8px rgba(220,38,38,.5)}.fp-m::after{content:'';position:absolute;top:50%;left:50%;width:8px;height:8px;background:var(--w);border-radius:50%;transform:translate(-50%,-50%)}@keyframes pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1}50%{transform:translate(-50%,-50%) scale(1.3);opacity:.7}}
-.tabs{display:flex;gap:2px;background:var(--f2);border-radius:var(--r) var(--r) 0 0;overflow-x:auto}.tb{flex:1;min-width:80px;padding:9px 6px;border:none;background:transparent;font-family:var(--font);font-size:11px;font-weight:600;color:var(--f7);cursor:pointer;white-space:nowrap;text-align:center;transition:.15s}.tb:hover{background:var(--f1)}.tb.act{background:var(--w);color:var(--b9);box-shadow:0 -2px 0 var(--g5) inset}
-.tsec{background:var(--w);border-radius:0 0 var(--r) var(--r);box-shadow:0 1px 3px rgba(0,0,0,.08);overflow-x:auto;margin-bottom:14px}table{width:100%;border-collapse:collapse;font-size:12px}thead th{background:var(--b9);color:var(--w);padding:8px 6px;text-align:center;font-weight:600;font-size:11px;white-space:nowrap}tbody td{padding:6px;border-bottom:1px solid var(--f2)}tbody tr:hover{background:var(--f50)}td.n{text-align:right;font-variant-numeric:tabular-nums}td.c{text-align:center}.rtot{background:var(--b9)!important;color:var(--w)!important;font-weight:700}.rtot td{color:var(--w)}.rkp{background:#fef9e7}.rvat{background:#f0f7ff}.tg{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600}.tg-k{background:#dbeafe;color:#1e40af}.tg-n{background:#fef3c7;color:#92400e}
-.dinfo{border-left:3px solid var(--g5)}.dinfo h3{font-size:13px;color:var(--b9);margin-bottom:6px}.ckl{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}.ckl .cv{font-weight:600;color:var(--gn)}
-.btn-p{padding:9px 14px;border:none;border-radius:var(--r);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;background:var(--b9);color:var(--w);width:100%}.btn-p:hover{background:var(--b7)}
-@media print{body{background:#fff;font-size:10px}.hdr{padding:10px}.hdr h1{font-size:14px}.ctn{padding:0 6px}.card,.tabs,.srow,.btn-p,.fp-wrap{display:none}.ph{display:block!important}.tsec{box-shadow:none;border:1px solid var(--f3)}table{font-size:10px}.dinfo{box-shadow:none;border:1px solid var(--f3);page-break-inside:avoid;display:block!important}}.ph{display:none;text-align:center;margin-bottom:10px}.ph .p1{font-size:15px;font-weight:700;color:var(--b9)}.ph .p2{font-size:12px;margin-top:3px}.ph .p3{font-size:11px;color:var(--f5);margin-top:4px}
-@media(max-width:640px){.igrid{grid-template-columns:1fr}.srow{grid-template-columns:1fr 1fr}.tb{font-size:10px;padding:7px 4px}}
+<link rel="canonical" href="https://nguyenanhtu.vn/cam-nang/nam-mekong-grand-plaza/">
+<title>Nam Mekong Grand Plaza – Bảng Tính Phương Thức Thanh Toán</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tools/shared/bang-tinh.css?v=2.16.0">
+</head>
+<body>
+<div class="wrap">
 
-.colL,.colR{min-width:0}.igrid>.ig{min-width:0}.ig input,.ig select{width:100%;min-width:0}
-@media(min-width:1000px){.ctn{max-width:1500px;padding:20px 28px;display:grid;grid-template-columns:minmax(420px,520px) minmax(0,1fr);gap:0 24px;align-items:start}.ctn>.ph{grid-column:1/-1}.colL{position:sticky;top:14px}.hdr{padding:24px}.hdr h1{font-size:26px}.hdr .sub{font-size:14px}.ig label{font-size:12px}.ig input,.ig select{padding:9px 11px;font-size:14px}.sc .vl{font-size:20px}.sc .lb{font-size:11px}.tb{font-size:13px;padding:12px 8px}table{font-size:13.5px}thead th{font-size:12px;padding:10px 8px}tbody td{padding:8px}.ckl{font-size:13.5px}.dinfo h3{font-size:15px}.btn-p{font-size:14px;padding:12px 14px}}
-@media(min-width:1000px) and (max-height:900px){.colL{position:static}}
-@media print{.ctn{display:block!important}.colL{position:static}}
-</style></head><body>
-<div class="hdr"><h1>NAM MEKONG GRAND PLAZA</h1><div class="sub">Bảng tính thanh toán dự án – Bình Dương</div></div>
-<div class="ctn">
-<div class="ph"><div class="p1">NAM MEKONG GRAND PLAZA – BẢNG TÍNH THANH TOÁN</div><div class="p2" id="pU"></div><div class="p3" id="pC"></div></div>
-<div class="colL">
-<div class="card"><div class="igrid">
-<div class="ig"><label>Tòa</label><select id="sT" data-lead-input="tower" data-lead-label="Tòa" onchange="oTC()"><option value="">-- Chọn tòa --</option><option value="G1">Tòa G1</option><option value="G2">Tòa G2</option></select></div>
-<div class="ig"><label>Tầng</label><select id="sF" data-lead-input="floor" data-lead-label="Tầng" onchange="oFC()"><option value="">-- Chọn tầng --</option></select></div>
-<div class="ig"><label>Mã căn hộ</label><select id="sU" data-lead-input="unit" data-lead-label="Mã căn hộ" onchange="oUC()"><option value="">-- Chọn tầng trước --</option></select></div>
-<div class="ig"><label>DT thông thủy (m²)</label><input type="text" id="xTT" readonly></div>
-<div class="ig"><label>DT tim tường (m²)</label><input type="text" id="xTG" readonly></div>
-<div class="ig"><label>Đơn giá (VNĐ/m²)</label><input type="text" id="xUP" data-lead-input="ppm" data-lead-label="Đơn giá (đ/m²)" placeholder="VD: 55.000.000" inputmode="numeric"></div>
-<div class="ig"><label>Giá niêm yết (đã VAT+KPBT)</label><input type="text" id="xLP" readonly></div>
-<div class="ig"><label>Tên khách hàng</label><input type="text" id="xCl" data-lead-input="cust" data-lead-label="Tên khách hàng" placeholder="Nhập tên KH"></div>
-<div class="ig"><label>Tư vấn viên</label><input type="text" id="xCo" placeholder="Nhập tên TVV"></div>
-<div class="ig"><label>SĐT tư vấn viên</label><input type="tel" id="xCp" placeholder="Nhập SĐT TVV" inputmode="tel" autocomplete="tel" maxlength="20"></div>
-</div></div>
-<div class="fp-wrap" id="fpW" style="display:none"><img id="fpI" src="" alt="Mặt bằng"><div class="fp-m" id="fpM" style="display:none"></div></div>
-<div class="fp-wrap" id="lyW" style="display:none"><div id="lyT" style="padding:8px 12px;font-size:12px;font-weight:600;color:var(--b9);background:var(--f50);border-bottom:1px solid var(--f2)">Mặt bằng căn hộ</div><img id="lyI" src="" alt="Layout căn hộ" style="width:100%;display:block"></div>
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-badge">Nam Mekong Grand Plaza · Bảng Tính Thanh Toán</div>
+  <h1>Bảng Tính Phương Thức Thanh Toán</h1>
+  <div class="hdr-sub">Căn hộ · 5 phương thức: Chuẩn · Vay NH 30% · Vay NH 20% · Thanh toán sớm 70% · Thanh toán sớm 95%<br>Thành phố mới Bình Dương · Tòa G1 &amp; G2</div>
+  <div class="div-gold"></div>
 </div>
-<div class="colR">
-<div class="srow" id="sR" style="display:none"><div class="sc"><div class="lb">Giá gốc (chưa VAT, KPBT)</div><div class="vl" id="sB">–</div></div><div class="sc"><div class="lb">Tổng chiết khấu</div><div class="vl gn" id="sK">–</div></div><div class="sc"><div class="lb">Giá sau CK + VAT + KPBT</div><div class="vl gl" id="sFi" data-lead-result data-lead-label="Giá sau CK + VAT + KPBT">–</div></div></div>
-<div class="tabs" id="tB" style="display:none"><button class="tb act" data-t="chuan" onclick="sw('chuan')">TT Chuẩn</button><button class="tb" data-t="vay30" onclick="sw('vay30')">Vay NH 30%</button><button class="tb" data-t="vay20" onclick="sw('vay20')">Vay NH 20%</button><button class="tb" data-t="som70" onclick="sw('som70')">TT Sớm 70%</button><button class="tb" data-t="som95" onclick="sw('som95')">TT Sớm 95%</button></div>
-<div class="tsec" id="tS" style="display:none"></div>
-<div class="card dinfo" id="dI" style="display:none"></div>
-<div class="card" id="pS" style="display:none"><button class="btn-p" onclick="window.print()">In bảng tính</button></div>
+
+<!-- SECTION 1: THÔNG TIN CĂN -->
+<div class="card">
+  <div class="card-title">🏢 Thông Tin Căn Hộ</div>
+  <div class="lay-wrap">
+    <div>
+      <div class="mapbox" id="fpW" style="display:none"><img id="fpI" src="" alt="Mặt bằng tầng"><div class="mpin" id="fpM" style="display:none"><span></span></div></div>
+      <div class="lay-img" id="fpPh"><div class="ph">Chọn tòa và tầng để xem mặt bằng</div></div>
+    </div>
+    <div>
+      <div class="input-group" style="margin-bottom:12px"><label class="lbl" for="sT">Tòa</label>
+        <select id="sT" data-lead-input="tower" data-lead-label="Tòa" class="lay-sel" onchange="oTC()"><option value="">— Chọn tòa —</option><option value="G1">Tòa G1</option><option value="G2">Tòa G2</option></select></div>
+      <div class="input-group" style="margin-bottom:12px"><label class="lbl" for="sF">Tầng</label>
+        <select id="sF" data-lead-input="floor" data-lead-label="Tầng" class="lay-sel" onchange="oFC()"><option value="">— Chọn tầng —</option></select></div>
+      <div class="input-group"><label class="lbl" for="sU">Mã căn hộ</label>
+        <select id="sU" data-lead-input="unit" data-lead-label="Mã căn hộ" class="lay-sel" onchange="oUC()"><option value="">— Chọn tầng trước —</option></select></div>
+      <div class="lay-info" id="unit-info">Chọn tòa, tầng và mã căn để tự điền diện tích. Sau đó chỉ cần nhập đơn giá/m².</div>
+    </div>
+  </div>
+  <div class="lay-img" id="lyW" style="display:none;margin-bottom:18px;flex-direction:column"><div id="lyT" class="lay-info" style="margin:0 0 8px;text-align:center"></div><img id="lyI" src="" alt="Mặt bằng căn hộ"></div>
+  <div class="prop-grid">
+    <div class="input-group"><label for="xTT">DT thông thủy (m²)</label><input class="price-inp" id="xTT" type="text" readonly style="font-size:16px"></div>
+    <div class="input-group"><label for="xTG">DT tim tường (m²)</label><input class="price-inp" id="xTG" type="text" readonly style="font-size:16px"></div>
+    <div class="input-group"><label for="xUP">Đơn giá / m² thông thủy (VND, chưa VAT &amp; KPBT)</label>
+      <input class="price-inp" id="xUP" data-lead-input="ppm" data-lead-label="Đơn giá (đ/m²)" type="text" inputmode="numeric" placeholder="VD: 55.000.000" autocomplete="off" style="font-size:16px"
+        ><div class="inp-note">Giá gốc = đơn giá × diện tích thông thủy</div></div>
+    <div class="input-group"><label for="xLP">Giá niêm yết (đã gồm VAT &amp; KPBT)</label><input class="price-inp" id="xLP" type="text" readonly style="font-size:16px"></div>
+  </div>
+  <div class="who-grid">
+    <div class="input-group"><label for="xCl">Khách Hàng</label><input class="mini-inp" id="xCl" data-lead-input="cust" data-lead-label="Tên khách hàng" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
+    <div class="input-group"><label for="xCo">Chuyên Viên Kinh Doanh</label><input class="mini-inp" id="xCo" type="text" placeholder="Tên chuyên viên (hiện trên bản PDF)"></div>
+    <div class="input-group"><label for="xCp">Số điện thoại của người tư vấn</label><input class="mini-inp" id="xCp" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Hiện trên PDF kèm mã QR Zalo tự tạo"></div>
+  </div>
 </div>
-</div><script>
+
+<!-- THUẾ & PHÍ -->
+<div class="card">
+  <div class="card-title">🧾 Thuế &amp; Phí — Thiết Lập Theo Thông Báo Của CĐT</div>
+  <div class="prop-grid">
+    <div class="input-group"><label for="vatInp">VAT (%)</label><input class="price-inp" id="vatInp" type="text" inputmode="decimal" value="10" style="font-size:16px"></div>
+    <div class="input-group"><label for="kpbtInp">Phí bảo trì — KPBT (%)</label><input class="price-inp" id="kpbtInp" type="text" inputmode="decimal" value="2" style="font-size:16px"></div>
+    <div class="input-group"><label for="bkInp">Tiền booking sang đặt cọc (VND)</label><input class="price-inp" id="bkInp" type="text" inputmode="numeric" value="50.000.000" style="font-size:16px"></div>
+  </div>
+  <div class="terms" style="margin-top:14px"><b>Cách tính:</b> giá gốc = đơn giá × diện tích thông thủy; trừ chiết khấu để ra giá bán (A); VAT và phí bảo trì tính trên A. Tiền booking đã nộp được trừ vào đợt 1 (Ký TTĐC), không cộng thêm vào tổng giá.</div>
+</div>
+
+<!-- SECTION 2: CHIẾT KHẤU -->
+<div class="card">
+  <div class="card-title">🎯 Giá Theo Phương Thức &amp; Chiết Khấu</div>
+  <div class="inp-note" style="margin-bottom:14px;font-size:12px">Nhập <strong>mức chiết khấu (%)</strong> trên giá gốc. Theo chính sách: ưu đãi mở bán 1,5% áp dụng cho cả 5 phương thức; thanh toán sớm 70% thêm 4%, thanh toán sớm 95% thêm 8%.</div>
+  <div class="ck-grid" id="ck-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+    <div><label for="ckU">CK ưu đãi mở bán (cả 5 PT)</label><input id="ckU" class="mini-inp right" type="text" inputmode="decimal" value="1,5"></div>
+    <div><label for="ck70">CK thêm · TT sớm 70%</label><input id="ck70" class="mini-inp right" type="text" inputmode="decimal" value="4"></div>
+    <div><label for="ck95">CK thêm · TT sớm 95%</label><input id="ck95" class="mini-inp right" type="text" inputmode="decimal" value="8"></div>
+  </div>
+  <div style="margin-top:16px"><span class="lbl">Xem bảng tính theo phương thức</span>
+    <div class="radio-group horizontal" id="grp-pt"></div></div>
+  <div class="ck-grid" id="ck-res-grid" style="margin-top:14px"></div>
+  <div class="sum-box" id="sum-box"></div>
+</div>
+
+<div id="res-hint" class="card" style="text-align:center;color:var(--mut)">Chọn tòa, tầng, mã căn và nhập đơn giá để xem giá, so sánh và lịch thanh toán.</div>
+
+<div id="res" style="display:none">
+<!-- TOTAL BAR -->
+<div class="total-bar">
+  <div>
+    <div class="tb-label">Tổng Giá Bán Căn Hộ (Gồm VAT &amp; KPBT)</div>
+    <div class="tb-note" id="tb-note">—</div>
+  </div>
+  <div class="tb-parts"><div>
+    <div class="tb-sub">Giá bán sau CK (chưa VAT): <span id="tb-pre">—</span></div>
+    <div class="tb-val" id="tb-total" data-lead-result data-lead-label="Giá sau CK + VAT + KPBT">—</div>
+  </div></div>
+</div>
+
+<div style="text-align:center;margin:-8px 0 28px">
+  <button onclick="pdfDeck()"
+    style="background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border:none;font-family:'Be Vietnam Pro',sans-serif;font-size:13px;font-weight:700;
+    letter-spacing:1px;text-transform:uppercase;padding:12px 32px;border-radius:8px;cursor:pointer;box-shadow:0 8px 24px rgba(201,168,76,.3)">⬇ Xuất PDF Trình Bày (A4)</button>
+  <div style="font-size:11px;color:var(--mut);margin-top:8px">Báo giá, lịch thanh toán, so sánh và phương án vay — chọn “Save as PDF” trong hộp thoại in</div>
+</div>
+
+<!-- SO SÁNH -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">So Sánh 5 Phương Thức</div><div class="sec-div-line"></div></div>
+<div class="card">
+  <div class="cmp-wrap" id="cmp-wrap"></div>
+  <div class="sec-note">Bấm vào một dòng để xem lịch thanh toán chi tiết. “Tự có trước bàn giao” là tiền khách tự bỏ ra đến khi nhận nhà; thời hạn dòng tiền tính từ ký TTĐC (T0), mốc bàn giao tạm tính ~T19 theo lịch 30 ngày/đợt; vay NH: giải ngân khoảng T2.</div>
+</div>
+
+<!-- LỊCH THANH TOÁN -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Lịch Thanh Toán</div><div class="sec-div-line"></div></div>
+<div class="pt-tabs" id="pt-tabs"></div>
+<div id="pt-panels"></div>
+
+<!-- VAY NGÂN HÀNG -->
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">Vay Ngân Hàng</div><div class="sec-div-line"></div></div>
+<div class="card" id="dL"></div>
+</div>
+
+<div class="terms">
+  <b>(*) Điều kiện &amp; điều khoản:</b> giá bán và các phương thức thanh toán chỉ mang tính chất tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. Tiến độ chính thức nêu cụ thể tại hợp đồng.<br>
+  <b>(**)</b> VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng.<br>
+  <b>Vay ngân hàng:</b> chủ đầu tư hỗ trợ lãi suất tối đa 70% giá trị căn hộ trong 24 tháng, vay tối đa 35 năm. Khả năng được duyệt và hạn mức do ngân hàng quyết định theo chính sách tín dụng; lãi suất trong bảng là giả định minh họa.
+</div>
+<div class="footer-note">Nam Mekong Grand Plaza · Bảng tính phương thức thanh toán · Số liệu theo bảng chính sách 5 phương thức do chủ đầu tư công bố</div>
+</div>
+
+<script src="/assets/tools/shared/zalo-qr.js?v=2.16.0"></script>
+<script src="/assets/tools/shared/vay-ngan-hang.js?v=2.16.0"></script>
+<script>
 const I3="/assets/tools/nam-mekong-bang-tinh/i3.webp";
 const I3A="/assets/tools/nam-mekong-bang-tinh/i3a.webp";
 const I5="/assets/tools/nam-mekong-bang-tinh/i5.webp";
@@ -82,202 +163,337 @@ const UC_G2={"CH11":[27,7],"CH12":[34,7],"CH13":[41,7],"CH14":[49,7],"CH15":[55,
 const FO_G1={"24":{"CH31":[39,33],"CH30":[49,36],"CH29":[57,36],"CH28":[65,36],"CH27":[91,47]},"25":{"CH31":[39,33],"CH30":[49,36],"CH29":[57,36],"CH28":[65,36],"CH27":[91,47]},"26":{"CH30":[39,33],"CH29":[49,36],"CH28":[57,36],"CH27":[65,36],"CH26":[83,55]},"27":{"CH26":[39,33],"CH25":[49,36],"CH24":[57,36],"CH23":[65,36],"CH22":[84,10]},"28":{"CH25":[39,33],"CH24":[49,36],"CH23":[57,36],"CH22":[65,36]},"29":{"CH16":[40,10],"CH17":[47,10],"CH18":[53,10],"CH19":[62,10],"CH20":[73,10],"CH23":[55,37],"CH22":[63,37],"CH21":[73,37]},"30":{"CH16":[40,8],"CH17":[55,8],"CH19":[65,36],"CH18":[73,36],"CH01":[56,40],"CH02":[56,47],"CH03":[56,53],"CH04":[56,59],"CH05":[56,66],"CH06":[56,76],"CH07":[58,85]}};
 const FO_G2={};
 const FLOORS={"G1": ["3", "3A", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"], "G2": ["3", "3A", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"]};
-
-const BK=50000000,CKU=0.015,CKS={som70:0.04,som95:0.08};
-function fm(n){return n==null?"–":Math.round(n).toLocaleString("vi-VN")}
-function fp(p){return p==null?"":(p*100).toFixed(1).replace(/\.0$/,"")+ "%"}
-let cTw="",cT="chuan",cU=null,cF=null,cUP=0;
-
-function getUP(){
-  const v=document.getElementById("xUP").value.replace(/[^0-9]/g,"");
-  return parseInt(v)||0;
-}
-
-function onUP(){
-  cUP=getUP();
-  if(cU)render();
-}
-
-function calcLP(u){
-  return u.t*cUP*1.12;
-}
-
-function calc(lp,t){
-  const b=lp/1.12,u=b*CKU;
-  let s=0,r=0;
-  if(t==="som70"){r=CKS.som70;s=b*r}
-  if(t==="som95"){r=CKS.som95;s=b*r}
-  const k=u+s,bc=b-k,v=bc*.1,kp=bc*.02;
-  return{b,u,ur:CKU,s,r,k,bc,v,kp,f:bc+v+kp,h:bc+v}
-}
-
-function gS(t){
-  const D=(d,s,p,o)=>({d,s,p,...o});
-  if(t==="chuan")return[D("Mở bán","Booking sang đặt cọc",null,{fx:BK}),D("Đợt 1","Ký TTĐC (gồm 50tr)",.05),D("Đợt 2","Ký HĐMB (30 ngày từ TTĐC)",.10),D("Đợt 3","30 ngày từ hạn đợt 2",.10),D("Đợt 4","30 ngày từ hạn đợt 3",.025),D("Đợt 5","30 ngày từ hạn đợt 4",.025),D("Đợt 6","30 ngày từ hạn đợt 5",.025),D("Đợt 7","30 ngày từ hạn đợt 6",.025),D("Đợt 8","30 ngày từ hạn đợt 7",.025),D("Đợt 9","30 ngày từ hạn đợt 8",.025),D("Đợt 10","30 ngày từ hạn đợt 9",.025),D("Đợt 11","30 ngày từ hạn đợt 10",.025),D("Đợt 12","30 ngày từ hạn đợt 11",.025),D("Đợt 13","30 ngày từ hạn đợt 12",.025),D("Đợt 14","30 ngày từ hạn đợt 13",.05),D("Đợt 15","30 ngày từ hạn đợt 14",.03),D("Đợt 16","30 ngày từ hạn đợt 15",.03),D("Đợt 17","30 ngày từ hạn đợt 16",.03),D("Đợt 18","30 ngày từ hạn đợt 17",.03),D("Đợt 19","30 ngày từ hạn đợt 18",.03),D("Đợt 20","Bàn giao nhà",.25),D("","KPBT (2%)",null,{kpbt:1}),D("Đợt 21","Cấp GCN QSH",.05)];
-  if(t==="vay30")return[D("Mở bán","Booking sang đặt cọc",null,{fx:BK}),D("Đợt 1","Ký TTĐC (gồm 50tr)",.05,{sr:"kh"}),D("Đợt 2","Ký HĐMB (30 ngày từ TTĐC)",.10,{sr:"kh"}),D("Đợt 3","20 ngày LV từ ký HĐMB",.15,{sr:"kh",nh:.65}),D("","KPBT (2%)",null,{kpbt:1}),D("Đợt 4","Cấp GCN QSH",.05,{sr:"kh"})];
-  if(t==="vay20")return[D("Mở bán","Booking sang đặt cọc",null,{fx:BK}),D("Đợt 1","Ký TTĐC (gồm 50tr)",.05,{sr:"kh"}),D("Đợt 2","Ký HĐMB (30 ngày từ TTĐC)",.10,{sr:"kh"}),D("Đợt 3","20 ngày LV từ ký HĐMB",.05,{sr:"kh",nh:.50}),D("Đợt 4","Bàn giao nhà (25%)",.25,{sr:"kh"}),D("","KPBT (2%)",null,{kpbt:1}),D("Đợt 5","Cấp GCN QSH",.05,{sr:"kh"})];
-  if(t==="som70")return[D("Mở bán","Booking sang đặt cọc",null,{fx:BK}),D("Đợt 1","Ký TTĐC (gồm 50tr)",.05),D("Đợt 2","Ký HĐMB – TT 65%",.65),D("Đợt 3","Bàn giao nhà (25%)",.25),D("","KPBT (2%)",null,{kpbt:1}),D("Đợt 4","Cấp GCN QSH",.05)];
-  if(t==="som95")return[D("Mở bán","Booking sang đặt cọc",null,{fx:BK}),D("Đợt 1","Ký TTĐC (gồm 50tr)",.05),D("Đợt 2","Ký HĐMB – TT 90%",.90),D("","KPBT (2%)",null,{kpbt:1}),D("Đợt 3","Cấp GCN QSH",.05)];
-}
-
-function rT(t,p){
-  const sc=gS(t),iv=t==="vay30"||t==="vay20";
-  let h="<table><thead><tr><th>Đợt</th><th>Nội dung</th><th>Tỷ lệ</th>";
-  if(iv)h+="<th>Nguồn</th>";
-  h+="<th>Số tiền (VNĐ)</th><th>Lũy kế (VNĐ)</th></tr></thead><tbody>";
-  let cm=0,tt=0;
-  sc.forEach(r=>{
-    let a=0,pd="",cl="",sg="";
-    if(r.fx){a=r.fx;pd=fm(r.fx)+" đ"}
-    else if(r.kpbt){a=p.kp;pd="2% KPBT";cl="rkp"}
-    else if(r.p!=null){a=p.h*r.p;pd=fp(r.p)}
-    cm+=a;tt+=a;
-    if(iv&&r.sr==="kh")sg='<span class="tg tg-k">KH</span>';
-    let nh="";
-    if(r.nh){const na=p.h*r.nh;cm+=na;tt+=na;nh=`<tr class="rvat"><td class="c"></td><td>NH giải ngân ${fp(r.nh)}</td><td class="c">${fp(r.nh)}</td><td class="c"><span class="tg tg-n">NH</span></td><td class="n">${fm(na)}</td><td class="n">${fm(cm)}</td></tr>`}
-    h+=`<tr class="${cl}"><td class="c">${r.d}</td><td>${r.s}</td><td class="c">${pd}</td>`;
-    if(iv)h+=`<td class="c">${sg}</td>`;
-    h+=`<td class="n">${fm(a)}</td><td class="n">${fm(cm)}</td></tr>${nh}`;
-  });
-  const cs=iv?4:3;
-  h+=`<tr class="rtot"><td class="c" colspan="${cs-1}"></td><td style="text-align:right">TỔNG CỘNG</td>`;
-  if(iv)h+="<td></td>";
-  h+=`<td class="n">${fm(tt)}</td><td class="n">${fm(tt)}</td></tr></tbody></table>`;
-  return h;
-}
-
-function rD(t,p){
-  let h=`<h3>Chi tiết chiết khấu</h3><div class="ckl"><span>Giá gốc (chưa VAT, KPBT)</span><span style="font-weight:600">${fm(p.b)} đ</span></div><div class="ckl"><span>CK ưu đãi mở bán (${fp(p.ur)})</span><span class="cv">-${fm(p.u)} đ</span></div>`;
-  if(p.r>0)h+=`<div class="ckl"><span>CK thanh toán sớm (${fp(p.r)})</span><span class="cv">-${fm(p.s)} đ</span></div>`;
-  h+=`<hr style="border:none;border-top:1px solid var(--f2);margin:6px 0"><div class="ckl"><span>Tổng CK (${fp(p.ur+p.r)})</span><span class="cv" style="font-size:14px">-${fm(p.k)} đ</span></div><div class="ckl"><span>Giá sau CK</span><span style="font-weight:600">${fm(p.bc)} đ</span></div><div class="ckl"><span>VAT 10%</span><span>${fm(p.v)} đ</span></div><div class="ckl"><span>KPBT 2%</span><span>${fm(p.kp)} đ</span></div><hr style="border:none;border-top:1px solid var(--f2);margin:6px 0"><div class="ckl"><span style="font-weight:700">Tổng thanh toán</span><span style="font-weight:700;font-size:15px;color:var(--b9)">${fm(p.f)} đ</span></div>`;
-  if(t==="vay30"||t==="vay20")h+=`<hr style="border:none;border-top:1px dashed var(--f3);margin:6px 0"><div class="ckl"><span style="font-style:italic;font-size:11px">HTLS: tối đa 70% giá trị CH, 24 tháng | Vay tối đa 35 năm</span></div>`;
-  return h;
-}
-
 const STUDIO_UNITS=new Set(["G1.10.CH01","G1.10.CH02","G1.10.CH17","G1.10.CH24","G1.10.CH27","G1.10.CH28","G1.10.CH29","G1.11.CH01","G1.11.CH02","G1.11.CH17","G1.11.CH24","G1.11.CH27","G1.11.CH28","G1.11.CH29","G1.12.CH01","G1.12.CH02","G1.12.CH17","G1.12.CH24","G1.12.CH27","G1.12.CH28","G1.12.CH29","G1.13.CH01","G1.13.CH02","G1.13.CH17","G1.13.CH24","G1.13.CH27","G1.13.CH28","G1.13.CH29","G1.14.CH01","G1.14.CH02","G1.14.CH17","G1.14.CH24","G1.14.CH27","G1.14.CH28","G1.14.CH29","G1.15.CH01","G1.15.CH02","G1.15.CH17","G1.15.CH24","G1.15.CH27","G1.15.CH28","G1.15.CH29","G1.16.CH01","G1.16.CH02","G1.16.CH17","G1.16.CH24","G1.16.CH27","G1.16.CH28","G1.16.CH29","G1.17.CH01","G1.17.CH02","G1.17.CH17","G1.17.CH24","G1.17.CH27","G1.17.CH28","G1.17.CH29","G1.18.CH01","G1.18.CH02","G1.18.CH17","G1.18.CH24","G1.18.CH27","G1.18.CH28","G1.18.CH29","G1.19.CH01","G1.19.CH02","G1.19.CH17","G1.19.CH24","G1.19.CH27","G1.19.CH28","G1.19.CH29","G1.21.CH01","G1.21.CH02","G1.21.CH17","G1.21.CH24","G1.21.CH27","G1.21.CH28","G1.21.CH29","G1.22.CH01","G1.22.CH02","G1.22.CH17","G1.22.CH24","G1.22.CH27","G1.22.CH28","G1.22.CH29","G1.23.CH01","G1.23.CH02","G1.23.CH17","G1.23.CH24","G1.23.CH27","G1.23.CH28","G1.23.CH29","G1.24.CH01","G1.24.CH02","G1.24.CH17","G1.24.CH24","G1.25.CH01","G1.25.CH02","G1.25.CH17","G1.25.CH24","G1.26.CH01","G1.26.CH02","G1.26.CH17","G1.26.CH24","G1.27.CH01","G1.27.CH02","G1.27.CH17","G1.28.CH01","G1.28.CH02","G1.28.CH17","G1.29.CH01","G1.29.CH02","G1.29.CH17","G1.3.CH01","G1.3.CH02","G1.3.CH27","G1.3.CH28","G1.3.CH29","G1.30.CH01","G1.30.CH02","G1.3A.CH01","G1.3A.CH02","G1.3A.CH27","G1.3A.CH28","G1.3A.CH29","G1.5.CH01","G1.5.CH02","G1.5.CH17","G1.5.CH24","G1.5.CH27","G1.5.CH28","G1.5.CH29","G1.6.CH01","G1.6.CH02","G1.6.CH17","G1.6.CH24","G1.6.CH27","G1.6.CH28","G1.6.CH29","G1.7.CH01","G1.7.CH02","G1.7.CH17","G1.7.CH24","G1.7.CH27","G1.7.CH28","G1.7.CH29","G1.8.CH01","G1.8.CH02","G1.8.CH17","G1.8.CH24","G1.8.CH27","G1.8.CH28","G1.8.CH29","G1.9.CH01","G1.9.CH02","G1.9.CH17","G1.9.CH24","G1.9.CH27","G1.9.CH28","G1.9.CH29","G2.10.CH07","G2.10.CH08","G2.10.CH09","G2.10.CH12","G2.10.CH18","G2.11.CH07","G2.11.CH08","G2.11.CH09","G2.11.CH12","G2.11.CH18","G2.12.CH07","G2.12.CH08","G2.12.CH09","G2.12.CH12","G2.12.CH18","G2.13.CH07","G2.13.CH08","G2.13.CH09","G2.13.CH12","G2.13.CH18","G2.14.CH07","G2.14.CH08","G2.14.CH09","G2.14.CH12","G2.14.CH18","G2.15.CH07","G2.15.CH08","G2.15.CH09","G2.15.CH12","G2.15.CH18","G2.16.CH07","G2.16.CH08","G2.16.CH09","G2.16.CH12","G2.16.CH18","G2.17.CH07","G2.17.CH08","G2.17.CH09","G2.17.CH12","G2.17.CH18","G2.18.CH07","G2.18.CH08","G2.18.CH09","G2.18.CH12","G2.18.CH18","G2.19.CH07","G2.19.CH08","G2.19.CH09","G2.19.CH12","G2.19.CH18","G2.21.CH07","G2.21.CH08","G2.21.CH09","G2.21.CH12","G2.21.CH18","G2.22.CH07","G2.22.CH08","G2.22.CH09","G2.22.CH12","G2.22.CH18","G2.23.CH07","G2.23.CH08","G2.23.CH09","G2.23.CH12","G2.23.CH18","G2.24.CH07","G2.24.CH13","G2.25.CH07","G2.25.CH13","G2.26.CH06","G2.26.CH12","G2.27.CH08","G2.28.CH07","G2.29.CH05","G2.3.CH07","G2.3.CH08","G2.3.CH09","G2.3.CH12","G2.3.CH18","G2.3A.CH07","G2.3A.CH08","G2.3A.CH09","G2.3A.CH12","G2.3A.CH18","G2.5.CH07","G2.5.CH08","G2.5.CH09","G2.5.CH12","G2.5.CH18","G2.6.CH07","G2.6.CH08","G2.6.CH09","G2.6.CH12","G2.6.CH18","G2.7.CH07","G2.7.CH08","G2.7.CH09","G2.7.CH12","G2.7.CH18","G2.8.CH07","G2.8.CH08","G2.8.CH09","G2.8.CH12","G2.8.CH18","G2.9.CH07","G2.9.CH08","G2.9.CH09","G2.9.CH12","G2.9.CH18"]);
 const ONEPN_UNITS=new Set(["G1.3.CH17","G1.3.CH24","G1.3A.CH17","G1.3A.CH24","G2.10.CH21","G2.11.CH21","G2.12.CH21","G2.13.CH21","G2.14.CH21","G2.15.CH21","G2.16.CH21","G2.17.CH21","G2.18.CH21","G2.19.CH21","G2.21.CH21","G2.22.CH21","G2.23.CH21","G2.24.CH16","G2.25.CH16","G2.26.CH15","G2.27.CH11","G2.28.CH10","G2.29.CH08","G2.30.CH05","G2.5.CH21","G2.6.CH21","G2.7.CH21","G2.8.CH21","G2.9.CH21"]);
-function showLayout(u,uk){
-  const lyW=document.getElementById("lyW");
-  const lyI=document.getElementById("lyI");
-  const lyT=document.getElementById("lyT");
-  if(uk && STUDIO_UNITS.has(uk)){
-    lyI.src=ISTUDIO;
-    lyT.textContent="Mặt bằng căn hộ — Căn Studio";
-    lyW.style.display="block";
-  }else if(uk && ONEPN_UNITS.has(uk)){
-    lyI.src=I1PN;
-    lyT.textContent="Mặt bằng căn hộ — Căn 1 Ngủ";
-    lyW.style.display="block";
-  }else{
-    lyW.style.display="none";
-  }
-}
-function render(){
-  if(!cU||!cUP)return;
-  const u=U[cU];
-  const lp=calcLP(u);
-  const p=calc(lp,cT);
-  document.getElementById("sB").textContent=fm(p.b)+" đ";
-  document.getElementById("sK").textContent="-"+fm(p.k)+" đ";
-  document.getElementById("sFi").textContent=fm(p.f)+" đ";
-  document.getElementById("sR").style.display="grid";
-  document.getElementById("tS").innerHTML=rT(cT,p);
-  document.getElementById("tS").style.display="block";
-  document.getElementById("dI").innerHTML=rD(cT,p);
-  document.getElementById("dI").style.display="block";
-  document.getElementById("pS").style.display="block";
-  const twLabel=cTw==="G1"?"Tòa G1":"Tòa G2";
-  document.getElementById("pU").textContent=`${twLabel} | Căn ${cU.split(".").slice(1).join(".")} | TT: ${u.t}m² | TTg: ${u.g}m² | Niêm yết: ${fm(lp)} đ`;
-  document.getElementById("xLP").value=fm(lp)+" đ";
-  const cl=document.getElementById("xCl").value.trim(),co=document.getElementById("xCo").value.trim(),cp=document.getElementById("xCp").value.trim(),pa=[];
-  if(cl)pa.push("KH: "+cl);if(co)pa.push("TVV: "+co);if(cp)pa.push("SĐT TVV: "+cp);
-  document.getElementById("pC").textContent=pa.join(" | ");
+
+const r=Math.round;
+const fmt=n=>r(n).toLocaleString('vi-VN')+' đ';
+const fmtS=n=>r(n).toLocaleString('vi-VN');
+const pc=x=>String(+(x*100).toFixed(2)).replace('.',',')+'%';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const parseNum=s=>parseInt(String(s).replace(/\D/g,''))||0;
+const parseDec=s=>{const v=parseFloat(String(s).replace(',','.'));return isFinite(v)?v:0;};
+const PH_COL={k1:'var(--ph1)',k2:'var(--ph2)',k3:'var(--ph3)',k4:'var(--ph4)'};
+
+/* ── 5 PHƯƠNG THỨC (theo bảng chính sách) ── */
+const CMP_HO=19, NH_M=2;
+const SC=[
+ {id:'chuan',no:'01',short:'Chuẩn',name:'Thanh toán chuẩn',full:'PT 01 · Thanh toán chuẩn (30 ngày/đợt)',m:CMP_HO},
+ {id:'vay30',no:'02',short:'Vay NH 30%',name:'Vay ngân hàng · tự có 30%',full:'PT 02 · Vay ngân hàng, tự có 30% (NH giải ngân 65%)',m:NH_M,bank:true},
+ {id:'vay20',no:'03',short:'Vay NH 20%',name:'Vay ngân hàng · tự có 20%',full:'PT 03 · Vay ngân hàng, tự có 20% (NH giải ngân 50%)',m:CMP_HO,bank:true},
+ {id:'som70',no:'04',short:'TT sớm 70%',name:'Thanh toán sớm 70%',full:'PT 04 · Thanh toán sớm 70%',m:CMP_HO},
+ {id:'som95',no:'05',short:'TT sớm 95%',name:'Thanh toán sớm 95%',full:'PT 05 · Thanh toán sớm 95%',m:1}
+];
+const st={tw:'',fl:'',key:'',ppm:0,vat:.10,kpbt:.02,bk:50000000,ckU:.015,ck70:.04,ck95:.08,pt:0};
+
+function ckPT(i){const id=SC[i].id;return st.ckU+(id==='som70'?st.ck70:id==='som95'?st.ck95:0);}
+
+function compute(i){
+  const u=U[st.key];
+  const b=u.t*st.ppm,ck=ckPT(i),k=b*ck,A=b-k,V=A*st.vat,B=A*st.kpbt;
+  return {b,ck,k,A,V,B,h:A+V,D:A+V+B,list:b*(1+st.vat+st.kpbt),steps:[
+    {label:`CK ưu đãi mở bán (${pc(st.ckU)})`,pct:st.ckU,amt:b*st.ckU},
+    ...(SC[i].id==='som70'?[{label:`CK thanh toán sớm 70% (${pc(st.ck70)})`,pct:st.ck70,amt:b*st.ck70}]:[]),
+    ...(SC[i].id==='som95'?[{label:`CK thanh toán sớm 95% (${pc(st.ck95)})`,pct:st.ck95,amt:b*st.ck95}]:[])]};
 }
 
+/* Các đợt của từng phương thức (tỷ lệ trên giá sau CK + VAT, chưa gồm KPBT) */
+function gS(id){
+  const D=(d,s,p,o)=>({d,s,p,...o});
+  const bk=D('Booking','Booking sang đặt cọc',null,{fx:1,m:0});
+  if(id==='chuan'){
+    const a=[bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB (30 ngày từ TTĐC)',.10,{m:1}),D('Đợt 3','30 ngày từ hạn đợt 2',.10,{m:2})];
+    for(let n=4;n<=13;n++)a.push(D('Đợt '+n,`30 ngày từ hạn đợt ${n-1}`,.025,{m:n-1}));
+    a.push(D('Đợt 14','30 ngày từ hạn đợt 13',.05,{m:13}));
+    for(let n=15;n<=19;n++)a.push(D('Đợt '+n,`30 ngày từ hạn đợt ${n-1}`,.03,{m:n-1}));
+    a.push(D('Đợt 20','Bàn giao nhà',.25,{m:CMP_HO,hand:1}),D('KPBT','Phí bảo trì (cùng đợt bàn giao)',null,{kpbt:1,m:CMP_HO}),D('Đợt 21','Cấp GCN QSH',.05,{gcn:1}));
+    return a;
+  }
+  if(id==='vay30')return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB (30 ngày từ TTĐC)',.10,{m:1}),D('Đợt 3','20 ngày làm việc từ ký HĐMB',.15,{m:NH_M,nh:.65}),D('KPBT','Phí bảo trì',null,{kpbt:1,m:CMP_HO}),D('Đợt 4','Cấp GCN QSH',.05,{gcn:1})];
+  if(id==='vay20')return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB (30 ngày từ TTĐC)',.10,{m:1}),D('Đợt 3','20 ngày làm việc từ ký HĐMB',.05,{m:NH_M,nh:.50}),D('Đợt 4','Bàn giao nhà',.25,{m:CMP_HO,hand:1}),D('KPBT','Phí bảo trì (cùng đợt bàn giao)',null,{kpbt:1,m:CMP_HO}),D('Đợt 5','Cấp GCN QSH',.05,{gcn:1})];
+  if(id==='som70')return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB – thanh toán 65%',.65,{m:1}),D('Đợt 3','Bàn giao nhà',.25,{m:CMP_HO,hand:1}),D('KPBT','Phí bảo trì (cùng đợt bàn giao)',null,{kpbt:1,m:CMP_HO}),D('Đợt 4','Cấp GCN QSH',.05,{gcn:1})];
+  return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB – thanh toán 90%',.90,{m:1}),D('KPBT','Phí bảo trì',null,{kpbt:1,m:CMP_HO}),D('Đợt 3','Cấp GCN QSH',.05,{gcn:1})];
+}
+
+function schedule(i,R){
+  const id=SC[i].id,rows=[];let first=true;
+  gS(id).forEach(x=>{
+    let k,tot,pre,vat,bank=0,pct=x.p||0,tag='',w='',nn=x.d.replace('Đợt ','');
+    if(x.fx){k='k1';tot=st.bk;pre=null;vat=null;pct=null;nn='★';tag='💰 Đã nộp';w='Khi booking';}
+    else if(x.kpbt){k='k3';tot=R.B;pre=R.B;vat=0;pct=st.kpbt;nn='+';w='T'+x.m;}
+    else{
+      k=x.gcn?'k4':x.hand?'k3':(/^Đợt [12]$/.test(x.d)?'k1':'k2');
+      const tp=(x.p||0)+(x.nh||0);pct=tp;
+      tot=tp*R.h;
+      if(/^Đợt 1$/.test(x.d)){tot=Math.max(0,tot-st.bk);tag='✍ Ký TTĐC';}
+      if(/^Đợt 2$/.test(x.d)&&x.p>=.5)tag='📝 Ký HĐMB';
+      if(x.hand)tag='🏠 Bàn giao';
+      if(x.gcn)tag='📄 Sổ hồng';
+      if(x.nh){bank=x.nh*R.h;tag='🏦 NH giải ngân '+pc(x.nh);}
+      vat=tot*st.vat/(1+st.vat);pre=tot-vat;
+      w=x.gcn?'Sau bàn giao':'T'+x.m;
+    }
+    rows.push({n:nn,w,g:x.s,d:x.d==='Booking'?'Booking':x.d,pct,pre,vat,tot,bank,own:tot-bank,k,tag});
+  });
+  const sum=(f,fl)=>rows.filter(fl||(()=>true)).reduce((s,x)=>s+f(x),0);
+  return {rows,total:sum(x=>x.tot),ownTotal:sum(x=>x.own),bankTotal:sum(x=>x.bank),
+    ownPre:sum(x=>x.own,x=>x.k==='k1'||x.k==='k2'),ownHand:sum(x=>x.own,x=>x.k==='k3'),ownPink:sum(x=>x.own,x=>x.k==='k4'),
+    pctBank:rows.reduce((s,x)=>s+(x.bank?x.bank/R.h:0),0)};
+}
+
+/* ── GIAO DIỆN ── */
+let LAST={};
+function buildUI(){
+  $('grp-pt').innerHTML=SC.map((s,i)=>`<button class="opt-btn${i===0?' active-ck':''}" onclick="setPT(${i})">PT ${s.no}<br><span style="font-size:10px">${s.short}</span></button>`).join('');
+  $('pt-tabs').innerHTML=SC.map((s,i)=>`<button class="pt-tab${i===0?' active':''}" onclick="setPT(${i})"><span class="tn">${s.no}</span><span class="tx">${s.name}</span><span class="tb" id="tab-b-${i}"></span></button>`).join('');
+  $('pt-panels').innerHTML=SC.map((s,i)=>`
+  <div class="pt-panel${i===0?' active':''}" id="pp${i}">
+    <div class="pt-info">
+      <div class="pi-item"><label>Căn Hộ</label><div class="piv" id="pt${i}-prod"></div></div>
+      <div class="pi-item"><label>Ký TTĐC · Bàn Giao</label><div class="piv">T0 · ~T${CMP_HO}</div></div>
+      <div class="pi-item"><label>Chiết khấu PT</label><div class="piv" id="pt${i}-ckbadge"></div></div>
+      <div class="pi-item big"><label>Tổng Giá Bán (VAT + KPBT)</label><div class="piv" id="pt${i}-total-info">—</div></div>
+    </div>
+    <div class="refund-note"><span id="pt${i}-note1"></span><b id="pt${i}-note2"></b></div>
+    <div class="prog-wrap"><div class="prog-ttl">Tiến Độ Thanh Toán</div>
+      <div class="prog-bar"><div class="prog-fill" id="pt${i}-prog"></div></div>
+      <div class="prog-labels" id="pt${i}-proglbl"></div></div>
+    <div id="pt${i}-phases"></div>
+    <div class="pt-total"><div><div class="pt-tl">Tổng Thanh Toán</div><div class="pt-tn" id="pt${i}-tn"></div></div><div class="pt-tv" id="pt${i}-grand">—</div></div>
+  </div>`).join('');
+}
+
+function rowHTML(x,bank,cum){
+  const when=`${x.w}${x.g?`<span class="gap-sub">${x.g}</span>`:''}`;
+  const desc=`${x.d}${x.tag?`<span class="mile-tag">${x.tag}</span>`:''}`;
+  const pct=x.pct==null?'—':`<span class="pct-b ${x.k}">${pc(x.pct)}</span>`;
+  const cls=x.tag?'mile-row':'';
+  const dash=v=>v==null?'—':fmtS(v);
+  if(!bank){
+    cum.v+=x.tot;
+    return `<tr class="${cls}"><td><span class="dot-n ${x.k}">${x.n}</span></td><td>${when}</td><td>${desc}</td><td>${pct}</td>
+      <td class="amt">${dash(x.pre)}</td><td class="vat-c">${x.vat?'+'+fmtS(x.vat):'—'}</td><td class="amt">${fmtS(x.tot)}</td><td class="cum">${fmtS(cum.v)}</td></tr>`;
+  }
+  cum.v+=x.own;
+  return `<tr class="${cls}"><td><span class="dot-n ${x.k}">${x.n}</span></td><td>${when}</td><td>${desc}</td><td>${pct}</td>
+    <td class="amt">${x.own?fmtS(x.own):'—'}</td><td class="amt" style="color:#6EC6E8">${x.bank?fmtS(x.bank):'—'}</td><td class="amt">${fmtS(x.tot)}</td><td class="cum">${fmtS(cum.v)}</td></tr>`;
+}
+
+function renderPanel(i){
+  const sc=SC[i],R=compute(i),S=schedule(i,R);LAST[i]={R,S};
+  const bank=!!sc.bank,u=U[st.key],ch=st.key.split('.').slice(1).join('.');
+  $(`pt${i}-prod`).textContent=`${st.tw==='G1'?'Tòa G1':'Tòa G2'} · Căn ${ch}`;
+  $(`pt${i}-ckbadge`).innerHTML=`<span class="badge-green">Tổng CK ${pc(R.ck)}</span>`;
+  $(`pt${i}-total-info`).textContent=fmt(R.D);
+  if(bank){
+    $(`pt${i}-note1`).textContent=`Ngân hàng giải ngân ${pc(S.bankTotal/R.h)} giá bán (trước KPBT) · giải ngân khoảng T${NH_M}`;
+    $(`pt${i}-note2`).textContent=`Tự có trước bàn giao: ${fmtS(S.ownPre)} đ`;
+  }else{
+    $(`pt${i}-note1`).textContent='Tiền khách tự bỏ ra đến trước bàn giao';
+    $(`pt${i}-note2`).textContent=`${pc(S.ownPre/(R.D||1))} · ${fmtS(S.ownPre)} đ`;
+  }
+  const head=bank?'<th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Vốn Tự Có</th><th>NH Giải Ngân</th><th>Tổng Đợt</th><th>Cộng Dồn (vốn tự có)</th>'
+                 :'<th>#</th><th>Thời Điểm</th><th>Mô Tả</th><th>%</th><th>Trước VAT</th><th>VAT</th><th>Có VAT</th><th>Cộng Dồn</th>';
+  const cum={v:0};
+  const k2rows=S.rows.filter(x=>x.k==='k2');
+  const phases=[
+    {k:'ph1',t:'Booking, Đặt Cọc & Ký HĐMB',s:'T0 → T1',ks:['k1']},
+    {k:'ph2',t:bank?'Ngân Hàng Giải Ngân':'Thanh Toán Theo Tiến Độ',s:k2rows.length?`${k2rows[0].w} → ${k2rows[k2rows.length-1].w} · ${k2rows.length} đợt`:'',ks:['k2']},
+    {k:'ph3',t:'Bàn Giao & Sổ Hồng',s:`Dự kiến ~T${CMP_HO} → sau bàn giao`,ks:['k3','k4']}
+  ];
+  $(`pt${i}-phases`).innerHTML=phases.map((ph,pi)=>{
+    const rs=S.rows.filter(x=>ph.ks.includes(x.k));
+    if(!rs.length)return '';
+    return `<div class="phase ${ph.k}"><div class="ph-hdr"><div class="ph-num">${['I','II','III'][pi]}</div><div><div class="ph-title">${ph.t}</div><div class="ph-sub">${ph.s}</div></div></div>
+    <div class="tbl-wrap"><table class="sched"><colgroup><col style="width:44px"><col style="width:150px"><col><col style="width:64px"><col style="width:116px"><col style="width:112px"><col style="width:120px"><col style="width:124px"></colgroup><thead><tr>${head}</tr></thead><tbody>${rs.map(x=>rowHTML(x,bank,cum)).join('')}</tbody></table></div></div>`;
+  }).join('');
+  const tot=S.total||1;
+  const groups=[{k:'k1',t:'Booking & HĐMB'},{k:'k2',t:bank?'NH giải ngân':'Theo tiến độ'},{k:'k3',t:'Bàn giao'},{k:'k4',t:'Sổ hồng'}]
+    .map(g=>({...g,v:S.rows.filter(x=>x.k===g.k).reduce((s,x)=>s+x.tot,0)})).filter(g=>g.v>0);
+  $(`pt${i}-prog`).innerHTML=groups.map(g=>`<div style="background:${PH_COL[g.k]};flex:${g.v/tot*100}"></div>`).join('');
+  $(`pt${i}-proglbl`).innerHTML=groups.map(g=>`<div class="prog-lbl"><div class="prog-dot" style="background:${PH_COL[g.k]}"></div>${g.t} — ${(g.v/tot*100).toFixed(0)}%</div>`).join('');
+  $(`pt${i}-grand`).textContent=fmt(S.total);
+  const nInst=S.rows.filter(x=>x.n!=='+'&&x.n!=='★').length;
+  let note=`${sc.name} · ${nInst} đợt`;
+  const diff=S.total-R.D;
+  note+=Math.abs(diff)<=5?' · khớp tổng giá bán':` · chênh làm tròn ${diff>0?'+':''}${r(diff)} đ`;
+  if(bank) note+=` · NH giải ngân ${fmtS(S.bankTotal)} đ (${(S.bankTotal/R.D*100).toFixed(1)}% tổng giá)`;
+  $(`pt${i}-tn`).textContent=note;
+  $(`tab-b-${i}`).textContent=bank?`Vay ${pc(S.bankTotal/R.h)}`:`${nInst} đợt`;
+}
+
+function renderCompare(){
+  const ds=SC.map((_,i)=>LAST[i].R.D),minD=Math.min(...ds),maxD=Math.max(...ds);
+  $('cmp-wrap').innerHTML=`<table class="cmp-table"><thead><tr><th>Phương thức</th><th>Tổng CK</th><th>Tổng giá bán (D)</th><th>Tự có trước bàn giao</th><th>Đợt bàn giao</th><th>Sổ hồng</th><th>NH giải ngân</th><th>Dòng tiền</th></tr></thead><tbody>`+
+  SC.map((s,i)=>{
+    const {R,S}=LAST[i];
+    const best=(minD<maxD&&R.D===minD)?'<span class="best">THẤP NHẤT</span>':'';
+    return `<tr class="${i===st.pt?'sel':''}" onclick="setPT(${i})"><td>${s.no} · ${s.name}</td><td>${pc(R.ck)}</td>
+      <td>${fmtS(R.D)}${best}</td>
+      <td>${fmtS(S.ownPre)}<span class="cmp-sub">${(S.ownPre/(R.D||1)*100).toFixed(1)}% tổng giá</span></td>
+      <td>${fmtS(S.ownHand)}</td><td>${fmtS(S.ownPink)}</td><td>${S.bankTotal?fmtS(S.bankTotal):'—'}</td><td>~${s.m} tháng</td></tr>`;
+  }).join('')+`</tbody></table>`;
+}
+
+function summaryHTML(R){
+  let h=`<div class="sum-row"><span class="sum-lbl" style="font-weight:700;color:rgba(255,255,255,.9)">Giá gốc = ${fmtS(st.ppm)} đ/m² × ${U[st.key].t.toLocaleString('vi-VN')} m² thông thủy</span>
+    <span class="sum-val" style="font-family:'Playfair Display',serif;font-size:18px;color:var(--gold-l)">${fmt(R.b)}</span></div>`;
+  R.steps.forEach(s=>{h+=`<div class="sum-row pct-ck" style="flex-direction:column;align-items:flex-start;gap:2px;padding:8px 0">
+    <div style="display:flex;justify-content:space-between;width:100%;align-items:center"><span class="sum-lbl" style="font-weight:600;color:#6EC6E8">${s.label}</span><span class="sum-val" style="color:#6EC6E8;font-size:14px">- ${fmt(s.amt)}</span></div></div>`;});
+  h+=`<div class="sum-row final-pre" style="margin-top:8px"><span class="sum-lbl">Giá bán PT ${SC[st.pt].no} (A, chưa VAT &amp; KPBT)</span><span class="sum-val">${fmt(R.A)}</span></div>
+   <div class="sum-row vat-row"><span class="sum-lbl">Phí bảo trì (B) = ${pc(st.kpbt)} × A</span><span class="sum-val">+ ${fmt(R.B)}</span></div>
+   <div class="sum-row vat-row"><span class="sum-lbl">VAT (C) = ${pc(st.vat)} × A</span><span class="sum-val">+ ${fmt(R.V)}</span></div>
+   <div class="sum-row total-row"><span class="sum-lbl">Tổng giá bán căn hộ (D) = A + B + C</span><span class="sum-val">${fmt(R.D)}</span></div>`;
+  return h;
+}
+
+function ready(){return !!(st.key&&st.ppm>0);}
+
+function recalc(){
+  const ok=ready();
+  $('res').style.display=ok?'block':'none';
+  $('res-hint').style.display=ok?'none':'block';
+  $('sum-box').style.display=ok?'block':'none';
+  $('ck-res-grid').style.display=ok?'grid':'none';
+  if(st.key&&U[st.key]){$('xLP').value=st.ppm?fmt(U[st.key].t*st.ppm*(1+st.vat+st.kpbt)):'';}
+  if(!ok){if(window.NATLoan)NATLoan.refresh();return;}
+  const R=compute(st.pt);
+  $('sum-box').innerHTML=summaryHTML(R);
+  $('tb-pre').textContent=fmt(R.A);$('tb-total').textContent=fmt(R.D);
+  $('tb-note').textContent=`Giá PT ${SC[st.pt].no} ${SC[st.pt].short} · tổng CK ${pc(R.ck)}`;
+  LAST={};
+  SC.forEach((_,i)=>renderPanel(i));
+  $('ck-res-grid').innerHTML=SC.map((s,i)=>`<div><label>${s.no} · ${s.short}</label><div class="ck-res"><div class="a">Giá bán A (chưa VAT &amp; KPBT)</div><div class="v">${fmtS(LAST[i].R.A)} đ</div><div class="t">Gồm VAT + KPBT: <b>${fmtS(LAST[i].R.D)} đ</b></div></div></div>`).join('');
+  renderCompare();
+  if(window.NATLoan)NATLoan.refresh();
+}
+
+function setPT(i){
+  st.pt=i;var lp=document.getElementById("leadPt");if(lp)lp.value=i+1;
+  document.querySelectorAll('#grp-pt .opt-btn').forEach((b,j)=>b.classList.toggle('active-ck',j===i));
+  document.querySelectorAll('.pt-tab').forEach((b,j)=>b.classList.toggle('active',j===i));
+  document.querySelectorAll('.pt-panel').forEach((p,j)=>p.classList.toggle('active',j===i));
+  recalc();
+}
+
+/* ── CHỌN CĂN ── */
+function showLayout(uk){
+  const lyW=$('lyW'),lyI=$('lyI'),lyT=$('lyT');
+  if(uk&&STUDIO_UNITS.has(uk)){lyI.src=ISTUDIO;lyT.textContent='Mặt bằng căn hộ — Căn Studio';lyW.style.display='flex';}
+  else if(uk&&ONEPN_UNITS.has(uk)){lyI.src=I1PN;lyT.textContent='Mặt bằng căn hộ — Căn 1 Ngủ';lyW.style.display='flex';}
+  else lyW.style.display='none';
+}
 function sM(ch){
-  const m=document.getElementById("fpM");
-  const uc=cTw==="G1"?UC_G1:UC_G2;
-  const fo=cTw==="G1"?FO_G1:FO_G2;
-  const ov=fo[cF];
-  const c=(ov&&ov[ch])||uc[ch];
-  if(!c){m.style.display="none";return}
-  m.style.left=c[0]+"%";m.style.top=c[1]+"%";m.style.display="block";
+  const m=$('fpM'),uc=st.tw==='G1'?UC_G1:UC_G2,fo=st.tw==='G1'?FO_G1:FO_G2,ov=fo[st.fl],c=(ov&&ov[ch])||uc[ch];
+  if(!c){m.style.display='none';return}
+  m.style.left=c[0]+'%';m.style.top=c[1]+'%';m.style.display='block';
 }
-
-function oTC(){
-  cTw=document.getElementById("sT").value;
-  const sF=document.getElementById("sF");
-  sF.innerHTML='<option value="">-- Chọn tầng --</option>';
-  if(!cTw){document.getElementById("fpW").style.display="none";clr();return}
-  const floors=FLOORS[cTw];
-  floors.forEach(f=>{
-    const o=document.createElement("option");
-    o.value=f;o.textContent="Tầng "+f;sF.appendChild(o);
-  });
-  clr();
+function showPlan(){
+  const k=st.tw+'.'+st.fl,src=FI[k];
+  if(st.tw&&st.fl&&src){$('fpI').src=src;$('fpW').style.display='block';$('fpPh').style.display='none';}
+  else{$('fpW').style.display='none';$('fpPh').style.display='flex';}
+  $('fpM').style.display='none';
 }
-
-function oFC(){
-  cF=document.getElementById("sF").value;
-  const s=document.getElementById("sU");
-  s.innerHTML='<option value="">-- Chọn căn --</option>';
-  if(!cF||!cTw){document.getElementById("fpW").style.display="none";clr();return}
-  const fiKey=cTw+"."+cF;
-  if(FI[fiKey]){
-    document.getElementById("fpI").src=FI[fiKey];
-    document.getElementById("fpW").style.display="block";
-  }else{
-    document.getElementById("fpW").style.display="none";
-  }
-  document.getElementById("fpM").style.display="none";
-  const px=cTw+"."+cF+".";
-  Object.keys(U).filter(k=>k.startsWith(px)).sort((a,b)=>{
-    const na=parseInt(a.split(".CH")[1]),nb=parseInt(b.split(".CH")[1]);
-    return na-nb;
-  }).forEach(k=>{
-    const u=U[k],ch=k.split(".")[2];
-    const o=document.createElement("option");
-    o.value=k;o.textContent=`${ch} — TT: ${u.t}m² | TTg: ${u.g}m²`;s.appendChild(o);
-  });
-  clr();
-}
-
 function clr(){
-  cU=null;
-  ["xTT","xTG","xLP"].forEach(i=>document.getElementById(i).value="");
-  ["sR","tB","tS","dI","pS","lyW"].forEach(i=>document.getElementById(i).style.display="none");
+  st.key='';
+  ['xTT','xTG','xLP'].forEach(i=>$(i).value='');
+  $('lyW').style.display='none';
+  $('unit-info').textContent='Chọn tòa, tầng và mã căn để tự điền diện tích. Sau đó chỉ cần nhập đơn giá/m².';
+  recalc();
 }
-
+function oTC(){
+  st.tw=$('sT').value;st.fl='';
+  const sF=$('sF');sF.innerHTML='<option value="">— Chọn tầng —</option>';
+  $('sU').innerHTML='<option value="">— Chọn tầng trước —</option>';
+  if(st.tw)FLOORS[st.tw].forEach(f=>{const o=document.createElement('option');o.value=f;o.textContent='Tầng '+f;sF.appendChild(o);});
+  showPlan();clr();
+}
+function oFC(){
+  st.fl=$('sF').value;
+  const s=$('sU');s.innerHTML='<option value="">— Chọn căn —</option>';
+  showPlan();
+  if(st.fl&&st.tw){
+    const px=st.tw+'.'+st.fl+'.';
+    Object.keys(U).filter(k=>k.startsWith(px)).sort((a,b)=>parseInt(a.split('.CH')[1])-parseInt(b.split('.CH')[1])).forEach(k=>{
+      const u=U[k],o=document.createElement('option');o.value=k;o.textContent=`${k.split('.')[2]} — TT: ${u.t}m² | TTg: ${u.g}m²`;s.appendChild(o);});
+  }
+  clr();
+}
 function oUC(){
-  const c=document.getElementById("sU").value;
-  if(!c){clr();document.getElementById("fpM").style.display="none";return}
-  cU=c;
-  const u=U[c],ch=c.split(".")[2];
-  document.getElementById("xTT").value=u.t+" m²";
-  document.getElementById("xTG").value=u.g+" m²";
-  if(cUP){
-    document.getElementById("xLP").value=fm(calcLP(u))+" đ";
-  }
-  document.getElementById("tB").style.display="flex";
-  sM(ch);
-  showLayout(u,c);
-  render();
+  const c=$('sU').value;
+  if(!c){$('fpM').style.display='none';clr();return}
+  st.key=c;
+  const u=U[c],ch=c.split('.')[2];
+  $('xTT').value=u.t+' m²';$('xTG').value=u.g+' m²';
+  $('unit-info').innerHTML=`<b>${st.tw==='G1'?'Tòa G1':'Tòa G2'} · Tầng ${st.fl} · ${ch}</b><br>Thông thủy ${u.t} m² · Tim tường ${u.g} m²`;
+  sM(ch);showLayout(c);recalc();
 }
 
-function sw(t){cT=t;var lp=document.getElementById("leadPt");if(lp)lp.value=t;document.querySelectorAll(".tb").forEach(b=>b.classList.toggle("act",b.dataset.t===t));render()}
+/* ── Ô NHẬP ── */
+function bindNum(id,fn){$(id).addEventListener('input',function(){const raw=this.value.replace(/[^0-9]/g,'');if(raw)this.value=parseInt(raw).toLocaleString('vi-VN');fn(parseNum(this.value));});}
+bindNum('xUP',v=>{st.ppm=v;recalc();});
+bindNum('bkInp',v=>{st.bk=v;recalc();});
+const bindPct=(id,key,max)=>$(id).addEventListener('input',function(){st[key]=Math.min(Math.max(parseDec(this.value),0),max)/100;recalc();});
+bindPct('vatInp','vat',50);bindPct('kpbtInp','kpbt',20);bindPct('ckU','ckU',50);bindPct('ck70','ck70',50);bindPct('ck95','ck95',50);
+$('xCp').addEventListener('input',function(){const v=this.value.replace(/[^0-9+\s.\-]/g,'');if(v!==this.value)this.value=v;});
 
-document.getElementById("xCl").addEventListener("input",()=>{if(cU)render()});
-document.getElementById("xCo").addEventListener("input",()=>{if(cU)render()});
-document.getElementById("xCp").addEventListener("input",function(){const v=this.value.replace(/[^0-9+\s.\-]/g,"");if(v!==this.value)this.value=v;if(cU)render()});
-document.getElementById("xUP").addEventListener("input",function(){
-  const raw=this.value.replace(/[^0-9]/g,"");
-  if(raw){
-    const num=parseInt(raw);
-    this.value=num.toLocaleString("vi-VN");
-  }
-  onUP();
+/* ── VAY NGÂN HÀNG + PDF (module dùng chung) ── */
+function loanCtx(){
+  if(!ready())return null;
+  const methods=SC.map((sc,i)=>{
+    const R=compute(i),S=schedule(i,R),tr=[];
+    S.rows.forEach(x=>{if(x.bank>0)tr.push({m:NH_M,amt:x.bank});});
+    const bg=S.rows.find(x=>x.k==='k3'&&x.n!=='+');
+    const iv=tr.length>0;
+    return {id:sc.id,name:sc.short,f:R.D,h:R.h,tr,
+      ho:bg?{m:CMP_HO,amt:bg.tot}:null,hand:CMP_HO,
+      htls:iv?{m:24,pct:100}:null,maxPct:iv?0.7:null,
+      note:iv?'Chủ đầu tư hỗ trợ lãi suất tối đa 70% giá trị căn hộ trong 24 tháng, vay tối đa 35 năm. Bảng tính giả định chủ đầu tư chịu toàn bộ lãi trong thời gian này (sửa ở ô “CĐT hỗ trợ lãi”)':''};
+  });
+  const ch=st.key.split('.').slice(1).join('.');
+  return {sel:SC[st.pt].id,methods,brand:{project:'NAM MEKONG GRAND PLAZA',unit:(st.tw==='G1'?'Tòa G1':'Tòa G2')+' · Căn '+ch,footer:'Bảng tính tham khảo · nguyenanhtu.vn'}};
+}
+
+function lightSchedule(i){
+  const {R,S}=LAST[i],bank=!!SC[i].bank,cum={v:0};
+  const dash=v=>v==null?'–':fmtS(v);
+  let h=`<table class="nl-t"><thead><tr><th>Đợt</th><th>Mốc</th><th>Nội dung</th><th>%</th>${bank?'<th>Vốn tự có (đ)</th><th>NH giải ngân (đ)</th>':'<th>Trước VAT (đ)</th><th>VAT (đ)</th>'}<th>Tổng đợt (đ)</th><th>Cộng dồn tự có (đ)</th></tr></thead><tbody>`;
+  S.rows.forEach(x=>{
+    cum.v+=bank?x.own:x.tot;
+    h+=`<tr><td>${x.n}</td><td>${x.w}</td><td style="text-align:left">${esc(x.g)}${x.tag?` <b>· ${x.tag}</b>`:''}</td><td>${x.pct==null?'–':pc(x.pct)}</td>${bank?`<td>${x.own?fmtS(x.own):'–'}</td><td>${x.bank?fmtS(x.bank):'–'}</td>`:`<td>${dash(x.pre)}</td><td>${x.vat?fmtS(x.vat):'–'}</td>`}<td>${fmtS(x.tot)}</td><td>${fmtS(cum.v)}</td></tr>`;
+  });
+  return h+`<tr class="nl-tot"><td colspan="${bank?6:6}">Tổng</td><td>${fmtS(S.total)}</td><td>${fmtS(bank?S.ownTotal:S.total)}</td></tr></tbody></table>`;
+}
+function lightCompare(){
+  let h='<table class="nl-t"><thead><tr><th>Phương thức</th><th>Tổng CK</th><th>Tổng giá bán (đ)</th><th>Tự có trước bàn giao (đ)</th><th>Đợt bàn giao (đ)</th><th>Sổ hồng (đ)</th><th>NH giải ngân (đ)</th><th>Dòng tiền</th></tr></thead><tbody>';
+  SC.forEach((s,i)=>{const {R,S}=LAST[i];h+=`<tr class="${i===st.pt?'nl-sel':''}"><td>${s.no} · ${s.name}${i===st.pt?' ✓':''}</td><td>${pc(R.ck)}</td><td><b>${fmtS(R.D)}</b></td><td>${fmtS(S.ownPre)}</td><td>${fmtS(S.ownHand)}</td><td>${fmtS(S.ownPink)}</td><td>${S.bankTotal?fmtS(S.bankTotal):'–'}</td><td>~${s.m} tháng</td></tr>`;});
+  return h+'</tbody></table>';
+}
+function pdfDeck(){
+  const ctx=loanCtx();if(!ctx)return;
+  const u=U[st.key],i=st.pt,{R}=LAST[i],tw=st.tw==='G1'?'Tòa G1':'Tòa G2',ch=st.key.split('.').slice(1).join('.');
+  const cl=$('xCl').value.trim(),co=$('xCo').value.trim(),cp=$('xCp').value.trim();
+  const mk=$('fpM'),mkOn=mk&&mk.style.display!=='none'&&mk.style.left;
+  const fp0=$('fpW').style.display!=='none'?$('fpI').src:'';
+  const ly=$('lyW').style.display!=='none'?$('lyI').src:'';
+  const img=(src,cap,marker)=>src?`<div style="flex:1;min-width:0"><div style="position:relative"><img src="${src}" alt="${esc(cap)}" style="width:100%;max-height:105mm;object-fit:contain;display:block;border:1px solid #dee2e6">${marker?`<div style="position:absolute;left:${mk.style.left};top:${mk.style.top};width:20px;height:20px;border-radius:50%;background:rgba(220,38,38,.85);border:2px solid #fff;transform:translate(-50%,-50%)"></div>`:''}</div><div style="font-size:10px;color:#6c757d;margin-top:3px">${esc(cap)}</div></div>`:'';
+  const kv=[['Tòa / Tầng / Căn',`${tw} · Tầng ${st.fl} · ${st.key.split('.')[2]}`],['DT thông thủy',u.t+' m²'],['DT tim tường',u.g+' m²'],['Đơn giá',fmtS(st.ppm)+' đ/m² (chưa VAT & KPBT)'],['Giá gốc',fmt(R.b)],['Phương thức đang chọn',SC[i].full],['Tổng chiết khấu',`${pc(R.ck)} · - ${fmt(R.k)}`],['Giá bán sau CK (A)',fmt(R.A)],['VAT '+pc(st.vat)+' + KPBT '+pc(st.kpbt),'+ '+fmt(R.V+R.B)],['Tổng giá bán (D)',fmt(R.D)]];
+  const cover=`<div class="cov"><b>${tw} · Căn ${ch}</b><span>${SC[i].full}${cl?' · Khách hàng: '+esc(cl):''}</span></div>`+
+    `<table style="margin-bottom:12px">${kv.map(r_=>`<tr><td style="padding:6px 8px;border-bottom:1px solid #dee2e6;color:#6c757d;width:42%">${r_[0]}</td><td style="padding:6px 8px;border-bottom:1px solid #dee2e6;font-weight:700;color:#0c2340">${r_[1]}</td></tr>`).join('')}</table>`+
+    `<div style="display:flex;gap:10px">${img(ly,'Mặt bằng căn hộ')}${img(fp0,'Mặt bằng tầng '+st.fl+' · '+tw,mkOn)}</div>`;
+  const contact=NATQR.contact({client:cl,agent:co,phone:cp});
+  NATLoan.printPdf(ctx,{pages:[['Báo giá căn hộ',cover],['Lịch thanh toán · '+SC[i].name,lightSchedule(i)],['So sánh các phương thức thanh toán',lightCompare()]],contact});
+}
+
+/* ── INIT ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  buildUI();
+  if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
+  recalc();
 });
-</script><script src="/assets/js/zoom.js"></script>
+</script>
+<script src="/assets/js/zoom.js"></script>
 <script>
 (function(){
   if(!window.NATZoom) return;
@@ -287,5 +503,6 @@ document.getElementById("xUP").addEventListener("input",function(){
 })();
 </script>
 <meta name="lead-project" content="nam-mekong-grand-plaza"><link rel="stylesheet" href="/assets/lead/lead.css"><script src="/assets/lead/lead.js" defer></script>
-<input type="hidden" id="leadPt" value="chuan" data-lead-input="pt" data-lead-label="Phương thức thanh toán số"><script>document.getElementById("leadPt").addEventListener("input",function(){sw(this.value)})</script><button type="button" data-lead-open style="position:fixed;right:14px;bottom:14px;z-index:90;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận phương án này</button>
-</body></html>
+<input type="hidden" id="leadPt" value="1" data-lead-input="pt" data-lead-label="Phương thức thanh toán số"><script>document.getElementById("leadPt").addEventListener("input",function(){var n=parseInt(this.value,10)-1;if(n>=0&&typeof setPT==="function")setPT(n)})</script><button type="button" data-lead-open style="position:fixed;right:14px;bottom:14px;z-index:90;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận phương án này</button>
+</body>
+</html>
