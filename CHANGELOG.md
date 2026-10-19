@@ -3,8 +3,8 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-10-19 — Nhật san kỳ 4 (bản nháp)
-- Thêm `publications/nhat-san/2026-10-19-so-04/`: "Sức mua — bài toán phải giải cho quý 4/2026" (tin tuần 12–18/10, bổ sung 19/10), 7 ảnh, 33 nguồn, trạng thái `nhap` (noindex) chờ Tú duyệt rồi công bố.
+## 2026-10-19 — Nhật san kỳ 4 (công bố)
+- Thêm `publications/nhat-san/2026-10-19-so-04/`: "Sức mua — bài toán phải giải cho quý 4/2026" (tin tuần 12–18/10, bổ sung 19/10), 7 ảnh, 33 nguồn, trạng thái `cong-bo` (Tú duyệt công bố 19/10).
 
 ## 2.17.4 — PDF phương án gửi lead dùng bản trình bày đầy đủ
 - File PDF tự tạo dùng bản trình bày đầy đủ (báo giá, lịch thanh toán, phương án vay ngân hàng, bảng trả nợ, so sánh, lưu ý) thay vì bản 1 trang; trang dài tự thu nhỏ vừa khổ A4, không méo.
