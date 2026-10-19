@@ -4,7 +4,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 
 ## 2026-10-19 — Nhật san kỳ 4 (công bố)
-- Thêm `publications/nhat-san/2026-10-19-so-04/`: "Sức mua — bài toán phải giải cho quý 4/2026" (tin tuần 12–18/10, bổ sung 19/10), 7 ảnh, 33 nguồn, trạng thái `cong-bo` (Tú duyệt công bố 19/10); bổ sung bản đồ khung chiến lược 100 năm (BCG) và sơ đồ 14 ga metro số 1.
+- Thêm `publications/nhat-san/2026-10-19-so-04/`: "Sức mua — bài toán phải giải cho quý 4/2026" (tin tuần 12–18/10, bổ sung 19/10), 7 ảnh, 33 nguồn, trạng thái `cong-bo` (Tú duyệt công bố 19/10); bổ sung bản đồ khung chiến lược 100 năm (BCG) , sơ đồ 14 ga metro số 1 và 6 ảnh hạ tầng (cầu đi bộ, metro 1, metro 2, quỹ đất trung tâm; đã xóa logo).
 
 ## 2.17.4 — PDF phương án gửi lead dùng bản trình bày đầy đủ
 - File PDF tự tạo dùng bản trình bày đầy đủ (báo giá, lịch thanh toán, phương án vay ngân hàng, bảng trả nợ, so sánh, lưu ý) thay vì bản 1 trang; trang dài tự thu nhỏ vừa khổ A4, không méo.
