@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import crypto from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -457,8 +458,10 @@ function externalizeBase64(html, outDir, urlBase) {
   let n = 0;
   return html.replace(/data:image\/(png|jpe?g|webp|gif|svg\+xml);base64,([A-Za-z0-9+/=\s]+)/g, (m, type, b64) => {
     const ext = type.startsWith('svg') ? 'svg' : type.replace('jpeg', 'jpg');
-    const name = `hinh-${String(++n).padStart(2, '0')}.${ext}`;
-    fs.writeFileSync(path.join(outDir, name), Buffer.from(b64.replace(/\s/g, ''), 'base64'));
+    const buf = Buffer.from(b64.replace(/\s/g, ''), 'base64');
+    const hash = crypto.createHash('md5').update(buf).digest('hex').slice(0, 8); // tên theo nội dung → đổi ảnh/thứ tự không bị cache cũ
+    const name = `hinh-${String(++n).padStart(2, '0')}-${hash}.${ext}`;
+    fs.writeFileSync(path.join(outDir, name), buf);
     return urlBase + name;
   });
 }

@@ -416,3 +416,6 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 ### Nội dung
 - 2026-09-29 — tài liệu: ghi địa chỉ kho GitHub, Cloudflare Pages; quy trình rút gọn cho Tú (PROJECT_RULES §11.0)
 - 2026-09-29 — ấn phẩm nháp: `atlas/world-economic-atlas-v1-5-16`, `nhat-san/so-00-demo` (chưa công bố)
+
+### Sửa lỗi cache ảnh (Nhật san kỳ 4)
+- `scripts/build.mjs`: ảnh tách từ base64 được đặt tên kèm mã băm nội dung (hinh-NN-xxxxxxxx.jpg) để trình duyệt/CDN không giữ ảnh cũ khi đổi thứ tự.
