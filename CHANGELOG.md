@@ -3,6 +3,18 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-19 — Công cụ: Bản đồ dự án — vị trí ga theo bản đồ mạng lưới Mạnh Vũ, lớp "Dự án quanh ga metro"
+- Nguồn: các trang bando.manhvu.com do Tú lưu và gửi (bản đồ mạng lưới Vành đai 1–4 & Metro; trang tuyến Metro số 1, Metro số 1 kéo dài, Metro số 1 kéo dài Đồng Nai, Metro số 2 Thủ Dầu Một – Tao Đàn, Đường sắt Thủ Thiêm – Long Thành, Quốc lộ 13). Chỉ lấy tọa độ ga, tọa độ và tên dự án; không lấy giá hay thông tin chi tiết.
+- Vị trí ga: chuyển nhãn ga trên bản đồ mạng lưới (MapLibre, mức phóng 15) sang tọa độ, căn theo 14 ga Tuyến 1 (sai lệch 7–60 m). Kiểm tra độc lập bằng khoảng cách dự án–ga ở các trang tuyến: 190 dự án, trung bình 17–19 m, lớn nhất 105 m.
+  - Tuyến 1: cả 14 ga; ga Bình Thái dời 446 m (khớp Wikipedia 10°49′57″B 106°45′50″Đ).
+  - Tuyến TP mới Bình Dương – Suối Tiên: 16/17 ga (S8 giữ vị trí cũ vì nhãn bị ẩn).
+  - Metro số 2 Thủ Dầu Một – Tao Đàn: thay 9 ga ước lượng (lệch tới vài km) bằng 24 ga C0–C23; C5 tính từ khoảng cách dự án–ga; C0–C10 trên cao, C11–C23 ngầm.
+  - Tuyến 2 (Bến Thành – Tham Lương, Bến Thành – Thủ Thiêm): sửa 15 ga (lệch 28–506 m); Bảy Hiền giữ vị trí cũ.
+  - Thủ Thiêm – Long Thành: 19 ga theo nguồn (trước là 20 ga số hóa từ đồ án). Tuyến 1 kéo dài Đồng Nai: 17 ga theo nguồn (trước 15), ga Tân Vạn (QL1) tính từ khoảng cách dự án–ga.
+  - Bến Thành – Cần Giờ: sửa 4 ga (17–48 m). Tuyến 3, 4, 7: giữ theo quy hoạch 2040 (Ankapong) vì bản đồ nguồn vẽ phương án khác.
+- Dự án: Norton Park, Nam Mekong Grand Plaza (lớp Cẩm Nang) và Moonlight Avenue, Masteri Grand View (lớp 2017) trước ở vị trí ước lượng, nay theo tọa độ nguồn (dời 225–763 m).
+- Thêm lớp "Dự án quanh ga metro" (`du-an-quanh-ga.json`, tải riêng): 114 dự án đang mở bán, đang xây, sắp triển khai quanh 5 tuyến metro/đường sắt và trục Quốc lộ 13; chỉ gồm tên, loại hình, tình trạng, tọa độ. Bỏ trùng với lớp Cẩm Nang/2017 và giữa các tuyến; Alta Height bị ghi 2 vị trí trong nguồn, giữ vị trí cạnh The 9 Stellars (CafeLand). Chấm tròn nhỏ theo tình trạng, lọc, tìm kiếm, liên kết `#g=…`, vòng 500 m/1 km, chỉ đường Google Maps. Ghi nguồn bando.manhvu.com ở popup, ghi chú tuyến và chân trang.
+
 ## 2026-10-19 — Nhật san kỳ 4 (công bố)
 - Thêm `publications/nhat-san/2026-10-19-so-04/`: "Sức mua — bài toán phải giải cho quý 4/2026" (tin tuần 12–18/10, bổ sung 19/10), 7 ảnh, 33 nguồn, trạng thái `cong-bo` (Tú duyệt công bố 19/10); bổ sung bản đồ khung chiến lược 100 năm (BCG) , sơ đồ 14 ga metro số 1 và 6 ảnh hạ tầng (cầu đi bộ, metro 1, metro 2, quỹ đất trung tâm; đã xóa logo).
 
