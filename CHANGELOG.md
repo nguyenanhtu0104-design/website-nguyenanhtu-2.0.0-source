@@ -3,6 +3,9 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2.17.5 — Chỉ số đô thị: nhấp menu mở thẳng báo cáo
+- Menu "Chỉ số đô thị" nay mở thẳng báo cáo Mật độ Đô thị Nén tại `/chi-so-do-thi/` (cùng cơ chế trang đơn như "Bản tính tài chính"), bỏ bước thư viện: menu → báo cáo = 1 lần nhấp. Link cũ `/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/` và `/doc/` chuyển hướng 301 về `/chi-so-do-thi/` (data/redirects.json). Khi có báo cáo thứ hai, cần Tú quyết định cách hiển thị.
+
 ## 2.17.4 — PDF phương án gửi lead dùng bản trình bày đầy đủ
 - File PDF tự tạo dùng bản trình bày đầy đủ (báo giá, lịch thanh toán, phương án vay ngân hàng, bảng trả nợ, so sánh, lưu ý) thay vì bản 1 trang; trang dài tự thu nhỏ vừa khổ A4, không méo.
 
