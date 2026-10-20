@@ -3,6 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-20 — Thương hiệu: logo chân dung và icon màn hình chính (2.21.0)
+- Thay chữ NAT ở đầu trang bằng ảnh chân dung tác giả trong vòng tròn viền vàng (`assets/images/site/nat-logo-256.webp`). Favicon đổi sang `nat-logo-96.webp`.
+- Thêm icon khi thêm vào màn hình chính: `apple-touch-icon-180.png` (iPhone) và `app-icon-192/512.png` (Android), kèm `assets/manifest.webmanifest` tên "Nguyễn Anh Tú". Các file này để PNG vì iOS và manifest yêu cầu PNG.
+- Ảnh chân dung ở watermark, khối tác giả và schema không đổi (vẫn dùng `avatar-96.webp` và `tac-gia-nguyen-anh-tu.webp`).
+
 ## 2026-10-20 — Nội dung: bài mới "TOD Là Gì — Vì Sao Là Lời Giải Đô Thị Cho Việt Nam" (chương Tư Duy Đầu Tư)
 - Biên tập từ kịch bản TOD 5.0 của Tú: 5 vấn đề hiện tại, định nghĩa TOD, 3 thành phần, 3 nhiệm vụ tái cấu trúc, 4 yếu tố đánh giá vùng TOD và nhà ga trung tâm. 5 sơ đồ tư duy (ảnh WebP tách file), liên kết tới TOD 5.0, Hành lang Metro, Metro 2030, Compact City. Đã gọn phần lặp giữa sơ đồ và chữ, trau chuốt câu từ, thêm câu phân biệt "thế hệ TOD 1.0–5.0" với "cấp 1–5" của thị trường. Thêm phần kết "Nhận diện hồng tâm" với hình bia bắn (Thủ Thiêm, Thành phố mới Bình Dương).
 - Số liệu đối chiếu nguồn: 77 triệu xe máy (UBATGT quốc gia, 9/2024), dân số thành thị 38,6% (Cục Thống kê, 2025), thiệt hại ô nhiễm 4,5–5,7% GDP (NEU, 2018). Badge chương 3: 5 bài.
