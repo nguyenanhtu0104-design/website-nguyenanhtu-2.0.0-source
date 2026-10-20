@@ -3,6 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-20 — Công cụ: Bản đồ dự án — thiết kế lại giao diện, bản đồ to trên điện thoại
+- Bảng bên trái gom thành 3 thẻ: **Dự án** (thống kê, lọc tình trạng, khu vực, danh sách, lớp "Dự án quanh ga metro" và "Dự án mở bán từ 2017" dạng mục mở/gập), **Tuyến & ga** (chú giải bằng hình, bật/tắt tuyến; vành đai và quy hoạch dài hạn gập sẵn), **Ghi chú** (lưu ý và nguồn). Ô tìm kiếm luôn ở đầu bảng. Trình duyệt nhớ thẻ đang mở.
+- Máy tính: thanh tiêu đề gọn có nút quay về Cẩm Nang và nút "Ẩn bảng" để bản đồ chiếm toàn màn hình.
+- Điện thoại: bản đồ chiếm toàn màn hình; bảng điều khiển thành bảng kéo từ dưới lên với 3 mức (thu gọn chỉ còn ô tìm kiếm + thẻ, nửa màn hình, toàn màn hình) — kéo tay nắm hoặc bấm để đổi mức. Chạm bản đồ, chọn dự án/ga/tuyến hay mở cửa sổ thông tin thì bảng tự thu gọn. Nút chọn nền thu thành biểu tượng, nút điều khiển to hơn, dòng nguồn bản đồ gọn một dòng, cửa sổ thông tin tránh bị bảng che.
+
 ## 2026-10-19 — Công cụ: Bản đồ dự án — vị trí ga theo bản đồ mạng lưới Mạnh Vũ, lớp "Dự án quanh ga metro"
 - Nguồn: các trang bando.manhvu.com do Tú lưu và gửi (bản đồ mạng lưới Vành đai 1–4 & Metro; trang tuyến Metro số 1, Metro số 1 kéo dài, Metro số 1 kéo dài Đồng Nai, Metro số 2 Thủ Dầu Một – Tao Đàn, Đường sắt Thủ Thiêm – Long Thành, Quốc lộ 13). Chỉ lấy tọa độ ga, tọa độ và tên dự án; không lấy giá hay thông tin chi tiết.
 - Vị trí ga: chuyển nhãn ga trên bản đồ mạng lưới (MapLibre, mức phóng 15) sang tọa độ, căn theo 14 ga Tuyến 1 (sai lệch 7–60 m). Kiểm tra độc lập bằng khoảng cách dự án–ga ở các trang tuyến: 190 dự án, trung bình 17–19 m, lớn nhất 105 m.
