@@ -3,6 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-20 — Bản tính tài chính, mục 03: tổng kết kỳ chốt bán và so sánh với gửi ngân hàng (2.20.0)
+- Khối mới "Tổng kết lợi nhuận theo kỳ chốt bán" (cam, BỔ SUNG): chọn tối đa 8 kỳ chốt bán; mỗi kỳ cho tiền tự bỏ ra ròng, tiền thu về khi bán (sau trả nợ, phí tất toán, chi phí bán), lãi/lỗ, tỷ suất, IRR.
+- So sánh với gửi ngân hàng cùng dòng tiền và cùng thời điểm (vốn đầu + trả nợ + giữ nhà − thuê): lãi gửi, chênh lệch bán nhà − gửi, kết luận. Lãi gửi nhập tay hoặc lấy lãi 12 tháng từ mục 01 (kèm nhãn độ mới); lãi kép hoặc lãi đơn.
+- Kiểm tra: khi lãi gửi bằng IRR của nhà thì chênh lệch ≈ 0. Các cột cũ của mục 03 và mục 01, 02 không đổi. Ghi chú người lập có thêm mục giải thích.
+
 ## 2026-10-20 — Bản tính tài chính, mục 01 Lãi suất ngân hàng: giao diện mới + ngày cập nhật tự động (2.19.0)
 - Chỉ đổi mục 01; mục 02 và 03 giữ nguyên. Số liệu lãi suất KHÔNG đổi (chưa có nguồn chính thức mới).
 - Dải ngày tự động: "Rà soát số liệu gần nhất" (lấy từ ngày quan sát/hiệu lực trong dữ liệu), "Rà soát kế tiếp" (chu kỳ 7 ngày, báo quá hạn), "Trang được cập nhật lần cuối" (ngày dựng bản, build.mjs thay `__BUILD_DATE__`, giờ Việt Nam), đếm độ mới Mới ≤30 ngày / Cần kiểm tra 31–90 / Cũ >90 / Chưa có số. Số cũ hiện mờ. Nhập kỳ JSON mới thì các ngày tự đổi.
