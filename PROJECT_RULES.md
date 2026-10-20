@@ -262,6 +262,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-10-20 — **2.19.0** (Tú yêu cầu): mục 01 trang Bản tính tài chính có ngày cập nhật tự động (`__BUILD_DATE__` thay lúc build ở mục `direct`; ngày rà soát/độ mới tính từ dữ liệu). Không đổi số lãi suất; vẫn cấm đưa số nguồn thứ cấp vào cột chính thức.
 - 2026-10-17 — Không đổi nguyên tắc nào (Tú yêu cầu): thêm khối "Vay ngân hàng" cho bảng tính dự án bằng một file JS dùng chung `assets/tools/shared/vay-ngan-hang.js` (ngoại lệ có chủ đích của §9 "không nhân bản JS", cùng tinh thần `zoom.js`: chỉ nạp ở trang công cụ `noindex`, không tăng trang chủ, không thư viện ngoài). Lãi suất trong khối này là giả định người dùng nhập, không được ghi như báo giá ngân hàng. Sửa file này thì tăng `?v=` trong các bảng tính gọi nó.
 - 2026-10-17 — **2.15.0** (Tú yêu cầu): thêm menu "Atlas Banking" `/atlas-banking/` (mục ấn phẩm thứ năm, cùng cơ chế §6A, nằm sau Atlas VietNam trên thanh NAT; địa chỉ mới là vĩnh viễn, §6B nếu đổi). Kỳ đầu để `nhap`. Không đổi nguyên tắc nào khác.
 - 2026-10-18 — **2.17.0** (Tú yêu cầu): menu "Atlas ▾" gộp World Atlas + Atlas VietNam; "Atlas Banking" đổi thành "Bản tính tài chính" `/ban-tinh-tai-chinh/` (mục `direct:true`, không kỳ, nguồn `src: atlas-banking`; địa chỉ cũ chuyển hướng 301 theo §6B). Đầu trang luôn giữ khung miễn trừ "bản mô phỏng tham khảo, không phải báo giá ngân hàng" — không được gỡ.

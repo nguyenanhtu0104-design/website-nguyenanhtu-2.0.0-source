@@ -479,6 +479,8 @@ for (const sec of pubSections) {
     const ogImg = is.cover ? SITE + secUrl + encodeURI(is.cover) : abs('assets/images/og/trang-chu.jpg');
     const tags = `<meta property="og:type" content="website">\n<meta property="og:site_name" content="${esc(cfg.siteName)}">\n<meta property="og:title" content="${esc(sec.pageTitle)}">\n<meta property="og:description" content="${esc(sec.description)}">\n<meta property="og:url" content="${SITE + secUrl}">\n<meta property="og:image" content="${ogImg}">\n<meta name="twitter:card" content="summary_large_image">\n<link rel="canonical" href="${SITE + secUrl}">\n` + (is.published ? '' : '<meta name="robots" content="noindex, nofollow">\n');
     docHtml = docHtml.replace(/<\/head>/i, tags + '</head>');
+    // 2.19.0: __BUILD_DATE__ → ngày dựng bản (giờ Việt Nam, YYYY-MM-DD); trang dùng để hiện "Trang được cập nhật lần cuối"
+    docHtml = docHtml.replace(/__BUILD_DATE__/g, new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }));
     write(`${sec.path}/index.html`, docHtml);
     if (is.published) pubUrls.push({ loc: SITE + secUrl, lastmod: is.date });
     continue;

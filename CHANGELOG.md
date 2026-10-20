@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-20 — Bản tính tài chính, mục 01 Lãi suất ngân hàng: giao diện mới + ngày cập nhật tự động (2.19.0)
+- Chỉ đổi mục 01; mục 02 và 03 giữ nguyên. Số liệu lãi suất KHÔNG đổi (chưa có nguồn chính thức mới).
+- Dải ngày tự động: "Rà soát số liệu gần nhất" (lấy từ ngày quan sát/hiệu lực trong dữ liệu), "Rà soát kế tiếp" (chu kỳ 7 ngày, báo quá hạn), "Trang được cập nhật lần cuối" (ngày dựng bản, build.mjs thay `__BUILD_DATE__`, giờ Việt Nam), đếm độ mới Mới ≤30 ngày / Cần kiểm tra 31–90 / Cũ >90 / Chưa có số. Số cũ hiện mờ. Nhập kỳ JSON mới thì các ngày tự đổi.
+- Chuyển nhanh Tiền gửi ↔ Vay mua nhà; lọc kỳ hạn, sắp xếp (không xếp hạng theo lãi), ẩn ngân hàng chưa có số, bấm "Chi tiết & nguồn" từng dòng, thẻ gọn trên điện thoại. Đối soát nguồn và quản trị JSON gập lại.
+- Lưu ý: trang không tự lấy số từ ngân hàng; số chỉ đổi khi đối chiếu nguồn chính thức và đăng lại.
+
 ## 2026-10-20 — Công cụ: Bản đồ dự án — hướng tuyến Metro số 1 bám đường ray
 - Đoạn Thảo Điền – Suối Tiên (dọc Xa lộ Hà Nội): vẽ theo hình học đường trên OpenStreetMap (lấy qua dịch vụ định tuyến OSRM), bỏ nhánh rẽ nút giao, làm mượt, rồi dời ngang (khoảng 50–65 m về phía bắc, phía đường ray) cho đi qua đúng 9 ga. Đoạn Bến Thành – Thảo Điền (ngầm, qua rạch Thị Nghè và sông Sài Gòn): đường cong mềm qua các ga. Mọi ga nằm đúng trên tuyến; đoạn ngầm/trên cao tô theo chỉ số mới.
 
