@@ -5,6 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import crypto from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -457,8 +458,10 @@ function externalizeBase64(html, outDir, urlBase) {
   let n = 0;
   return html.replace(/data:image\/(png|jpe?g|webp|gif|svg\+xml);base64,([A-Za-z0-9+/=\s]+)/g, (m, type, b64) => {
     const ext = type.startsWith('svg') ? 'svg' : type.replace('jpeg', 'jpg');
-    const name = `hinh-${String(++n).padStart(2, '0')}.${ext}`;
-    fs.writeFileSync(path.join(outDir, name), Buffer.from(b64.replace(/\s/g, ''), 'base64'));
+    const buf = Buffer.from(b64.replace(/\s/g, ''), 'base64');
+    const hash = crypto.createHash('md5').update(buf).digest('hex').slice(0, 8); // tên theo nội dung → đổi ảnh/thứ tự không bị cache cũ
+    const name = `hinh-${String(++n).padStart(2, '0')}-${hash}.${ext}`;
+    fs.writeFileSync(path.join(outDir, name), buf);
     return urlBase + name;
   });
 }
@@ -476,6 +479,8 @@ for (const sec of pubSections) {
     const ogImg = is.cover ? SITE + secUrl + encodeURI(is.cover) : abs('assets/images/og/trang-chu.jpg');
     const tags = `<meta property="og:type" content="website">\n<meta property="og:site_name" content="${esc(cfg.siteName)}">\n<meta property="og:title" content="${esc(sec.pageTitle)}">\n<meta property="og:description" content="${esc(sec.description)}">\n<meta property="og:url" content="${SITE + secUrl}">\n<meta property="og:image" content="${ogImg}">\n<meta name="twitter:card" content="summary_large_image">\n<link rel="canonical" href="${SITE + secUrl}">\n` + (is.published ? '' : '<meta name="robots" content="noindex, nofollow">\n');
     docHtml = docHtml.replace(/<\/head>/i, tags + '</head>');
+    // 2.19.0: __BUILD_DATE__ → ngày dựng bản (giờ Việt Nam, YYYY-MM-DD); trang dùng để hiện "Trang được cập nhật lần cuối"
+    docHtml = docHtml.replace(/__BUILD_DATE__/g, new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }));
     write(`${sec.path}/index.html`, docHtml);
     if (is.published) pubUrls.push({ loc: SITE + secUrl, lastmod: is.date });
     continue;
@@ -529,7 +534,7 @@ const pub = articles.filter((a) => a.status === 'published');
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
   [`  <url><loc>${abs('')}</loc></url>`, ...pageUrls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod></url>`), ...pubUrls.map((u) => `  <url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}</url>`), ...pub.map((a) => `  <url><loc>${abs(`${SECTION}/${a.slug}/`)}</loc><lastmod>${a.updatedDate}</lastmod></url>`)].join('\n') + '\n</urlset>\n');
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${abs('sitemap.xml')}\n`);
-write('_headers', `/assets/css/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/js/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/images/*\n  Cache-Control: public, max-age=2592000\n/data/*\n  Cache-Control: public, max-age=300\n/*.html\n  Cache-Control: public, max-age=0, must-revalidate\n/cam-nang/*\n  Cache-Control: public, max-age=0, must-revalidate\n`);
+write('_headers', `/assets/css/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/js/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/images/*\n  Cache-Control: public, max-age=2592000\n/data/*\n  Cache-Control: public, max-age=300\n/assets/lead/*\n  Cache-Control: public, max-age=0, must-revalidate\n/assets/vendor/*\n  Cache-Control: public, max-age=2592000\n/*.html\n  Cache-Control: public, max-age=0, must-revalidate\n/cam-nang/*\n  Cache-Control: public, max-age=0, must-revalidate\n`);
 
 // Chuyển hướng: _redirects (301, Cloudflare Pages/Netlify) + trang chuyển hướng tĩnh dự phòng cho host không đọc _redirects.
 // Không có mục nào trong data/redirects.json thì KHÔNG sinh _redirects (không tạo redirect giả).

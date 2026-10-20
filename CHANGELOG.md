@@ -4,7 +4,11 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 
 ## 2026-10-20 — Nội dung: bài mới "TOD Là Gì — Vì Sao Là Lời Giải Đô Thị Cho Việt Nam" (chương Tư Duy Đầu Tư)
+<<<<<<< HEAD
 - Biên tập từ kịch bản TOD 5.0 của Tú: 5 vấn đề hiện tại, định nghĩa TOD, 3 thành phần, 3 nhiệm vụ tái cấu trúc, 4 yếu tố đánh giá vùng TOD và nhà ga trung tâm. 5 sơ đồ tư duy (ảnh WebP tách file), liên kết tới TOD 5.0, Hành lang Metro, Metro 2030, Compact City. Đã gọn phần lặp giữa sơ đồ và chữ, trau chuốt câu từ, thêm câu phân biệt "thế hệ TOD 1.0–5.0" với "cấp 1–5" của thị trường. Thêm phần kết "Nhận diện hồng tâm" với hình bia bắn (Thủ Thiêm, Thành phố mới Bình Dương).
+=======
+- Biên tập từ kịch bản TOD 5.0 của Tú: 5 vấn đề hiện tại, định nghĩa TOD, 3 thành phần, 3 nhiệm vụ tái cấu trúc, 4 yếu tố đánh giá vùng TOD và nhà ga trung tâm. 5 sơ đồ tư duy (ảnh WebP tách file), liên kết tới TOD 5.0, Hành lang Metro, Metro 2030, Compact City. Đã gọn phần lặp giữa sơ đồ và chữ, trau chuốt câu từ, thêm câu phân biệt "thế hệ TOD 1.0–5.0" với "cấp 1–5" của thị trường.
+>>>>>>> ffa1b201e5c7b56e04b4c485ffe6c4a2b0f9d010
 - Số liệu đối chiếu nguồn: 77 triệu xe máy (UBATGT quốc gia, 9/2024), dân số thành thị 38,6% (Cục Thống kê, 2025), thiệt hại ô nhiễm 4,5–5,7% GDP (NEU, 2018). Badge chương 3: 5 bài.
 
 ## 2026-10-20 — Chỉ số đô thị số 01: bản đồ metro trong thẻ "Phân tích mô hình"

@@ -221,7 +221,8 @@
       var v = (el.textContent || '').trim();
       if (v) results.push({ l: el.getAttribute('data-lead-label') || '', v: v });
     });
-    return inputs.length ? { inputs: inputs, results: results } : null;
+    var real = inputs.filter(function (i) { return i.k !== 'pt' && i.k !== 'cust'; });
+    return real.length ? { inputs: inputs, results: results } : null;
   }
   // Link "Mở lại bảng tính": điền lại các ô từ ?calc={...}
   function restoreCalc() {
@@ -236,6 +237,106 @@
       el.dispatchEvent(new Event('input', { bubbles: true }));
       el.dispatchEvent(new Event('change', { bubbles: true }));
     });
+  }
+
+
+  /* ---------- Xuất PDF phương án của khách (chạy trên máy khách, khi khách tick đồng ý chia sẻ phương án) ---------- */
+  function loadLib(src) {
+    return new Promise(function (res, rej) {
+      var el = document.createElement('script'); el.src = src; el.onload = res; el.onerror = rej; document.head.appendChild(el);
+    });
+  }
+  function setPrintMedia(on, doc) {
+    // Đổi @media print thành "all" để dựng đúng bản in trên màn hình, rồi trả lại
+    var changed = [];
+    Array.prototype.forEach.call((doc || document).styleSheets, function (sh) {
+      var rules; try { rules = sh.cssRules; } catch (e) { return; }
+      Array.prototype.forEach.call(rules || [], function (r) {
+        if (r.type === 4 && r.media && /print/i.test(r.media.mediaText)) { changed.push(r); }
+      });
+    });
+    changed.forEach(function (r) { r.media.mediaText = on ? 'all' : 'print'; });
+    return changed.length;
+  }
+  var pdfWhy = '';
+  function buildPdf() {
+    pdfWhy = '';
+    var fn = (typeof window.pdfDeck === 'function') ? window.pdfDeck : (typeof window.exportPDF === 'function' ? window.exportPDF : null);
+    if (!fn) { pdfWhy = 'khong-co-ham-xuat-pdf'; return Promise.resolve(null); }
+    return Promise.all([loadLib('/assets/vendor/html2canvas.min.js'), loadLib('/assets/vendor/jspdf.umd.min.js')]).then(function () {
+      var origPrint = window.print, printed = false;
+      window.print = function () { printed = true; };
+      try { fn(); } catch (e) { /* bỏ qua */ }
+      var waited = 0;
+      return new Promise(function (res) {
+        (function poll() { if (printed || waited >= 1500) return res(); waited += 50; setTimeout(poll, 50); })();
+      }).then(function () {
+      window.print = origPrint;
+      if (!printed) { pdfWhy = 'bang-tinh-chua-san-sang'; return null; }
+      var box = document.getElementById('nlPdf') && document.body.classList.contains('nl-pdfmode') ? document.getElementById('nlPdf') : document.getElementById('print-sheet');
+      if (!box) { pdfWhy = 'khong-thay-ban-in'; return null; }
+      var isDeck = box.id === 'nlPdf', cap = null;
+      if (isDeck) {
+        // Bảng tính có bản in riêng (@media print): dựng bản sao ngoài màn hình với đúng các quy tắc đó
+        var css = '';
+        var add = function (r) {
+          if (r.type === 1 && r.selectorText && r.selectorText.indexOf('#nlPdf') >= 0 && r.selectorText.indexOf('body') < 0) css += r.cssText.replace(/#nlPdf/g, '#leadCap') + '\n';
+        };
+        Array.prototype.forEach.call(document.styleSheets, function (sh) {
+          var rules; try { rules = sh.cssRules; } catch (e) { return; }
+          Array.prototype.forEach.call(rules || [], function (r) {
+            if (r.type === 4 && r.media && /print/i.test(r.media.mediaText)) Array.prototype.forEach.call(r.cssRules, add); else add(r);
+          });
+        });
+        cap = document.createElement('div'); cap.id = 'leadCap';
+        cap.setAttribute('style', 'display:block;position:absolute;left:-10000px;top:0;width:186mm;background:#fff;color:#1b2430;font-family:"Segoe UI",system-ui,sans-serif');
+        var st = document.createElement('style'); st.textContent = css;
+        cap.appendChild(st); var inner = document.createElement('div'); inner.innerHTML = box.innerHTML; cap.appendChild(inner);
+        document.body.appendChild(cap);
+        try { window.dispatchEvent(new Event('afterprint')); } catch (e) { /* bỏ qua */ }
+      } else { setPrintMedia(true); }
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF({ unit: 'mm', format: 'a4', compress: true });
+      var opts = { scale: 1.6, useCORS: true, backgroundColor: '#ffffff', logging: false, onclone: function (d) { if (!isDeck) setPrintMedia(true, d); } };
+      var chain = Promise.resolve();
+      var targets = isDeck ? Array.prototype.slice.call(cap.querySelectorAll('.pg')) : [box];
+      var first = true;
+      targets.forEach(function (el) {
+        chain = chain.then(function () {
+          var saveW = el.style.width; el.style.width = '186mm';
+          Array.prototype.forEach.call(el.querySelectorAll('*'), function (n) { var bi = window.getComputedStyle(n).backgroundImage; if (bi && bi.indexOf('gradient') >= 0) { n.style.backgroundImage = 'none'; if (n.classList.contains('cov')) n.style.backgroundColor = '#0c2340'; } });
+          return window.html2canvas(el, opts).then(function (cv) {
+            el.style.width = saveW;
+            var W = cv.width, H = cv.height;
+            if (!W || !H) { try { console.warn('lead pdf: trang rỗng', window.getComputedStyle(box).display, JSON.stringify(el.getBoundingClientRect()), el.style.width); } catch (x) { /* bỏ qua */ } return; }
+            var pageH = Math.floor(W * 273 / 186); // phần nội dung cao 273mm khi rộng 186mm
+            if (isDeck) {
+              if (!first) doc.addPage(); first = false;
+              var hmm = H * 186 / W, k = hmm > 273 ? 273 / hmm : 1;
+              doc.addImage(cv.toDataURL('image/jpeg', 0.82), 'JPEG', 12 + (186 - 186 * k) / 2, 12, 186 * k, hmm * k);
+              return;
+            }
+            for (var y = 0; y < H; y += pageH) {
+              var h = Math.min(pageH, H - y);
+              var part = document.createElement('canvas'); part.width = W; part.height = h;
+              part.getContext('2d').drawImage(cv, 0, y, W, h, 0, 0, W, h);
+              if (!first) doc.addPage(); first = false;
+              doc.addImage(part.toDataURL('image/jpeg', 0.8), 'JPEG', 12, 12, 186, h * 186 / W);
+            }
+          });
+        });
+      });
+      return chain.then(function () {
+        var uri = doc.output('datauristring');
+        return uri.slice(uri.indexOf(',') + 1);
+      }).catch(function (e) { pdfWhy = 'loi-tao-pdf: ' + String(e && e.message || e).slice(0, 60); try { console.warn('lead pdf:', e); } catch (x) { /* bỏ qua */ } return null; })
+        .then(function (b64) {
+          if (isDeck) { if (cap && cap.parentNode) cap.parentNode.removeChild(cap); }
+          else { setPrintMedia(false); box.innerHTML = ''; }
+          return b64;
+        });
+      });
+    }).catch(function (e) { pdfWhy = 'khong-tai-duoc-thu-vien'; return null; });
   }
 
   /* ---------- Form nhận tài liệu ---------- */
@@ -377,17 +478,25 @@
         website: f.website.value,
         t: Date.now() - openedAt,
         score: currentScore(),
+        visits: analyticsOn() ? scoreState().visits : 0,
+        interactions: analyticsOn() ? Object.keys(scoreState().seen).filter(function (k) { return k.indexOf('form_submit') !== 0; }).length : 0,
+        projectsViewed: analyticsOn() ? scoreState().projects.length : 0,
         utm: session.get(K_UTM) || {},
         page: location.pathname
       };
 
       if (calc && f.calcConsent && f.calcConsent.checked) { payload.calc = calc; payload.calcConsent = true; }
 
-      fetch(API_URL, {
+      var pdfStep = (payload.calcConsent ? Promise.race([buildPdf(), new Promise(function (r) { setTimeout(function () { pdfWhy = pdfWhy || 'qua-25-giay'; r(null); }, 25000); })]) : Promise.resolve(null))
+        .then(function (b64) { if (b64 && b64.length < 12000000) payload.pdf = b64; else if (payload.calcConsent && !pdfWhy) pdfWhy = 'file-qua-lon'; if (payload.calcConsent) payload.pdfWhy = pdfWhy; });
+      if (payload.calcConsent) btn.textContent = 'Đang tạo file PDF…';
+      pdfStep.then(function () {
+        btn.textContent = 'Đang gửi…';
+        return fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
-      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      }); }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
         .then(function (res) {
           if (!res.ok || !res.j.ok) throw new Error((res.j && res.j.error) || 'fail');
           gaEvent('generate_lead', { project: slug, channel: ch });
@@ -468,7 +577,8 @@
   /* ---------- Khởi động ---------- */
   function init() {
     captureUtm();
-    restoreCalc();
+    if (qs('calc') || qs('pdf') === '1') window.addEventListener('load', function () { setTimeout(restoreCalc, 300); });
+    if (qs('pdf') === '1') window.addEventListener('load', function () { setTimeout(function () { try { (typeof window.exportPDF === 'function') ? window.exportPDF() : (typeof window.pdfDeck === 'function') ? window.pdfDeck() : window.print(); } catch (e) { /* bỏ qua */ } }, 1500); });
     bindTracking();
     fetch(DATA_URL, { cache: 'no-cache' })
       .then(function (r) { return r.json(); })

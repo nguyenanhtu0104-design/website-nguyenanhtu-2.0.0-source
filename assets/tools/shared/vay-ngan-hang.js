@@ -7,7 +7,7 @@
 
   var DEF = { r1: 7, m1: 12, r2: 10.5, term: 25, method: 'annuity', grace: '', hpct: '', hm: '', ho: 0 };
   var C = { blue: '#2563eb', gold: '#d4a843', green: '#16a34a', navy: '#0c2340', grey: '#94a3b8' };
-  var state = { opts: null, mountEl: null };
+  var state = { opts: null, mountEl: null, finOpen: false, base: null };
 
   /* ---------- định dạng ---------- */
   function fm(n) { return n == null || isNaN(n) ? '–' : Math.round(n).toLocaleString('vi-VN'); }
@@ -302,12 +302,61 @@
       if (!forPdf) h += '<div class="nl-h">Dư nợ gốc theo năm (đ)</div>' + chartBalance(s, 0);
       if (!forPdf) h += '<details class="nl-d"><summary>Bảng trả nợ từng tháng (' + s.rows.length + ' tháng)</summary><div class="tw">' + monthTable(s) + '</div></details><details class="nl-d"><summary>Bảng trả nợ theo năm</summary><div class="tw">' + yearlyTable(s) + '</div></details>';
       if (!forPdf) h += '<div class="nl-as">' + assumptions(P, s, m) + '</div>';
+      if (!forPdf) h += finHtml(ctx, P, m, s);
     }
     if (!forPdf) {
       h += '<div class="nl-h">So sánh tổng chi phí giữa các phương thức (cùng giả định vay)</div>' + chartCompare(list) + LEG + '<div class="tw">' + compareTable(list) + '</div>';
       h += '<div class="nl-disc">' + DISC + '</div>';
     }
     return h;
+  }
+
+
+  /* ---------- Chuyển sang "Bản tính tài chính" (/ban-tinh-tai-chinh/) ----------
+     Gói dữ liệu v1 đi qua phần # của đường dẫn (không gửi lên máy chủ). Tháng 0 = ngày ký thỏa thuận đặt cọc (mặc định hôm nay, sửa được). */
+  var FIN_URL = '/ban-tinh-tai-chinh/';
+  function isoOf(d) { return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+  function todayISO() { return isoOf(new Date()); }
+  function addMonthsISO(iso, m) {
+    var p = /^(\d{4})-(\d\d)-(\d\d)$/.exec(iso || '') || /^(\d{4})-(\d\d)-(\d\d)$/.exec(todayISO());
+    var d = new Date(+p[1], +p[2] - 1 + m, Math.min(+p[3], 28), 12);
+    return isoOf(d);
+  }
+  function b64url(str) { return btoa(unescape(encodeURIComponent(str))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function finBuild(ctx, P, m, s) {
+    var br = ctx.brand || {}, base = state.base || todayISO();
+    var tr = tranchesOf(m, P).sort(function (a, b) { return a.m - b.m; }).map(function (x) { return { m: x.m, amt: Math.round(x.amt), own: !!x.own }; });
+    var L = tr.reduce(function (a, x) { return a + x.amt; }, 0), price = Math.round(m.f);
+    var f = {
+      limit: L, start: addMonthsISO(base, tr[0].m), months: P.termM, method: P.method === 'equal' ? 'equal' : 'emi',
+      promo: +(P.r1 * 100).toFixed(2), promoMonths: Math.min(P.m1, P.termM), floating: +(P.r2 * 100).toFixed(2),
+      grace: s.G, basis: 'monthly', due: 'anniv', repay: 'recast', rateMode: 'period', price: price,
+      htls: s.pol ? s.H : 0, htlsPct: s.pol ? Math.round(s.hp * 100) : 100
+    };
+    var payload = { v: 1, src: { project: String(br.project || '').slice(0, 100), unit: String(br.unit || '').slice(0, 100), method: String(m.name || '').slice(0, 100) }, f: f,
+      tranches: tr.map(function (x) { return { date: addMonthsISO(base, x.m), amount: x.amt }; }) };
+    return { payload: payload, tr: tr, L: L, price: price, f: f, base: base, url: FIN_URL + '#nhan=' + b64url(JSON.stringify(payload)) };
+  }
+  function finHtml(ctx, P, m, s) {
+    var b = finBuild(ctx, P, m, s), f = b.f, own = Math.max(0, b.price - b.L);
+    var rows = [
+      ['Dự án · căn', (ctx.brand && ctx.brand.project || '') + ' · ' + (ctx.brand && ctx.brand.unit || '')],
+      ['Phương thức', m.name],
+      ['Giá căn (tổng giá bán)', fm(b.price) + ' đ'],
+      ['Ngân hàng giải ngân (tổng ' + b.tr.length + ' đợt)', fm(b.L) + ' đ'],
+      ['Vốn tự có ban đầu (giá căn − khoản vay)', fm(own) + ' đ'],
+      ['Lãi suất', f.promo.toLocaleString('vi-VN') + '%/năm × ' + f.promoMonths + ' tháng, sau đó ' + f.floating.toLocaleString('vi-VN') + '%/năm'],
+      ['Thời hạn · cách trả · ân hạn gốc', f.months + ' tháng · ' + (f.method === 'equal' ? 'gốc đều, lãi giảm dần' : 'gốc + lãi chia đều') + ' · ' + f.grace + ' tháng'],
+      ['Chủ đầu tư hỗ trợ lãi', f.htls > 0 ? f.htlsPct + '% lãi trong ' + f.htls + ' tháng đầu' : 'không']
+    ];
+    var dl = b.tr.map(function (x, i) { return 'Đợt ' + (i + 1) + ': ' + fm(x.amt) + ' đ · tháng ' + x.m + ' (' + addMonthsISO(b.base, x.m).split('-').reverse().join('/') + ')'; }).join('<br>');
+    return '<details class="nl-d nl-fin" id="nl-fin"' + (state.finOpen ? ' open' : '') + '><summary>➡️ Chuyển sang Bản tính tài chính (tích góp, bán lại, tỷ suất lợi nhuận)</summary>' +
+      '<div class="nl-finb"><div class="nl-sub">Toàn bộ thông tin vay của căn này được chuyển sang Bản tính tài chính để tính tiếp: dòng tiền hằng tháng, phí tất toán theo từng đợt, giá bán lại và tỷ suất lợi nhuận. Dữ liệu đi qua đường dẫn, không gửi đi đâu.</div>' +
+      '<label class="nl-fl">Ngày ký thỏa thuận đặt cọc (mốc tháng 0, dùng để đặt ngày các đợt giải ngân)<input id="nl-base" type="date" value="' + esc(b.base) + '"></label>' +
+      '<table class="nl-t nl-ft"><tbody>' + rows.map(function (r) { return '<tr><td>' + esc(r[0]) + '</td><td style="text-align:left"><b>' + esc(r[1]) + '</b></td></tr>'; }).join('') +
+      '<tr><td>Các đợt giải ngân</td><td style="text-align:left"><b id="nl-fdl">' + dl + '</b></td></tr></tbody></table>' +
+      '<div class="nl-as">Vốn tự có được coi là bỏ ra từ đầu (chưa tách theo tiến độ thanh toán). Mục tích góp sẽ hỏi thêm các thông tin chưa có ở đây: thu nhập trích góp, tiền thuê, mức tăng giá, phí tất toán, chi phí bán (các ô màu cam).</div>' +
+      '<a class="nl-fgo" id="nl-fgo" href="' + esc(b.url) + '" target="_blank" rel="noopener">Mở Bản tính tài chính với thông tin này →</a></div></details>';
   }
 
   /* ---------- giao diện trong trang ---------- */
@@ -320,6 +369,7 @@
     '.nl-leg{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;margin:4px 0 8px}.nl-leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}' +
     '.nl-t{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:6px}.nl-t th{background:var(--nl-thbg);color:var(--nl-thfg);padding:6px;font-size:10.5px;text-align:right}.nl-t th:first-child,.nl-t td:first-child{text-align:left}.nl-t td{padding:5px 6px;border-bottom:1px solid var(--nl-line);text-align:right;font-variant-numeric:tabular-nums}.nl-t .nl-sel td{background:rgba(212,168,67,.16)}.nl-t .nl-tot td{font-weight:700;border-top:2px solid var(--nl-ac)}.nl-t .nl-na{text-align:center;color:var(--nl-mu);font-style:italic}' +
     '.nl-warn{background:#fef2f2;border:1px solid #fecaca;color:#991b1b;border-radius:6px;padding:7px 10px;font-size:12px;margin:8px 0}.nl-na2{border:1px dashed var(--nl-line);border-radius:6px;padding:12px;font-size:12.5px;color:var(--nl-mu);margin:10px 0}' +
+    '.nl-fin{border:1px solid var(--nl-ac2);border-radius:8px;padding:2px 12px;margin:14px 0;background:rgba(212,168,67,.08)}.nl-fin>summary{font-size:13px!important;color:var(--nl-ac)}.nl-finb{padding:4px 0 12px}.nl-fl{display:flex;flex-direction:column;gap:3px;font-size:11px;font-weight:600;color:var(--nl-mu);max-width:340px;margin:8px 0}.nl-fl input{padding:7px 9px;border:1px solid var(--nl-line);border-radius:6px;font-size:13px;background:var(--nl-inbg);color:var(--nl-fg)}.nl-ft td:first-child{width:40%;color:var(--nl-mu)}.nl-fgo{display:inline-block;margin-top:10px;padding:10px 16px;border-radius:6px;background:var(--nl-ac2);color:#0c2340!important;font-weight:700;font-size:13px;text-decoration:none}.nl-fgo:hover{filter:brightness(1.08)}'+
     '.nl-disc{font-size:11px;color:var(--nl-mu);border-top:1px solid var(--nl-line);margin-top:14px;padding-top:8px;line-height:1.55}.nl-d summary{cursor:pointer;font-size:12px;font-weight:600;margin:10px 0 4px}.nl .tw{overflow-x:auto}' +
     /* trang A4 */
     '#nlPdf{display:none}@media print{body.nl-pdfmode>*:not(#nlPdf){display:none!important}body.nl-pdfmode{background:#fff!important}body.nl-pdfmode #nlPdf{display:block!important;color:#1b2430;font-family:"Segoe UI",system-ui,-apple-system,sans-serif}@page{size:A4 portrait;margin:11mm}' +
@@ -363,12 +413,22 @@
     el.innerHTML = shell(opts);
     el.addEventListener('input', refresh);
     el.addEventListener('change', refresh);
+    el.addEventListener('toggle', function (ev) { if (ev.target && ev.target.id === 'nl-fin') state.finOpen = ev.target.open; }, true);
   }
 
-  function refresh() {
+  function refresh(e) {
     if (!state.opts || !state.mountEl) return;
     var out = document.getElementById('nl-out');
     var ctx = state.opts.getCtx();
+    if (e && e.target && e.target.id === 'nl-base' && ctx) {
+      /* đổi ngày ký: chỉ cập nhật phần chuyển dữ liệu, không dựng lại cả khối (giữ con trỏ ở ô ngày) */
+      if (/^\d{4}-\d\d-\d\d$/.test(e.target.value)) state.base = e.target.value;
+      var m0 = methodById(ctx, ctx.sel), P0 = readP(), s0 = m0 ? sim(m0, P0) : null;
+      if (s0) { var b0 = finBuild(ctx, P0, m0, s0), a0 = document.getElementById('nl-fgo'), l0 = document.getElementById('nl-fdl');
+        if (a0) a0.href = b0.url;
+        if (l0) l0.innerHTML = b0.tr.map(function (x, i) { return 'Đợt ' + (i + 1) + ': ' + fm(x.amt) + ' đ · tháng ' + x.m + ' (' + addMonthsISO(b0.base, x.m).split('-').reverse().join('/') + ')'; }).join('<br>'); }
+      return;
+    }
     if (!ctx) { state.mountEl.style.display = 'none'; return; }
     state.mountEl.style.display = 'block';
     out.innerHTML = body(ctx, readP(), false);

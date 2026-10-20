@@ -18,5 +18,13 @@
  {
   "from": "/atlas-banking/lai-suat-ngan-hang/doc/",
   "to": "/ban-tinh-tai-chinh/"
+ },
+ {
+  "from": "/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/",
+  "to": "/chi-so-do-thi/"
+ },
+ {
+  "from": "/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/",
+  "to": "/chi-so-do-thi/"
  }
 ]

@@ -30,9 +30,9 @@
     </div>
     <div>
       <div class="input-group" style="margin-bottom:12px"><label class="lbl" for="sT">Tòa</label>
-        <select id="sT" class="lay-sel" onchange="oTC()"><option value="">— Chọn tòa —</option><option value="G1">Tòa G1</option><option value="G2">Tòa G2</option></select></div>
+        <select id="sT" data-lead-input="tower" data-lead-label="Tòa" class="lay-sel" onchange="oTC()"><option value="">— Chọn tòa —</option><option value="G1">Tòa G1</option><option value="G2">Tòa G2</option></select></div>
       <div class="input-group" style="margin-bottom:12px"><label class="lbl" for="sF">Tầng</label>
-        <select id="sF" class="lay-sel" onchange="oFC()"><option value="">— Chọn tầng —</option></select></div>
+        <select id="sF" data-lead-input="floor" data-lead-label="Tầng" class="lay-sel" onchange="oFC()"><option value="">— Chọn tầng —</option></select></div>
       <div class="input-group"><label class="lbl" for="sU">Mã căn hộ</label>
         <select id="sU" data-lead-input="unit" data-lead-label="Mã căn hộ" class="lay-sel" onchange="oUC()"><option value="">— Chọn tầng trước —</option></select></div>
       <div class="lay-info" id="unit-info">Chọn tòa, tầng và mã căn để tự điền diện tích. Sau đó chỉ cần nhập đơn giá/m².</div>
@@ -48,7 +48,7 @@
     <div class="input-group"><label for="xLP">Giá niêm yết (đã gồm VAT &amp; KPBT)</label><input class="price-inp" id="xLP" type="text" readonly style="font-size:16px"></div>
   </div>
   <div class="who-grid">
-    <div class="input-group"><label for="xCl">Khách Hàng</label><input class="mini-inp" id="xCl" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
+    <div class="input-group"><label for="xCl">Khách Hàng</label><input class="mini-inp" id="xCl" data-lead-input="cust" data-lead-label="Tên khách hàng" type="text" placeholder="Tên khách hàng (hiện trên bản PDF)"></div>
     <div class="input-group"><label for="xCo">Chuyên Viên Kinh Doanh</label><input class="mini-inp" id="xCo" type="text" placeholder="Tên chuyên viên (hiện trên bản PDF)"></div>
     <div class="input-group"><label for="xCp">Số điện thoại của người tư vấn</label><input class="mini-inp" id="xCp" type="tel" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="Hiện trên PDF kèm mã QR Zalo tự tạo"></div>
   </div>
@@ -128,7 +128,7 @@
 </div>
 
 <script src="/assets/tools/shared/zalo-qr.js?v=2.16.0"></script>
-<script src="/assets/tools/shared/vay-ngan-hang.js?v=2.16.0"></script>
+<script src="/assets/tools/shared/vay-ngan-hang.js?v=2.18.0"></script>
 <script>
 const I3="/assets/tools/nam-mekong-bang-tinh/i3.webp";
 const I3A="/assets/tools/nam-mekong-bang-tinh/i3a.webp";
@@ -370,7 +370,7 @@ function recalc(){
 }
 
 function setPT(i){
-  st.pt=i;
+  st.pt=i;var lp=document.getElementById("leadPt");if(lp)lp.value=i+1;
   document.querySelectorAll('#grp-pt .opt-btn').forEach((b,j)=>b.classList.toggle('active-ck',j===i));
   document.querySelectorAll('.pt-tab').forEach((b,j)=>b.classList.toggle('active',j===i));
   document.querySelectorAll('.pt-panel').forEach((p,j)=>p.classList.toggle('active',j===i));
@@ -502,7 +502,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   NATZoom.attach(document.getElementById("lyI"),function(){var i=document.getElementById("lyI");return{src:i.src,cap:"Mặt bằng căn hộ · "+(document.getElementById("sU").value||"")}});
 })();
 </script>
-<meta name="lead-project" content="nam-mekong-grand-plaza"><link rel="stylesheet" href="/assets/lead/lead.css"><script src="/assets/lead/lead.js" defer></script>
-<button type="button" data-lead-open style="position:fixed;right:14px;bottom:14px;z-index:90;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận phương án này</button>
+<meta name="lead-project" content="nam-mekong-grand-plaza"><link rel="stylesheet" href="/assets/lead/lead.css?v=2.17.3"><script src="/assets/lead/lead.js?v=2.17.3" defer></script>
+<input type="hidden" id="leadPt" value="1" data-lead-input="pt" data-lead-label="Phương thức thanh toán số"><script>document.getElementById("leadPt").addEventListener("input",function(){var n=parseInt(this.value,10)-1;if(n>=0&&typeof setPT==="function")setPT(n)})</script><button type="button" data-lead-open style="position:fixed;right:14px;bottom:14px;z-index:90;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận phương án này</button>
 </body>
 </html>
