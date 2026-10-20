@@ -3,6 +3,9 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-20 — Chỉ số đô thị số 01: bản đồ metro trong thẻ "Phân tích mô hình"
+- Thêm sơ đồ mạng metro vào thẻ của Hong Kong, Barcelona, Tokyo, Singapore, Seoul và TP.HCM mới (2 sơ đồ quy hoạch cũ: 8 tuyến và bản MAUR tiếng Pháp, kèm ghi chú quy hoạch 2040 và liên kết bản đồ Cẩm Nang). Ảnh do Tú cung cấp, xử lý tông ấm 70% theo §8.4, lưu WebP tách file ở `assets/clips/do-thi-nen/metro-*.webp` (bản 900 px để hiện, bản lớn mở khi bấm). Mỗi ảnh có chú thích và nguồn.
+
 ## 2026-10-20 — Bản tính tài chính, mục 03: tổng kết kỳ chốt bán và so sánh với gửi ngân hàng (2.20.0)
 - Khối mới "Tổng kết lợi nhuận theo kỳ chốt bán" (cam, BỔ SUNG): chọn tối đa 8 kỳ chốt bán; mỗi kỳ cho tiền tự bỏ ra ròng, tiền thu về khi bán (sau trả nợ, phí tất toán, chi phí bán), lãi/lỗ, tỷ suất, IRR.
 - So sánh với gửi ngân hàng cùng dòng tiền và cùng thời điểm (vốn đầu + trả nợ + giữ nhà − thuê): lãi gửi, chênh lệch bán nhà − gửi, kết luận. Lãi gửi nhập tay hoặc lấy lãi 12 tháng từ mục 01 (kèm nhãn độ mới); lãi kép hoặc lãi đơn.
