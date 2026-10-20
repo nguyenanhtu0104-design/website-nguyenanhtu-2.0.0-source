@@ -3,6 +3,13 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2.18.0 — Bản tính dự án → Bản tính tài chính: chuyển toàn bộ thông tin vay của căn sang để tính tiếp
+- Cả 5 bảng tính dự án (Nam Mekong, Norton Park, Palm River, SkySOLIS, Artisan Park): trong khối "Phương án vay ngân hàng" thêm phần mở/gập **"Chuyển sang Bản tính tài chính"**, hiện khi đã nhập đủ thông tin căn và phương thức có khoản vay (Artisan Park: khi nhập tỷ lệ vay tại đợt bàn giao). Phần này liệt kê dữ liệu sẽ chuyển: dự án, căn, phương thức, giá căn, khoản ngân hàng giải ngân từng đợt, vốn tự có (giá căn − khoản vay), lãi suất ưu đãi/thả nổi, thời hạn, cách trả, ân hạn, hỗ trợ lãi của chủ đầu tư; có ô "ngày ký thỏa thuận đặt cọc" (mặc định hôm nay) để đặt ngày các đợt giải ngân, rồi nút mở trang tài chính ở tab mới.
+- Dữ liệu đi qua phần `#nhan=` của đường dẫn (không gửi lên máy chủ). Bản tính tài chính kiểm tra chặt dữ liệu, tự điền mục 02, bật vốn tự có tự tính, hiện khung "Đã nhận dữ liệu từ bản tính dự án" và mở thẳng mục 03; các ô cần bổ sung (phí tất toán theo đợt, chi phí bán, thu nhập trích góp, tiền thuê, mức tăng giá) vẫn màu cam.
+- Bản tính tài chính thêm ô "Tỷ lệ lãi do chủ đầu tư chịu (%)" (trước chỉ có số tháng, mặc định 100%) để khớp chính sách hỗ trợ một phần lãi.
+- Đã đối chiếu cả 5 dự án: lịch trả nợ (gốc và lãi từng tháng, 300 tháng) ở hai nơi khớp tuyệt đối. Giả định cần biết: vốn tự có coi như bỏ ra từ đầu, chưa tách theo tiến độ thanh toán; ngày các đợt giải ngân tính từ ngày ký nhập vào.
+- Cache: trang bảng tính nạp `vay-ngan-hang.js?v=2.18.0`.
+
 ## 2026-10-20 — Công cụ: Bản đồ dự án — thiết kế lại giao diện, bản đồ to trên điện thoại
 - Bảng bên trái gom thành 3 thẻ: **Dự án** (thống kê, lọc tình trạng, khu vực, danh sách, lớp "Dự án quanh ga metro" và "Dự án mở bán từ 2017" dạng mục mở/gập), **Tuyến & ga** (chú giải bằng hình, bật/tắt tuyến; vành đai và quy hoạch dài hạn gập sẵn), **Ghi chú** (lưu ý và nguồn). Ô tìm kiếm luôn ở đầu bảng. Trình duyệt nhớ thẻ đang mở.
 - Máy tính: thanh tiêu đề gọn có nút quay về Cẩm Nang và nút "Ẩn bảng" để bản đồ chiếm toàn màn hình.
