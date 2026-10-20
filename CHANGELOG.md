@@ -3,6 +3,10 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-20 — Nội dung: bài mới "TOD Là Gì — Vì Sao Là Lời Giải Đô Thị Cho Việt Nam" (chương Tư Duy Đầu Tư)
+- Biên tập từ kịch bản TOD 5.0 của Tú: 5 vấn đề hiện tại, định nghĩa TOD, 3 thành phần, 3 nhiệm vụ tái cấu trúc, 4 yếu tố đánh giá vùng TOD và nhà ga trung tâm. 5 sơ đồ tư duy (ảnh WebP tách file), liên kết tới TOD 5.0, Hành lang Metro, Metro 2030, Compact City.
+- Số liệu đối chiếu nguồn: 77 triệu xe máy (UBATGT quốc gia, 9/2024), dân số thành thị 38,6% (Cục Thống kê, 2025), thiệt hại ô nhiễm 4,5–5,7% GDP (NEU, 2018). Badge chương 3: 5 bài.
+
 ## 2026-10-20 — Chỉ số đô thị số 01: bản đồ metro trong thẻ "Phân tích mô hình"
 - Thêm sơ đồ mạng đường sắt đô thị vào cả 15 thẻ: Hong Kong, Barcelona, Tokyo, Singapore, Ahmedabad, Seoul, Paris, Medellín, Thâm Quyến, Curitiba (sơ đồ đề xuất, không chính thức), Copenhagen, Portland, Hà Nội và TP.HCM mới (2 sơ đồ quy hoạch cũ: 8 tuyến và bản MAUR tiếng Pháp, kèm ghi chú quy hoạch 2040 và liên kết bản đồ Cẩm Nang). Ảnh do Tú cung cấp, xử lý tông ấm 70% theo §8.4, lưu WebP tách file ở `assets/clips/do-thi-nen/metro-*.webp` (bản 900 px để hiện, bản lớn mở khi bấm). Mỗi ảnh có chú thích và nguồn.
 

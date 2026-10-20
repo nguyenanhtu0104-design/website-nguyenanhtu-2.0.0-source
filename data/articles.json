@@ -6495,5 +6495,41 @@
    }
   ],
   "legacy": null
+ },
+ {
+  "id": "tod_la_gi_loi_giai_do_thi_viet_nam",
+  "slug": "tod-la-gi-loi-giai-do-thi-viet-nam",
+  "status": "published",
+  "title": "TOD Là Gì — Vì Sao Là Lời Giải Đô Thị Cho Việt Nam",
+  "subtitle": "5 vấn đề · 3 thành phần · 4 yếu tố đánh giá",
+  "icon": "🚇",
+  "category": "tu-duy-dau-tu",
+  "parent": null,
+  "tags": [
+   "tu-duy-dau-tu",
+   "tod",
+   "metro",
+   "quy-hoach-do-thi"
+  ],
+  "description": "TOD là gì và vì sao là lời giải cho đô thị Việt Nam: 5 vấn đề, 3 thành phần, 3 nhiệm vụ và 4 yếu tố để đánh giá BĐS gắn mác TOD.",
+  "thumbnail": "tod-la-gi-loi-giai-do-thi-viet-nam/01",
+  "heroImage": "tod-la-gi-loi-giai-do-thi-viet-nam/01",
+  "publishedDate": "2026-10-20",
+  "updatedDate": "2026-10-20",
+  "author": "nguyen-anh-tu",
+  "content": "content/articles/tod-la-gi-loi-giai-do-thi-viet-nam.html",
+  "relatedArticles": [
+   "mo-hinh-tod-hanh-lang-metro",
+   "tod-5-0-mat-do-hoat-dong",
+   "muc-tieu-metro-hcm-2030",
+   "do-nen-do-thi-compact-city"
+  ],
+  "seoTitle": "TOD Là Gì? Lời Giải Đô Thị Cho Việt Nam",
+  "seoDescription": "TOD là gì và vì sao là lời giải cho đô thị Việt Nam: 5 vấn đề, 3 thành phần, 3 nhiệm vụ và 4 yếu tố để đánh giá BĐS gắn mác TOD.",
+  "ogImage": "assets/images/og/tod-la-gi-loi-giai-do-thi-viet-nam.jpg",
+  "section": "💡 Tư Duy Chiến Lược",
+  "accent": "#c89540",
+  "searchKeywords": "TOD là gì Transit-Oriented Development đô thị định hướng giao thông công cộng 77 triệu xe máy Net Zero 2050 ô nhiễm PM2.5 sức khỏe an ninh năng lượng Nghị quyết 70 tối ưu thời gian hiệu quả kinh tế mật độ đô thị chức năng hỗn hợp kết nối đô thị hóa 38,6% vành đai cao tốc metro TP.HCM mạng lưới TOD cấp độ TOD 1-5 nhà ga trung tâm Central Hub đánh giá bất động sản TOD",
+  "legacy": null
  }
 ]
