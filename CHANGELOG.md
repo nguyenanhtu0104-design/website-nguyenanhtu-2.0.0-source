@@ -3,6 +3,64 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-20 — Nội dung: bài mới "TOD Là Gì — Vì Sao Là Lời Giải Đô Thị Cho Việt Nam" (chương Tư Duy Đầu Tư)
+- Biên tập từ kịch bản TOD 5.0 của Tú: 5 vấn đề hiện tại, định nghĩa TOD, 3 thành phần, 3 nhiệm vụ tái cấu trúc, 4 yếu tố đánh giá vùng TOD và nhà ga trung tâm. 5 sơ đồ tư duy (ảnh WebP tách file), liên kết tới TOD 5.0, Hành lang Metro, Metro 2030, Compact City. Đã gọn phần lặp giữa sơ đồ và chữ, trau chuốt câu từ, thêm câu phân biệt "thế hệ TOD 1.0–5.0" với "cấp 1–5" của thị trường. Thêm phần kết "Nhận diện hồng tâm" với hình bia bắn (Thủ Thiêm, Thành phố mới Bình Dương).
+- Số liệu đối chiếu nguồn: 77 triệu xe máy (UBATGT quốc gia, 9/2024), dân số thành thị 38,6% (Cục Thống kê, 2025), thiệt hại ô nhiễm 4,5–5,7% GDP (NEU, 2018). Badge chương 3: 5 bài.
+
+## 2026-10-20 — Chỉ số đô thị số 01: bản đồ metro trong thẻ "Phân tích mô hình"
+- Thêm sơ đồ mạng đường sắt đô thị vào cả 15 thẻ: Hong Kong, Barcelona, Tokyo, Singapore, Ahmedabad, Seoul, Paris, Medellín, Thâm Quyến, Curitiba (sơ đồ đề xuất, không chính thức), Copenhagen, Portland, Hà Nội và TP.HCM mới (2 sơ đồ quy hoạch cũ: 8 tuyến và bản MAUR tiếng Pháp, kèm ghi chú quy hoạch 2040 và liên kết bản đồ Cẩm Nang). Ảnh do Tú cung cấp, xử lý tông ấm 70% theo §8.4, lưu WebP tách file ở `assets/clips/do-thi-nen/metro-*.webp` (bản 900 px để hiện, bản lớn mở khi bấm). Mỗi ảnh có chú thích và nguồn.
+
+## 2026-10-20 — Bản tính tài chính, mục 03: tổng kết kỳ chốt bán và so sánh với gửi ngân hàng (2.20.0)
+- Khối mới "Tổng kết lợi nhuận theo kỳ chốt bán" (cam, BỔ SUNG): chọn tối đa 8 kỳ chốt bán; mỗi kỳ cho tiền tự bỏ ra ròng, tiền thu về khi bán (sau trả nợ, phí tất toán, chi phí bán), lãi/lỗ, tỷ suất, IRR.
+- So sánh với gửi ngân hàng cùng dòng tiền và cùng thời điểm (vốn đầu + trả nợ + giữ nhà − thuê): lãi gửi, chênh lệch bán nhà − gửi, kết luận. Lãi gửi nhập tay hoặc lấy lãi 12 tháng từ mục 01 (kèm nhãn độ mới); lãi kép hoặc lãi đơn.
+- Kiểm tra: khi lãi gửi bằng IRR của nhà thì chênh lệch ≈ 0. Các cột cũ của mục 03 và mục 01, 02 không đổi. Ghi chú người lập có thêm mục giải thích.
+
+## 2026-10-20 — Bản tính tài chính, mục 01 Lãi suất ngân hàng: giao diện mới + ngày cập nhật tự động (2.19.0)
+- Chỉ đổi mục 01; mục 02 và 03 giữ nguyên. Số liệu lãi suất KHÔNG đổi (chưa có nguồn chính thức mới).
+- Dải ngày tự động: "Rà soát số liệu gần nhất" (lấy từ ngày quan sát/hiệu lực trong dữ liệu), "Rà soát kế tiếp" (chu kỳ 7 ngày, báo quá hạn), "Trang được cập nhật lần cuối" (ngày dựng bản, build.mjs thay `__BUILD_DATE__`, giờ Việt Nam), đếm độ mới Mới ≤30 ngày / Cần kiểm tra 31–90 / Cũ >90 / Chưa có số. Số cũ hiện mờ. Nhập kỳ JSON mới thì các ngày tự đổi.
+- Chuyển nhanh Tiền gửi ↔ Vay mua nhà; lọc kỳ hạn, sắp xếp (không xếp hạng theo lãi), ẩn ngân hàng chưa có số, bấm "Chi tiết & nguồn" từng dòng, thẻ gọn trên điện thoại. Đối soát nguồn và quản trị JSON gập lại.
+- Lưu ý: trang không tự lấy số từ ngân hàng; số chỉ đổi khi đối chiếu nguồn chính thức và đăng lại.
+
+## 2026-10-20 — Công cụ: Bản đồ dự án — hướng tuyến Metro số 1 bám đường ray
+- Đoạn Thảo Điền – Suối Tiên (dọc Xa lộ Hà Nội): vẽ theo hình học đường trên OpenStreetMap (lấy qua dịch vụ định tuyến OSRM), bỏ nhánh rẽ nút giao, làm mượt, rồi dời ngang (khoảng 50–65 m về phía bắc, phía đường ray) cho đi qua đúng 9 ga. Đoạn Bến Thành – Thảo Điền (ngầm, qua rạch Thị Nghè và sông Sài Gòn): đường cong mềm qua các ga. Mọi ga nằm đúng trên tuyến; đoạn ngầm/trên cao tô theo chỉ số mới.
+
+## 2026-10-20 — Công cụ: Bản đồ dự án — thiết kế lại giao diện, bản đồ to trên điện thoại
+- Bảng bên trái gom thành 3 thẻ: **Dự án** (thống kê, lọc tình trạng, khu vực, danh sách, lớp "Dự án quanh ga metro" và "Dự án mở bán từ 2017" dạng mục mở/gập), **Tuyến & ga** (chú giải bằng hình, bật/tắt tuyến; vành đai và quy hoạch dài hạn gập sẵn), **Ghi chú** (lưu ý và nguồn). Ô tìm kiếm luôn ở đầu bảng. Trình duyệt nhớ thẻ đang mở.
+- Máy tính: thanh tiêu đề gọn có nút quay về Cẩm Nang và nút "Ẩn bảng" để bản đồ chiếm toàn màn hình.
+- Điện thoại: bản đồ chiếm toàn màn hình; bảng điều khiển thành bảng kéo từ dưới lên với 3 mức (thu gọn chỉ còn ô tìm kiếm + thẻ, nửa màn hình, toàn màn hình) — kéo tay nắm hoặc bấm để đổi mức. Chạm bản đồ, chọn dự án/ga/tuyến hay mở cửa sổ thông tin thì bảng tự thu gọn. Nút chọn nền thu thành biểu tượng, nút điều khiển to hơn, dòng nguồn bản đồ gọn một dòng, cửa sổ thông tin tránh bị bảng che.
+
+## 2026-10-19 — Công cụ: Bản đồ dự án — vị trí ga theo bản đồ mạng lưới Mạnh Vũ, lớp "Dự án quanh ga metro"
+- Nguồn: các trang bando.manhvu.com do Tú lưu và gửi (bản đồ mạng lưới Vành đai 1–4 & Metro; trang tuyến Metro số 1, Metro số 1 kéo dài, Metro số 1 kéo dài Đồng Nai, Metro số 2 Thủ Dầu Một – Tao Đàn, Đường sắt Thủ Thiêm – Long Thành, Quốc lộ 13). Chỉ lấy tọa độ ga, tọa độ và tên dự án; không lấy giá hay thông tin chi tiết.
+- Vị trí ga: chuyển nhãn ga trên bản đồ mạng lưới (MapLibre, mức phóng 15) sang tọa độ, căn theo 14 ga Tuyến 1 (sai lệch 7–60 m). Kiểm tra độc lập bằng khoảng cách dự án–ga ở các trang tuyến: 190 dự án, trung bình 17–19 m, lớn nhất 105 m.
+  - Tuyến 1: cả 14 ga; ga Bình Thái dời 446 m (khớp Wikipedia 10°49′57″B 106°45′50″Đ).
+  - Tuyến TP mới Bình Dương – Suối Tiên: 16/17 ga (S8 giữ vị trí cũ vì nhãn bị ẩn).
+  - Metro số 2 Thủ Dầu Một – Tao Đàn: thay 9 ga ước lượng (lệch tới vài km) bằng 24 ga C0–C23; C5 tính từ khoảng cách dự án–ga; C0–C10 trên cao, C11–C23 ngầm.
+  - Tuyến 2 (Bến Thành – Tham Lương, Bến Thành – Thủ Thiêm): sửa 15 ga (lệch 28–506 m); Bảy Hiền giữ vị trí cũ.
+  - Thủ Thiêm – Long Thành: 19 ga theo nguồn (trước là 20 ga số hóa từ đồ án). Tuyến 1 kéo dài Đồng Nai: 17 ga theo nguồn (trước 15), ga Tân Vạn (QL1) tính từ khoảng cách dự án–ga.
+  - Bến Thành – Cần Giờ: sửa 4 ga (17–48 m). Tuyến 3, 4, 7: giữ theo quy hoạch 2040 (Ankapong) vì bản đồ nguồn vẽ phương án khác.
+- Dự án: Norton Park, Nam Mekong Grand Plaza (lớp Cẩm Nang) và Moonlight Avenue, Masteri Grand View (lớp 2017) trước ở vị trí ước lượng, nay theo tọa độ nguồn (dời 225–763 m).
+- Thêm lớp "Dự án quanh ga metro" (`du-an-quanh-ga.json`, tải riêng): 114 dự án đang mở bán, đang xây, sắp triển khai quanh 5 tuyến metro/đường sắt và trục Quốc lộ 13; chỉ gồm tên, loại hình, tình trạng, tọa độ. Bỏ trùng với lớp Cẩm Nang/2017 và giữa các tuyến; Alta Height bị ghi 2 vị trí trong nguồn, giữ vị trí cạnh The 9 Stellars (CafeLand). Chấm tròn nhỏ theo tình trạng, lọc, tìm kiếm, liên kết `#g=…`, vòng 500 m/1 km, chỉ đường Google Maps. Ghi nguồn bando.manhvu.com ở popup, ghi chú tuyến và chân trang.
+
+## 2026-10-19 — Nhật san kỳ 4 (công bố)
+- Thêm `publications/nhat-san/2026-10-19-so-04/`: "Sức mua — bài toán phải giải cho quý 4/2026" (tin tuần 12–18/10, bổ sung 19/10), 7 ảnh, 33 nguồn, trạng thái `cong-bo` (Tú duyệt công bố 19/10); bổ sung bản đồ khung chiến lược 100 năm (BCG) , sơ đồ 14 ga metro số 1 và 6 ảnh hạ tầng (cầu đi bộ, metro 1, metro 2, quỹ đất trung tâm; đã xóa logo).
+
+## 2.17.4 — PDF phương án gửi lead dùng bản trình bày đầy đủ
+- File PDF tự tạo dùng bản trình bày đầy đủ (báo giá, lịch thanh toán, phương án vay ngân hàng, bảng trả nợ, so sánh, lưu ý) thay vì bản 1 trang; trang dài tự thu nhỏ vừa khổ A4, không méo.
+
+## 2.17.3 — Lead: chống trình duyệt giữ bản cũ, báo lý do khi chưa tạo được PDF
+- Trang bảng tính nạp lead.js kèm số phiên bản; thư mục assets/lead luôn kiểm tra bản mới.
+- Email báo lead ghi rõ lý do khi chưa tạo được file PDF.
+
+## 2.17.2 — Lead: tự tạo PDF phương án của khách
+- Khi khách tick "gửi kèm phương án", trình duyệt tự tạo file PDF đúng bảng tính khách đã nhập (Palm River, Norton Park, Nam Mekong).
+- Email báo lead đính kèm file PDF; file cũng lưu vào Google Drive (thư mục "Lead - Phương án PDF") kèm link ở cột "File PDF phương án" trong Sheet và tin WhatsApp.
+- Thư viện tạo PDF (html2canvas, jsPDF) nằm trong assets/vendor, chỉ tải khi khách gửi phương án.
+
+## 2.17.1 — Lead: WhatsApp, PDF sẵn, sổ lead theo cấu phần
+- Báo lead qua WhatsApp (CallMeBot: WHATSAPP_PHONE, WHATSAPP_APIKEY).
+- Email báo lead có nút "Xuất PDF sẵn của khách" (bảng tính tự điền số khách và mở hộp thoại lưu PDF).
+- Google Sheet chia nhóm cột, tab theo dự án, tab Tổng quan; lưu khu vực, số lần vào, số tương tác, số dự án đã xem.
+
 ## 2026-10-18 — Bản tính tài chính: IRR, hỗ trợ lãi của chủ đầu tư, chi phí bán mặc định 2%, ghi chú cho người lập
 - Cột "Quy năm" thay bằng **IRR %/năm** tính theo dòng tiền từng tháng (cột cũ coi mọi vốn bỏ từ đầu nên thấp hơn thực tế, ví dụ kỳ 120: 3,4% so với IRR 6,4%).
 - Thêm ô "Số tháng đầu lãi vay do chủ đầu tư chịu" (mặc định 0); phần lãi đó không tính vào tiền của người mua (cột "Anh trả ngân hàng", vốn cá nhân, quỹ và IRR).
@@ -396,3 +454,6 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 ### Nội dung
 - 2026-09-29 — tài liệu: ghi địa chỉ kho GitHub, Cloudflare Pages; quy trình rút gọn cho Tú (PROJECT_RULES §11.0)
 - 2026-09-29 — ấn phẩm nháp: `atlas/world-economic-atlas-v1-5-16`, `nhat-san/so-00-demo` (chưa công bố)
+
+### Sửa lỗi cache ảnh (Nhật san kỳ 4)
+- `scripts/build.mjs`: ảnh tách từ base64 được đặt tên kèm mã băm nội dung (hinh-NN-xxxxxxxx.jpg) để trình duyệt/CDN không giữ ảnh cũ khi đổi thứ tự.
