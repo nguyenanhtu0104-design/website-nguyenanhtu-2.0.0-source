@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-21 — World Atlas quý III/2026: bổ sung tín nhiệm quốc gia và vốn hóa cổ phiếu (ấn phẩm)
+- Mỗi bảng quốc gia (11 nước) có khối "Tín nhiệm quốc gia & phân hạng thị trường": Moody's, S&P, Fitch (đánh giá khả năng trả nợ quốc gia), FTSE Russell và MSCI (phân hạng khả năng tiếp cận thị trường), Kearney (khảo sát tâm lý đầu tư). Mỗi dòng có chức năng và mức xác minh.
+- Việt Nam: Moody's Ba2 triển vọng tích cực (04/05/2026) đã đối chiếu nguồn sơ cấp của Moody's. FTSE: Secondary Emerging, hiệu lực 21/09/2026, đã đối chiếu thông cáo LSEG. S&P và Fitch lấy từ báo chí, MSCI lấy từ nguồn thứ cấp; các mục này chưa đối chiếu được bản gốc.
+- Bổ sung vốn hóa thị trường cổ phiếu niêm yết (2025) và tỷ trọng toàn cầu cho Hoa Kỳ, Trung Quốc, Đức, Nhật Bản, Ấn Độ; Pháp chỉ có số liệu 2018 (không so cùng kỳ).
+- Bỏ STOXX. Bỏ khối Moody's cũ chỉ có Việt Nam. Không đổi version, URL hay giao diện.
+
 ## 2026-10-21 — Menu Atlas: mở thẳng trang nội dung (2.21.1)
 - Trong menu "Atlas ▾", World Atlas và Atlas VietNam nay mở thẳng kỳ mới nhất đã công bố (bản đọc), không qua trang thư viện. Chưa có kỳ nào công bố thì vẫn về trang thư viện.
 - Chỉ đổi đích liên kết của hai mục trong menu (`templates/partials/global-nav.html`, `scripts/build.mjs`). Giao diện không đổi.
