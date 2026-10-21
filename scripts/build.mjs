@@ -208,7 +208,16 @@ const fanHome = au.fanpage ? `\n        <a class="author-cr" href="${esc(au.fanp
 const fanFoot = au.fanpage ? `\n      <a class="pf-btn pf-btn-fb" href="${esc(au.fanpage)}" target="_blank" rel="noopener">Fanpage</a>` : '';
 const navTpl = rd('templates/partials/global-nav.html');
 const NAV_KEYS = ['nav_camnang', ...(cfg.publications || []).map((p) => p.navKey)];
+// 2.21.1: menu mục ấn phẩm mở thẳng kỳ mới nhất đã công bố (bản đọc nếu chỉ có HTML); chưa có kỳ nào thì về thư viện
+const pubOpenHref = (navKey) => {
+  const sec = pubSections.find((s) => s.navKey === navKey);
+  if (!sec) return BASE;
+  const is = sec.issues.find((i) => i.published);
+  if (!is) return `${BASE}${sec.path}/`;
+  return `${BASE}${sec.path}/${is.slug}/${is.html && !is.pdfs.length && !is.pages.length ? 'doc/' : ''}`;
+};
 const navHtml = (active) => fill(navTpl, { base: BASE, youtube: esc(au.youtube), phone: au.phone.replace('+84', '0'), phoneDisplay: esc(au.phoneDisplay), zalo: esc(au.zalo),
+  href_atlas: pubOpenHref('nav_atlas'), href_atlasvn: pubOpenHref('nav_atlasvn'),
   ...Object.fromEntries(NAV_KEYS.map((k) => [k, k === active ? ' is-active' : ''])), nav_atlasgroup: ['nav_atlas', 'nav_atlasvn'].includes(active) ? ' is-active' : '' });
 const header = fill(rd('templates/partials/home-header.html'), { ...common, fanpage_home: fanHome });
 const footer = fill(rd('templates/partials/article-footer.html'), { ...common, fanpage_footer: fanFoot });

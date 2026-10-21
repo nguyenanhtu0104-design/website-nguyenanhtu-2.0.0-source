@@ -3,6 +3,10 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-21 — Menu Atlas: mở thẳng trang nội dung (2.21.1)
+- Trong menu "Atlas ▾", World Atlas và Atlas VietNam nay mở thẳng kỳ mới nhất đã công bố (bản đọc), không qua trang thư viện. Chưa có kỳ nào công bố thì vẫn về trang thư viện.
+- Chỉ đổi đích liên kết của hai mục trong menu (`templates/partials/global-nav.html`, `scripts/build.mjs`). Giao diện không đổi.
+
 ## 2026-10-20 — Thương hiệu: logo chân dung và icon màn hình chính (2.21.0)
 - Thay chữ NAT ở đầu trang bằng ảnh chân dung tác giả trong vòng tròn viền vàng (`assets/images/site/nat-logo-256.webp`). Favicon đổi sang `nat-logo-96.webp`.
 - Thêm icon khi thêm vào màn hình chính: `apple-touch-icon-180.png` (iPhone) và `app-icon-192/512.png` (Android), kèm `assets/manifest.webmanifest` tên "Nguyễn Anh Tú". Các file này để PNG vì iOS và manifest yêu cầu PNG.
