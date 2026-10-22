@@ -3,6 +3,18 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-22 — World Atlas quý III/2026: Snapshot theo mô hình "bốn quý + tổng kết năm"
+- **Tú chốt mô hình bảng:** mỗi năm gồm bốn quý và một cột tổng kết cả năm. Năm nào thiếu số quý thì dùng số tổng kết năm thay thế.
+- Bảng Snapshot dựng lại theo trục thời gian: Cả năm 2025 · Q1/2026 · Q2/2026 · Q3/2026 · Q4/2026 · Cả năm 2026 · 9M/2026 · Trạng thái Q3 · Công bố.
+- **Cột cả năm 2025 điền đủ 17 nước** (IMF WEO 4/2026 cho 11 nước nhóm đầu; World Bank WDI cho Hàn Quốc, Thái Lan, Indonesia, Singapore, Malaysia; DGBAS cho Đài Loan). Ba nước tra được quý IV/2025 thì ghi kèm dưới ô: Việt Nam 8,46%, Trung Quốc 4,50%, Ấn Độ 7,80%.
+- Cột Q4/2026 và cả năm 2026 để sẵn, điền khi cơ quan thống kê công bố. Từ 2027 mỗi năm sẽ đủ bốn quý và một cột tổng kết.
+
+## 2026-10-22 — World Atlas quý III/2026: bảng Snapshot có chuỗi quý
+- Tú phát hiện Snapshot không có kỳ trước: kho Raw History chỉ lưu hai quý Q2 và Q3/2026 vì cơ chế này mới dựng ngày 21/10. Cột "Q2 carry-forward" là số dùng tạm, không phải lịch sử.
+- **Thêm cột Q1/2026 cho đủ 17 nước**, tra từ bảng TradingEconomics ngày 22/10/2026, lấy bản đã điều chỉnh khi nguồn có ghi. Bảng nay đọc ngang thấy xu hướng Q1 → Q2 → Q3.
+- Quý IV/2025 chỉ tra được cho ba nước (Việt Nam 8,46%, Trung Quốc 4,50%, Ấn Độ 7,80%) nên ghi trong chú thích thay vì tạo cột rỗng cho 14 nước.
+- Giữ nguyên số Q2 và Q3 theo nguồn thống kê quốc gia đã đối chiếu, không ghi đè bằng bảng tổng hợp; chú thích nói rõ có thể lệch nhẹ. Đài Loan Q1 có hai giá trị trong nguồn, lấy 14,55% và ghi rõ chưa đối chiếu bản gốc.
+
 ## 2026-10-22 — World Atlas quý III/2026: tái cấu trúc 3 phần + ghép số quý vào số năm (v1.5.25)
 - **Tú duyệt cấu trúc mới.** Mỗi quốc gia nay chia ba phần: (1) Sức khỏe quốc gia — nhịp quý, quy mô và tăng trưởng, giá cả việc làm thu nhập, dân số và chất lượng sống, uy tín vay nợ, vị thế trên bản đồ quỹ đầu tư; (2) So sánh và mức chênh; (3) Cấu trúc vốn ra vào. Áp dụng cho cả 17 nước. Mỗi phần và mỗi mục có một câu giải nghĩa.
 - **Số năm luôn kè số quý.** 36 ô có số quý hiện khung xanh ngay dưới số năm (GDP quý III, hoặc quý II nếu chưa công bố; lạm phát và thất nghiệp mới nhất kèm kỳ). 254 ô chỉ có số năm được ghi mờ "Chỉ công bố theo năm" để người đọc phân biệt nhịp hiện tại với nền cấu trúc. Sáu nước mới được thêm ba hàng nhịp quý vào bảng số liệu năm.
