@@ -3,12 +3,14 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-10-21 — World Atlas quý III/2026: bản v1.5.22 hoàn chỉnh, thay bản Atlas World cũ (ấn phẩm)
-- Thay toàn bộ bản đọc của kỳ quý III/2026 bằng bản Tú duyệt: số liệu đã biên tập (quy đổi tỷ USD, làm tròn 2 chữ số, chuẩn hóa đơn vị), thêm bảng "So sánh phân hạng thị trường — 11 quốc gia, 5 nhà cung cấp" (FTSE Russell, MSCI, S&P DJI, STOXX, Solactive).
-- **Bổ sung R&I (Nhật Bản): Việt Nam BBB− triển vọng ổn định, ngày 08/10/2026, nâng từ BB+** — lần đầu Việt Nam đạt hạng đầu tư ở một hãng xếp hạng. Đã đối chiếu hai nguồn độc lập (FiinRatings, TechNode).
-- Điền lại bảng tín nhiệm cho cả 11 nước: Moody's, S&P, Fitch. Việt Nam: Moody's Ba2 tích cực (04/05/2026, nguồn sơ cấp), S&P BB+ ổn định, Fitch BB+ ổn định (nguồn báo chí). Mỗi ô ghi rõ mức xác minh.
+## 2026-10-21 — World Atlas quý III/2026: bản v1.5.23, mở rộng 17 quốc gia, thay bản Atlas World cũ (ấn phẩm)
+- Thay toàn bộ bản đọc của kỳ quý III/2026 bằng bản v1.5.23 Tú duyệt: thêm 6 quốc gia (Hàn Quốc, Thái Lan, Indonesia, Đài Loan, Singapore, Malaysia), nâng tổng số lên 17; thêm các mục dòng vốn, cơ cấu sản xuất, thương mại - dự trữ, ETF và quỹ chủ động cho nhóm mới; thêm bảng "So sánh phân hạng thị trường — 5 nhà cung cấp".
+- **Chuẩn hóa bảng "Tín nhiệm quốc gia" cho cả 17 nước về cùng một format**: Tổ chức · Loại đánh giá · Mức · Triển vọng · Ngày công bố · Nguồn. Trước đó 11 nước cũ và 6 nước mới dùng hai kiểu bảng khác nhau.
+- **Bổ sung R&I (Nhật Bản): Việt Nam BBB− triển vọng ổn định, 08/10/2026**, nâng từ BB+ — lần đầu Việt Nam đạt hạng đầu tư ở một hãng xếp hạng. Đối chiếu hai nguồn độc lập (FiinRatings, TechNode).
+- Điền Moody's và S&P cho cả 17 nước (trước đó bỏ trống hoặc chỉ có Fitch). Việt Nam: Moody's Ba2 tích cực (nguồn sơ cấp), S&P BB+ và Fitch BB+ (nguồn báo chí). Giữ nguyên các dòng Fitch đã có liên kết công bố của 6 nước mới.
+- Mỗi bảng có ghi chú giải thích chức năng từng tổ chức, ngưỡng hạng đầu tư (Baa3 / BBB−) và mức xác minh của từng dòng.
 - Thêm ghi chú đối chiếu độc lập ngày 21/10/2026 dưới bảng 5 nhà cung cấp: đã xác nhận FTSE (Việt Nam lên Secondary Emerging, hiệu lực 21/09/2026) và Solactive (9 nước); chưa đối chiếu được bảng đầy đủ của S&P DJI và STOXX.
-- Không đổi version, URL, trạng thái công bố hay giao diện.
+- Số liệu giữ định dạng đã biên tập (tỷ USD, làm tròn 2 chữ số). Không đổi version site, URL, trạng thái công bố hay giao diện.
 
 ## 2026-10-21 — Menu Atlas: mở thẳng trang nội dung (2.21.1)
 - Trong menu "Atlas ▾", World Atlas và Atlas VietNam nay mở thẳng kỳ mới nhất đã công bố (bản đọc), không qua trang thư viện. Chưa có kỳ nào công bố thì vẫn về trang thư viện.
