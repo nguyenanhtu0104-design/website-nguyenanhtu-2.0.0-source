@@ -3,6 +3,10 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-22 — Tài liệu: hồ sơ bàn giao Atlas World
+- Thêm `docs/ATLAS_WORLD_HANDOFF.md`: cấu trúc file Atlas (17 quốc gia, quy ước id `cN-credit` / `cN-market`…), quy tắc biên tập số liệu, bốn nhãn mức xác minh, bảng đầy đủ nguồn dữ liệu đã dùng kèm liên kết, danh sách nguồn không nên dùng, mục chưa xác minh và quy trình làm việc.
+- Mục đích: một AI bất kỳ đọc file này cùng PROJECT_RULES.md là đủ để làm tiếp kỳ sau, không cần lịch sử chat.
+
 ## 2026-10-22 — World Atlas quý III/2026: hoàn tất đối chiếu MSCI (ấn phẩm)
 - Tú chụp bảng "Current Market Classification" của MSCI. Đối chiếu 16/17 nước: **tất cả đều khớp**, không phải sửa mức nào. Cả 17 ô MSCI ghi "đã đối chiếu nguồn sơ cấp".
 - Nga: MSCI đã chuyển sang nhóm Standalone từ tháng 3/2022 nên không còn trong bảng phân hạng hiện hành — ghi rõ thay cho "không có trong bảng nguồn" (theo bảng Previous Market Reclassifications của MSCI).
