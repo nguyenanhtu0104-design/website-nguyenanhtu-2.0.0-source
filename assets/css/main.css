@@ -189,6 +189,8 @@ body{
   color:#ddd8ce;flex:1;line-height:1.35;
 }
 .art-row:hover .art-title{color:#f0ebe0}
+.art-title.is-star{font-size:19px;color:#e6c47a}
+.art-row:hover .art-title.is-star{color:#f0d9a0}
 .art-sub{font-size:11px;color:var(--muted);line-height:1.5;margin-top:2px}
 .art-arrow{color:var(--muted);font-size:16px;flex-shrink:0;opacity:.6}
 

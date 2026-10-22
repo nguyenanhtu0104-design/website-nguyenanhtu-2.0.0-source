@@ -3,12 +3,6 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-10-22 — Nam Mekong Grand Plaza: cập nhật mục Hỏi & Đáp (Nội dung)
-- Bỏ 3 câu (giá bán, thời gian mở bán/bàn giao, số căn theo loại) — trùng hoặc đã có ở mục Tổng quan/Giá bán.
-- Thêm 8 câu mới lấy từ tài liệu Hỏi–Đáp dự án của chủ đầu tư: chủ đầu tư là ai; tổng số căn và số căn mỗi tòa; sở hữu lâu dài/người nước ngoài 50 năm; đơn vị tư vấn thiết kế; số căn/sàn mỗi tòa; thiết kế đặc biệt (căn sân vườn, căn thông tầng, sảnh, hành lang); đơn vị bảo lãnh và ngân hàng hỗ trợ vay; ký hợp đồng với công ty nào.
-- Giữ câu "Pháp lý dự án thế nào?" và "Có nên mua không?" (chuyển xuống cuối). Tổng 10 câu, đánh số lại 01–10.
-- `updatedDate` bài → 2026-10-22. Không đổi `version` site (chỉ sửa nội dung bài).
-
 ## 2026-10-22 — Trang chủ, Chương 04: tên vùng/dự án đánh dấu ⭐ hiển thị chữ to hơn (2.21.2)
 - Tên vùng có `star: true` (vd "Thành Phố Mới Bình Dương") đổi sang 19px, màu vàng thương hiệu, đậm hơn so với 17px mặc định — thêm class `.art-title.is-star` trong `main.css`, build gán class khi `it.star` đúng.
 - Chip dự án có `star: true` (vd "Nam Mekong Grand Plaza") tăng từ 11px lên 13px, in đậm; viền/màu vàng giữ nguyên như trước.
