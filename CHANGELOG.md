@@ -3,27 +3,30 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-10-22 — Hiệu ứng rê chuột cho vùng/dự án đánh dấu ⭐ (2.21.4)
-- Thêm hiệu ứng khi rê chuột vào vùng/dự án có sao: viền và quầng sáng vàng nhẹ (`.art-row-star:hover`, `.chip-star:hover`), chip dự án còn nhích lên 1px. Chỉ áp dụng cho thiết bị có chuột (`@media (hover:hover)`, cùng kiểu đã dùng cho `.pub-card`), không ảnh hưởng điện thoại.
-- Không tải ảnh hay dữ liệu gì thêm — chỉ hiệu ứng CSS, giữ đúng nguyên tắc "trang chủ không tải ảnh bài" (§5). Trang chủ tăng 54.0 KB so với 53.7 KB.
-- Tăng `version` lên 2.21.4.
+## 2026-10-22 — World Atlas quý III/2026: hoàn tất đối chiếu MSCI (ấn phẩm)
+- Tú chụp bảng "Current Market Classification" của MSCI. Đối chiếu 16/17 nước: **tất cả đều khớp**, không phải sửa mức nào. Cả 17 ô MSCI ghi "đã đối chiếu nguồn sơ cấp".
+- Nga: MSCI đã chuyển sang nhóm Standalone từ tháng 3/2022 nên không còn trong bảng phân hạng hiện hành — ghi rõ thay cho "không có trong bảng nguồn" (theo bảng Previous Market Reclassifications của MSCI).
+- Sau đợt này, 4/5 nhà cung cấp phân hạng đã đối chiếu nguồn sơ cấp đầy đủ (FTSE Russell, MSCI, S&P DJI, STOXX); Solactive vẫn theo tài liệu tham vấn 27/10/2025.
+- Đã thử đối chiếu chéo Moody's và Fitch bằng trang tổng hợp FXEmpire nhưng **không dùng**: trang này lệch với bảng hiện tại ở nhiều nước (ví dụ Moody's Hoa Kỳ ghi Aaa trong khi đã bị hạ xuống Aa1 từ 16/05/2025), tức dữ liệu cũ. Giữ nguyên giá trị hiện có.
 
-## 2026-10-22 — Tăng mạnh hơn độ nổi bật của vùng/dự án đánh dấu ⭐ (2.21.3)
-- Tú phản hồi mức tăng ở 2.21.2 quá nhẹ, khó nhận ra trên trang thật. Tăng tiếp: tên vùng `is-star` từ 19px lên **22px, đậm (700)**; chip dự án `star` từ 13px/600 lên **15px/700**, padding rộng hơn (5px 13px thay vì 4px 11px).
-- Giữ nguyên màu vàng thương hiệu và viền đã có từ 2.21.2, chỉ tăng kích thước/độ đậm chữ.
-- Tăng `version` lên 2.21.3.
+## 2026-10-22 — World Atlas quý III/2026: hoàn tất đối chiếu STOXX (ấn phẩm)
+- Tú tải được bảng phân hạng gốc của STOXX (hiệu lực 22/09/2025, file SW_Country_Classification_20250922.xlsx). Đối chiếu 16/17 nước (Nga không có trong bảng): **tất cả đều khớp**, không phải sửa mức nào.
+- Cả 17 ô STOXX đổi liên kết sang file gốc này, ghi "đã đối chiếu nguồn sơ cấp" và sửa kỳ nguồn từ "hiệu lực 21/09/2026" thành đúng "bảng hiệu lực 22/09/2025".
+- Sau đợt này, 4/5 nhà cung cấp phân hạng (FTSE Russell, MSCI, S&P DJI, STOXX) đã có nguồn sơ cấp; Solactive vẫn theo tài liệu tham vấn 27/10/2025.
 
-## 2026-10-22 — Nam Mekong Grand Plaza: cập nhật mục Hỏi & Đáp (Nội dung)
-- Bỏ 3 câu (giá bán, thời gian mở bán/bàn giao, số căn theo loại) — trùng hoặc đã có ở mục Tổng quan/Giá bán.
-- Thêm 8 câu mới lấy từ tài liệu Hỏi–Đáp dự án của chủ đầu tư: chủ đầu tư là ai; tổng số căn và số căn mỗi tòa; sở hữu lâu dài/người nước ngoài 50 năm; đơn vị tư vấn thiết kế; số căn/sàn mỗi tòa; thiết kế đặc biệt (căn sân vườn, căn thông tầng, sảnh, hành lang); đơn vị bảo lãnh và ngân hàng hỗ trợ vay; ký hợp đồng với công ty nào.
-- Giữ câu "Pháp lý dự án thế nào?" và "Có nên mua không?" (chuyển xuống cuối). Tổng 10 câu, đánh số lại 01–10.
-- `updatedDate` bài → 2026-10-22. Không đổi `version` site (chỉ sửa nội dung bài).
+## 2026-10-22 — World Atlas quý III/2026: đối chiếu chéo xếp hạng S&P cho cả 17 nước (ấn phẩm)
+- Đối chiếu bảng TradingEconomics (Tú cung cấp, truy xuất 22/10/2026) với bảng tín nhiệm: **mức S&P của cả 17 nước trùng khớp hoàn toàn**. Các dòng S&P nâng mức xác minh từ một nguồn lên "hai nguồn tổng hợp trùng khớp".
+- Sửa hai điểm theo nguồn mới: Ý — triển vọng S&P đổi từ ổn định thành **tích cực**; Nga — S&P ghi **NR (không xếp hạng)** thay cho "không có trong nguồn đã tra".
+- Moody's và Fitch vẫn là một nguồn tổng hợp (bảng TradingEconomics Tú gửi chỉ có cột S&P và DBRS).
+- STOXX: vẫn chưa đối chiếu được. Trang danh sách của STOXX chỉ liệt kê tệp tải về, và các tệp phân hạng đều chặn truy cập tự động. Ghi chú cập nhật lại cho đúng tình trạng.
+- MSCI: trang Tú gửi không chứa bảng phân hạng (bảng nằm trong ảnh), nên phần 16 nước ngoài Việt Nam chưa bổ sung được.
 
-## 2026-10-22 — Trang chủ, Chương 04: tên vùng/dự án đánh dấu ⭐ hiển thị chữ to hơn (2.21.2)
-- Tên vùng có `star: true` (vd "Thành Phố Mới Bình Dương") đổi sang 19px, màu vàng thương hiệu, đậm hơn so với 17px mặc định — thêm class `.art-title.is-star` trong `main.css`, build gán class khi `it.star` đúng.
-- Chip dự án có `star: true` (vd "Nam Mekong Grand Plaza") tăng từ 11px lên 13px, in đậm; viền/màu vàng giữ nguyên như trước.
-- Chỉ ảnh hưởng Chương 04 "Dự Án Đã Chọn Lọc" (nơi duy nhất dùng cờ `star` trong `categories.json`); không đổi các chương khác, không đổi HTML trang bài.
-- Tăng `version` lên 2.21.2 vì có sửa CSS/JS (build.mjs).
+## 2026-10-22 — World Atlas quý III/2026: xác minh nguồn sơ cấp cho phân hạng thị trường (ấn phẩm)
+- **S&P DJI**: đối chiếu được tài liệu phân hạng ngày 01/06/2026, xác nhận mức của 16/17 nước (Nga không có trong tài liệu). Cả 17 bảng "Phân hạng thị trường cổ phiếu" đổi liên kết sang tài liệu này và ghi "đã đối chiếu nguồn sơ cấp"; các mức hiện có đều khớp, không phải sửa số.
+- **MSCI**: Việt Nam thuộc nhóm Cận biên, xác nhận qua danh sách chỉ số MSCI Frontier Markets ngày 12/08/2026 (app2.msci.com) thay cho nguồn thứ cấp trước đó.
+- **STOXX**: vẫn chưa đối chiếu được bảng đầy đủ — trang danh sách của STOXX chặn truy cập tự động, tài liệu kết quả 2026 chỉ nêu Trung Quốc. Mỗi ô STOXX nay ghi rõ "chưa đối chiếu được bảng gốc".
+- **Tín nhiệm Việt Nam**: ngày công bố của S&P (26/05/2022) và Fitch (08/12/2023) lấy từ hai nguồn tổng hợp trùng khớp; mức BB+ của cả hai còn hiệu lực theo TechNode 09/10/2026 dẫn Bộ Tài chính. Dòng Fitch sửa ngày từ 06/2025 thành 08/12/2023.
+- Cập nhật ghi chú đối chiếu độc lập dưới bảng 5 nhà cung cấp theo tình trạng mới. Không đổi version site, URL, trạng thái công bố hay giao diện.
 
 ## 2026-10-21 — World Atlas quý III/2026: bản v1.5.23, mở rộng 17 quốc gia, thay bản Atlas World cũ (ấn phẩm)
 - Thay toàn bộ bản đọc của kỳ quý III/2026 bằng bản v1.5.23 Tú duyệt: thêm 6 quốc gia (Hàn Quốc, Thái Lan, Indonesia, Đài Loan, Singapore, Malaysia), nâng tổng số lên 17; thêm các mục dòng vốn, cơ cấu sản xuất, thương mại - dự trữ, ETF và quỹ chủ động cho nhóm mới; thêm bảng "So sánh phân hạng thị trường — 5 nhà cung cấp".

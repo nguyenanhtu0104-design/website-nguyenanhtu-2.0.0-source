@@ -410,14 +410,12 @@ function chapterHtml(c) {
     const a = bySlug.get(it.article); const t = `${a.icon ? a.icon + ' ' : ''}${esc(a.title)}`;
     if (c.layout !== 'zones') return `<a class="art-row xl-b" href="${artUrl(a.slug)}"><div class="art-title">${t}</div><div class="art-sub">${esc(a.subtitle)}</div><div class="art-arrow">›</div></a>`;
     const hl = it.highlight ? ' style="border-color:rgba(200,153,58,.25);background:rgba(200,153,58,.04)"' : '';
-    const star = it.star ? ' <span style="color:#c8993a;font-size:14px">⭐</span>' : '';
-    let row = `<a class="art-row xl-b${it.star ? ' art-row-star' : ''}" href="${artUrl(a.slug)}"${hl}><div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--muted);width:22px;flex-shrink:0">${esc(it.num || '')}</div><div style="flex:1;min-width:0"><div class="art-title${it.star ? ' is-star' : ''}">${t}${star}</div><div class="art-sub">${esc(a.subtitle)}</div></div><div class="art-arrow">›</div></a>`;
+    const star = it.star ? ' <span style="color:#c8993a;font-size:13px">⭐</span>' : '';
+    let row = `<a class="art-row xl-b" href="${artUrl(a.slug)}"${hl}><div style="font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--muted);width:22px;flex-shrink:0">${esc(it.num || '')}</div><div style="flex:1;min-width:0"><div class="art-title">${t}${star}</div><div class="art-sub">${esc(a.subtitle)}</div></div><div class="art-arrow">›</div></a>`;
     if (it.projects && it.projects.length) {
       row += '\n<div style="padding:0 16px 10px 54px;margin-top:-2px">' + it.projects.map((p) => {
         const pa = bySlug.get(p.article);
-        const size = p.star ? 'font-size:15px;font-weight:700' : 'font-size:11px';
-        const pad = p.star ? '5px 13px' : '3px 9px';
-        return `<a class="xl-i${p.star ? ' chip-star' : ''}" href="${artUrl(pa.slug)}" style="cursor:pointer;display:inline-block;${size};padding:${pad};border-radius:12px;margin:0 5px 6px 0;${p.star ? S.star : S.norm}">${p.star ? '⭐ ' : ''}${esc(p.label || pa.title)}</a>`;
+        return `<a class="xl-i" href="${artUrl(pa.slug)}" style="cursor:pointer;display:inline-block;font-size:11px;padding:3px 9px;border-radius:12px;margin:0 5px 6px 0;${p.star ? S.star : S.norm}">${p.star ? '⭐ ' : ''}${esc(p.label || pa.title)}</a>`;
       }).join('') + '</div>';
     }
     return row;
