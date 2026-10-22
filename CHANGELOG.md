@@ -3,6 +3,35 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-22 — World Atlas quý III/2026: tái cấu trúc 3 phần + ghép số quý vào số năm (v1.5.25)
+- **Tú duyệt cấu trúc mới.** Mỗi quốc gia nay chia ba phần: (1) Sức khỏe quốc gia — nhịp quý, quy mô và tăng trưởng, giá cả việc làm thu nhập, dân số và chất lượng sống, uy tín vay nợ, vị thế trên bản đồ quỹ đầu tư; (2) So sánh và mức chênh; (3) Cấu trúc vốn ra vào. Áp dụng cho cả 17 nước. Mỗi phần và mỗi mục có một câu giải nghĩa.
+- **Số năm luôn kè số quý.** 36 ô có số quý hiện khung xanh ngay dưới số năm (GDP quý III, hoặc quý II nếu chưa công bố; lạm phát và thất nghiệp mới nhất kèm kỳ). 254 ô chỉ có số năm được ghi mờ "Chỉ công bố theo năm" để người đọc phân biệt nhịp hiện tại với nền cấu trúc. Sáu nước mới được thêm ba hàng nhịp quý vào bảng số liệu năm.
+- **Điền dữ liệu còn thiếu:** 9 ô lấy được từ file World Bank đã tải (hạ tầng PPI, viện trợ không hoàn lại). 36 ô ở các nước phát triển đổi thành "Không áp dụng" vì họ là nước cấp viện trợ chứ không phải nước nhận. 133 ô còn lại thay "Chưa có dữ liệu" bằng lý do cụ thể, ví dụ "cần dòng vốn hằng tháng của toàn bộ tập quỹ — chỉ có ở EPFR và LSEG, thu phí". Số đếm trong tiêu đề từng khối cập nhật theo.
+- **Chuẩn hóa 20 số còn ở dạng thô** (ví dụ 748760000000 USD) sang tỷ USD làm tròn 2 chữ số.
+- Thanh điều hướng trong mỗi panel đổi thành ba nút theo ba phần. Không đổi URL, trạng thái công bố hay bảng màu.
+
+## 2026-10-22 — Tài liệu: bản đồ cấu trúc Atlas World
+- Thêm `docs/ATLAS_WORLD_STRUCTURE.md`: mô tả ba lớp của trang (phần chung, panel từng quốc gia, phần cuối), từng mục kèm ý nghĩa đọc và điều không nên hiểu nhầm.
+- Ghi nhận một điểm chưa nhất quán: 11 nước gốc có 15 mục, 6 nước mới có 8 mục với tên gọi khác nhau, nên bố cục đổi khi người đọc chuyển nước. Nêu hai hướng xử lý.
+
+## 2026-10-22 — Tài liệu: phạm vi dữ liệu Atlas World (Tú duyệt nguyên tắc mới)
+- Thêm `docs/ATLAS_WORLD_DATA_SCOPE.md`. Tú duyệt nguyên tắc phạm vi ba mức: chỉ số cơ bản lấy đủ từ nguồn chính thức; vốn đầu tư lấy số tổng và tỷ trọng theo loại vốn; mức chi tiết chỉ lấy tối đa 5 mục tỷ trọng cao nhất, ghi rõ là mẫu.
+- Phân loại toàn bộ chỉ tiêu đang trống thành 4 nhóm: (A) đã có sẵn dữ liệu trong file World Bank tải ngày 21/10 nhưng chưa nối vào trang — đầu tư danh mục ròng 11/11 nước, danh mục cổ phiếu 10/11, kiều hối 10/11; (B) lấy được từ IMF BoP và OECD DAC, cần tra thêm; (C) chỉ lấy dạng top 5; (D) thật sự chỉ có ở nguồn thu phí.
+- Ghi rõ ODA và PPI trống ở các nước phát triển là **đúng bản chất** (họ là nước cấp viện trợ), nên dùng nhãn "Không áp dụng" thay vì "Chưa có dữ liệu".
+- Ba nguyên tắc giữ nguyên: không cộng mảnh rời thành tổng quốc gia; không suy số chéo; mọi số phải có nguồn và nhãn xác minh.
+
+## 2026-10-22 — World Atlas quý III/2026: điền số liệu Snapshot cho sáu nước mới (ấn phẩm)
+- Bảng Snapshot Q3/2026 và bảng CPI/lao động trước đây để "Chưa xác minh" toàn bộ cho Hàn Quốc, Thái Lan, Indonesia, Đài Loan, Singapore, Malaysia. Nay đã điền đủ 12 dòng.
+- **Có số Q3 thật:** Singapore +5,4% (ước tính nhanh, 14/10/2026) và Malaysia +5,3% (ước tính nhanh, 16/10/2026).
+- **Chưa có số Q3:** Hàn Quốc, Thái Lan, Indonesia, Đài Loan — để PENDING, điền Q2 carry-forward lần lượt 3,70% · 1,90% · 5,29% · 12,93%. Lịch công bố Q3 chưa xác nhận được nên để "Chưa xác nhận lịch" thay vì đoán ngày.
+- **CPI và lao động:** đủ sáu nước, mỗi dòng ghi rõ kỳ tham chiếu vì các nước công bố lệch nhau (Indonesia khảo sát lao động nửa năm một lần nên số thất nghiệp là tháng 3/2026).
+- Các ô "Chưa xác minh" còn lại trong mục Vốn & Đầu tư (ETF, Active Fund, Private Credit, VC/PE) **giữ nguyên có chủ đích**: theo Capital_Methodology, không được suy số từ nguồn công khai thay cho dữ liệu holdings và dòng vốn đồng kỳ.
+
+## 2026-10-22 — World Atlas quý III/2026: nhãn phiên bản và ngày đối chiếu (ấn phẩm)
+- Đầu trang trước ghi "cập nhật 21/10/2026" nên nhìn vào tưởng vẫn là bản cũ dù nội dung đã đối chiếu lại ngày 22/10. Sửa thành "Số liệu chốt 21/10/2026 · Đối chiếu nguồn 22/10/2026" để tách rõ hai mốc.
+- Tăng nhãn phiên bản Atlas từ v1.5.23 lên **v1.5.24**.
+- Giữ nguyên "Research cut 21/10/2026" trong mục Snapshot và các ghi chú "Đối chiếu ngày 21/10/2026" ở mục dòng vốn — đó là ngày truy xuất số liệu thật, không đổi.
+
 ## 2026-10-22 — Tài liệu: hồ sơ bàn giao Atlas World
 - Thêm `docs/ATLAS_WORLD_HANDOFF.md`: cấu trúc file Atlas (17 quốc gia, quy ước id `cN-credit` / `cN-market`…), quy tắc biên tập số liệu, bốn nhãn mức xác minh, bảng đầy đủ nguồn dữ liệu đã dùng kèm liên kết, danh sách nguồn không nên dùng, mục chưa xác minh và quy trình làm việc.
 - Mục đích: một AI bất kỳ đọc file này cùng PROJECT_RULES.md là đủ để làm tiếp kỳ sau, không cần lịch sử chat.
