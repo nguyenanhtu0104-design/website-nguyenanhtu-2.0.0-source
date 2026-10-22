@@ -3,6 +3,22 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-22 — Hiệu ứng rê chuột cho vùng/dự án đánh dấu ⭐ (2.21.4)
+- Thêm hiệu ứng khi rê chuột vào vùng/dự án có sao: viền và quầng sáng vàng nhẹ (`.art-row-star:hover`, `.chip-star:hover`), chip dự án còn nhích lên 1px. Chỉ áp dụng cho thiết bị có chuột (`@media (hover:hover)`, cùng kiểu đã dùng cho `.pub-card`), không ảnh hưởng điện thoại.
+- Không tải ảnh hay dữ liệu gì thêm — chỉ hiệu ứng CSS, giữ đúng nguyên tắc "trang chủ không tải ảnh bài" (§5). Trang chủ tăng 54.0 KB so với 53.7 KB.
+- Tăng `version` lên 2.21.4.
+
+## 2026-10-22 — Tăng mạnh hơn độ nổi bật của vùng/dự án đánh dấu ⭐ (2.21.3)
+- Tú phản hồi mức tăng ở 2.21.2 quá nhẹ, khó nhận ra trên trang thật. Tăng tiếp: tên vùng `is-star` từ 19px lên **22px, đậm (700)**; chip dự án `star` từ 13px/600 lên **15px/700**, padding rộng hơn (5px 13px thay vì 4px 11px).
+- Giữ nguyên màu vàng thương hiệu và viền đã có từ 2.21.2, chỉ tăng kích thước/độ đậm chữ.
+- Tăng `version` lên 2.21.3.
+
+## 2026-10-22 — Nam Mekong Grand Plaza: cập nhật mục Hỏi & Đáp (Nội dung)
+- Bỏ 3 câu (giá bán, thời gian mở bán/bàn giao, số căn theo loại) — trùng hoặc đã có ở mục Tổng quan/Giá bán.
+- Thêm 8 câu mới lấy từ tài liệu Hỏi–Đáp dự án của chủ đầu tư: chủ đầu tư là ai; tổng số căn và số căn mỗi tòa; sở hữu lâu dài/người nước ngoài 50 năm; đơn vị tư vấn thiết kế; số căn/sàn mỗi tòa; thiết kế đặc biệt (căn sân vườn, căn thông tầng, sảnh, hành lang); đơn vị bảo lãnh và ngân hàng hỗ trợ vay; ký hợp đồng với công ty nào.
+- Giữ câu "Pháp lý dự án thế nào?" và "Có nên mua không?" (chuyển xuống cuối). Tổng 10 câu, đánh số lại 01–10.
+- `updatedDate` bài → 2026-10-22. Không đổi `version` site (chỉ sửa nội dung bài).
+
 ## 2026-10-22 — Trang chủ, Chương 04: tên vùng/dự án đánh dấu ⭐ hiển thị chữ to hơn (2.21.2)
 - Tên vùng có `star: true` (vd "Thành Phố Mới Bình Dương") đổi sang 19px, màu vàng thương hiệu, đậm hơn so với 17px mặc định — thêm class `.art-title.is-star` trong `main.css`, build gán class khi `it.star` đúng.
 - Chip dự án có `star: true` (vd "Nam Mekong Grand Plaza") tăng từ 11px lên 13px, in đậm; viền/màu vàng giữ nguyên như trước.
