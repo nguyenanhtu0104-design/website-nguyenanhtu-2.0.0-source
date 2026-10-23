@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-23 — Báo cáo Mật độ Đô thị Nén: thay bộ bản đồ metro (Nội dung)
+- Tú gửi bộ 14 bản đồ metro mới (`Metro_World_16x9_4K_V2`, 16:9, 4K), đã xóa watermark cũ. Thay toàn bộ bản đồ trong tab "Phân tích mô hình" của `urban-compactness-report.html`: mỗi thẻ thành phố một bản đồ, không đổi bố cục hay số liệu.
+- File mới đặt tên mới `assets/clips/do-thi-nen/metro-v2-<thành-phố>.webp` (bản 1200px nội tuyến, bản 2560px khi bấm xem lớn) để không bị cache cũ; các file `metro-<thành-phố>*.webp` cũ không còn được báo cáo tham chiếu.
+- Bỏ bản đồ MAUR tiếng Pháp của TP.HCM (bộ mới chỉ có một bản đồ TP.HCM). Chú thích TP.HCM đổi theo 8 tuyến trên bản đồ mới.
+- Ghi nguồn theo tác giả đã nêu trên ảnh: Paris và Copenhagen (UrbanRail.Net, R. Schwandl), Thâm Quyến (Accurate.Balance). Các thẻ khác giữ nguồn cũ hoặc "Ảnh sưu tầm".
+
 ## 2026-10-22 — World Atlas quý III/2026: Snapshot theo mô hình "bốn quý + tổng kết năm"
 - **Tú chốt mô hình bảng:** mỗi năm gồm bốn quý và một cột tổng kết cả năm. Năm nào thiếu số quý thì dùng số tổng kết năm thay thế.
 - Bảng Snapshot dựng lại theo trục thời gian: Cả năm 2025 · Q1/2026 · Q2/2026 · Q3/2026 · Q4/2026 · Cả năm 2026 · 9M/2026 · Trạng thái Q3 · Công bố.
