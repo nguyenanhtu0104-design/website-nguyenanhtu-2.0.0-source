@@ -3,12 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-10-23 — Công cụ: Bản đồ dự án — vành đai rõ nét, tách đoạn hiện hữu / đang xây / quy hoạch, nút giao
-- Vành đai vẽ kiểu đường bộ: viền trắng + màu đậm riêng cho từng vành đai (VĐ1 cam, VĐ2 xanh mòng két, VĐ3 xanh lá, VĐ4 tím), có nhãn "VĐ1…VĐ4" ngay trên tuyến.
-- Mỗi đoạn ghi tình trạng: nét liền = đã thông xe, nét gạch = đang xây, nét chấm = quy hoạch/chưa xây (mặc định hiện, tắt được). Rê chuột vào đoạn để xem tên đoạn và tình trạng; cửa sổ thông tin liệt kê từng đoạn.
-- Thêm 10 nút giao chính (VĐ1: Linh Đông, Lăng Cha Cả, Bảy Hiền, Nguyễn Văn Linh; VĐ2: Gò Dưa, Bình Phước, Ngã tư Ga, An Lạc, cầu Phú Mỹ, Bình Thái), tên hiện khi phóng to. Chỉ đặt nút nằm trên đoạn vẽ theo đường thật; Bình Phước và Bình Thái lấy theo giao điểm với tuyến metro dọc Quốc lộ 13 và Xa lộ Hà Nội.
-- Chú giải thẻ "Tuyến & ga" thêm 3 kiểu nét vành đai và nút giao.
-
+## 2026-10-23 — Công cụ: Bản đồ dự án — vành đai theo OpenStreetMap, rõ nét, nút giao tính từ giao điểm thật
+- Vành đai 3 (khép kín cả vòng, gồm đoạn trùng cao tốc Bến Lức – Long Thành CT.01), Vành đai 4 và đoạn Vành đai 2 đang thi công (cầu Phú Hữu – Bình Thái – Gò Dưa) vẽ theo hình học thật trên OpenStreetMap (CT.40, CT.41, "Dự án đường Vành đai 2", "Đường cao tốc Bến Lức - Long Thành"; dữ liệu Tú tải 23–24/10/2026, giấy phép ODbL). Bỏ chiều đường song song, đường song hành và nhánh rẽ; khoảng trống chưa có trên OpenStreetMap nối bằng nét chấm mảnh "vẽ ước lượng" (VĐ3 Bình Chuẩn – Tân Vạn đi trùng đường Mỹ Phước – Tân Vạn).
+- Vẽ kiểu đường bộ, viền trắng, màu riêng (VĐ1 cam, VĐ2 xanh mòng két, VĐ3 xanh lá, VĐ4 tím), nhãn VĐ1…VĐ4 trên tuyến. Nét liền = đã thông xe, nét gạch = đang thi công, nét chấm = quy hoạch/ước lượng. Rê chuột vào đoạn xem tên và tình trạng; cửa sổ thông tin liệt kê từng đoạn.
+- 33 nút giao có thông tin (bấm để xem). Nút VĐ3, VĐ4 và một số nút VĐ2 tính bằng giao điểm của vành đai với quốc lộ/cao tốc trên OpenStreetMap (đối chiếu sơ đồ nút giao Vành đai 3 do Tú gửi): VĐ3 — Quốc lộ 13 (Bình Chuẩn), Tân Vạn, cao tốc TP.HCM – Long Thành – Dầu Giây, Nhơn Trạch, Quốc lộ 50, Quốc lộ 1 (Bình Chánh), Bến Lức (cao tốc TP.HCM – Trung Lương), Tỉnh lộ 10, Quốc lộ 22 (Hóc Môn), hầm chui Tỉnh lộ 15; VĐ4 — Quốc lộ 13 (Bến Cát), Quốc lộ 22 (Củ Chi), Quốc lộ N2 (2 nút), cao tốc Trung Lương, Quốc lộ 1 (Bến Lức, Trảng Bom), Quốc lộ 50, cao tốc Long Thành – Dầu Giây; VĐ2 thêm An Sương, Phạm Văn Đồng, cao tốc Long Thành – Dầu Giây (Phú Hữu).
+- Chú giải thẻ "Tuyến & ga" thêm các kiểu nét vành đai và nút giao.
 ## 2026-10-23 — Báo cáo Mật độ Đô thị Nén: thay bộ bản đồ metro (Nội dung)
 - Tú gửi bộ 14 bản đồ metro mới (`Metro_World_16x9_4K_V2`, 16:9, 4K), đã xóa watermark cũ. Thay toàn bộ bản đồ trong tab "Phân tích mô hình" của `urban-compactness-report.html`: mỗi thẻ thành phố một bản đồ, không đổi bố cục hay số liệu.
 - File mới đặt tên mới `assets/clips/do-thi-nen/metro-v2-<thành-phố>.webp` (bản 1200px nội tuyến, bản 2560px khi bấm xem lớn) để không bị cache cũ; các file `metro-<thành-phố>*.webp` cũ không còn được báo cáo tham chiếu.
