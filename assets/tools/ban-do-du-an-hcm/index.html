@@ -164,6 +164,7 @@ html,body{overflow:hidden}
  <div class="panes">
  <section class="pane" data-pane="du-an">
   <h2>Dự án trong Cẩm Nang</h2>
+  <label class="flt"><input type="checkbox" id="cn-on">Hiện trên bản đồ</label>
   <div class="stats">
    <div class="stat"><b id="n-chua" style="color:var(--s-chua)">0</b><span>Chưa mở bán</span></div>
    <div class="stat"><b id="n-dang" style="color:var(--s-dang)">0</b><span>Đang mở bán</span></div>
@@ -178,12 +179,12 @@ html,body{overflow:hidden}
   <h3 class="sub">Khu vực</h3><div class="zones" id="zones"></div>
   <details class="grp" open><summary>Danh sách dự án</summary><div class="list" id="list"></div></details>
   <details class="grp" id="g-sec" open><summary>Dự án quanh ga metro</summary>
-  <label class="flt"><input type="checkbox" id="g-on" checked>Hiện trên bản đồ<em id="g-n"></em></label>
+  <label class="flt"><input type="checkbox" id="g-on">Hiện trên bản đồ<em id="g-n"></em></label>
   <div id="g-st"></div>
   <p class="note">Chấm tròn nhỏ viền trắng. Đã có dữ liệu: <b id="g-lines">…</b>. Vị trí dự án tham khảo bando.manhvu.com (10/2026), chưa xác minh với chủ đầu tư. Dự án đã có ở hai lớp trên chỉ hiện một lần.</p>
  </details>
   <details class="grp" id="q-sec"><summary>Dự án mở bán từ 2017 (TP.HCM cũ)</summary>
-  <label class="flt"><input type="checkbox" id="q-on" checked>Hiện trên bản đồ<em id="q-n"></em></label>
+  <label class="flt"><input type="checkbox" id="q-on">Hiện trên bản đồ<em id="q-n"></em></label>
   <div class="qf"><label>Mở bán từ <select id="q-y1"></select></label> <label>đến <select id="q-y2"></select></label></div>
   <label class="flt"><input type="checkbox" id="q-unk" checked>Gồm dự án chưa rõ năm mở bán</label>
   <label class="flt"><input type="checkbox" id="q-apx">Gồm dự án vị trí ước lượng (chưa có tọa độ có nguồn)</label>
@@ -1123,7 +1124,7 @@ html,body{overflow:hidden}
   else if(d.ends&&!isR){[0,d.pts.length-1].forEach(function(i,k){
    L.circleMarker(d.pts[i],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(d.ends[k]),{className:'stn',direction:'top',offset:[0,-4]}).addTo(g);
   });}
-  var on0=d.group!=='plan';lineLayers[d.id]={g:g,on:on0,pl:pl,lab:lab,d:d,seg:segG,apx:apx};if(on0)g.addTo(map);
+  var on0=false;lineLayers[d.id]={g:g,on:on0,pl:pl,lab:lab,d:d,seg:segG,apx:apx};if(on0)g.addTo(map);
   var box=document.getElementById(isR?'ln-ring':d.group==='plan'?'ln-plan':'ln-metro');
   var row=document.createElement('div');row.className='lrow';
   row.innerHTML='<label class="flt"><input type="checkbox" data-ln="'+d.id+'"'+(on0?' checked':'')+'>'+(isR?'<span class="ln" style="height:7px;border:0;border-radius:4px;background:'+d.color+';box-shadow:0 0 0 2px #fff"></span>':'<span class="ln" style="border-color:'+d.color+';border-top-style:'+(d.status==='van-hanh'?'solid':d.status==='dang-xay'?'dashed':'dotted')+'"></span>')+'<span>'+esc(d.name)+'<small>'+ss.t+' · '+esc(d.length)+(d.ks?' · '+esc(d.ks):'')+'</small></span></label><button type="button" class="zoom" data-zl="'+d.id+'" title="Xem tuyến trên bản đồ" aria-label="Xem '+esc(d.name)+' trên bản đồ">Xem</button>';
@@ -1159,6 +1160,7 @@ html,body{overflow:hidden}
  lnStat();
 
  // ---------- dự án ----------
+ var cnOn=false;document.getElementById('cn-on').addEventListener('change',function(){cnOn=this.checked;refresh()});
  var markers={},activeSt={},activeZone=null,zones=[];
  Object.keys(ST).forEach(function(k){activeSt[k]=true});
  function nearest(ll,n){var seen={},out=[];stations.map(function(s){return {s:s,k:km(ll,[s.lat,s.lng])}}).sort(function(a,b){return a.k-b.k}).forEach(function(o){var key=o.s.line.id;if(out.length<n&&!seen[key]&&o.s.line.group!=='plan'){seen[key]=1;out.push(o)}});return out}
@@ -1189,7 +1191,7 @@ html,body{overflow:hidden}
   list.innerHTML='';
   D.projects.forEach(function(p){
    var m=markers[p.id],show=vis(p);
-   if(show){m.addTo(map);cnt[p.status]++;tot++;if(!p.verified)kxm++;
+   if(show){if(cnOn)m.addTo(map);else map.removeLayer(m);cnt[p.status]++;tot++;if(!p.verified)kxm++;
     var nn=nearest([p.lat,p.lng],1)[0];
     var b=document.createElement('button');b.type='button';
     b.innerHTML='<span class="dot" style="background:'+ST[p.status].c+'"></span><span>'+esc(p.name)+'<small>'+esc(p.zone)+' · '+ST[p.status].t+(p.verified?'':' (chưa xác minh)')+(nn?' · ga '+esc(nn.s.name)+' '+fmt(nn.k):'')+'</small></span>';
@@ -1207,14 +1209,14 @@ html,body{overflow:hidden}
   Array.prototype.forEach.call(zEl.children,function(b){b.setAttribute('aria-pressed',String((b.dataset.z===''&&activeZone===null)||b.dataset.z===activeZone))});
  }
  Array.prototype.forEach.call(document.querySelectorAll('[data-st]'),function(c){c.addEventListener('change',function(){activeSt[c.dataset.st]=c.checked;refresh()})});
- function focusProject(id){var p=D.projects.filter(function(x){return x.id===id})[0];if(!p)return;if(!vis(p)){activeZone=null;activeSt[p.status]=true;document.querySelector('[data-st="'+p.status+'"]').checked=true;refresh()}closeSide();map.setView([p.lat,p.lng],Math.max(map.getZoom(),14));setTimeout(function(){labels();markers[p.id].openPopup()},350)}
+ function focusProject(id){var p=D.projects.filter(function(x){return x.id===id})[0];if(!p)return;if(!cnOn){cnOn=true;document.getElementById('cn-on').checked=true;refresh()}if(!vis(p)){activeZone=null;activeSt[p.status]=true;document.querySelector('[data-st="'+p.status+'"]').checked=true;refresh()}closeSide();map.setView([p.lat,p.lng],Math.max(map.getZoom(),14));setTimeout(function(){labels();markers[p.id].openPopup()},350)}
 
  // ---------- dự án mở bán từ 2017 ----------
  var QDUP={'the-marq':'the-marq','grand-marina-saigon':'grand-marina-saigon','eaton-park':'eaton-park','palm-river':'palm-river','the-global-city':'global-city'},QX={};
  function qExtra(p){return '<br><b>Mở bán:</b> '+esc((p.launch||'chưa có nguồn')+(p.launch_price?' · '+p.launch_price:''))+(p.handover?'<br><b>Bàn giao:</b> '+esc(p.handover):'')+(p.price_now?'<br><b>Giá hiện tại:</b> '+esc(p.price_now):'')}
  var QH={'Đã bàn giao':'#7b4fa3','Một phần':'#e67e22','Chưa':'#0f9d8a','Chưa rõ':'#8a8f98'};
  function qKey(h){h=h||'';if(h.indexOf('Đã')===0)return 'Đã bàn giao';if(h.indexOf('Một phần')===0)return 'Một phần';if(h==='Chưa')return 'Chưa';return 'Chưa rõ'}
- var Q=[],qLayer=L.layerGroup().addTo(map),qOn=true,y1=document.getElementById('q-y1'),y2=document.getElementById('q-y2');
+ var Q=[],qLayer=L.layerGroup().addTo(map),qOn=false,y1=document.getElementById('q-y1'),y2=document.getElementById('q-y2');
  for(var yy=2017;yy<=2026;yy++){y1.add(new Option(yy,yy));y2.add(new Option(yy,yy))}y2.value='2026';
  function qRow(k,v){return v?'<br><b>'+k+':</b> '+esc(v):''}
  function qPopup(p){var c=QH[qKey(p.hstatus)];
@@ -1235,7 +1237,7 @@ html,body{overflow:hidden}
    idx.push({k:'q='+p.id,t:p.name,s:'Dự án 2017–nay · '+(p.dist||'')+(p.year?' · mở bán '+p.year:''),n:norm(p.name+' '+(p.dev||'')+' '+(p.dist||''))})});
   qRefresh()}).catch(function(){document.getElementById('q-n').textContent='không tải được dữ liệu'});
  // ---------- dự án quanh ga metro (vị trí tham khảo bando.manhvu.com) ----------
- var GS={'Đang mở bán':'#22a06b','Sắp triển khai':'#3b82f6','Đang xây dựng':'#e0a030','Đã bàn giao':'#8a8f98'},G=[],gLayer=L.layerGroup().addTo(map),gOn=true,gAct={};
+ var GS={'Đang mở bán':'#22a06b','Sắp triển khai':'#3b82f6','Đang xây dựng':'#e0a030','Đã bàn giao':'#8a8f98'},G=[],gLayer=L.layerGroup().addTo(map),gOn=false,gAct={};
  function gc(st){return GS[st]||'#5b5b5b'}
  function gPopup(p){return '<div class="pp-t">'+esc(p.name)+'</div><span class="pp-b" style="background:'+gc(p.status)+'">'+esc(p.status)+'</span><div class="pp-m">'+(p.type?esc(p.type)+'<br>':'')+'<b>Theo tuyến:</b> '+p.lines.map(esc).join('; ')+nearHtml([p.lat,p.lng])+'<br><i>Vị trí tham khảo bando.manhvu.com (10/2026), chưa xác minh với chủ đầu tư.</i></div><a class="pp-a" href="https://www.google.com/maps/search/?api=1&amp;query='+p.lat+','+p.lng+'" target="_blank" rel="noopener">Chỉ đường (Google Maps) →</a><div class="pp-row"><button type="button" class="pp-c2" data-rad="g='+p.id+'">Vẽ vòng 500 m / 1 km</button>'+linkBtn('g='+p.id)+'</div>'}
  function gRefresh(){gLayer.clearLayers();var n=0;if(gOn)G.forEach(function(p){if(gAct[p.status]){gLayer.addLayer(p.m);n++}});document.getElementById('g-n').textContent=gOn?n+'/'+G.length:''}

@@ -3,6 +3,9 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-24 — Công cụ: Bản đồ dự án — mở bản đồ trơn
+- Khi vào bản đồ chỉ hiện nền; mọi lớp (dự án Cẩm Nang, dự án quanh ga, dự án 2017, metro, vành đai) mặc định tắt, người xem tự bật trong thẻ "Dự án" và "Tuyến & ga". Thêm ô "Hiện trên bản đồ" cho lớp dự án Cẩm Nang. Liên kết chia sẻ (#p=, #l=, #s=, #g=, #q=) và tìm kiếm vẫn tự bật đúng lớp cần xem.
+
 ## 2026-10-23 — Công cụ: Bản đồ dự án — vành đai theo OpenStreetMap, rõ nét, nút giao tính từ giao điểm thật
 - Vành đai 3 (khép kín cả vòng, gồm đoạn trùng cao tốc Bến Lức – Long Thành CT.01), Vành đai 4 và đoạn Vành đai 2 đang thi công (cầu Phú Hữu – Bình Thái – Gò Dưa) vẽ theo hình học thật trên OpenStreetMap (CT.40, CT.41, "Dự án đường Vành đai 2", "Đường cao tốc Bến Lức - Long Thành"; dữ liệu Tú tải 23–24/10/2026, giấy phép ODbL). Bỏ chiều đường song song, đường song hành và nhánh rẽ; khoảng trống chưa có trên OpenStreetMap nối bằng nét chấm mảnh "vẽ ước lượng" (VĐ3 Bình Chuẩn – Tân Vạn đi trùng đường Mỹ Phước – Tân Vạn).
 - Vẽ kiểu đường bộ, viền trắng, màu riêng (VĐ1 cam, VĐ2 xanh mòng két, VĐ3 xanh lá, VĐ4 tím), nhãn VĐ1…VĐ4 trên tuyến. Nét liền = đã thông xe, nét gạch = đang thi công, nét chấm = quy hoạch/ước lượng. Rê chuột vào đoạn xem tên và tình trạng; cửa sổ thông tin liệt kê từng đoạn.
