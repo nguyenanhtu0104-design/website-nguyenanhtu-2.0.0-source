@@ -3,4 +3,4 @@ so: 05
 ngay: 2026-10-26
 mo-ta: Nhật san BĐS kỳ 5 (26/10/2026): dự thảo Luật Kinh doanh bất động sản sửa đổi, FTA Việt Nam–EFTA, nhà ở xã hội, Metro số 2 và TOD, chính sách TT Genesis.
 trich-doan: Dự thảo Luật Kinh doanh bất động sản đặt ra cơ chế bảo đảm 5% cuối hợp đồng, TP.HCM rà soát gần 110 ha khu công nghiệp để làm nhà ở xã hội, Metro số 2 hướng tới triển khai cả 11 ga trong năm 2026. Nhà ở xã hội có thể trở thành "làn gió mát" của thị trường trong nửa đầu năm 2027?
-trang-thai: nhap
+trang-thai: cong-bo

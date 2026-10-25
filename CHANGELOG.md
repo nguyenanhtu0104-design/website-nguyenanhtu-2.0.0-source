@@ -3,8 +3,8 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-10-26 — Nhật san kỳ 5 (bản nháp)
-- Thêm `publications/nhat-san/2026-10-26-so-05/`: "Chính sách và chuyển động thị trường" (Số 05, 26/10/2026; dự thảo Luật Kinh doanh bất động sản sửa đổi, FTA Việt Nam–EFTA, nguồn vốn Đông Nam Bộ, NOXH, sổ hồng, Metro số 2 và TOD, Quyết định 85, TT Genesis, dự án đề xuất), 14 nguồn, trạng thái `nhap` (kèm thẻ `noindex` trong file; khi công bố đổi `trang-thai: cong-bo` và gỡ dòng `<meta name="robots">` trong file HTML).
+## 2026-10-26 — Nhật san kỳ 5 (công bố)
+- Thêm `publications/nhat-san/2026-10-26-so-05/`: "Chính sách và chuyển động thị trường" (Số 05, 26/10/2026; dự thảo Luật Kinh doanh bất động sản sửa đổi, FTA Việt Nam–EFTA, nguồn vốn Đông Nam Bộ, NOXH, sổ hồng, Metro số 2 và TOD, Quyết định 85, TT Genesis, dự án đề xuất), 14 nguồn, trạng thái `cong-bo` (Tú duyệt công bố 25/10; đã gỡ thẻ `noindex` trong file).
 - Biên tập cấu trúc (giữ nguyên thiết kế gốc): gộp mục "Infographic" rời vào cuối mục 1 (còn 9 mục, đánh số và mục lục lại); thêm breadcrumb, title/description, canonical về `/doc/`, Open Graph + ảnh chia sẻ `bia.jpg` 1200×630 (cùng phong cách kỳ 4), JSON-LD (WebSite, Person, WebPage, Article, BreadcrumbList); alt ảnh mô tả đúng nội dung, ảnh có kích thước; ảnh đổi sang WebP (3,0 MB → 1,5 MB).
 - Liên kết nội bộ: tiếp nối kỳ 4; hồ sơ tác giả; thư viện Nhật san; "Đọc thêm" tới Pháp Luật BĐS, Chiến Lược Quy Hoạch Vùng ĐNB, Nhà Ở Xã Hội, TOD/Hành lang Metro/Metro 2030, Luật Đất Đai 2024; mục "Dự án đề xuất": Nam Mekong Grand Plaza, Norton Park (Gamuda Land), SkySOLIS (SkyWorld) trỏ về trang trên website thay cho link tuyệt đối; tên "Sky Solis" thống nhất thành "SkySOLIS".
 - Watermark chân dung tác giả mờ phía sau nội dung (cùng ảnh và kiểu như trang bài; ẩn khi in).
