@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-25 — 2.22.0 Màn mở đầu bằng clip cho bài dự án (Nam Mekong Grand Plaza)
+- Vào bài Nam Mekong Grand Plaza: clip giới thiệu bung toàn màn hình, tự chạy (tắt tiếng), hết clip thì mờ dần rồi mới hiện nội dung trang. Có nút "Bỏ qua" (hoặc phím Esc), thanh tiến độ mỏng; người bật "giảm chuyển động" hoặc tắt JS thì không thấy màn này; clip lỗi/không tải được sau 8 giây tự bỏ qua.
+- Cơ chế: trường `introClip` {src, poster} trong `data/articles.json`; chỉ bài có trường này mới nạp `assets/css/intro.css` + `assets/js/intro.js`. Các bài khác và trang chủ không đổi.
+- Clip nén từ 1080p 28 MB xuống 720p 3,5 MB (`assets/clips/du-an/nam-mekong-grand-plaza.mp4` + poster `.webp`). Muốn thêm cho dự án khác: thêm `introClip` vào bài đó.
+- Version 2.21.1 → 2.22.0.
+
 ## 2026-10-24 — Công cụ: Bản đồ dự án — mở bản đồ trơn
 - Khi vào bản đồ chỉ hiện nền; mọi lớp (dự án Cẩm Nang, dự án quanh ga, dự án 2017, metro, vành đai) mặc định tắt, người xem tự bật trong thẻ "Dự án" và "Tuyến & ga". Thêm ô "Hiện trên bản đồ" cho lớp dự án Cẩm Nang. Liên kết chia sẻ (#p=, #l=, #s=, #g=, #q=) và tìm kiếm vẫn tự bật đúng lớp cần xem.
 

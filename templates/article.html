@@ -26,11 +26,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 {{fontsLink}}
-<link rel="stylesheet" href="{{base}}assets/css/main.css?v={{version}}">
+<link rel="stylesheet" href="{{base}}assets/css/main.css?v={{version}}">{{introHead}}
 <script type="application/ld+json">{{jsonld}}</script>
 </head>
 <body class="page-article{{bodyClass}}">
-{{nav}}
+{{introBody}}{{nav}}
 <main id="panel" class="on page" style="--pc:{{accent}}" data-slug="{{slug}}" data-title="{{titleAttr}}" data-accent="{{accent}}">
   <div id="pStrip" style="background:{{accent}}"></div>
   <div id="pHead">
