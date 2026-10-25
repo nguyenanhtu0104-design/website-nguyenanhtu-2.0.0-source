@@ -3,8 +3,10 @@ html.intro-on,html.intro-on body{overflow:hidden}
 #introClip{position:fixed;inset:0;z-index:99999;background:#0b0a09;display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .7s ease;animation:introFailsafe .01s linear 45s forwards}
 #introClip video{width:100%;height:100%;object-fit:contain;display:block;background:#0b0a09}
 #introClip.is-out{opacity:0;pointer-events:none}
-#introClip .intro-skip{position:absolute;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));padding:9px 16px;border-radius:999px;border:1px solid rgba(240,235,224,.45);background:rgba(18,16,13,.55);color:#f0ebe0;font:600 12px/1 inherit;letter-spacing:.4px;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-#introClip .intro-skip:hover,#introClip .intro-skip:focus-visible{background:rgba(176,80,64,.85);border-color:transparent;outline:none}
+#introClip .intro-skip,#introClip .intro-snd{position:absolute;bottom:calc(16px + env(safe-area-inset-bottom));bottom:calc(16px + env(safe-area-inset-bottom));padding:9px 16px;border-radius:999px;border:1px solid rgba(240,235,224,.45);background:rgba(18,16,13,.55);color:#f0ebe0;font:600 12px/1 inherit;letter-spacing:.4px;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+#introClip .intro-skip{right:16px}
+#introClip .intro-snd{left:16px;padding:8px 12px;font-size:15px}
+#introClip .intro-skip:hover,#introClip .intro-snd:hover,#introClip .intro-skip:focus-visible{background:rgba(176,80,64,.85);border-color:transparent;outline:none}
 #introClip .intro-bar{position:absolute;left:0;bottom:0;height:3px;width:0;background:#c8993a}
 @keyframes introFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
 @media (prefers-reduced-motion:reduce){#introClip{display:none}html.intro-on,html.intro-on body{overflow:auto}}
