@@ -11,6 +11,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 - Bổ sung World Bank WDI (cập nhật 08/10/2026): xuất khẩu, nhập khẩu (% GDP) và dự trữ cho 15 nước; số 5 nước châu Á khớp với hồ sơ cũ. Hoa Kỳ, Nhật Bản chỉ có xuất nhập khẩu đến 2024, Nga dự trữ đến 2024. Chưa có Canada, Đài Loan.
 - Thêm bảng cán cân thương mại hàng hóa theo quý (WTO Stats, Q1/2025–Q2/2026, cả năm 2024 và 2025, tăng trưởng xuất nhập khẩu Q2/2026) cho 16 nước; thiếu Đài Loan, chưa có Q3/2026.
 - Menu: dải "Mục chung" rút còn 5 chủ đề + "Xem theo kỳ" (các mục chi tiết chuyển vào từng khung chủ đề); menu từng nước tự xuống dòng trên màn rộng; thêm mục "Xem theo kỳ" (Q3/2026, Q2/2026, Q1/2026, 2025, dự báo 2026–2027, 2019–2024).
+- Dải chọn quốc gia tự xuống dòng trên màn hình rộng để hiện đủ 17 nước.
 - Đài Loan: đã đọc bản tin DGBAS 14/08/2026 (Q2 sơ bộ): tỷ trọng ngành 2025 và Q2/2026 (Table 4-2), CPI quý Q2 +2,16% và Q1 +1,23% (Table 2), lịch ước tính sơ bộ GDP Q3: 30/10/2026. Còn thiếu CPI quý Nhật, Nga, Malaysia và lịch Thái Lan, Indonesia.
 - Cấu trúc: hướng dẫn đọc, bản đồ nội dung, bảng nhãn trạng thái; hai hàng menu cố định (mục chung + mục của quốc gia đang chọn), không JavaScript; dòng "Cách đọc" cho từng mục; chữ nhỏ tăng cỡ.
 - Chuẩn kỳ quý/năm (Tú yêu cầu): Snapshot và bảng CPI/thất nghiệp dựng theo quý; lịch công bố theo ngày gập xuống bảng tham khảo; nhãn kỳ theo ngày trong hồ sơ đổi sang quý (ngày gốc ở tooltip và nhật ký); số theo tháng gắn "tham khảo, chưa quy đổi quý".
