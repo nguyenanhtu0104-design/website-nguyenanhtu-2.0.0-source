@@ -1,0 +1,6 @@
+tieu-de: World Atlas quý III/2026 — bản cập nhật v1.5.26
+so: 02
+ngay: 2026-10-26
+mo-ta: World Atlas v1.5.26: 17 nền kinh tế, thêm menu tìm mục, hướng dẫn đọc, khối IMF WEO tháng 10/2026 (cán cân vãng lai toàn cầu, Việt Nam & ASEAN) và danh sách khoảng trống dữ liệu.
+trich-doan: Chọn quốc gia, dùng thanh menu để nhảy đúng mục: phân hạng thị trường, dòng vốn, tín nhiệm, kinh tế và so sánh. Bản này bổ sung dự báo IMF WEO 10/2026 và nói rõ chỗ nào còn thiếu dữ liệu.
+trang-thai: cong-bo
