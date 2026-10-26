@@ -6519,7 +6519,11 @@
   "thumbnail": "tod-la-gi-loi-giai-do-thi-viet-nam/01",
   "heroImage": "tod-la-gi-loi-giai-do-thi-viet-nam/01",
   "publishedDate": "2026-10-20",
-  "updatedDate": "2026-10-20",
+  "updatedDate": "2026-10-26",
+  "introClip": {
+   "src": "assets/clips/du-an/tod-la-gi-loi-giai-do-thi-viet-nam.mp4",
+   "poster": "assets/clips/du-an/tod-la-gi-loi-giai-do-thi-viet-nam.webp"
+  },
   "author": "nguyen-anh-tu",
   "content": "content/articles/tod-la-gi-loi-giai-do-thi-viet-nam.html",
   "relatedArticles": [

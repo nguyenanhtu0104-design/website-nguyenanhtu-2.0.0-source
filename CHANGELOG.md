@@ -3,6 +3,9 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-26 — Nội dung: clip mở đầu cho bài "TOD Là Gì"
+- Bài `tod-la-gi-loi-giai-do-thi-viet-nam`: thêm màn mở đầu bằng clip bản đồ metro (cùng cơ chế `introClip` như Nam Mekong Grand Plaza): chạy hết clip rồi mới hiện nội dung trang; có nút "Bỏ qua", bật/tắt tiếng. Clip 30 giây 1080p nén H.264 còn ~8 MB + ảnh poster WebP (`assets/clips/du-an/tod-la-gi-loi-giai-do-thi-viet-nam.*`). Không đổi giao diện, CSS/JS hay version.
+
 ## 2026-10-26 — World Atlas v1.5.26 (công bố)
 - Thêm `publications/atlas/2026-q3-v1-5-26/` (`trang-thai: nhap`, noindex): bản biên tập từ `world-economic-atlas-review.html` v1.5.25. Năm khối JSON nhúng giữ nguyên từng byte.
 - Singapore GDP Q3/2026 (+5,4% so cùng kỳ, +1,1% so quý trước sa; Q2 +6,2%) đã đối chiếu với bản công bố SingStat 14/10/2026.
