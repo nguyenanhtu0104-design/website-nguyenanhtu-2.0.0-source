@@ -3,6 +3,13 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-10-27 — 2.23.0 Giá min – max theo loại căn và tòa cho Norton Park
+- Bảng tính Norton Park (`assets/tools/norton-park-bang-tinh/`): chọn mẫu căn hoặc nhập mã căn thì hiện hộp "Giá tham khảo theo loại căn (rumor)": xếp căn vào nhóm Studio · 1PN · 2PN · 3PN · Duplex, theo tòa B1/B2/B3 (mẫu có ở nhiều tòa thì chọn tòa; nhập mã căn thì tòa lấy theo mã), hiện giá min – max và đơn giá niêm yết/m². Nút "Dùng giá min / max" tự điền đơn giá/m² rồi bảng tính chạy tiếp như cũ.
+- Công thức: bảng rumor là giá sau CK 6% (CK PT 01 5% rồi booking sớm 1%), trước VAT & KPBT. Đơn giá = giá ÷ diện tích cùng đầu khoảng (min ÷ min, max ÷ max); đơn giá nhập = đơn giá sau CK ÷ (1 − 1%); đơn giá niêm yết = đơn giá nhập ÷ (1 − 5%), đúng công thức sẵn có của bảng tính. Căn sân vườn, duplex sân vườn, shop chưa có giá nên hiện thông báo và để nhập tay.
+- Hộp "Cách tính giá" có 3 lựa chọn: ① nhập giá tay như bản cũ (mặc định; hai cách chọn căn theo mẫu / theo mã căn giữ nguyên) · ② rumor min–max theo dải diện tích · ③ rumor min–max theo giá bảng ÷ diện tích căn (giá căn đúng bằng giá trong bảng rumor).
+- Bài `norton-park`: thêm bảng giá tham khảo theo tòa và loại căn trong mục "Giá Bán & Chính Sách", ghi rõ là rumor, chưa phải báo giá chính thức của chủ đầu tư; cập nhật câu trả lời Hỏi & Đáp "Norton Park giá bao nhiêu?" và các dòng ghi chú liên quan. `updatedDate` 2026-10-27.
+- Version 2.22.0 → 2.23.0.
+
 ## 2026-10-26 — Nội dung: clip mở đầu cho bài "TOD Là Gì"
 - Bài `tod-la-gi-loi-giai-do-thi-viet-nam`: thêm màn mở đầu bằng clip bản đồ metro (cùng cơ chế `introClip` như Nam Mekong Grand Plaza): chạy hết clip rồi mới hiện nội dung trang; có nút "Bỏ qua", bật/tắt tiếng. Clip 30 giây 1080p nén H.264 còn ~8 MB + ảnh poster WebP (`assets/clips/du-an/tod-la-gi-loi-giai-do-thi-viet-nam.*`). Không đổi giao diện, CSS/JS hay version.
 

@@ -375,6 +375,18 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 .best{display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:3px;background:rgba(27,107,74,.3);color:var(--grn-l);margin-left:6px;letter-spacing:.5px;vertical-align:middle}
 .pt-tab{min-width:178px}
 .pt-tab .tx{max-width:200px}
+.rum-box{margin:0 0 16px;padding:14px 16px;border-radius:10px;background:rgba(201,168,76,.07);border:1px solid rgba(201,168,76,.3)}
+.rum-t{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.rum-tw{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:10px;font-size:12px;color:var(--mut)}
+.rum-tw .opt-btn{padding:5px 12px;font-size:12px}
+.rum-row{display:grid;grid-template-columns:64px 1fr 1fr auto;gap:10px;align-items:center;padding:9px 0;border-top:1px solid rgba(255,255,255,.07)}
+.rum-row .k{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold-l)}
+.rum-row .v{font-family:'Playfair Display',serif;font-weight:700;font-size:15px;color:var(--wht);line-height:1.3}
+.rum-row .s{display:block;font-family:'Be Vietnam Pro',sans-serif;font-weight:400;font-size:11px;color:var(--mut)}
+.rum-row button{background:transparent;color:var(--gold);border:1.5px solid var(--gold);font-family:inherit;font-size:12px;font-weight:700;padding:7px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+.rum-row button.on{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--navy);border-color:transparent}
+.rum-n{font-size:11px;color:var(--mut);line-height:1.6;margin-top:8px}
+@media(max-width:640px){.rum-row{grid-template-columns:1fr 1fr}.rum-row .k{grid-column:1/-1}.rum-row button{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -406,9 +418,10 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
     <div class="lay-img" id="lay-img"><div class="ph">Chọn mẫu căn để xem layout</div></div>
     <div><label class="lbl" for="mauSel" style="display:block;margin-bottom:6px">Chọn mẫu căn tiêu biểu</label>
       <select id="mauSel" class="lay-sel" onchange="onMau(this.value)"><option value="">— Chọn mẫu căn —</option></select>
-      <div class="lay-info" id="lay-info">Chọn mẫu để tự điền loại căn &amp; diện tích tim tường. Sau đó chỉ cần nhập đơn giá/m².</div></div>
+      <div class="lay-info" id="lay-info">Chọn mẫu để tự điền loại căn &amp; diện tích tim tường. Sau đó nhập đơn giá/m² như cũ, hoặc chọn cách tính giá rumor min – max.</div></div>
   </div>
   </div>
+  <div class="rum-box" id="rum-box" style="display:none"></div>
   <div class="prop-grid">
     <div>
       <div class="input-group" style="margin-bottom:12px"><label for="unitInp">Mã căn / Unit No.</label>
@@ -498,6 +511,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <b>(*) Điều kiện &amp; điều khoản:</b> giá bán và các phương thức thanh toán chỉ mang tính chất tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. Tiến độ chính thức nêu cụ thể tại hợp đồng.<br>
   <b>(**)</b> VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng.<br>
   <b>Mốc thời gian:</b> các tháng trong bảng được suy ra từ khoảng cách (3 / 6 / 9 / 17 / 23 tháng) ghi trên bảng chính sách, tính từ mốc ký HĐMB dự kiến T12/2026.<br>
+  <b>Giá min – max theo loại căn:</b> lấy từ bảng giá rumor (tin thị trường, <b>chưa phải báo giá chính thức</b> của Chủ đầu tư): giá sau chiết khấu 6% (CK thanh toán chuẩn 5% + booking sớm 1%), trước VAT &amp; phí bảo trì, chưa gồm chiết khấu mở bán, không gồm căn sân vườn, bàn giao hoàn thiện. Giá thực tế của từng căn do Chủ đầu tư công bố.<br>
   <b>Thanh toán vay (PT 05):</b> không chiết khấu giá; chủ đầu tư hỗ trợ lãi suất tối đa 10% trong vòng 24 tháng. Ngân hàng giải ngân 75% giá bán; khả năng được duyệt và hạn mức do ngân hàng quyết định theo chính sách tín dụng.
 </div>
 <div class="footer-note">Norton Park · Bảng tính phương thức thanh toán · Số liệu theo bảng chính sách 5 phương thức (ký HĐMB dự kiến T12/2026, bàn giao dự kiến T09/2029)</div>
@@ -582,7 +596,7 @@ function showPlan(g){CURG=g;const v=$('codeInp').value.trim();const pc_=parseCod
   const sel=(pc_&&grpOf(pc_.fl)===g)?pc_:null;$('map-box').innerHTML=planHTML(g,sel);}
 function pickMap(g,t,n){const fl=GM[g].floors.includes(LASTFL)?LASTFL:GM[g].rep;$('codeInp').value=`${t}.${fl}.${n}`;onCode($('codeInp').value);}
 function onCode(v){
-  const info=$('code-info'),pc_=parseCode(v);st.loc=null;
+  const info=$('code-info'),pc_=parseCode(v);st.loc=null;rumClear();
   const hint='Nhập mã căn dạng <b>Tháp.Tầng.Căn</b>, ví dụ <b>B2.5.3</b> hoặc <b>B1.12.4</b> (tháp B1/B2/B3, tầng 1–19). Hoặc bấm vào chấm trên mặt bằng.';
   if(!v.trim()){info.innerHTML=hint;$('map-box').innerHTML=planHTML(CURG,null);return;}
   if(!pc_){info.innerHTML='<span style="color:#ff9f8a">Chưa nhận dạng được mã căn. Dạng đúng: B1/B2/B3 + tầng + số căn, ví dụ B2.5.3.</span>';$('map-box').innerHTML=planHTML(CURG,null);return;}
@@ -603,29 +617,111 @@ function onCode(v){
    +(dup?`<br><span style="font-size:12px">Duplex: tầng dưới ${nf(r[1])} m² + tầng trên ${nf(r[5])} m²</span>`:'')
    +`<br><span style="font-size:11px;color:var(--mut)">Theo mặt bằng ${GM[g].name} (leaflet CĐT). Diện tích sàn được dùng nhân với đơn giá.</span>`;
   $('map-box').innerHTML=planHTML(g,pc_);
+  rumSet(r[0],pc_.t,A);
   autoPrice();recalc();
 }
 function setMode(m){
   document.querySelectorAll('#mode-sw .opt-btn').forEach((b,j)=>b.classList.toggle('active-ck',(j===0)===(m==='mau')));
-  $('mode-mau').style.display=m==='mau'?'':'none';$('mode-code').style.display=m==='code'?'':'none';
+  $('mode-mau').style.display=m==='mau'?'':'none';$('mode-code').style.display=m==='code'?'':'none';rumClear();
   if(m==='code'&&!$('codeInp').value)onCode('');
+}
+// ── GIÁ MIN – MAX THEO LOẠI CĂN (bảng giá rumor, chưa phải báo giá chính thức của CĐT) ──
+// Đơn vị: tỷ đồng · giá SAU CK 6% (CK PT 01 5% + booking sớm 1%), TRƯỚC VAT & KPBT · chưa gồm CK mở bán · không gồm căn sân vườn · bàn giao hoàn thiện
+// dt = khoảng diện tích tim tường (m²) · p = [giá min, giá max]
+const RUM={
+ B2:{st:{dt:[42.1,42.3],p:[2.7,3.0]},pn1:{dt:[50.7,50.9],p:[3.2,3.6]},pn2:{dt:[66.4,79.4],p:[4.1,5.6]},pn3:{dt:[95.4,95.9],p:[6.0,6.5]}},
+ B3:{pn1:{dt:[50.5,50.9],p:[3.3,3.7]},pn2:{dt:[72.5,77.1],p:[4.6,5.7]},pn3:{dt:[95.4,113.8],p:[6.3,8.1]},dx:{dt:[156.1,156.1],p:[10.9,10.9]}},
+ B1:{pn1:{dt:[50.5,51.1],p:[3.4,3.7]},pn2:{dt:[72.2,87.2],p:[4.8,6.8]},pn3:{dt:[95.4,107.0],p:[6.5,8.0]}}};
+const RUM_CAT={st:'Studio',pn1:'1 phòng ngủ',pn2:'2 phòng ngủ',pn3:'3 phòng ngủ',dx:'Duplex'};
+const RUM_PT1=.05,RUM_BK=.01;   // rumor đã trừ CK PT 01 (5%) rồi booking sớm (1%) — đúng thứ tự cascade của bảng tính
+// mã loại căn (vd B1.4A, C3.1c) → nhóm giá; null = chưa có giá (sân vườn, duplex sân vườn, shop)
+function rumCat(code){
+  const s=String(code).toUpperCase();
+  if(/PES|^SH/.test(s))return null;
+  const k=s.split('.')[0];
+  if(k==='ST1')return 'st';
+  if(k==='D2')return 'dx';
+  if(k[0]==='A')return 'pn1';
+  if(k[0]==='B')return 'pn2';
+  if(k[0]==='C')return 'pn3';
+  return null;
+}
+const rumBase=code=>String(code).toUpperCase().split('.').slice(0,2).join('.').replace(/[A-Z]+$/,'');
+// các tòa thật sự có loại căn này (theo mặt bằng)
+function rumTowers(base,cat){
+  const set=new Set();
+  for(const g in PU)for(const t in PU[g])for(const n in PU[g][t]){
+    const c=PU[g][t][n][0];
+    if(rumCat(c)===cat&&rumBase(c)===base&&RUM[t]&&RUM[t][cat])set.add(t);
+  }
+  return ['B1','B2','B3'].filter(t=>set.has(t));
+}
+// đơn giá = giá ÷ diện tích cùng đầu khoảng (min÷min, max÷max); đơn giá niêm yết = nhập ÷ (1 − 5%), nhập = sau-CK ÷ (1 − 1%)
+// cách tính đơn giá: 'dai' = giá ÷ diện tích cùng đầu khoảng (mặc định) · 'bang' = giá trong bảng ÷ diện tích căn đang chọn (giá căn = đúng giá min/max của bảng)
+function rumCalc(tw,cat,area){
+  const row=RUM[tw][cat],pp=[0,1].map(i=>row.p[i]*1e9/(st.rumMode==='bang'?area:row.dt[i]));
+  const inp=pp.map(x=>r(x/(1-RUM_BK)/1000)*1000);
+  const lst=inp.map(x=>r(x/(1-RUM_PT1)));
+  return {row,inp,lst,after:pp.map(x=>x*area),list:lst.map(x=>x*area)};
+}
+function rumClear(){st.rum=null;rumRender();}
+function rumSet(code,tower,area){
+  const cat=rumCat(code);
+  if(!cat){st.rum={cat:null};rumRender();return;}
+  const base=rumBase(code),tws=tower?(RUM[tower]&&RUM[tower][cat]?[tower]:[]):rumTowers(base,cat);
+  if(!tws.length){st.rum={cat:null};rumRender();return;}
+  const keep=st.rum&&st.rum.tw&&tws.includes(st.rum.tw)?st.rum.tw:tws[0];
+  st.rum={cat,base,tws,tw:keep,fixed:!!tower,area};
+  rumRender();
+  if(st.rumPick!=null)applyRum(st.rumPick);   // đã chọn min/max trước đó → giữ nguyên lựa chọn khi đổi mẫu/tòa
+}
+function rumMode(m){st.rumMode=m;if(m==='tay')st.rumPick=null;rumRender();if(st.rumPick!=null)applyRum(st.rumPick);}
+function rumTower(t){if(st.rum&&st.rum.tws.includes(t)){st.rum.tw=t;rumRender();if(st.rumPick!=null)applyRum(st.rumPick);}}
+function applyRum(i){
+  const R=st.rum;if(!R||!R.cat||st.rumMode==='tay')return;
+  const c=rumCalc(R.tw,R.cat,R.area);
+  st.rumPick=i;st.ppm=c.inp[i];$('ppmInp').value=fmtS(c.inp[i]);
+  autoPrice();rumRender();recalc();
+}
+function rumRender(){
+  const b=$('rum-box'),R=st.rum,T='<div class="rum-t">💰 Cách tính giá</div>';
+  if(!R){b.style.display='none';b.innerHTML='';return;}
+  b.style.display='';
+  const md=`<div class="rum-tw"><button class="opt-btn${st.rumMode==='tay'?' active-ck':''}" onclick="rumMode('tay')">① Nhập giá tay (như cũ)</button><button class="opt-btn${st.rumMode==='dai'?' active-ck':''}" onclick="rumMode('dai')">② Rumor min–max · theo dải diện tích</button><button class="opt-btn${st.rumMode==='bang'?' active-ck':''}" onclick="rumMode('bang')">③ Rumor min–max · giá bảng ÷ diện tích căn</button></div>`;
+  if(st.rumMode==='tay'){b.innerHTML=T+md+'<div class="rum-n" style="margin-top:0">Nhập đơn giá/m² hoặc giá căn ở các ô bên dưới, như bản trước. Chọn ② hoặc ③ để lấy giá min – max theo loại căn từ bảng giá rumor (tin thị trường, chưa phải báo giá chính thức).</div>';return;}
+  if(!R.cat){b.innerHTML=T+md+'<div class="rum-n" style="margin-top:0">Loại căn này (sân vườn, duplex sân vườn, shop thương mại) <b>chưa có trong bảng giá rumor</b> — nhập đơn giá/m² ở ô bên dưới.</div>';return;}
+  const c=rumCalc(R.tw,R.cat,R.area),row=c.row,single=row.p[0]===row.p[1]&&row.dt[0]===row.dt[1];
+  const ty=x=>(x/1e9).toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2})+' tỷ';
+  const dt=x=>x.toLocaleString('vi-VN',{minimumFractionDigits:1,maximumFractionDigits:1});
+  const tw=R.tws.length>1?`Tòa: ${R.tws.map(t=>`<button class="opt-btn${t===R.tw?' active-ck':''}" onclick="rumTower('${t}')">${t}</button>`).join('')}`:`Tòa <b style="color:var(--wht)">${R.tw}</b>${R.fixed?' (theo mã căn)':''}`;
+  const rows=(single?[0]:[0,1]).map(i=>`<div class="rum-row"><div class="k">${single?'Giá':(i?'Giá max':'Giá min')}</div>
+    <div class="v">${ty(c.after[i])}<span class="s">giá sau CK 6%, chưa VAT &amp; KPBT</span></div>
+    <div class="v">${fmtS(c.lst[i])} đ/m²<span class="s">đơn giá niêm yết · giá niêm yết căn ≈ ${ty(c.list[i])}</span></div>
+    <button class="${st.rumPick===i?'on':''}" onclick="applyRum(${i})">${st.rumPick===i?'✓ Đang dùng':'Dùng '+(single?'giá này':(i?'giá max':'giá min'))}</button></div>`).join('');
+  const how=st.rumMode==='bang'
+    ?`Cách tính: đơn giá = giá min / max trong bảng ÷ diện tích căn đang chọn (${R.area.toLocaleString('vi-VN')} m²), nên giá căn đúng bằng giá trong bảng rumor dù diện tích căn khác dải.`
+    :`Cách tính: đơn giá = giá ÷ diện tích cùng đầu khoảng (min ÷ min, max ÷ max), áp cho diện tích căn đang chọn (${R.area.toLocaleString('vi-VN')} m²).`;
+  b.innerHTML=T+`<div class="rum-tw"><b style="color:var(--wht)">${RUM_CAT[R.cat]}</b> · ${tw}</div>${md}${rows}
+  <div class="rum-n">Bảng rumor: tòa ${R.tw} · ${RUM_CAT[R.cat].toLowerCase()} · tim tường ${dt(row.dt[0])}${single?'':' – '+dt(row.dt[1])} m² · ${row.p[0].toLocaleString('vi-VN',{minimumFractionDigits:1})}${single?'':' – '+row.p[1].toLocaleString('vi-VN',{minimumFractionDigits:1})} tỷ (sau CK 6% = CK PT 01 5% + booking sớm 1%, trước VAT &amp; KPBT, chưa gồm CK mở bán, bàn giao hoàn thiện).<br>
+  ${how} Đơn giá niêm yết = giá sau CK ÷ (1 − 1%) ÷ (1 − 5%), đúng công thức của bảng tính; căn cụ thể (tầng, hướng, view) có thể nằm ngoài khoảng này.</div>`;
 }
 // ── MẪU CĂN ──
 function onMau(v){
-  const u=UNITS.find(x=>x.code===v);st.mau=u||null;st.loc=null;
+  const u=UNITS.find(x=>x.code===v);st.mau=u||null;st.loc=null;rumClear();
   const im=$('lay-img'),inf=$('lay-info');
-  if(!u){im.innerHTML='<div class="ph">Chọn mẫu căn để xem layout</div>';inf.textContent='Chọn mẫu để tự điền loại căn & diện tích tim tường. Sau đó chỉ cần nhập đơn giá/m².';recalc();return;}
+  if(!u){im.innerHTML='<div class="ph">Chọn mẫu căn để xem layout</div>';inf.textContent='Chọn mẫu để tự điền loại căn & diện tích tim tường. Sau đó nhập đơn giá/m² như cũ, hoặc chọn cách tính giá rumor min – max.';recalc();return;}
   im.innerHTML=`<img src="${u.img}" alt="Layout ${u.code}">`;
   const n=x=>x.toLocaleString('vi-VN',{minimumFractionDigits:2});
   inf.innerHTML=`Mẫu <b>${u.code}</b> · ${u.name}<br>Phòng: <b>${u.rooms}</b><br>Diện tích sàn (tim tường): <b>${n(u.floor)} m²</b><br>Diện tích sử dụng: <b>${n(u.use)} m²</b>`
    +(u.garden?`<br>Diện tích sân vườn: <b>${n(u.garden)} m²</b>`:'')+(u.levels?`<br>${u.levels}`:'')+(u.view?`<br>Cảnh quan: ${u.view}`:'')+`<br><span style="font-size:11px;color:var(--mut)">Diện tích tiêu biểu theo CĐT — căn thực tế có thể khác, sửa ở ô bên dưới.</span>`;
   st.type=`${u.name} (${u.code}) · ${u.rooms}`;$('typeInp').value=st.type;
   st.area=u.floor;$('areaInp').value=String(u.floor).replace('.',',');
+  rumSet(u.code,null,u.floor);
   autoPrice();recalc();
 }
 // ── STATE ──
 const st={unit:'',type:'',area:0,ppm:0,price:3_000_000_000,priceManual:true,sample:true,
-  vat:.10,kpbt:.02,ckPT:[.05,.01,.02,.10,0],pt:0,bk:true,mau:null,loc:null};
+  vat:.10,kpbt:.02,ckPT:[.05,.01,.02,.10,0],pt:0,bk:true,mau:null,loc:null,rum:null,rumPick:null,rumMode:'tay'};
 
 // ── INPUTS ──
 function autoPriceValue(){return (st.area>0&&st.ppm>0)?r(st.ppm*st.area):0;}
@@ -645,10 +741,10 @@ function autoPrice(){
 document.addEventListener('DOMContentLoaded',()=>{$('mauSel').innerHTML+=UNITS.map(u=>`<option value="${u.code}">${u.name} — ${u.code} · ${u.floor.toLocaleString('vi-VN')} m²</option>`).join('');});
 function onUnit(el){st.unit=el.value.trim().toUpperCase();recalc();}
 function onType(el){st.type=el.value.trim();recalc();}
-function onArea(el){st.area=parseDec(el.value);autoPrice();recalc();}
-function onPPM(el){const v=parseNum(el.value);st.ppm=v;el.value=v?v.toLocaleString('vi-VN'):'';autoPrice();recalc();}
+function onArea(el){st.area=parseDec(el.value);if(st.rum&&st.rum.cat)st.rum.area=st.area;autoPrice();rumRender();recalc();}
+function onPPM(el){st.rumPick=null;rumRender();const v=parseNum(el.value);st.ppm=v;el.value=v?v.toLocaleString('vi-VN'):'';autoPrice();recalc();}
 function onPrice(el){
-  const v=parseNum(el.value); st.sample=false;
+  const v=parseNum(el.value); st.sample=false;st.rumPick=null;rumRender();
   if(v){st.price=v;st.priceManual=true;el.value=v.toLocaleString('vi-VN');}
   else{st.priceManual=false;st.price=autoPriceValue();}
   $('price-note').textContent=v?(st.area>0?`Giá nhập tay · tương đương ${fmtS(v/st.area)} đ/m²`:'Giá nhập tay'):'Để trống: sẽ tự tính từ diện tích × giá/m² (nếu có)';
