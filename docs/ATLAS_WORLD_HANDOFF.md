@@ -281,3 +281,20 @@ Giải nén **đè** vào thư mục kho trên máy → GitHub Desktop → Summa
 | 21/10/2026 | Bổ sung R&I: Việt Nam BBB−, lần đầu đạt hạng đầu tư |
 | 22/10/2026 | Chuẩn hóa bảng tín nhiệm 17 nước về cùng format 6 cột |
 | 22/10/2026 | Đối chiếu nguồn sơ cấp: S&P DJI, MSCI, STOXX; đối chiếu chéo S&P tín nhiệm |
+| 01/11/2026 | Bản v1.5.27 (`publications/atlas/2026-q3-v1-5-27/`, nháp): đổi bố cục, thêm xuất PDF — xem mục 10 |
+
+---
+
+## 10. Từ v1.5.27: thứ tự khối, hàng chọn kỳ và xuất PDF
+
+**Thứ tự khối trong `.app`:** `.topline` (tên ấn phẩm) → `.sticky` (dải chọn nước + hàng `.period-row` "Xem theo kỳ") → `.head-menu` (menu mục của nước đang chọn + menu "Mục chung") → `.guide-bar` → `#profile-start` → 17 panel `.country-panel` → `.global-head#global-top` → khối chung (theme-1…5). Chỉ `.sticky` còn dính trên cùng. Menu nước vẫn hiện bằng CSS radio (`#country-N:checked ~ .app .head-menu .menu-N`).
+
+**Hàng chọn kỳ** là các liên kết tới hàng `#pv-q3-2026`, `#pv-q2-2026`, `#pv-q1-2026`, `#pv-2025`, `#pv-fc`, `#pv-hist` trong bảng `#period-view`. Cố ý **không** lọc tự động số liệu theo kỳ: nhãn kỳ trên các thẻ trong hồ sơ không đồng nhất (và nhóm 6 nước mới không có thẻ kiểu này) nên lọc theo nhãn sẽ dễ lọc sai. Khi thêm một chỉ tiêu có số theo kỳ, cập nhật dòng tương ứng trong `#period-view`.
+
+**Xuất PDF** (JavaScript nội tuyến, cuối `<body>`; mã QR dùng lại nguyên file `assets/tools/shared/zalo-qr.js`):
+- Nút là `<button class="pdf-btn" data-pdf="profile|compare|section" data-for="<id mục>">` trong `<div class="pdf-bar">`. Chỉ hiện khi JavaScript chạy (`html.js`).
+- `profile`: nhân bản panel `cN-top` (bỏ hero, bỏ mục so sánh, mở hết các khối gập). `compare`: nhân bản `cN-compare`, chỉ giữ các `details.comparison` **đang mở** (không có nước nào mở thì nhắc người đọc). `section`: nhân bản mục có id (hiện: `provider-comparison`, `current-pulse-ranking`, `imf-weo-oct2026-17`, `external-matrix`, `market-debt-v1518`).
+- Bản nhân bản được đặt trong `#atlasPdf` (chỉ hiện khi in, `body.pdf-mode`), bọc trong bảng có `<tfoot>` để chân trang (tên, chức danh, số liên hệ, mã QR Zalo) lặp ở cuối **mỗi** trang; đầu trang đầu có khối tác giả. Không dùng `position:fixed` cho chân trang vì Chrome đẩy nó sai trang.
+- Thêm hồ sơ nước mới: thêm `pdf-bar` sau hero và trước `<details class="comparison">` đầu tiên của mục so sánh (xem một panel hiện có). Thêm bảng chung cần xuất PDF: thêm `pdf-bar` ngay sau `<h2>` (hoặc `</summary>`) của mục.
+- Số điện thoại, chức danh và link Zalo nằm ở đầu đoạn JS (`AU`); phải khớp `site.config.json` → `author`.
+- Kiểm thử đã chạy: `AtlasPdf.prepare(kind, id)` + `page.pdf()` bằng Chrome, đếm chân trang bằng số trang, giải mã mã QR từ file PDF.

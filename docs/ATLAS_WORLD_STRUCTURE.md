@@ -8,6 +8,8 @@
 
 ## Bố cục tổng thể
 
+> **Từ v1.5.27 (01/11/2026) thứ tự trên trang đã đổi:** thanh đầu trang (chọn nước + hàng "Xem theo kỳ") → menu mục → **panel nước đang chọn (Lớp 2)** → **"Mục chung" (Lớp 1 + Lớp 3)**. Trước đó phần chung nằm trước các panel nên hồ sơ nước chọn bị đẩy xuống cuối trang. Mã neo (`#c0-top`, `#period-view`, `#theme-1`…) không đổi; thêm `#profile-start` (đầu hồ sơ) và `#global-top` (đầu Mục chung). Các lớp mô tả bên dưới vẫn đúng về nội dung, chỉ khác thứ tự.
+
 Trang chia làm ba lớp:
 
 ```

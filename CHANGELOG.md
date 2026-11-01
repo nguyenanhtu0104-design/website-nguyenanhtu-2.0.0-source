@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-01 — World Atlas v1.5.27 (bản nháp)
+- Thêm `publications/atlas/2026-q3-v1-5-27/` (`trang-thai: nhap`, noindex): bản biên tập lần 3 từ v1.5.26, không đổi số liệu (28.865 ô số liệu và 7 khối JSON nhúng giữ nguyên từng byte; mọi mã neo cũ còn). Bản v1.5.26 đã công bố không bị sửa.
+- Bố cục: hồ sơ nước đang chọn lên ngay dưới thanh menu (trước đây cách đầu trang khoảng 21.000 px trên máy tính, 33.000 px trên điện thoại); khối "Mục chung" chuyển xuống sau hồ sơ. Thanh dính trên cùng gọn lại (máy tính 263 → 127 px, điện thoại 157 → 86 px); hàng "Xem theo kỳ" đặt ngay dưới dải chọn nước, trỏ vào bảng "Xem theo kỳ".
+- Xuất PDF A4 (tự viết, không thư viện ngoài; cần JavaScript, tắt JavaScript thì nút ẩn và trang đọc bình thường): hồ sơ từng nước, mục So sánh (các nước đang mở) và 5 bảng 17 nước (phân hạng, Snapshot Q3, IMF WEO 17 nước, chỉ số đối ngoại, nợ và thị trường vốn). Mỗi trang PDF có tên, số liên hệ và mã QR Zalo của tác giả (dùng lại `assets/tools/shared/zalo-qr.js`, nhúng vào trang).
+- Việt hóa 20 nhãn tiếng Anh (300 chỗ), cập nhật hướng dẫn đọc theo bố cục mới. Không tăng version site (chỉ sửa ấn phẩm).
+
 ## 2026-10-28 — Nội dung: clip mở đầu cho bài "Norton Park"
 - Bài `norton-park`: thêm màn mở đầu bằng clip bản đồ 16:9 (cùng cơ chế `introClip` như Nam Mekong Grand Plaza): chạy hết clip rồi mới hiện nội dung trang; có nút "Bỏ qua", bật/tắt tiếng. Clip 30 giây 1080p (khoanh lô đất, mặt bằng tổng thể khớp gần đúng lên khu đất, khung teaser phối cảnh của Gamuda Land có tiếng), nén H.264 + ảnh poster WebP (`assets/clips/du-an/norton-park.*`). Không đổi giao diện, CSS/JS hay version.
 
