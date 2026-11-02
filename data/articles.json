@@ -1563,33 +1563,50 @@
   "slug": "imperia-sensa-park",
   "status": "stub",
   "title": "Imperia Sensa Park",
-  "subtitle": "Đông Thành Phố · Đang cập nhật",
+  "subtitle": "Đông Thành Phố · MIK Group · 922 căn hộ + 93 căn thấp tầng · Bàn giao Q4/2028",
   "icon": "🏢",
   "category": "du-an-chon-loc",
   "parent": "vung-khcn-hcm-ii-hub-icd",
   "tags": [
    "du-an-chon-loc",
-   "vung-khcn-hcm-ii-hub-icd",
-   "dang-cap-nhat"
+   "vung-khcn-hcm-ii-hub-icd"
   ],
-  "description": "Phân tích chi tiết về dự án Imperia Sensa Park đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
+  "description": "Imperia Sensa Park của MIK Group trên đường Võ Chí Công, phường Phước Long, TP.HCM: khoảng 5 ha, 922 căn hộ hai tháp 25 tầng và 93 căn thấp tầng, bàn giao dự kiến quý IV/2028.",
   "thumbnail": null,
   "heroImage": null,
   "publishedDate": "2026-09-28",
-  "updatedDate": "2026-09-28",
+  "updatedDate": "2026-11-02",
   "author": "nguyen-anh-tu",
   "content": "content/articles/imperia-sensa-park.html",
   "relatedArticles": [],
-  "seoTitle": "Imperia Sensa Park — Đông Thành Phố",
-  "seoDescription": "Phân tích chi tiết về dự án Imperia Sensa Park đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
+  "seoTitle": "Imperia Sensa Park MIK Group: Quy Mô, Giá, Tiến Độ",
+  "seoDescription": "Imperia Sensa Park của MIK Group trên đường Võ Chí Công, phường Phước Long, TP.HCM: khoảng 5 ha, 922 căn hộ hai tháp 25 tầng và 93 căn thấp tầng, bàn giao dự kiến quý IV/2028.",
   "ogImage": "assets/images/og/imperia-sensa-park.jpg",
   "section": "🏛️ Dự Án Chọn Lọc",
   "accent": "#b05040",
-  "searchKeywords": "Imperia Sensa Park Đông Thành Phố",
+  "searchKeywords": "Imperia Sensa Park MIK Group Đông Thành Phố Võ Chí Công Phước Long Thủ Đức sông Rạch Chiếc kênh Một Tấn 922 căn hộ 93 căn thấp tầng 71 nhà phố 22 biệt thự song lập Sensa A Sensa B Sensa Villas studioMilou ONG&ONG Ricons VPBank Mỹ Phú khởi công 6/8/2026 bàn giao quý IV 2028 giá 88 triệu",
   "legacy": {
    "source": "v57",
    "panelId": "imperia_sensa"
-  }
+  },
+  "facts": [
+   {
+    "n": "~5 ha",
+    "l": "diện tích khu đất"
+   },
+   {
+    "n": "922",
+    "l": "căn hộ · 2 tháp 25 tầng"
+   },
+   {
+    "n": "93",
+    "l": "nhà phố & biệt thự"
+   },
+   {
+    "n": "Q4/2028",
+    "l": "bàn giao dự kiến"
+   }
+  ]
  },
  {
   "id": "gladia",
@@ -6192,7 +6209,7 @@
   "slug": "celesta-gold",
   "status": "stub",
   "title": "Celesta Gold",
-  "subtitle": "Nguyễn Hữu Thọ · Keppel – Phú Long – Nomura · 420 căn hộ",
+  "subtitle": "Nguyễn Hữu Thọ · Keppel – Phú Long – Nomura · 420 căn hộ · Bàn giao Q4/2027",
   "icon": "🏢",
   "category": "du-an-chon-loc",
   "parent": "truc-nguyen-huu-tho-thuong-cang-hiep-phuoc",
@@ -6204,18 +6221,18 @@
   "thumbnail": "celesta-gold/01",
   "heroImage": "celesta-gold/01",
   "publishedDate": "2026-10-04",
-  "updatedDate": "2026-10-04",
+  "updatedDate": "2026-11-02",
   "author": "nguyen-anh-tu",
   "content": "content/articles/celesta-gold.html",
   "relatedArticles": [
    "truc-nguyen-huu-tho-thuong-cang-hiep-phuoc"
   ],
   "seoTitle": "Celesta Gold Nguyễn Hữu Thọ: Thông Tin Dự Án",
-  "seoDescription": "Celesta Gold, giai đoạn 3 Khu đô thị CELESTA trên trục Nguyễn Hữu Thọ, Nhà Bè: 420 căn hộ 25 tầng, khởi công 07/05/2026.",
+  "seoDescription": "Celesta Gold, giai đoạn 3 Khu đô thị CELESTA, Nguyễn Hữu Thọ, Nhà Bè: 420 căn hộ 25 tầng, giá dự kiến 98 triệu/m², chính sách thanh toán, bàn giao dự kiến quý IV/2027.",
   "ogImage": "assets/images/og/celesta-gold.jpg",
   "section": "🏛️ Dự Án Chọn Lọc",
   "accent": "#b05040",
-  "searchKeywords": "Celesta Gold Celesta City Keppel Phú Long Nomura Real Estate Vietnam Nguyễn Hữu Thọ Nhà Bè Phước Kiển khu Nam Sài Gòn 420 căn hộ 25 tầng 12.815 m2 shophouse officetel Coteccons khởi công 7/5/2026 metro số 4 cầu cảnh quan Hoàng Kim BCA Green Mark Gold",
+  "searchKeywords": "Celesta Gold Celesta City Keppel Phú Long Nomura Real Estate Vietnam Nguyễn Hữu Thọ Nhà Bè Phước Kiển khu Nam Sài Gòn 420 căn hộ 25 tầng 12.815 m2 shophouse officetel Coteccons khởi công 7/5/2026 metro số 4 cầu cảnh quan Hoàng Kim BCA Green Mark Gold giá 98 triệu cashback 7% thanh toán nhanh 50% hỗ trợ vay 75% hỗ trợ lãi suất 36 tháng miễn phí quản lý 5 sao AWP Architects Ong Ong Belt Collins El Dorado Công ty Cổ phần Địa ốc Nhà Bè bàn giao quý IV 2027",
   "legacy": null,
   "facts": [
    {
@@ -6227,8 +6244,12 @@
     "l": "tầng"
    },
    {
-    "n": "12.815",
-    "l": "m² · khu đất"
+    "n": "~98 tr",
+    "l": "đồng/m² · giá dự kiến"
+   },
+   {
+    "n": "Q4/2027",
+    "l": "bàn giao dự kiến"
    }
   ]
  },
