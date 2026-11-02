@@ -4,6 +4,8 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 
 ## 2026-11-02 — Công cụ bản đồ: Metro số 4 và 4B, đồng bộ cách trình bày
+
+- Bổ sung (lượt 2): thẻ "Thông tin tuyến" trong cột Tuyến & ga cho mọi tuyến và vành đai có định tuyến (tóm tắt, bảng kiểm tra số liệu của Tuyến 4, danh sách ga có số và km); số ga hiện trên mọi tuyến khi phóng gần (số ga là thứ tự trên bản đồ, trừ Tuyến 4 dùng số của bản đồ quy hoạch); ga chuyển tiếp chấm vàng to hơn; giữ màu từng tuyến.
 - `assets/tools/ban-do-du-an-hcm/index.html`: thay Tuyến 4 bằng phương án mới (Đông Thạnh – Hiệp Phước, khoảng 45 km, 31 ga đánh số 00–30, 15 ga ngầm và 16 ga trên cao, 2 depot, đoạn kéo dài về Bình Dương), dò từ 5 ảnh bản đồ tổng thể do Tú cung cấp bằng cách khớp vào ảnh vệ tinh. Đo lại: ngầm 20,4 km, trên cao 24,6 km, tổng 45,0 km (bản đồ ghi 20,7 / 24,3 / 45). Tuyến 4 chuyển từ nhóm quy hoạch dài hạn sang nhóm Metro đang triển khai (vẫn trạng thái nghiên cứu, đề xuất).
 - Tuyến 4B vẽ lại 4 ga (Công viên Gia Định, Tân Sơn Nhất, Công viên Hoàng Văn Thụ, Lăng Cha Cả); hai ga đầu cuối là vị trí ước lượng, cần đối chiếu bản đồ 4B chính thức. 4B không có trong bộ ảnh.
 - Đồng bộ cách trình bày cho mọi tuyến, ga và vành đai: nhãn ga nền tối, có số thứ tự khi nguồn có đánh số; ga chuyển tiếp tô vàng (cùng quy tắc 400 m của thẻ ga, không tính phần kéo dài cùng một tuyến); mọi tuyến đều có viền trắng; đoạn ngầm có viền trắng kèm viền tối nét đứt, đoạn trên cao viền trắng; không vẽ hai nhãn chồng nhau tại một ga; chú giải thêm ga chuyển tiếp, depot, đoạn ngầm, đoạn trên cao. Thêm hỗ trợ vẽ depot và đoạn kéo dài từ dữ liệu. Không đổi CSS/JS dùng chung hay version.
