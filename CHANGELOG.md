@@ -3,16 +3,9 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-11-02 — Nhật san số 6
-- Thêm `publications/nhat-san/2026-11-02-so-06/` (`trang-thai: nhap`): Nhật san 02/11/2026, chủ đề Quy hoạch tổng thể TP.HCM 2025–2050. Biên tập từ bản chỉnh sửa của Tú: sửa lỗi chính tả, tách lời bình thành các ý có tiêu đề, thêm bảng số liệu (5 cực động lực, dân số, lao động, đất đai, kinh tế – xã hội, quan điểm, mục tiêu, Fed, tăng trưởng Việt Nam, Metro số 2), ghi nguồn ảnh Tuổi Trẻ, đánh số nguồn 1–11. Ảnh infographic không có logo; đã xóa một vệt lạ ở đáy ảnh "Mục tiêu tổng quát". Mục Celesta Gold thêm ảnh, bảng thông tin và link trang dự án. Không đổi giao diện site, CSS/JS hay version.
-
-## 2026-11-02 — Nhật san số 6 công bố
-- `publications/nhat-san/2026-11-02-so-06/`: đổi `trang-thai: cong-bo` (Tú yêu cầu 02/11/2026); kỳ hiện trong thư viện và sitemap.
-
-## 2026-11-02 — Nội dung: bài "Celesta Gold" và "Imperia Sensa Park"
-- `celesta-gold`: thêm chủ đầu tư, đơn vị thiết kế, loại hình sản phẩm, giá dự kiến ~98 triệu/m², chính sách thanh toán (do Tú ghi nhận tại kickoff), tiện ích, Hỏi & Đáp; xóa logo đơn vị đăng tải trên ảnh công trường (`celesta-gold/04`). Phần "Vì sao tôi chọn", SWOT và thang điểm chờ Tú biên soạn. Vẫn `stub` (noindex).
-- `imperia-sensa-park`: viết mới theo khung dự án (tổng quan, quy mô, loại hình, tiện ích, giá tham khảo, Hỏi & Đáp) từ trang chính thức của dự án và ERA Home. Chưa có ảnh; chính sách chờ chủ đầu tư công bố. Vẫn `stub` (noindex).
-- Nhật san số 6 (bản nháp): cập nhật chính sách Celesta Gold và mô tả Imperia Sensa Park.
+## 2026-11-02 — Dữ liệu: rà lãi suất mục 01 (Bản tính tài chính)
+- Hong Leong Bank Vietnam: đọc lại biểu chính thức hlbank.com.vn (lãi suất áp dụng từ 23/10/2026, VND, cá nhân, nhận lãi cuối kỳ). Số 3/6/12/24 tháng không đổi (4,75 / 6,30 / 6,50 / 6,00); cập nhật ngày hiệu lực 23/10/2026 và ngày quan sát 02/11/2026.
+- Các ngân hàng còn lại giữ nguyên số cũ (không đọc được biểu chính thức có ngày hiệu lực và cột rõ ràng). Không đổi mục 02, 03, giao diện hay version.
 
 ## 2026-11-01 — World Atlas v1.5.27 (bản nháp)
 - Thêm `publications/atlas/2026-q3-v1-5-27/` (`trang-thai: nhap`, noindex): bản biên tập lần 3 từ v1.5.26, không đổi số liệu (28.865 ô số liệu và 7 khối JSON nhúng giữ nguyên từng byte; mọi mã neo cũ còn). Bản v1.5.26 đã công bố không bị sửa.
