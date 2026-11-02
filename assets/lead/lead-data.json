@@ -73,6 +73,50 @@
         "url": "/cam-nang/vung-rach-chiec-truong-tho/"
       },
       "related": []
+    },
+    "imperia-sensa-park": {
+      "name": "Imperia Sensa Park",
+      "ready": true,
+      "region": "tp-thu-duc",
+      "url": "/cam-nang/imperia-sensa-park/",
+      "docs": {
+        "bang-tinh": {
+          "label": "Bảng tính dự án",
+          "url": "/assets/tools/imperia-sensa-park-bang-tinh/"
+        },
+        "tong-quan": {
+          "label": "Tổng quan dự án",
+          "url": "/cam-nang/imperia-sensa-park/"
+        }
+      },
+      "video": "",
+      "areaArticle": {
+        "title": "Đông Thành Phố",
+        "url": "/cam-nang/vung-khcn-hcm-ii-hub-icd/"
+      },
+      "related": []
+    },
+    "celesta-gold": {
+      "name": "Celesta Gold",
+      "ready": true,
+      "region": "nam-sai-gon",
+      "url": "/cam-nang/celesta-gold/",
+      "docs": {
+        "bang-tinh": {
+          "label": "Bảng tính dự án",
+          "url": "/assets/tools/celesta-gold-bang-tinh/"
+        },
+        "tong-quan": {
+          "label": "Tổng quan dự án",
+          "url": "/cam-nang/celesta-gold/"
+        }
+      },
+      "video": "",
+      "areaArticle": {
+        "title": "Nam Sài Gòn · cảng quốc tế Hiệp Phước",
+        "url": "/cam-nang/truc-nguyen-huu-tho-thuong-cang-hiep-phuoc/"
+      },
+      "related": []
     }
   }
 }

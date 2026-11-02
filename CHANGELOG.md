@@ -3,9 +3,30 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
-## 2026-11-02 — Dữ liệu: rà lãi suất mục 01 (Bản tính tài chính)
-- Hong Leong Bank Vietnam: đọc lại biểu chính thức hlbank.com.vn (lãi suất áp dụng từ 23/10/2026, VND, cá nhân, nhận lãi cuối kỳ). Số 3/6/12/24 tháng không đổi (4,75 / 6,30 / 6,50 / 6,00); cập nhật ngày hiệu lực 23/10/2026 và ngày quan sát 02/11/2026.
-- Các ngân hàng còn lại giữ nguyên số cũ (không đọc được biểu chính thức có ngày hiệu lực và cột rõ ràng). Không đổi mục 02, 03, giao diện hay version.
+## 2026-11-02 — Nội dung: bài "Celesta Gold", bảng tính thanh toán và ảnh Nhật san số 6
+- Bài `celesta-gold`: viết lại mục 01–02 theo brochure dự án (sơ đồ vị trí và thời gian di chuyển, quy mô, đối tác, diện tích 1–4PN, mặt bằng tầng 4 và tầng 5–24, 8 layout căn, tiện ích, khối đế thương mại), thay ảnh cũ độ phân giải thấp bằng ảnh gốc từ brochure (ảnh hero mới `celesta-gold/07`; ảnh công trường của Tú giữ nguyên). Mục 03 vẫn là chỗ để Tú viết; bài vẫn `stub` (noindex).
+- Thêm bảng tính `assets/tools/celesta-gold-bang-tinh/` (noindex, theo khung Norton Park): chọn căn theo mẫu hoặc mã căn T1/T2 trên mặt bằng tầng 4 / tầng 5–24, 2 phương thức theo chính sách kickoff (thanh toán nhanh 50% cashback 7%; vay hỗ trợ 75%, hỗ trợ lãi 36 tháng), so sánh, vay ngân hàng, in PDF. Các mốc đợt trung gian, 5% GCN, VAT 10%, KPBT 2% là giả định và được ghi rõ trên trang; giá ~98 triệu/m² là mức dự kiến.
+- `assets/lead/lead-data.json`: thêm dự án `celesta-gold`.
+- Nhật san số 6: biên tập lại ảnh — mục 8 dùng phối cảnh gốc từ brochure và thêm ảnh hồ bơi; mục 9 thêm ảnh cho Celesta Gold và Imperia Sensa Park. Nội dung chữ, trạng thái kỳ không đổi.
+
+
+## 2026-11-02 — Nội dung: bài "Imperia Sensa Park" và bảng tính thanh toán
+- Bài `imperia-sensa-park`: hoàn thiện mục 01–02 theo khung dự án: sơ đồ kết nối và thời gian di chuyển (theo tài liệu chủ đầu tư), nhà phát triển, giai đoạn, giá rumor theo loại căn, 5 phương thức thanh toán (phiếu tính giá 19/10/2026), mặt bằng tầng điển hình tháp A/B, 6 nhóm layout mẫu, phối cảnh, ngoại khu và hướng view; thêm 12 ảnh WebP (`imperia-sensa-park/01–12`), ảnh chính và ảnh OG; mở rộng Hỏi & Đáp lên 7 câu. Phần "Vì sao tôi chọn", SWOT và thang điểm vẫn chờ Tú biên soạn. Vẫn `stub` (noindex). Không đổi giao diện, CSS/JS hay version.
+- Thêm bảng tính `assets/tools/imperia-sensa-park-bang-tinh/` (noindex, canonical về bài, theo khung bảng tính Norton Park): chọn căn theo mẫu hoặc theo mã căn trên mặt bằng tầng điển hình (40 căn tháp A/B, tự điền loại căn và diện tích), nhóm căn Studio/1PN+/2PN/3PN/Duplex kèm giá rumor, 5 phương thức (Chuẩn · Nhanh 70% · Nhanh 90% · Vay · Vay đặc biệt), so sánh, lịch thanh toán, khối vay ngân hàng, PDF báo giá và PDF trình bày, nút nhận phương án.
+- Công thức đúng phiếu tính giá: ưu đãi và chiết khấu thanh toán cộng dồn trên giá trước ưu đãi; VAT 10% tạm tính; booking 100 triệu nằm trong đợt TTKQ 10%; tỷ lệ các đợt tính trên giá sau ưu đãi gồm VAT. Đã đối chiếu từng đợt với file Excel (căn 3PN 8,3 tỷ và Studio 3,4 tỷ, cả 5 phương thức). Early Bird (phiếu ghi 19–25/10/2026) mặc định tắt; Vay đặc biệt chỉ áp dụng căn 2PN trở lên; KPBT là mức giả định 2% (phiếu chưa nêu), nộp cùng đợt bàn giao; ân hạn gốc 24 tháng, không giả định chủ đầu tư hỗ trợ lãi.
+- `assets/lead/lead-data.json`: thêm dự án `imperia-sensa-park` cho hệ thống nhận phương án.
+
+
+## 2026-11-02 — Nhật san số 6
+- Thêm `publications/nhat-san/2026-11-02-so-06/` (`trang-thai: nhap`): Nhật san 02/11/2026, chủ đề Quy hoạch tổng thể TP.HCM 2025–2050. Biên tập từ bản chỉnh sửa của Tú: sửa lỗi chính tả, tách lời bình thành các ý có tiêu đề, thêm bảng số liệu (5 cực động lực, dân số, lao động, đất đai, kinh tế – xã hội, quan điểm, mục tiêu, Fed, tăng trưởng Việt Nam, Metro số 2), ghi nguồn ảnh Tuổi Trẻ, đánh số nguồn 1–11. Ảnh infographic không có logo; đã xóa một vệt lạ ở đáy ảnh "Mục tiêu tổng quát". Mục Celesta Gold thêm ảnh, bảng thông tin và link trang dự án. Không đổi giao diện site, CSS/JS hay version.
+
+## 2026-11-02 — Nhật san số 6 công bố
+- `publications/nhat-san/2026-11-02-so-06/`: đổi `trang-thai: cong-bo` (Tú yêu cầu 02/11/2026); kỳ hiện trong thư viện và sitemap.
+
+## 2026-11-02 — Nội dung: bài "Celesta Gold" và "Imperia Sensa Park"
+- `celesta-gold`: thêm chủ đầu tư, đơn vị thiết kế, loại hình sản phẩm, giá dự kiến ~98 triệu/m², chính sách thanh toán (do Tú ghi nhận tại kickoff), tiện ích, Hỏi & Đáp; xóa logo đơn vị đăng tải trên ảnh công trường (`celesta-gold/04`). Phần "Vì sao tôi chọn", SWOT và thang điểm chờ Tú biên soạn. Vẫn `stub` (noindex).
+- `imperia-sensa-park`: viết mới theo khung dự án (tổng quan, quy mô, loại hình, tiện ích, giá tham khảo, Hỏi & Đáp) từ trang chính thức của dự án và ERA Home. Chưa có ảnh; chính sách chờ chủ đầu tư công bố. Vẫn `stub` (noindex).
+- Nhật san số 6 (bản nháp): cập nhật chính sách Celesta Gold và mô tả Imperia Sensa Park.
 
 ## 2026-11-01 — World Atlas v1.5.27 (bản nháp)
 - Thêm `publications/atlas/2026-q3-v1-5-27/` (`trang-thai: nhap`, noindex): bản biên tập lần 3 từ v1.5.26, không đổi số liệu (28.865 ô số liệu và 7 khối JSON nhúng giữ nguyên từng byte; mọi mã neo cũ còn). Bản v1.5.26 đã công bố không bị sửa.
