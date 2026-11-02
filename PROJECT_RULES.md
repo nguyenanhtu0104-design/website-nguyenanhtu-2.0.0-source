@@ -262,6 +262,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-11-02 — Không đổi nguyên tắc nào (Tú yêu cầu): công cụ bản đồ `ban-do-du-an-hcm` cập nhật Tuyến 4 / 4B và đồng bộ cách trình bày tuyến, ga, vành đai (ngoại lệ có chủ đích của §12.5, chỉ trong trang công cụ, không thư viện mới). Hướng tuyến Tuyến 4 dò từ ảnh bản đồ tổng thể và chỉ là vị trí tham chiếu; 4B chưa có nguồn chính thức.
 - 2026-10-20 — **2.20.0** (Tú yêu cầu): mục 03 trang Bản tính tài chính có khối tổng kết kỳ chốt bán và so sánh với gửi ngân hàng cùng dòng tiền. Lãi gửi chỉ là giả định của người dùng hoặc số niêm yết mục 01; không trình bày như cam kết của ngân hàng.
 - 2026-10-20 — **2.19.0** (Tú yêu cầu): mục 01 trang Bản tính tài chính có ngày cập nhật tự động (`__BUILD_DATE__` thay lúc build ở mục `direct`; ngày rà soát/độ mới tính từ dữ liệu). Không đổi số lãi suất; vẫn cấm đưa số nguồn thứ cấp vào cột chính thức.
 - 2026-10-25 — **2.22.0** (Tú yêu cầu): màn mở đầu bằng clip cho bài dự án qua trường `introClip` trong `articles.json` (ngoại lệ có chủ đích của §12.5; `intro.css`/`intro.js` chỉ nạp ở bài có trường này, không tăng trang chủ, không thư viện ngoài). Hiện dùng cho Nam Mekong Grand Plaza.

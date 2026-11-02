@@ -149,6 +149,13 @@ html,body{overflow:hidden}
  .leaflet-control-attribution:hover,.leaflet-control-attribution:focus-within{white-space:normal}
  .leaflet-popup-content{font-size:13.5px}
 }
+/* ===== 11/2026: đồng bộ cách trình bày tuyến, ga, vành đai ===== */
+.stl span,.ndlab span{background:rgba(14,20,17,.88);color:#fff;border-left:3px solid;border-radius:4px;padding:0 6px;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.ndlab span{border-left-width:4px;padding:1px 6px}
+.stl b{margin-right:5px;font-weight:700;color:#cfe9df;font-variant-numeric:tabular-nums}
+.lg-x{background:#ffe600;border-color:#111}
+.lg-u,.lg-c{display:inline-block;width:24px;height:6px;border-radius:3px;background:#0ca678}.lg-u{box-shadow:0 0 0 3px #111,0 0 0 5px #fff}.lg-c{box-shadow:0 0 0 3px #fff}
+.lg-dp{display:inline-block;width:20px;height:10px;border-radius:2px;background:#c93bd6;box-shadow:0 0 0 2px #fff}
 </style></head>
 <body>
 <div class="hdr"><a class="back" href="/" title="Về Cẩm Nang">←</a><div class="ttl"><h1>Bản đồ dự án &amp; metro</h1><p>Nguyễn Anh Tú · Cẩm Nang BĐS · cập nhật <span id="upd"></span></p></div><button class="toggle" id="tg" type="button" aria-expanded="true" aria-controls="side">Ẩn bảng</button></div>
@@ -196,9 +203,9 @@ html,body{overflow:hidden}
  <section class="pane" data-pane="tuyen" hidden>
   <div class="lgd">
    <div><i class="lg-l"></i>Đang vận hành</div><div><i class="lg-l lg-d"></i>Đang xây dựng</div><div><i class="lg-l lg-p"></i>Nghiên cứu, đề xuất</div>
-   <div><i class="lg-s lg-n"></i>Ga ngầm</div><div><i class="lg-s"></i>Ga trên cao / chưa rõ</div><div><i class="lg-r"></i>Vành đai đã thông xe</div><div><i class="lg-r lg-rx"></i>Vành đai đang xây</div><div><i class="lg-r lg-rq"></i>Vành đai quy hoạch</div><div><i class="lg-ndb">★</i>Nút giao lớn</div><div><i class="lg-nd"></i>Điểm giao, điểm nối</div>
+   <div><i class="lg-s lg-n"></i>Ga ngầm</div><div><i class="lg-s"></i>Ga trên cao / chưa rõ</div><div><i class="lg-s lg-x"></i>Ga chuyển tiếp</div><div><i class="lg-dp"></i>Depot</div><div><i class="lg-u"></i>Đoạn ngầm</div><div><i class="lg-c"></i>Đoạn trên cao</div><div><i class="lg-r"></i>Vành đai đã thông xe</div><div><i class="lg-r lg-rx"></i>Vành đai đang xây</div><div><i class="lg-r lg-rq"></i>Vành đai quy hoạch</div><div><i class="lg-ndb">★</i>Nút giao lớn</div><div><i class="lg-nd"></i>Điểm giao, điểm nối</div>
   </div>
-  <p class="note">Hướng tuyến sơ đồ nối các ga, không phải tim tuyến. Phóng to để hiện tên ga; nút <b>Xem</b> đưa bản đồ tới tuyến.</p>
+  <p class="note">Hướng tuyến sơ đồ nối các ga, không phải tim tuyến. Phóng to để hiện tên ga; nút <b>Xem</b> đưa bản đồ tới tuyến. Chấm vàng là ga chuyển tiếp (gần ga của tuyến khác trong 400 m, không tính các đoạn cùng một tuyến như Tuyến 1 và phần kéo dài).</p>
   <label class="flt"><input type="checkbox" id="segtg" checked>Tô đoạn ngầm và đoạn trên cao</label>
   <label class="flt"><input type="checkbox" id="apxtg" checked>Hiện đoạn vành đai quy hoạch, chưa xây</label>
   <label class="flt"><input type="checkbox" id="tod">Vòng 500 m quanh các ga (vùng TOD)</label>
@@ -221,7 +228,7 @@ html,body{overflow:hidden}
 <script src="vendor/leaflet.js"></script>
 <script id="data" type="application/json">
 {
- "updated": "19/10/2026",
+ "updated": "02/11/2026",
  "projects": [
   {
    "id": "the-marq",
@@ -532,19 +539,27 @@ html,body{overflow:hidden}
   },
   {
    "id": "m4",
-   "group": "plan",
-   "name": "Tuyến 4 Thạnh Xuân – Hiệp Phước",
+   "group": "metro",
+   "name": "Tuyến 4 Đông Thạnh – Hiệp Phước",
    "status": "nghien-cuu",
    "color": "#0ca678",
-   "length": "khoảng 43,1 km · 32 ga (nguồn khác ghi 35,75 km)",
-   "state": "Nghiên cứu; đề xuất mở rộng Đông Thạnh – Hóc Môn (Sovico)",
-   "note": "Vẽ 28 ga đã đặt tên theo bản đồ quy hoạch; 4 ga còn lại chưa có tên. Trang hochiminhcitymetro.com nêu 47,3 km và 37 ga, phần mô tả ghi khoảng 35,75 km.",
-   "src": "Ankapong (số hóa đồ án điều chỉnh quy hoạch chung TP.HCM 2040, sai lệch ga trung vị ~120 m); hochiminhcitymetro.com",
-   "pts": [[10.87669,106.66853],[10.86981,106.67682],[10.85966,106.68009],[10.85299,106.67904],[10.84378,106.67736],[10.83665,106.67563],[10.81187,106.67829],[10.79999,106.67988],[10.79444,106.68367],[10.78273,106.69782],[10.7706,106.69759],[10.75935,106.70243],[10.75367,106.70531],[10.74178,106.70155],[10.7334,106.69973],[10.70746,106.71044],[10.69595,106.71803],[10.67682,106.72267],[10.66707,106.7252],[10.65603,106.72999],[10.64635,106.73556],[10.63828,106.74013],[10.63048,106.74184],[10.62159,106.73814],[10.61272,106.73648],[10.60373,106.7355],[10.59437,106.73811],[10.58228,106.74071]],
-   "ends": ["Thạnh Xuân","Hiệp Phước"],
-   "stations": [["Thạnh Xuân",10.87669,106.66853],["Giao Khẩu",10.86981,106.67682],["Ngã Tư Ga",10.85966,106.68009],["An Lộc",10.85299,106.67904],["An Nhơn",10.84378,106.67736],["Cư xá Lam Sơn",10.83665,106.67563],["Công viên Gia Định",10.81187,106.67829],["Ngã tư Phú Nhuận",10.79999,106.67988],["Cầu Kiệu",10.79444,106.68367],["Hồ Con Rùa",10.78273,106.69782],["Bến Thành",10.7706,106.69759],["Hoàng Diệu",10.75935,106.70243],["Tôn Đản",10.75367,106.70531],["Nguyễn Thị Thập",10.74178,106.70155],["Nguyễn Văn Linh",10.7334,106.69973],["Vĩnh Phước",10.70746,106.71044],["Phạm Hữu Lầu",10.69595,106.71803],["Kho B",10.67682,106.72267],["Long Kiểng",10.66707,106.7252],["Bà Chiêm",10.65603,106.72999],["Long Thới",10.64635,106.73556],["Rạch Dơi",10.63828,106.74013],["TDN Hiệp Phước",10.63048,106.74184],["Công viên Thể thao",10.62159,106.73814],["Bệnh viện Quốc tế",10.61272,106.73648],["Trung tâm Hiệp Phước",10.60373,106.7355],["Công viên Cây xanh",10.59437,106.73811],["Bến tàu Hiệp Phước",10.58228,106.74071]],
-   "short": "Tuyến 4 (QH)",
-   "pos": "Vị trí ga số hóa từ đồ án quy hoạch (Ankapong), có thể lệch vài trăm mét."
+   "length": "khoảng 45 km · 31 ga",
+   "state": "Phương án đề xuất; chưa có quyết định đầu tư. Kèm đề xuất kéo dài về Bình Dương (Sovico)",
+   "note": "Vẽ đủ 31 ga (00–30) và 2 depot theo bản đồ tổng thể tuyến đường sắt đô thị số 4 (Đông Thạnh – Hiệp Phước). Bản đồ ghi tổng 45 km: đi ngầm 20,7 km (15 ga), đi cao 24,3 km (16 ga). Phương án tham vấn tháng 5/2026 trên báo chí ghi khoảng 43 km, 30 ga (13 ga ngầm); bản đồ này là phương án mới hơn nên được dùng. Ga 01 Cầu Sáng nằm gần điểm tuyến vượt sông Sài Gòn; đoạn nét đứt đi Bình Dương là đoạn kéo dài.",
+   "src": "Bản đồ tổng thể tuyến ĐSĐT số 4 Đông Thạnh – Hiệp Phước (5 ảnh do Tú cung cấp 11/2026); Housezy; Smart Realtors 9/2026",
+   "pts": [[10.91094, 106.63803], [10.91085, 106.63846], [10.91035, 106.63898], [10.90917, 106.63974], [10.90891, 106.64059], [10.909, 106.64221], [10.90934, 106.64368], [10.91009, 106.64496], [10.9101, 106.64496], [10.91099, 106.64584], [10.91498, 106.64917], [10.91852, 106.65347], [10.92265, 106.6575], [10.92231, 106.66009], [10.92138, 106.6629], [10.91937, 106.66602], [10.91818, 106.66721], [10.91658, 106.66745], [10.91178, 106.66711], [10.90344, 106.66773], [10.90209, 106.66773], [10.89338, 106.66733], [10.8913, 106.66745], [10.88026, 106.6684], [10.87807, 106.66952], [10.87642, 106.67108], [10.87537, 106.67194], [10.87453, 106.67236], [10.86981, 106.67664], [10.86896, 106.677], [10.86618, 106.67975], [10.86551, 106.68008], [10.86407, 106.68024], [10.86249, 106.67996], [10.85598, 106.67956], [10.85573, 106.67932], [10.85449, 106.67935], [10.85337, 106.67932], [10.85303, 106.67905], [10.84722, 106.67844], [10.84064, 106.67613], [10.8382, 106.67526], [10.83474, 106.67545], [10.83187, 106.67673], [10.83063, 106.67751], [10.82892, 106.67871], [10.82623, 106.67871], [10.82538, 106.67801], [10.82226, 106.67227], [10.81737, 106.66617], [10.81602, 106.66541], [10.81483, 106.66509], [10.81299, 106.66455], [10.80911, 106.66464], [10.80464, 106.66428], [10.8038, 106.66446], [10.80251, 106.6653], [10.80076, 106.66644], [10.7995, 106.66925], [10.79739, 106.67218], [10.79719, 106.67342], [10.79638, 106.6745], [10.79503, 106.67606], [10.79296, 106.6796], [10.79217, 106.68103], [10.79208, 106.68549], [10.79174, 106.68686], [10.78714, 106.69286], [10.78382, 106.69699], [10.78323, 106.69751], [10.78213, 106.69785], [10.7806, 106.69801], [10.77901, 106.69785], [10.77792, 106.69846], [10.77614, 106.69998], [10.77311, 106.69989], [10.77082, 106.69758], [10.76805, 106.69501], [10.76628, 106.69449], [10.76476, 106.69486], [10.7582, 106.69861], [10.75709, 106.6994], [10.75262, 106.69965], [10.75001, 106.70154], [10.74857, 106.70206], [10.74512, 106.70178], [10.74444, 106.70136], [10.74329, 106.70141], [10.74216, 106.70136], [10.74183, 106.70111], [10.73744, 106.7005], [10.73457, 106.69983], [10.73309, 106.69978], [10.72816, 106.69989], [10.72412, 106.70035], [10.72235, 106.70102], [10.7215, 106.70101], [10.72041, 106.70102], [10.71695, 106.70291], [10.71468, 106.70485], [10.70389, 106.71251], [10.70227, 106.71371], [10.7005, 106.71527], [10.69738, 106.71725], [10.69477, 106.71802], [10.69047, 106.71869], [10.68904, 106.71935], [10.68498, 106.72058], [10.67866, 106.72205], [10.67841, 106.72232], [10.67704, 106.72258], [10.67149, 106.72394], [10.66938, 106.72418], [10.66796, 106.72451], [10.6585, 106.72763], [10.65673, 106.72839], [10.65361, 106.7309], [10.65352, 106.73123], [10.65228, 106.73169], [10.64855, 106.73416], [10.64062, 106.73938], [10.63901, 106.73999], [10.63631, 106.74042], [10.63581, 106.74075], [10.6347, 106.74079], [10.63362, 106.74075], [10.63319, 106.74118], [10.62577, 106.74274], [10.62392, 106.7431], [10.62231, 106.74402], [10.61995, 106.74249], [10.61826, 106.73947], [10.61742, 106.73871], [10.61492, 106.73738], [10.60536, 106.73277], [10.60384, 106.73193], [10.60249, 106.73151], [10.60029, 106.73141], [10.59565, 106.73199], [10.59531, 106.73236], [10.59415, 106.73212], [10.59413, 106.73236]],
+   "ends": ["Đông Thạnh", "Hiệp Phước"],
+   "stations": [["Đông Thạnh", 10.91099, 106.64584], ["Cầu Sáng", 10.92138, 106.6629], ["Bùi Công Trừng", 10.90344, 106.66773], ["Vòng Cung Tây Bắc", 10.89338, 106.66733], ["Thạnh Xuân", 10.87642, 106.67108], ["Ngã Tư Ga", 10.86249, 106.67996], ["An Lộc", 10.85449, 106.67935], ["An Nhơn", 10.84064, 106.67613], ["Phan Văn Trị", 10.83063, 106.67751], ["Tân Sơn Nhất", 10.81483, 106.66509], ["Công viên Hoàng Văn Thụ", 10.80251, 106.6653], ["Mai Văn Ngọc", 10.79719, 106.67342], ["Huỳnh Văn Bánh", 10.79296, 106.6796], ["Công viên Lê Văn Tám", 10.78714, 106.69286], ["Nhà Văn hóa Thanh niên", 10.7806, 106.69801], ["Bến Thành", 10.77082, 106.69758], ["Công viên Khánh Hội", 10.7582, 106.69861], ["Nguyễn Thị Thập", 10.74329, 106.70141], ["Nguyễn Văn Linh", 10.73309, 106.69978], ["Rạch Đỉa", 10.7215, 106.70101], ["Cầu Số 1", 10.71468, 106.70485], ["Vĩnh Phước", 10.70389, 106.71251], ["Kho B", 10.68904, 106.71935], ["Phước Kiển", 10.67704, 106.72258], ["Bà Chiêm", 10.66796, 106.72451], ["Long Thới", 10.65228, 106.73169], ["Phan Văn Bảy", 10.6347, 106.74079], ["Công viên Thể thao", 10.62392, 106.7431], ["Trung tâm Hiệp Phước", 10.61492, 106.73738], ["Bầu Le", 10.60536, 106.73277], ["Hiệp Phước", 10.59415, 106.73212]],
+   "kind": "Đoạn ngầm 20,7 km (15 ga ngầm, từ 07 An Nhơn đến 21 Vĩnh Phước); đoạn trên cao 24,3 km (16 ga trên cao). 11 ga chuyển tiếp. Hai depot: Đông Thạnh và Hiệp Phước.",
+   "ks": "ngầm 20,7 km · trên cao 24,3 km",
+   "names": ["Đông Thạnh", "Cầu Sáng", "Bùi Công Trừng", "Vòng Cung Tây Bắc", "Thạnh Xuân", "Ngã Tư Ga", "An Lộc", "An Nhơn", "Phan Văn Trị", "Tân Sơn Nhất", "Công viên Hoàng Văn Thụ", "Mai Văn Ngọc", "Huỳnh Văn Bánh", "Công viên Lê Văn Tám", "Nhà Văn hóa Thanh niên", "Bến Thành", "Công viên Khánh Hội", "Nguyễn Thị Thập", "Nguyễn Văn Linh", "Rạch Đỉa", "Cầu Số 1", "Vĩnh Phước", "Kho B", "Phước Kiển", "Bà Chiêm", "Long Thới", "Phan Văn Bảy", "Công viên Thể thao", "Trung tâm Hiệp Phước", "Bầu Le", "Hiệp Phước"],
+   "nums": ["00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"],
+   "stype": ["c", "c", "c", "c", "c", "c", "c", "n", "n", "n", "n", "n", "n", "n", "n", "n", "n", "n", "n", "n", "n", "n", "c", "c", "c", "c", "c", "c", "c", "c", "c"],
+   "short": "Tuyến 4",
+   "pos": "Ga và hướng tuyến dò từ bản đồ tổng thể bằng cách khớp ảnh vào ảnh vệ tinh. Đo lại trên bản vẽ: ngầm 20,41 km, trên cao 24,55 km, tổng 45,0 km (bản đồ ghi 20,7 / 24,3 / 45), lệch dưới 1,5%. Vị trí ga sai số khoảng 100–300 m.",
+   "seg": [[0, 39, "c"], [39, 102, "n"], [102, 141, "c"]],
+   "depots": [{"name": "Depot Đông Thạnh", "pts": [[10.91174, 106.63803], [10.91211, 106.63765], [10.91211, 106.63597], [10.91139, 106.63073], [10.9102, 106.62754], [10.90974, 106.62745], [10.90744, 106.62838], [10.91091, 106.63765], [10.9111, 106.63803]]}, {"name": "Depot Hiệp Phước", "pts": [[10.59089, 106.73327], [10.59107, 106.73243], [10.5896, 106.7313], [10.59015, 106.73102], [10.58842, 106.7241], [10.5863, 106.72456], [10.58822, 106.73233]]}],
+   "ext": {"name": "Đoạn kéo dài về Bình Dương", "pts": [[10.92355, 106.65696], [10.92879, 106.65903], [10.93494, 106.66148]]}
   },
   {
    "id": "m4b",
@@ -552,13 +567,20 @@ html,body{overflow:hidden}
    "name": "Tuyến 4B Công viên Gia Định – Lăng Cha Cả",
    "status": "nghien-cuu",
    "color": "#0ca678",
-   "length": "khoảng 3,2 km",
-   "state": "Nghiên cứu",
-   "note": "Tuyến nhánh nối ga Công viên Gia Định (Tuyến 4) với sân bay Tân Sơn Nhất, 3 ga ngầm. Trang nguồn liệt kê 7 điểm dọc tuyến: Công viên Gia Định, Nguyễn Thái Sơn, Hồng Hà, Sân bay Tân Sơn Nhất, Trường Sơn, Công viên Hoàng Văn Thụ, Lăng Cha Cả.",
-   "src": "FPT Shop",
-   "pts": [[10.81187,106.67829],[10.814759,106.6651641],[10.796,106.66]],
-   "ends": ["Công viên Gia Định","Lăng Cha Cả"],
-   "short": "Tuyến 4B (QH)"
+   "length": "khoảng 3,2 km · 4 ga",
+   "state": "Nghiên cứu; thông tin công khai từ 2020, chưa có trong bộ ảnh hướng tuyến Tuyến 4",
+   "note": "Tuyến nhánh nối Công viên Gia Định với sân bay Tân Sơn Nhất và Lăng Cha Cả, đi ngầm. Hai ga Tân Sơn Nhất và Công viên Hoàng Văn Thụ lấy trùng vị trí ga của Tuyến 4. Hai ga Công viên Gia Định và Lăng Cha Cả là vị trí ước lượng theo mô tả (Nguyễn Thái Sơn, Hồng Hà, Trường Sơn) và chiều dài 3,2 km, cần đối chiếu bản đồ 4B chính thức. Nguồn ghi 3 hoặc 4 ga ngầm, chưa thống nhất.",
+   "src": "Khudothi.vn (bài 4/2020); FPT Shop",
+   "pts": [[10.8129, 106.6754], [10.81483, 106.66509], [10.81299, 106.66455], [10.80911, 106.66464], [10.80464, 106.66428], [10.8038, 106.66446], [10.80251, 106.6653], [10.79998, 106.66875]],
+   "ends": ["Công viên Gia Định", "Lăng Cha Cả"],
+   "stations": [["Công viên Gia Định", 10.8129, 106.6754], ["Tân Sơn Nhất", 10.81483, 106.66509], ["Công viên Hoàng Văn Thụ", 10.80251, 106.6653], ["Lăng Cha Cả", 10.79998, 106.66875]],
+   "kind": "Đi ngầm hoàn toàn theo mô tả.",
+   "ks": "đi ngầm",
+   "names": ["Công viên Gia Định", "Tân Sơn Nhất", "Công viên Hoàng Văn Thụ", "Lăng Cha Cả"],
+   "stype": ["n", "n", "n", "n"],
+   "short": "Tuyến 4B",
+   "pos": "Hai ga đầu cuối là vị trí ước lượng, sai số có thể trên 300 m. Hai ga giữa lấy theo Tuyến 4.",
+   "seg": [[0, 7, "n"]]
   },
   {
    "id": "m5",
@@ -1087,7 +1109,9 @@ html,body{overflow:hidden}
  var showApx=true,RS={xong:'Đã thông xe',xay:'Đang xây dựng',qh:'Quy hoạch, chưa xây',uoc:'Vẽ ước lượng'},lineLayers={},stations=[],labelLayer=L.layerGroup().addTo(map),todLayer=L.layerGroup().addTo(map),showTod=false;
  function slicePts(p,a,b){function at(t){var i=Math.min(Math.floor(t),p.length-1),f=t-i;if(f<=0||i>=p.length-1)return p[i];return [p[i][0]+(p[i+1][0]-p[i][0])*f,p[i][1]+(p[i+1][1]-p[i][1])*f]}
   var out=[at(a)];for(var i=Math.floor(a)+1;i<b;i++)out.push(p[i]);out.push(at(b));return out}
- function stName(s){return s.name+(s.type?' · '+TY[s.type]:'')}
+ function stName(s){return (s.num?s.num+' · ':'')+s.name+(s.type?' · '+TY[s.type]:'')}
+ var FAM={m1:'t1',m1x:'t1',m1w:'t1',m1e:'t1',m2:'t2',m2a:'t2',m2b:'t2'};
+ function famOf(d){return FAM[d.id]||d.id}
  D.lines.forEach(function(d){
   var g=L.layerGroup(),ss=SS[d.status],isR=d.group==='ring',lab=[];
   var tip='<b>'+esc(d.name)+'</b><br>'+ss.t+' · '+esc(d.length)+(d.ks?'<br>'+esc(d.ks):'');
@@ -1109,17 +1133,21 @@ html,body{overflow:hidden}
   if(showApx)g.addLayer(apx);
   var segG=L.layerGroup();
   if(d.seg)d.seg.forEach(function(sg){var pp=slicePts(d.pts,sg[0],sg[1]),ug=sg[2]==='n';
+   if(ug)L.polyline(pp,{pane:'casing',renderer:casingR,interactive:false,color:'#ffffff',weight:17,opacity:.92,lineCap:'butt',lineJoin:'round'}).addTo(segG);
    L.polyline(pp,ug?{pane:'casing',renderer:casingR,interactive:false,color:'#111',weight:13,opacity:.85,dashArray:'3 4',lineCap:'butt',lineJoin:'round'}:{pane:'casing',renderer:casingR,interactive:false,color:'#ffffff',weight:12,opacity:.95,lineCap:'butt',lineJoin:'round'}).addTo(segG)});
   segG.addTo(g);
+  if(!isR&&!d.seg)L.polyline(d.pts,{pane:'casing',renderer:casingR,interactive:false,color:'#ffffff',weight:12,opacity:.9,lineCap:'butt',lineJoin:'round'}).addTo(g);
+  (d.depots||[]).forEach(function(dp){L.polygon(dp.pts,{color:'#fff',weight:2,fillColor:'#c93bd6',fillOpacity:.78}).bindTooltip('<b>'+esc(dp.name)+'</b>',{className:'stn',sticky:true}).addTo(g)});
+  if(d.ext){L.polyline(d.ext.pts,{pane:'casing',renderer:casingR,interactive:false,color:'#ffffff',weight:10,opacity:.8,lineCap:'round'}).addTo(g);L.polyline(d.ext.pts,{color:d.color,weight:5,opacity:.85,dashArray:'1 9',lineCap:'round'}).bindTooltip('<b>'+esc(d.ext.name)+'</b><br>Đoạn kéo dài, đề xuất',{sticky:true}).addTo(g)}
   var pl=isR?L.polyline(d.pts,{color:d.color,weight:1,opacity:0,lineCap:'butt',lineJoin:'round'}):L.polyline(d.pts,{color:d.color,weight:ss.w,opacity:ss.o,dashArray:ss.d,lineCap:d.status==='nghien-cuu'?'round':'butt'});
   // vùng bấm rộng hơn cho điện thoại
-  var pop='<div class="pp-t">'+esc(d.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+(isR?'Vành đai · ':'')+ss.t+'</span><div class="pp-m"><b>'+esc(d.length)+'</b><br>'+esc(d.state)+(isR&&d.parts?'<br><b>Từng đoạn:</b><br>'+d.parts.map(function(p){return '<span class="rs rs-'+p.st+'" style="--c:'+d.color+'"></span>'+RS[p.st]+(p.sn?': '+esc(p.sn.split(': ')[0]):'')}).filter(function(x,i,a){return a.indexOf(x)===i}).join('<br>'):'')+(d.kind?'<br><b>Nổi/ngầm:</b> '+esc(d.kind):'')+(d.pos?'<br><b>Vị trí ga:</b> '+esc(d.pos):'')+'</div>'+(d.names?'<details class="pp-d"><summary>Danh sách ga ('+d.names.length+')</summary>'+d.names.map(esc).join(' – ')+'</details>':'')+'<details class="pp-d"><summary>Ghi chú và nguồn</summary>'+esc(d.note)+'<br><i>Hướng tuyến sơ đồ. Nguồn: '+esc(d.src)+'</i></details><div class="pp-row">'+linkBtn('l='+d.id)+'</div>';
+  var pop='<div class="pp-t">'+esc(d.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+(isR?'Vành đai · ':'')+ss.t+'</span><div class="pp-m"><b>'+esc(d.length)+'</b><br>'+esc(d.state)+(isR&&d.parts?'<br><b>Từng đoạn:</b><br>'+d.parts.map(function(p){return '<span class="rs rs-'+p.st+'" style="--c:'+d.color+'"></span>'+RS[p.st]+(p.sn?': '+esc(p.sn.split(': ')[0]):'')}).filter(function(x,i,a){return a.indexOf(x)===i}).join('<br>'):'')+(d.kind?'<br><b>Nổi/ngầm:</b> '+esc(d.kind):'')+(d.pos?'<br><b>Vị trí ga:</b> '+esc(d.pos):'')+'</div>'+(d.names?'<details class="pp-d"><summary>Danh sách ga ('+d.names.length+')</summary>'+d.names.map(function(n,i){return (d.nums?d.nums[i]+' ':'')+esc(n)}).join(' – ')+'</details>':'')+'<details class="pp-d"><summary>Ghi chú và nguồn</summary>'+esc(d.note)+'<br><i>Hướng tuyến sơ đồ. Nguồn: '+esc(d.src)+'</i></details><div class="pp-row">'+linkBtn('l='+d.id)+'</div>';
   [pl].forEach(function(x){x.bindTooltip(tip,{sticky:true});x.bindPopup(pop,PO);x.addTo(g)});
   if(d.stations){d.stations.forEach(function(s,k){
-   var st={name:s[0],lat:s[1],lng:s[2],line:d,k:k,type:d.stype?d.stype[k]||'':''};
+   var st={name:s[0],lat:s[1],lng:s[2],line:d,k:k,type:d.stype?d.stype[k]||'':'',num:d.nums?d.nums[k]||'':''};
    st.id=d.id+'.'+k;stations.push(st);
-   st.m=L.circleMarker([s[1],s[2]],{radius:5,color:d.color,weight:3,fillColor:st.type==='n'?'#2b2b2b':'#fff',fillOpacity:1}).bindTooltip(esc(stName(st)),{className:'stn',direction:'top',offset:[0,-4]}).bindPopup(function(){return stPopup(st)},PO).addTo(g);
-   lab.push(L.marker([s[1],s[2]],{interactive:false,keyboard:false,icon:L.divIcon({className:'stl',html:'<span style="border-color:'+d.color+'">'+esc(s[0])+'</span>',iconSize:null,iconAnchor:[-7,8]})}));
+   st.m=L.circleMarker([s[1],s[2]],{radius:6,color:d.color,weight:3,fillColor:st.type==='n'?'#2b2b2b':'#fff',fillOpacity:1}).bindTooltip(esc(stName(st)),{className:'stn',direction:'top',offset:[0,-4]}).bindPopup(function(){return stPopup(st)},PO).addTo(g);
+   lab.push(L.marker([s[1],s[2]],{interactive:false,keyboard:false,icon:L.divIcon({className:'stl',html:'<span style="border-color:'+d.color+'">'+(st.num?'<b>'+esc(st.num)+'</b>':'')+esc(s[0])+'</span>',iconSize:null,iconAnchor:[-8,8]})}));
   });}
   else if(d.ends&&!isR){[0,d.pts.length-1].forEach(function(i,k){
    L.circleMarker(d.pts[i],{radius:5,color:d.color,weight:3,fillColor:'#fff',fillOpacity:1}).bindTooltip(esc(d.ends[k]),{className:'stn',direction:'top',offset:[0,-4]}).addTo(g);
@@ -1130,11 +1158,13 @@ html,body{overflow:hidden}
   row.innerHTML='<label class="flt"><input type="checkbox" data-ln="'+d.id+'"'+(on0?' checked':'')+'>'+(isR?'<span class="ln" style="height:7px;border:0;border-radius:4px;background:'+d.color+';box-shadow:0 0 0 2px #fff"></span>':'<span class="ln" style="border-color:'+d.color+';border-top-style:'+(d.status==='van-hanh'?'solid':d.status==='dang-xay'?'dashed':'dotted')+'"></span>')+'<span>'+esc(d.name)+'<small>'+ss.t+' · '+esc(d.length)+(d.ks?' · '+esc(d.ks):'')+'</small></span></label><button type="button" class="zoom" data-zl="'+d.id+'" title="Xem tuyến trên bản đồ" aria-label="Xem '+esc(d.name)+' trên bản đồ">Xem</button>';
   box.appendChild(row);
  });
+ function xlines(st){var seen={};return stations.filter(function(o){return famOf(o.line)!==famOf(st.line)&&km([st.lat,st.lng],[o.lat,o.lng])<.4}).filter(function(o){var f=famOf(o.line);if(seen[f])return false;return seen[f]=1})}
+ stations.forEach(function(s){s.x=xlines(s);if(s.x.length)s.m.setStyle({fillColor:'#ffe600',radius:8})});
  function stPopup(st){
-  var d=st.line,h='<div class="pp-t">Ga '+esc(st.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+esc(d.name)+'</span><div class="pp-m">'+(st.type?'<b>'+TY[st.type]+'</b><br>':'')+esc(d.state)+'<br><i>'+esc(d.pos||'Vị trí tham chiếu')+'</i>';
+  var d=st.line,h='<div class="pp-t">Ga '+(st.num?esc(st.num)+' · ':'')+esc(st.name)+'</div><span class="pp-b" style="background:'+d.color+'">'+esc(d.name)+'</span><div class="pp-m">'+(st.type?'<b>'+TY[st.type]+'</b><br>':'')+esc(d.state)+'<br><i>'+esc(d.pos||'Vị trí tham chiếu')+'</i>';
   // ga trung chuyển gần (dưới 400 m, tuyến khác)
-  var x=stations.filter(function(o){return o.line!==d&&km([st.lat,st.lng],[o.lat,o.lng])<.4});
-  if(x.length){var seen={};h+='<br><b>Nối với:</b> '+x.filter(function(o){if(seen[o.line.id])return false;return seen[o.line.id]=1}).map(function(o){return esc(o.line.short)}).join('; ')}
+  var x=st.x||[];
+  if(x.length)h+='<br><b>Ga chuyển tiếp, nối với:</b> '+x.map(function(o){return esc(o.line.short)}).join('; ')
   var pr=D.projects.map(function(p){return {p:p,k:km([st.lat,st.lng],[p.lat,p.lng])}}).filter(function(o){return o.k<=3}).sort(function(a,b){return a.k-b.k}).slice(0,5);
   h+='<br><b>Dự án trong 3 km:</b> '+(pr.length?pr.map(function(o){return '<a href="#" class="pp-l" data-go="p='+o.p.id+'">'+esc(o.p.name)+'</a> ('+fmt(o.k)+')'}).join(', '):'chưa có trong bản đồ');
   return h+'</div><div class="pp-row"><button type="button" class="pp-c2" data-rad="s='+st.id+'">Vẽ vòng 500 m / 1 km</button>'+linkBtn('s='+st.id)+'</div>';
@@ -1143,7 +1173,7 @@ html,body{overflow:hidden}
  function lnStat(){var n={'van-hanh':0,'dang-xay':0,'nghien-cuu':0};D.lines.forEach(function(d){if(d.group==='metro'&&lineLayers[d.id].on)n[d.status]++});
   document.getElementById('ln-stat').innerHTML='Metro MAUR đang hiển thị: <b>'+n['van-hanh']+'</b> vận hành · <b>'+n['dang-xay']+'</b> đang xây · <b>'+n['nghien-cuu']+'</b> nghiên cứu.'}
  function labels(){if(map.getZoom()<14){if(labelLayer.getLayers().length)labelLayer.clearLayers();return}labelLayer.clearLayers();var b=map.getBounds().pad(.2);
-  Object.keys(lineLayers).forEach(function(id){var o=lineLayers[id];if(!o.on)return;o.lab.forEach(function(m){if(b.contains(m.getLatLng()))labelLayer.addLayer(m)})})}
+  var done=[];Object.keys(lineLayers).forEach(function(id){var o=lineLayers[id];if(!o.on)return;o.lab.forEach(function(m){var ll=m.getLatLng();if(!b.contains(ll))return;if(done.some(function(q){return km([ll.lat,ll.lng],q)<.06}))return;done.push([ll.lat,ll.lng]);labelLayer.addLayer(m)})})}
  function tod(){todLayer.clearLayers();if(!showTod)return;stations.forEach(function(s){if(!lineLayers[s.line.id].on||s.line.group==='plan')return;
   L.circle([s.lat,s.lng],{radius:500,color:s.line.color,weight:1,opacity:.6,dashArray:'4 4',fillColor:s.line.color,fillOpacity:.07,interactive:false}).addTo(todLayer)})}
  var labT=null;map.on('zoomend moveend',function(){clearTimeout(labT);labT=setTimeout(labels,180)});

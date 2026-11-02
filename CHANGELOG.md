@@ -3,6 +3,12 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-02 — Công cụ bản đồ: Metro số 4 và 4B, đồng bộ cách trình bày
+- `assets/tools/ban-do-du-an-hcm/index.html`: thay Tuyến 4 bằng phương án mới (Đông Thạnh – Hiệp Phước, khoảng 45 km, 31 ga đánh số 00–30, 15 ga ngầm và 16 ga trên cao, 2 depot, đoạn kéo dài về Bình Dương), dò từ 5 ảnh bản đồ tổng thể do Tú cung cấp bằng cách khớp vào ảnh vệ tinh. Đo lại: ngầm 20,4 km, trên cao 24,6 km, tổng 45,0 km (bản đồ ghi 20,7 / 24,3 / 45). Tuyến 4 chuyển từ nhóm quy hoạch dài hạn sang nhóm Metro đang triển khai (vẫn trạng thái nghiên cứu, đề xuất).
+- Tuyến 4B vẽ lại 4 ga (Công viên Gia Định, Tân Sơn Nhất, Công viên Hoàng Văn Thụ, Lăng Cha Cả); hai ga đầu cuối là vị trí ước lượng, cần đối chiếu bản đồ 4B chính thức. 4B không có trong bộ ảnh.
+- Đồng bộ cách trình bày cho mọi tuyến, ga và vành đai: nhãn ga nền tối, có số thứ tự khi nguồn có đánh số; ga chuyển tiếp tô vàng (cùng quy tắc 400 m của thẻ ga, không tính phần kéo dài cùng một tuyến); mọi tuyến đều có viền trắng; đoạn ngầm có viền trắng kèm viền tối nét đứt, đoạn trên cao viền trắng; không vẽ hai nhãn chồng nhau tại một ga; chú giải thêm ga chuyển tiếp, depot, đoạn ngầm, đoạn trên cao. Thêm hỗ trợ vẽ depot và đoạn kéo dài từ dữ liệu. Không đổi CSS/JS dùng chung hay version.
+- Chưa có thông tin ngầm/cao theo từng ga ở các tuyến 3, 5, 6, 7, 8, 9, 10, Thủ Thiêm – Long Thành và các đoạn kéo dài Tuyến 1 phía tây/đông; các tuyến này vẫn hiện như cũ cho tới khi có nguồn.
+
 ## 2026-11-02 — Nội dung: bài "Celesta Gold", bảng tính thanh toán và ảnh Nhật san số 6
 - Bài `celesta-gold`: viết lại mục 01–02 theo brochure dự án (sơ đồ vị trí và thời gian di chuyển, quy mô, đối tác, diện tích 1–4PN, mặt bằng tầng 4 và tầng 5–24, 8 layout căn, tiện ích, khối đế thương mại), thay ảnh cũ độ phân giải thấp bằng ảnh gốc từ brochure (ảnh hero mới `celesta-gold/07`; ảnh công trường của Tú giữ nguyên). Mục 03 vẫn là chỗ để Tú viết; bài vẫn `stub` (noindex).
 - Thêm bảng tính `assets/tools/celesta-gold-bang-tinh/` (noindex, theo khung Norton Park): chọn căn theo mẫu hoặc mã căn T1/T2 trên mặt bằng tầng 4 / tầng 5–24, 2 phương thức theo chính sách kickoff (thanh toán nhanh 50% cashback 7%; vay hỗ trợ 75%, hỗ trợ lãi 36 tháng), so sánh, vay ngân hàng, in PDF. Các mốc đợt trung gian, 5% GCN, VAT 10%, KPBT 2% là giả định và được ghi rõ trên trang; giá ~98 triệu/m² là mức dự kiến.
