@@ -1572,8 +1572,8 @@
    "vung-khcn-hcm-ii-hub-icd"
   ],
   "description": "Imperia Sensa Park của MIK Group trên đường Võ Chí Công, phường Phước Long, TP.HCM: khoảng 5 ha, 922 căn hộ hai tháp 25 tầng và 93 căn thấp tầng, bàn giao dự kiến quý IV/2028.",
-  "thumbnail": "imperia-sensa-park/01",
-  "heroImage": "imperia-sensa-park/01",
+  "thumbnail": null,
+  "heroImage": null,
   "publishedDate": "2026-09-28",
   "updatedDate": "2026-11-02",
   "author": "nguyen-anh-tu",
@@ -1584,7 +1584,7 @@
   "ogImage": "assets/images/og/imperia-sensa-park.jpg",
   "section": "🏛️ Dự Án Chọn Lọc",
   "accent": "#b05040",
-  "searchKeywords": "Imperia Sensa Park MIK Group Đông Thành Phố Võ Chí Công Phước Long Thủ Đức sông Rạch Chiếc kênh Một Tấn 922 căn hộ 93 căn thấp tầng 71 nhà phố 22 biệt thự song lập Sensa A Sensa B Sensa Villas studioMilou ONG&ONG Ricons VPBank Mỹ Phú khởi công 6/8/2026 bàn giao quý IV 2028 giá 88 triệu bảng tính phương thức thanh toán Early Bird vay đặc biệt ân hạn gốc 24 tháng mặt bằng tầng điển hình layout giá rumor",
+  "searchKeywords": "Imperia Sensa Park MIK Group Đông Thành Phố Võ Chí Công Phước Long Thủ Đức sông Rạch Chiếc kênh Một Tấn 922 căn hộ 93 căn thấp tầng 71 nhà phố 22 biệt thự song lập Sensa A Sensa B Sensa Villas studioMilou ONG&ONG Ricons VPBank Mỹ Phú khởi công 6/8/2026 bàn giao quý IV 2028 giá 88 triệu",
   "legacy": {
    "source": "v57",
    "panelId": "imperia_sensa"
@@ -6217,9 +6217,9 @@
    "du-an-chon-loc",
    "truc-nguyen-huu-tho-thuong-cang-hiep-phuoc"
   ],
-  "description": "Celesta Gold, giai đoạn 3 Khu đô thị CELESTA trên trục Nguyễn Hữu Thọ, Nhà Bè: 420 căn hộ 25 tầng, hồ bơi điện phân muối 50 m, khởi công 07/05/2026.",
-  "thumbnail": "celesta-gold/07",
-  "heroImage": "celesta-gold/07",
+  "description": "Celesta Gold, giai đoạn 3 Khu đô thị CELESTA trên trục Nguyễn Hữu Thọ, Nhà Bè: 420 căn hộ 25 tầng, khởi công 07/05/2026.",
+  "thumbnail": "celesta-gold/01",
+  "heroImage": "celesta-gold/01",
   "publishedDate": "2026-10-04",
   "updatedDate": "2026-11-02",
   "author": "nguyen-anh-tu",
@@ -6232,7 +6232,7 @@
   "ogImage": "assets/images/og/celesta-gold.jpg",
   "section": "🏛️ Dự Án Chọn Lọc",
   "accent": "#b05040",
-  "searchKeywords": "Celesta Gold Celesta City Keppel Phú Long Nomura Real Estate Vietnam Nguyễn Hữu Thọ Nhà Bè Phước Kiển khu Nam Sài Gòn 420 căn hộ 25 tầng 12.815 m2 shophouse officetel Coteccons khởi công 7/5/2026 metro số 4 cầu cảnh quan Hoàng Kim BCA Green Mark Gold giá 98 triệu cashback 7% thanh toán nhanh 50% hỗ trợ vay 75% hỗ trợ lãi suất 36 tháng miễn phí quản lý 5 sao AWP Architects Ong Ong Belt Collins El Dorado Công ty Cổ phần Địa ốc Nhà Bè bàn giao quý IV 2027 Celesta Avenue Celesta Rise hồ Ngọc Lam hồ bơi điện phân muối 50m PropertyGuru Best Well-Being Condo Takashimaya KONE Tacheng Kurihara bảng tính thanh toán brochure mặt bằng căn hộ 1PN 2PN 3PN 4PN",
+  "searchKeywords": "Celesta Gold Celesta City Keppel Phú Long Nomura Real Estate Vietnam Nguyễn Hữu Thọ Nhà Bè Phước Kiển khu Nam Sài Gòn 420 căn hộ 25 tầng 12.815 m2 shophouse officetel Coteccons khởi công 7/5/2026 metro số 4 cầu cảnh quan Hoàng Kim BCA Green Mark Gold giá 98 triệu cashback 7% thanh toán nhanh 50% hỗ trợ vay 75% hỗ trợ lãi suất 36 tháng miễn phí quản lý 5 sao AWP Architects Ong Ong Belt Collins El Dorado Công ty Cổ phần Địa ốc Nhà Bè bàn giao quý IV 2027",
   "legacy": null,
   "facts": [
    {
