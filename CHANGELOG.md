@@ -3,6 +3,19 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-03 — Nội dung: Global City thêm quy mô từ tờ rơi, thêm CT1 và CT2
+- Mỗi trang con có thêm dòng "Quy mô" theo tờ rơi: SOHO 915 căn; Grand View 646 căn (2 tòa); SOLA 369 căn; Lumière Midtown 808 căn (2 tòa); Park Place 1.728 căn (4 tòa); Cosmo Central 1.800 căn (6 tòa); Dinh thự Oasis 22 căn. Không ghi giá.
+- Thêm trang `global-city-ct1` và `global-city-ct2` (chưa triển khai) vào nhóm "Chưa triển khai" của hub; hub nay có 11 phân khu.
+
+## 2026-11-03 — Nội dung: Global City cập nhật giai đoạn theo tờ rơi của Tú
+- Mỗi trang con ghi giai đoạn (mở bán, bàn giao dự kiến), không ghi giá/số căn: SOHO đã bàn giao; Grand View mở bán 12/2024, giao Q4/2026; Lumière Midtown mở bán 6/2025, giao Q3/2027; SOLA mở bán 11/2025, giao Q1/2027; Park Place (CT5) mở bán 10/2025, giao Q1/2028; Cosmo Central (CT4) mở bán 1/2026, giao Q3/2028. Bỏ số căn 322 của SOLA do còn lệch với tờ rơi.
+- Thêm trang `masteri-cosmo-central-nexus` (CT3, đang triển khai) và `lumiere-plus` (CT6, chưa triển khai); `global-city-villa-oasis` đổi tên hiển thị thành "Dinh thự Oasis" (chưa triển khai). Hub chia lại: đã bàn giao · đang triển khai · chưa triển khai.
+- Bỏ `global-city-waterfront-park` và `global-city-diners-square` (không có trong tờ rơi, theo Masterise là khu nhà phố/ẩm thực trong quy hoạch cũ); URL cũ chuyển hướng 301 về `global-city` (§6B).
+
+## 2026-11-03 — Nội dung: Saigon Grand Marina chia phân khu, thêm Vinhomes Golden River (Old Money)
+- `grand-marina-saigon` thành hub: thêm mục "Các Phân Khu" và 5 trang con (`stub`, noindex), chỉ ghi tên và giai đoạn: Lake Tower (đã bàn giao), Sea Tower (đã khai trương 2/2025), Marina Central Tower (đã vận hành), Cove Tower và Lagoon Tower (đang triển khai). Giữ nguyên nội dung và SWOT cũ.
+- Bài mới `vinhomes-golden-river` (hub, `stub`) trong vùng Old Money (menu chương 4 và danh sách trong bài `old-money`), 3 trang con: The Aqua, The Luxury, The Victoria (đã bàn giao). Có ảnh OG cho 9 trang mới. Không đổi giao diện, CSS/JS hay version.
+
 ## 2026-11-03 — Nội dung: 9 trang con Global City rút gọn còn tên và giai đoạn (theo Tú)
 - Theo yêu cầu của Tú, mỗi trang con chỉ giữ tên phân khu và giai đoạn (đã bàn giao · đang triển khai · sắp triển khai); thông tin chi tiết Tú sẽ cập nhật sau. Masteri Grand View: phân khu căn hộ đầu tiên của khu đô thị, bàn giao cuối 2026. SOLA: 322 căn theo Tú (chưa đối chiếu được nguồn công khai); bỏ số 426 của thiết kế cũ.
 

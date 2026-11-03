@@ -26,5 +26,13 @@
  {
   "from": "/chi-so-do-thi/2026-10-05-mat-do-do-thi-nen/doc/",
   "to": "/chi-so-do-thi/"
+ },
+ {
+  "from": "global-city-waterfront-park",
+  "to": "global-city"
+ },
+ {
+  "from": "global-city-diners-square",
+  "to": "global-city"
  }
 ]

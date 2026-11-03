@@ -1,12 +1,5 @@
-bao-cao-do-thi-nen/clips/tokyo.jpg
-bao-cao-do-thi-nen/clips/tokyo.mp4
-clips/hongkong.jpg
-clips/hongkong.mp4
-clips/singapore.jpg
-clips/singapore.mp4
-hongkong.jpg
-hongkong.mp4
-singapore.jpg
-singapore.mp4
-tokyo.jpg
-tokyo.mp4
+DELETED_FILES.txt
+assets/images/og/global-city-diners-square.jpg
+assets/images/og/global-city-waterfront-park.jpg
+content/articles/global-city-diners-square.html
+content/articles/global-city-waterfront-park.html
