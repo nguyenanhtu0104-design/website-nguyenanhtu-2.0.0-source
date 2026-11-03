@@ -3,6 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-03 (Thành Phố Đông Nam)
+- Gắn sao + highlight cho vùng Thành Phố Đông Nam.
+- Bỏ KĐT Phú Long khỏi menu (bài chuyển lưu trữ, giữ URL).
+- Thêm KĐT Dragon City (6 phân khu) và Celesta City (5 phân khu, gồm Celesta Gold); các trang con chỉ ghi tên + giai đoạn (stub).
+
 ## 2026-11-03 — Nội dung: Global City thêm quy mô từ tờ rơi, thêm CT1 và CT2
 - Mỗi trang con có thêm dòng "Quy mô" theo tờ rơi: SOHO 915 căn; Grand View 646 căn (2 tòa); SOLA 369 căn; Lumière Midtown 808 căn (2 tòa); Park Place 1.728 căn (4 tòa); Cosmo Central 1.800 căn (6 tòa); Dinh thự Oasis 22 căn. Không ghi giá.
 - Thêm trang `global-city-ct1` và `global-city-ct2` (chưa triển khai) vào nhóm "Chưa triển khai" của hub; hub nay có 11 phân khu.

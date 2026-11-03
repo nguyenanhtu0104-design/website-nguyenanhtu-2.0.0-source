@@ -426,7 +426,10 @@
             "article": "phu-my-hung"
           },
           {
-            "article": "kdt-phu-long"
+            "article": "dragon-city"
+          },
+          {
+            "article": "celesta-city"
           },
           {
             "article": "gs-zeitgeist-city"
@@ -451,11 +454,10 @@
           },
           {
             "article": "masterise-can-gio"
-          },
-          {
-            "article": "celesta-gold"
           }
-        ]
+        ],
+        "star": true,
+        "highlight": true
       },
       {
         "article": "truc-giao-thuong-mien-tay",
