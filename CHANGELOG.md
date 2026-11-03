@@ -3,6 +3,17 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-03 — Nội dung: 9 trang con Global City rút gọn còn tên và giai đoạn (theo Tú)
+- Theo yêu cầu của Tú, mỗi trang con chỉ giữ tên phân khu và giai đoạn (đã bàn giao · đang triển khai · sắp triển khai); thông tin chi tiết Tú sẽ cập nhật sau. Masteri Grand View: phân khu căn hộ đầu tiên của khu đô thị, bàn giao cuối 2026. SOLA: 322 căn theo Tú (chưa đối chiếu được nguồn công khai); bỏ số 426 của thiết kế cũ.
+
+## 2026-11-03 — Nội dung: rà soát lại phân khu Global City theo PDF của Tú
+- Đối chiếu PDF "Các phân khu The Global City" với báo chí và trang Masterise Homes. SOLA: ghi lại việc Masterise phá dỡ phần đã xây từ 7/2025 để nâng cấp thiết kế toàn phân khu; 426 căn là số của thiết kế cũ. Masteri Park Place: cao 30 tầng, 4 tháp căn hộ + 1 tháp văn phòng, số căn 1.600–1.728 chưa khớp giữa các nguồn. LUMIÈRE Midtown: thêm cụm CT7, 2 tòa 27 tầng, khoảng 808 căn (trang tổng hợp, chờ xác nhận). Sửa mô tả, từ khóa, hub; chưa thêm ảnh phối cảnh.
+
+## 2026-11-03 — Nội dung: Global City chia phân khu (hub + 9 trang con)
+- Bài `global-city` thành trang hub như Garden City / Palm City: thêm mục "Các Phân Khu Của The Global City" chia 3 nhóm (đã bàn giao · đang triển khai · sắp triển khai). Giữ nguyên URL, số liệu và SWOT cũ.
+- 9 trang con mới (`stub`, noindex, chờ Tú viết nội dung): `global-city-soho` (đã bàn giao), `global-city-sola`, `masteri-grand-view`, `masteri-cosmo-central`, `masteri-park-place`, `lumiere-midtown` (đang triển khai), `global-city-waterfront-park`, `global-city-diners-square`, `global-city-villa-oasis` (sắp triển khai, theo quy hoạch). Mỗi trang chỉ ghi số liệu có nguồn báo chí/Masterise; ô nào chưa kiểm chứng được thì bỏ trống.
+- Có thêm ảnh OG cho 9 trang. Không đổi giao diện, CSS/JS hay version.
+
 ## 2026-11-02 — Công cụ bản đồ: Metro số 4 và 4B, đồng bộ cách trình bày
 
 - Gọn lại (lượt 3): bỏ các ghi chú về cách dò vị trí ga/hướng tuyến khỏi cửa sổ ga, cửa sổ tuyến và thẻ thông tin; chỉ giữ thông tin của ga và tổng quan tuyến.
