@@ -204,6 +204,11 @@ html,body{overflow:hidden}
   </div>
   <h3 class="sub">Khu vực</h3><div class="zones" id="zones"></div>
   <details class="grp" open><summary>Danh sách dự án</summary><div class="list" id="list"></div></details>
+  <details class="grp" id="c-sec" open><summary>Toàn bộ dự án có bài trong Cẩm Nang</summary>
+  <label class="flt"><input type="checkbox" id="c-on" checked>Hiện trên bản đồ<em id="c-n"></em></label>
+  <label class="flt"><input type="checkbox" id="c-apx" checked>Gồm dự án vị trí ước lượng theo khu vực</label>
+  <p class="note"><span class="qk" style="background:#c8993a"></span>vị trí có nguồn · <span class="qk" style="background:#fff;border:2px dashed #c8993a;box-sizing:border-box"></span>vị trí ước lượng, chưa xác minh. Bấm dấu để mở bài phân tích. Dự án đã có ở các lớp khác chỉ hiện một lần.</p>
+ </details>
   <details class="grp" id="g-sec" open><summary>Dự án quanh ga metro</summary>
   <label class="flt"><input type="checkbox" id="g-on">Hiện trên bản đồ<em id="g-n"></em></label>
   <div id="g-st"></div>
@@ -1340,11 +1345,26 @@ html,body{overflow:hidden}
    l.innerHTML='<input type="checkbox" data-gs="'+esc(k)+'"'+(gAct[k]?' checked':'')+'><span class="gk" style="background:'+gc(k)+'"></span>'+esc(k)+'<em>'+cnt[k]+'</em>';
    l.querySelector('input').addEventListener('change',function(){gAct[k]=this.checked;gRefresh()});box.appendChild(l)});
   gRefresh()}).catch(function(){document.getElementById('g-n').textContent='không tải được dữ liệu'});
+ // ---------- dự án có trong Cẩm Nang ----------
+ var C=[],cLayer=L.layerGroup().addTo(map),cOn=true;
+ function cVis(p){return !(p.approx&&!document.getElementById('c-apx').checked)}
+ function cRefresh(){cLayer.clearLayers();var n=0;if(cOn)C.forEach(function(p){if(cVis(p)){cLayer.addLayer(p.m);n++}});document.getElementById('c-n').textContent=cOn?n+'/'+C.length:''}
+ document.getElementById('c-on').addEventListener('change',function(){cOn=this.checked;cRefresh()});
+ document.getElementById('c-apx').addEventListener('change',cRefresh);
+ function focusC(id){var p=C.filter(function(x){return x.id===id})[0];if(!p)return;if(p.approx)document.getElementById('c-apx').checked=true;if(!cOn){cOn=true;document.getElementById('c-on').checked=true}cRefresh();closeSide();map.setView([p.lat,p.lng],Math.max(map.getZoom(),15));setTimeout(function(){p.m.openPopup()},250)}
+ var cReady=fetch('du-an-cam-nang.json').then(function(r){return r.json()}).then(function(J){
+  C=J.projects;C.forEach(function(p){
+   p.m=L.circleMarker([p.lat,p.lng],{radius:8,weight:p.approx?2:3,color:p.approx?'#c8993a':'#fff',dashArray:p.approx?'3 3':null,fillColor:'#c8993a',fillOpacity:p.approx?.25:1});
+   p.m.bindTooltip(esc(p.name)+(p.approx?' (vị trí ước lượng)':''),{direction:'top',offset:[0,-8]});
+   p.m.bindPopup(function(){return '<div class="pp-t">'+esc(p.name)+'</div><div class="pp-m">'+esc(p.zone)+(p.sub?'<br>'+esc(p.sub):'')+nearHtml([p.lat,p.lng])+'<br><i>'+(p.approx?'Vị trí ước lượng theo khu vực, chưa xác minh.':'Tọa độ từ dữ liệu có sẵn của công cụ.')+'</i></div><a class="pp-a" href="/cam-nang/'+esc(p.id)+'/" target="_blank" rel="noopener">Đọc bài →</a><div class="pp-row"><button type="button" class="pp-c2" data-rad="c='+p.id+'">Vẽ vòng 500 m / 1 km</button>'+linkBtn('c='+p.id)+'</div>'},PO);
+   idx.push({k:'c='+p.id,t:p.name,s:'Dự án Cẩm Nang · '+p.zone,n:norm(p.name+' '+p.zone)})});
+  cRefresh()}).catch(function(){document.getElementById('c-n').textContent='không tải được dữ liệu'});
  // ---------- vòng bán kính ----------
  var radLayer=L.layerGroup().addTo(map);
  function radius(key){radLayer.clearLayers();var kv=key.split('='),ll=null,name='';
   if(kv[0]==='p'){var p=D.projects.filter(function(x){return x.id===kv[1]})[0];if(p){ll=[p.lat,p.lng];name=p.name}}
   else if(kv[0]==='g'){var pg=G.filter(function(x){return x.id===kv[1]})[0];if(pg){ll=[pg.lat,pg.lng];name=pg.name}}
+  else if(kv[0]==='c'){var pc=C.filter(function(x){return x.id===kv[1]})[0];if(pc){ll=[pc.lat,pc.lng];name=pc.name}}
   else if(kv[0]==='q'){var pq=Q.filter(function(x){return x.id===kv[1]})[0];if(pq){ll=[pq.lat,pq.lng];name=pq.name}}
   else{var s=stations.filter(function(x){return x.id===kv[1]})[0];if(s){ll=[s.lat,s.lng];name='Ga '+s.name}}
   if(!ll)return;map.closePopup();
@@ -1373,7 +1393,7 @@ html,body{overflow:hidden}
  document.addEventListener('click',function(e){if(!e.target.closest('.search'))qr.hidden=true});
 
  function go(h){var kv=String(h).replace(/^#/,'').split('=');if(kv.length<2)return;
-  if(kv[0]==='p')focusProject(kv[1]);else if(kv[0]==='l')focusLine(kv[1]);else if(kv[0]==='s')focusStation(kv[1]);else if(kv[0]==='q')qReady.then(function(){focusQ(kv[1])});else if(kv[0]==='g')gReady.then(function(){focusG(kv[1])})}
+  if(kv[0]==='p')focusProject(kv[1]);else if(kv[0]==='l')focusLine(kv[1]);else if(kv[0]==='s')focusStation(kv[1]);else if(kv[0]==='q')qReady.then(function(){focusQ(kv[1])});else if(kv[0]==='g')gReady.then(function(){focusG(kv[1])});else if(kv[0]==='c')cReady.then(function(){focusC(kv[1])})}
  map.getContainer().addEventListener('click',function(e){var a=e.target.closest('a[data-go]');if(a)e.preventDefault()});
 
  // ---------- công cụ trên bản đồ: vị trí của tôi, đo khoảng cách ----------
