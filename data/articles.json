@@ -7820,5 +7820,65 @@
     "accent": "#b05040",
     "searchKeywords": "Mizuki Park Nam Long Bình Chánh Nguyễn Văn Linh Flora Valora Panorama Hankyu Hanshin Nishi Nippon",
     "legacy": null
+  },
+  {
+    "id": "luat_phat_trien_do_thi_2026",
+    "slug": "luat-phat-trien-do-thi-2026",
+    "status": "published",
+    "title": "Luật Phát Triển Đô Thị 2026",
+    "subtitle": "Luật 18/2026/QH16 — đọc từ góc TP.HCM & Đông Nam Bộ",
+    "icon": "🏛️",
+    "category": "chien-luoc-quy-hoach",
+    "parent": null,
+    "tags": [
+      "chien-luoc-quy-hoach",
+      "phap-luat",
+      "quy-hoach",
+      "tod",
+      "ftz",
+      "khu-kinh-te-dac-biet",
+      "nha-dau-tu-chien-luoc",
+      "nghi-quyet-98"
+    ],
+    "description": "Luật Phát triển đô thị 18/2026/QH16 hiệu lực 01/10/2026 — TP.HCM là địa phương duy nhất áp dụng trọn vẹn. Phân tích tác động với Đông Nam Bộ.",
+    "thumbnail": "luat-phat-trien-do-thi-2026/01",
+    "heroImage": "luat-phat-trien-do-thi-2026/01",
+    "publishedDate": "2026-11-04",
+    "updatedDate": "2026-11-04",
+    "author": "nguyen-anh-tu",
+    "content": "content/articles/luat-phat-trien-do-thi-2026.html",
+    "relatedArticles": [
+      "chien-luoc-quy-hoach",
+      "vifc-hcm-dac-khu-tai-chinh",
+      "tod-5-0-mat-do-hoat-dong",
+      "tu-giac-kinh-te-bien-1-650km",
+      "ban-do-dau-tu-cong-2026-2030",
+      "mo-hinh-tod-hanh-lang-metro"
+    ],
+    "seoTitle": "Luật Phát Triển Đô Thị 2026 Cho TP.HCM",
+    "seoDescription": "Luật 18/2026/QH16 hiệu lực 01/10/2026: TP.HCM là đô thị đặc biệt duy nhất áp dụng. Không gian ngầm, TOD, lấn biển, FTZ Cái Mép và liên kết vùng Đông Nam Bộ.",
+    "ogImage": "assets/images/og/luat-phat-trien-do-thi-2026.jpg",
+    "section": "🗺️ Chiến Lược & Quy Hoạch",
+    "accent": "#4aaa7f",
+    "searchKeywords": "Luat Phat trien do thi 2026 18/2026/QH16 hieu luc 01/10/2026 Nghi quyet 98 het hieu luc 01/4/2027 do thi dac biet TP.HCM phan quyen bien che 20% thi diem co che 5 nam Dieu 8 khong gian ngam khong gian tam thap tam cao Dieu 11 TOD Dieu 13 chuyen nhuong chi tieu su dung dat do thi lan bien Dieu 19 70 nam 50% ha tang ky thuat khung khai thac cat bien khu thuong mai tu do FTZ Dieu 21 khu logistics tich hop khu phi thue quan ngoai te Trung tam tai chinh quoc te Dieu 24 trai phieu do thi trai phieu xanh thu nghiem co kiem soat Dieu 31 mien thue TNDN TNCN 5 nam Dieu 39 ky tinh thue 2027 nha dau tu chien luoc Dieu 36 nguong von 3000 ty 30000 ty 50000 ty 75000 ty giai ngan 5 7 10 20 nam ngan sach bo sung co muc tieu 70% tang thu Dieu 33 tin chi carbon Dieu 47 khu kinh te dac biet Dieu 43 44 45 cang bien loai I casino 2 ty USD Dieu 48 cua hang mien thue Dieu 54 lien ket vung Quy Phat trien vung do thi dac biet Dieu 41 Vanh dai 3 Dong Nam Bo TP.HCM do thi loai dac biet duy nhat Ha Noi Luat Thu do Hai Phong Da Nang Hue Can Tho thanh pho khac TPHCM sau sap nhap Nghi quyet 202/2025/QH15 Binh Duong Ba Ria Vung Tau 6772 km2 14 trieu dan 168 phuong xa vung do thi dac biet Dong Nai Tay Ninh Dong Thap Lam Dong Quy Phat trien vung Can Gio Vung Tau Con Dao lan bien Cai Mep Thi Vai cang bien loai dac biet Tan Son Nhat Long Thanh Trung tam tai chinh quoc te Thu Thiem 898 ha Nghi quyet 222/2025/QH15 Nghi dinh 323/2025/ND-CP",
+    "legacy": null,
+    "facts": [
+      {
+        "n": "66",
+        "l": "điều · 5 chương"
+      },
+      {
+        "n": "01/10/2026",
+        "l": "hiệu lực thi hành"
+      },
+      {
+        "n": "70 năm",
+        "l": "thời hạn dự án tối đa"
+      },
+      {
+        "n": "01/4/2027",
+        "l": "NQ98 hết hiệu lực"
+      }
+    ]
   }
 ]

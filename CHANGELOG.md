@@ -3,6 +3,20 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-04 — Nội dung: bài mới "Luật Phát Triển Đô Thị 2026" (CH.02)
+- Bài mới `luat-phat-trien-do-thi-2026` trong chương Chiến Lược & Quy Hoạch (CH.02, có trong menu trang chủ; badge chương cập nhật thành 5 chủ đề · 22 bài).
+- Nội dung biên tập từ **văn bản Luật số 18/2026/QH16** (nguồn pháp lý gốc, §8.1): phạm vi áp dụng (Điều 1), phân quyền và miễn trách nhiệm (Điều 6, 8, 62), không gian ngầm/tầm thấp/tầm cao (Điều 11), TOD (Điều 13), đô thị lấn biển (Điều 19), khu thương mại tự do (Điều 21), trung tâm tài chính quốc tế (Điều 24), thử nghiệm có kiểm soát và ưu đãi thuế (Điều 31, 39), nhà đầu tư chiến lược (Điều 36), ngân sách và tín chỉ các-bon (Điều 33, 47), khu kinh tế đặc biệt (Điều 43–45, 48, 51, 54), liên kết vùng và chuyển tiếp (Điều 41, 63, 64). Có bảng ngưỡng vốn đầy đủ theo Điều 36, dải số liệu `facts` và mục Hỏi & Đáp 7 câu.
+- 15 ảnh infographic lấy từ file tóm tắt của Tú, **đã xoá logo "Gemini Notebook"** bằng OpenCV `INPAINT_TELEA` bán kính 7 (§8.4). Giữ nguyên bảng màu gốc của bộ ảnh, không áp lớp tông ấm vì nền xanh đậm bị bệt và mất tương phản chữ — đây là ngoại lệ có chủ đích của §8.4 chỉ áp dụng cho bộ ảnh này.
+- Ba hình tóm tắt có chi tiết lệch với luật gốc (ngưỡng vốn Điều 36 gộp nhóm; ưu đãi thuế ghi ở Điều 30–31 trong khi luật đặt ở Điều 39; cách gọi "giữ lại 70% tăng thu" trong khi Điều 33 là khoản bổ sung có mục tiêu của ngân sách trung ương). Phần chữ nêu đúng theo luật và có ghi chú đính chính ngay dưới từng hình.
+- **Bản địa hoá theo TP.HCM (sửa cùng ngày, theo yêu cầu của Tú):** Luật viết chung chữ "Thành phố" nhưng đối tượng thực tế là TP.HCM, nên bài được viết lại theo địa phương.
+  - Thêm mục "Luật chung, nhưng địa chỉ áp dụng là TP.HCM": Việt Nam chỉ có 2 đô thị loại đặc biệt là Hà Nội và TP.HCM (khoản 2 Điều 4 Luật Quy hoạch đô thị và nông thôn 2024 số 47/2024/QH15, sửa bởi Luật 144/2025/QH15, hiệu lực 01/01/2026); Hà Nội theo Luật Thủ đô → TP.HCM là địa phương duy nhất áp dụng trọn vẹn. Nhóm "thành phố khác" là Hải Phòng, Đà Nẵng, Huế, Cần Thơ.
+  - Nêu rõ TP.HCM trong Luật là TP.HCM sau sáp nhập (NQ 202/2025/QH15, từ 01/7/2025: TP.HCM + Bình Dương + Bà Rịa – Vũng Tàu; ~6.772,6 km², >14 triệu dân, 168 phường/xã/đặc khu theo NQ 1685/NQ-UBTVQH15).
+  - Xác định vùng đô thị đặc biệt (khoản 8 Điều 2) gồm TP.HCM + Đồng Nai, Tây Ninh, Đồng Tháp, Lâm Đồng; cảnh báo Đồng Nai/Tây Ninh không tự động hưởng Chương II.
+  - Gắn địa bàn thật cho từng điều: Điều 11 (lõi Sài Gòn – Bến Thành, Thủ Thiêm, metro số 1), Điều 13 (metro và Vành đai 3), Điều 19 (Cần Giờ – Vũng Tàu – Côn Đảo nay trong ranh giới TP.HCM), Điều 21 (Cái Mép – Thị Vải loại đặc biệt, cảng TP.HCM loại I, Tân Sơn Nhất), Điều 24 (TTTCQT ~898 ha tại phường Sài Gòn, Bến Thành, Thủ Thiêm theo NQ 222/2025/QH15 và NĐ 323/2025/NĐ-CP), Điều 43 (cảnh báo đáp ứng tiêu chí ≠ được công nhận).
+  - Đổi cách gọi "Thành phố" → "TP.HCM", "Hội đồng nhân dân Thành phố" → "HĐND TP.HCM", "Ủy ban nhân dân Thành phố" → "UBND TP.HCM" trong toàn bài.
+  - Thêm 2 câu Hỏi & Đáp (dự án ở Bình Dương / Bà Rịa – Vũng Tàu cũ; Đồng Nai và Tây Ninh), nâng FAQ lên 9 câu. Cập nhật `seoTitle`, `description`, `searchKeywords` và khối nguồn cuối bài.
+- Không đổi giao diện, CSS, JS hay version.
+
 ## 2026-11-03 (Thành Phố Đông Nam)
 - Gắn sao + highlight cho vùng Thành Phố Đông Nam.
 - Bỏ KĐT Phú Long khỏi menu (bài chuyển lưu trữ, giữ URL).
