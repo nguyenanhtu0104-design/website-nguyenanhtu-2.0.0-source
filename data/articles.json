@@ -3404,10 +3404,13 @@
     "thumbnail": null,
     "heroImage": null,
     "publishedDate": "2026-09-28",
-    "updatedDate": "2026-09-28",
+    "updatedDate": "2026-11-04",
     "author": "nguyen-anh-tu",
     "content": "content/articles/vifc-hcm-dac-khu-tai-chinh.html",
-    "relatedArticles": [],
+    "relatedArticles": [
+      "vifc-quy-che-van-hanh-tien-do-2026",
+      "luat-phat-trien-do-thi-2026"
+    ],
     "seoTitle": "VIFC-HCM — Đặc Khu Tài Chính & Nền Tảng Đô Thị",
     "seoDescription": "VIFC-HCMC không phải là một dự án văn phòng tài chính đơn lẻ — đây là đặc khu đô thị 898ha với mô hình \"lõi kép\" Q1 + Thủ Thiêm.",
     "ogImage": "assets/images/og/vifc-hcm-dac-khu-tai-chinh.jpg",
@@ -7853,7 +7856,8 @@
       "tod-5-0-mat-do-hoat-dong",
       "tu-giac-kinh-te-bien-1-650km",
       "ban-do-dau-tu-cong-2026-2030",
-      "mo-hinh-tod-hanh-lang-metro"
+      "mo-hinh-tod-hanh-lang-metro",
+      "vifc-quy-che-van-hanh-tien-do-2026"
     ],
     "seoTitle": "Luật Phát Triển Đô Thị 2026 Cho TP.HCM",
     "seoDescription": "Luật 18/2026/QH16 hiệu lực 01/10/2026: TP.HCM là đô thị đặc biệt duy nhất áp dụng. Không gian ngầm, TOD, lấn biển, FTZ Cái Mép và liên kết vùng Đông Nam Bộ.",
@@ -7878,6 +7882,119 @@
       {
         "n": "01/4/2027",
         "l": "NQ98 hết hiệu lực"
+      }
+    ]
+  },
+  {
+    "id": "vifc_quy_che_van_hanh_tien_do_2026",
+    "slug": "vifc-quy-che-van-hanh-tien-do-2026",
+    "status": "stub",
+    "title": "VIFC — Mục Tiêu & Cấu Trúc Bộ Quy Chế",
+    "subtitle": "Bài tổng · trung tâm tài chính quốc tế gỡ nút thắt nào",
+    "icon": "💹",
+    "category": "chien-luoc-quy-hoach",
+    "parent": "vifc-hcm-dac-khu-tai-chinh",
+    "tags": [
+      "chien-luoc-quy-hoach",
+      "vifc",
+      "trung-tam-tai-chinh-quoc-te",
+      "quy-che",
+      "thu-thiem"
+    ],
+    "description": "Bài tổng về VIFC: trung tâm tài chính quốc tế sinh ra để gỡ nút thắt nào, bộ quy chế được cấu trúc ra sao và lộ trình mở sản phẩm 10 năm.",
+    "thumbnail": "vifc-quy-che-van-hanh-tien-do-2026/01",
+    "heroImage": "vifc-quy-che-van-hanh-tien-do-2026/01",
+    "publishedDate": "2026-11-04",
+    "updatedDate": "2026-11-04",
+    "author": "nguyen-anh-tu",
+    "content": "content/articles/vifc-quy-che-van-hanh-tien-do-2026.html",
+    "relatedArticles": [
+      "vifc-cap-nhat-ky-1-thang-11-2026",
+      "vifc-hcm-dac-khu-tai-chinh",
+      "luat-phat-trien-do-thi-2026",
+      "chien-luoc-quy-hoach",
+      "mice-hub-thu-thiem"
+    ],
+    "seoTitle": "VIFC — Mục Tiêu & Cấu Trúc Bộ Quy Chế",
+    "seoDescription": "VIFC là vùng quy chế tài chính biệt lập 898 ha tại TP.HCM. Bộ quy chế gỡ nút thắt gì, ba nhóm thành viên, bộ máy ba tầng và lộ trình 10 năm.",
+    "ogImage": "assets/images/og/vifc-quy-che-van-hanh-tien-do-2026.jpg",
+    "section": "🗺️ Chiến Lược & Quy Hoạch",
+    "accent": "#4aaa7f",
+    "searchKeywords": "VIFC Trung tam tai chinh quoc te Viet Nam muc tieu cau truc bo quy che Quyet dinh 05/QD-HDDHTTTC Nghi quyet 222/2025/QH15 Nghi dinh 323/2025/ND-CP 324/2025/ND-CP 898 ha Thu Thiem Ben Thanh Sai Gon An Khanh ring-fenced vung quy che biet lap DIFC Dubai hop dong tieng Anh trong tai quoc te ngoai te USD so huu nuoc ngoai 100% bo may ba tang Hoi dong Dieu hanh Co quan Dieu hanh Co quan Giam sat Trung tam Trong tai tu chu tai chinh tai san cong chi dinh nha dau tu chi dinh thau 3 nhom thanh vien 7 tieu chuan Fit Proper UBO 90 ngay 7 ngay lam viec sandbox fintech tai san so 5 nam mien thue TNCN den het 2030 thue TNDN 10% 30 nam 15% 15 nam lo trinh 10 nam ngan hang quan ly tai san trai phieu doanh nghiep REITs T+4 4 kenh truyen dan van phong hang A nha o chuyen gia von cho du an gia dat dau gia 5 cau hoi kiem chung canh bao thoi gia ba hinh thuc tham gia",
+    "legacy": null,
+    "facts": [
+      {
+        "n": "898 ha",
+        "l": "phạm vi tại TP.HCM"
+      },
+      {
+        "n": "25–30",
+        "l": "quy chế của một IFC đủ"
+      },
+      {
+        "n": "3",
+        "l": "nhóm thành viên"
+      },
+      {
+        "n": "3",
+        "l": "hình thức tham gia"
+      }
+    ]
+  },
+  {
+    "id": "vifc_cap_nhat_ky_1_thang_11_2026",
+    "slug": "vifc-cap-nhat-ky-1-thang-11-2026",
+    "status": "stub",
+    "title": "VIFC Kỳ 1 — Tháng 11/2026",
+    "subtitle": "Quy chế đã thông qua · thành viên · tiến độ vật lý",
+    "icon": "🗓️",
+    "category": "chien-luoc-quy-hoach",
+    "parent": "vifc-quy-che-van-hanh-tien-do-2026",
+    "tags": [
+      "chien-luoc-quy-hoach",
+      "vifc",
+      "tien-do",
+      "thanh-vien",
+      "thu-thiem",
+      "ba-son"
+    ],
+    "description": "Chốt hiện trạng VIFC ngày 04/11/2026: quy chế đã thông qua, hai đợt công bố thành viên, hình thức tham gia và tiến độ vật lý.",
+    "thumbnail": "vifc-cap-nhat-ky-1-thang-11-2026/01",
+    "heroImage": "vifc-cap-nhat-ky-1-thang-11-2026/01",
+    "publishedDate": "2026-11-04",
+    "updatedDate": "2026-11-04",
+    "author": "nguyen-anh-tu",
+    "content": "content/articles/vifc-cap-nhat-ky-1-thang-11-2026.html",
+    "relatedArticles": [
+      "vifc-quy-che-van-hanh-tien-do-2026",
+      "vifc-hcm-dac-khu-tai-chinh",
+      "luat-phat-trien-do-thi-2026",
+      "grand-marina-saigon",
+      "mice-hub-thu-thiem"
+    ],
+    "seoTitle": "VIFC Kỳ 1 — Tháng 11/2026",
+    "seoDescription": "VIFC tại 04/11/2026: 10 thành viên chính thức, 33,63 triệu USD vốn điều lệ, 6–7/30 quy chế, chưa có ngân hàng thành viên và chưa có giao dịch.",
+    "ogImage": "assets/images/og/vifc-cap-nhat-ky-1-thang-11-2026.jpg",
+    "section": "🗺️ Chiến Lược & Quy Hoạch",
+    "accent": "#4aaa7f",
+    "searchKeywords": "VIFC ky 1 thang 11/2026 chot du lieu 04/11/2026 tien do quy che da thong qua Nghi quyet 222/2025/QH15 8 nghi dinh 18/12/2025 323 324 325 326 327 328 329 330 Nghi dinh 92/2026/ND-CP Quyet dinh 1186/QD-TTg Quyet dinh 02 va 05/QD-HDDHTTTC le ra mat 11/2/2026 8 Nguyen Hue 7 thanh vien sang lap Sovico MB TPBank SHB Son Kim VinaCapital Nasdaq 6 thanh vien chien luoc Nam A Bank HFIC UEH On-chain Gemadept TikTok hon 9 ty USD cam ket 28/10/2026 10 thanh vien chinh thuc EQuest Son Kim Capital IFC VinaCapital International Partners Sai Gon Marina IFC Gemadept Holdings Rovela Pay REE Energy Finance IFC Viet Nam Commodity Exchange AG&P Keppel Asset Management 33,63 trieu USD 2,7 ty USD 2027 chua co ngan hang thanh vien chua co giao dich thap 99 tang Thu Thiem chua khoi cong REE HFIC VinaCapital 1,15 ty USD de xuat 4/2026 Saigon Marina IFC 55 tang Ba Son 8/2025 dau gia 8 lo 13,8 ha An Khanh GFCI hang 84 van phong hang A Savills lap day 88% 900.000 dong/m2 72% nguon cung ngoai CBD",
+    "legacy": null,
+    "facts": [
+      {
+        "n": "04/11/2026",
+        "l": "ngày chốt dữ liệu"
+      },
+      {
+        "n": "10",
+        "l": "thành viên chính thức"
+      },
+      {
+        "n": "33,63tr$",
+        "l": "vốn điều lệ đã đăng ký"
+      },
+      {
+        "n": "6–7/30",
+        "l": "quy chế đã ban hành"
       }
     ]
   }
