@@ -3,6 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-06 — Bản đồ dự án & metro: dò lại hướng tuyến Metro số 1; mở bản đồ không hiện dự án nào (Tú yêu cầu)
+- `assets/tools/ban-do-du-an-hcm/index.html`: **vẽ lại hướng tuyến Tuyến 1 (Bến Thành – Suối Tiên)** bằng cách dò trực tiếp trên ảnh vệ tinh Esri, bám tim cầu cạn và mái ga thay cho đường nối mềm cũ. Các đoạn lệch nhiều nhất đã sửa: dốc lên khỏi hầm sau ga Ba Son, vòng cong qua Công viên Văn Thánh, cầu metro vượt sông Sài Gòn (Tân Cảng – Thảo Điền), đoạn dọc Xa lộ Hà Nội và nút giao Rạch Chiếc. Sau khi dò, tuyến cách tim ga 0–1 m ở 10 ga; ba ga Công viên Văn Thánh, Thảo Điền, An Phú được dời 6–11 m cho nằm đúng tim tuyến. Đoạn ngầm Bến Thành – Ba Son và hầm qua sông giữ nối mềm vì không nhìn thấy trên ảnh; đoạn vào ga Bến xe Suối Tiên giữ hướng cũ. Đoạn ngầm/trên cao được chia lại theo cửa hầm thực tế (ngầm 2,4 km, trên cao 16,5 km trên bản vẽ).
+- **Mở bản đồ lên là trống hoàn toàn**: lớp "Toàn bộ dự án có bài trong Cẩm Nang" chuyển sang tắt mặc định (trước đây là lớp duy nhất đang bật). Các lớp khác (dự án chính, dự án từ 2017, dự án quanh ga, mọi tuyến metro, vành đai) vốn đã tắt. Người xem tự bật mục cần xem; tìm kiếm, liên kết `#p=…` và nút "Xem" vẫn tự bật lớp tương ứng.
+- Cập nhật ngày dữ liệu bản đồ 06/11/2026. Không đổi giao diện, không đổi dữ liệu các tuyến khác, không thêm thư viện.
+
 ## 2026-11-04 (bản 5) — Gỡ phần đánh giá khỏi hai bài VIFC; biên tập lại bài Luật theo lối dẫn chuyện (Tú yêu cầu)
 - **Hai bài VIFC thu về đúng ba việc** Tú chốt: chia sẻ giá trị của dự án · phân tích quy chế · cập nhật tiến trình theo kỳ. Phần đánh giá tác động bất động sản được **tạm gỡ ra**, sẽ tách thành một bài riêng trong chủ đề VIFC.
   - Bài tổng: xoá mục "Khung phân tích 4 kênh truyền dẫn", mục "Năm câu hỏi kiểm chứng", callout "Vì sao tiêu chuẩn số 4 là tin tốt cho thị trường văn phòng" và callout "Chỉ báo duy nhất nên theo dõi". Đổi "Lộ trình 10 năm — vị trí của bất động sản trong hàng đợi" thành "Lộ trình 10 năm — thứ tự mở sản phẩm", bỏ cột "Liên quan gì đến BĐS" và cảnh báo REITs, thay bằng đoạn giải thích logic hạ tầng của thứ tự mở. Trung hoà các đoạn còn lại hướng về BĐS (phần Bài toán, Ring-fenced, Một trung tâm hai địa điểm, Tóm tắt). FAQ bỏ câu về REITs, còn 6 câu.
