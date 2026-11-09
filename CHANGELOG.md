@@ -4,7 +4,8 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 
 ## 2026-11-09
-- Bản đồ dự án & metro: vẽ lại hướng tuyến các tuyến Tuyến 1 kéo dài (tây, Bình Dương), 2, 2A, 3, 4, 4B, 5, 6, 7, 8, 9, 10, Thủ Thiêm – Long Thành và Cần Giờ theo bản đồ quy hoạch (file QH08C); ga dời lên đúng tim tuyến, đoạn ngầm / trên cao khớp lại theo tuyến mới. Đoạn PDF không vẽ (Tuyến 2 nối dài, Tuyến 1 đến Biên Hòa, đầu Thủ Dầu Một) giữ nguyên.
+- Bản đồ dự án & metro: vẽ lại hướng tuyến các tuyến Tuyến 1 kéo dài (tây, Bình Dương), 2, 2A, 3, 4, 4B, 5, 6, 7, 8, 9, 10, Thủ Thiêm – Long Thành và Cần Giờ theo bản đồ quy hoạch (file QH08C); ga dời lên đúng tim tuyến (Tuyến 5, 7, 8, 9, 10 còn khớp lại vị trí ga theo ký hiệu ga trên bản vẽ), đoạn ngầm / trên cao khớp lại theo tuyến mới. Tuyến 2 nối dài lên Tây Ninh vẽ lại theo đường trong PDF (từ Tham Lương đến cuối tuyến trên bản vẽ). Đoạn PDF không vẽ (Tuyến 1 đến Biên Hòa, đầu Thủ Dầu Một) giữ nguyên.
+- Thêm hướng tuyến monorail TP.HCM – Bà Rịa – Vũng Tàu (phương án cũ, nhóm Dài hạn) lấy từ trang 2 bản đồ QH08C, gồm tuyến chính ra Vũng Tàu và nhánh ven biển phía đông.
 - Mọi tuyến không phải đang vận hành hay đang xây (Tuyến 4, 6, 1 Bình Dương, 2 nối dài, 2 Thủ Dầu Một, Thủ Thiêm – Long Thành) chuyển vào "Quy hoạch metro dài hạn"; nhãn trạng thái đổi thành "Dài hạn (quy hoạch)".
 
 ## 2026-11-06 — Bản đồ dự án & metro: dò lại hướng tuyến Metro số 1; mở bản đồ không hiện dự án nào (Tú yêu cầu)
