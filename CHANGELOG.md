@@ -3,6 +3,10 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-09
+- Bản đồ dự án & metro: vẽ lại hướng tuyến các tuyến Tuyến 1 kéo dài (tây, Bình Dương), 2, 2A, 3, 4, 4B, 5, 6, 7, 8, 9, 10, Thủ Thiêm – Long Thành và Cần Giờ theo bản đồ quy hoạch (file QH08C); ga dời lên đúng tim tuyến, đoạn ngầm / trên cao khớp lại theo tuyến mới. Đoạn PDF không vẽ (Tuyến 2 nối dài, Tuyến 1 đến Biên Hòa, đầu Thủ Dầu Một) giữ nguyên.
+- Mọi tuyến không phải đang vận hành hay đang xây (Tuyến 4, 6, 1 Bình Dương, 2 nối dài, 2 Thủ Dầu Một, Thủ Thiêm – Long Thành) chuyển vào "Quy hoạch metro dài hạn"; nhãn trạng thái đổi thành "Dài hạn (quy hoạch)".
+
 ## 2026-11-06 — Bản đồ dự án & metro: dò lại hướng tuyến Metro số 1; mở bản đồ không hiện dự án nào (Tú yêu cầu)
 - `assets/tools/ban-do-du-an-hcm/index.html`: **vẽ lại hướng tuyến Tuyến 1 (Bến Thành – Suối Tiên)** theo đường ray Tuyến 1 trong dữ liệu OpenStreetMap (lấy qua Nominatim), đã đối chiếu từng đoạn với ảnh vệ tinh Esri; hai nguồn khớp nhau trong khoảng 0–10 m ở các đoạn trước, còn đoạn từ Khu Công nghệ cao đến Suối Tiên (lệch 15–60 m ở bản đầu trong ngày) nay trùng đường ray. Mười bốn ga được dời 0–10 m cho nằm đúng tim đường ray. Đoạn ngầm lấy theo OSM, điểm chuyển ngầm/nổi giữ ở dốc lên sau ga Ba Son.
 - **Thêm nhánh vào Depot Long Bình**: từ ga Bến xe Suối Tiên, đường ray vòng cầu cạn phía đông bến xe rồi xuống mặt đất vào depot (đoạn cầu cạn lấy từ OSM; phần xuống mặt đất, đường ray vào nhà xưởng và khu đỗ tàu dò trên ảnh vệ tinh, chỉ là hướng tham chiếu). Vẽ ranh depot gần đúng. Thêm trường `branch` cho tuyến và đoạn mã vẽ nhánh (nét liền, cùng màu tuyến), không ảnh hưởng số đo chiều dài tuyến.
