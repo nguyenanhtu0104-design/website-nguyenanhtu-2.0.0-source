@@ -4,6 +4,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 
 ## 2026-11-12
+- Cao tốc: vẽ lại Dầu Giây – Phan Thiết theo đường thật (OSM); nối Biên Hòa – Vũng Tàu vào nút giao Võ Nguyên Giáp; bỏ các tuyến chưa có hướng chính xác (Chơn Thành – Hoa Lư, Gò Dầu – Xa Mát, CT.33).
 - Cao tốc TP.HCM – Trung Lương: vẽ lại theo tim đường thực tế (trước đó bị lặp hai chiều và nối thẳng lệch khỏi đường).
 - Cao tốc Biên Hòa – Vũng Tàu: kéo dài về điểm đầu tại nút giao đường Võ Nguyên Giáp (Phước Tân, Biên Hòa); cập nhật trạng thái đã thông xe toàn tuyến giai đoạn 1 (53,7 km).
 - Rà soát lại hướng tuyến cao tốc trên ảnh vệ tinh: nối Chơn Thành vào TP.HCM theo ĐT.747B/743A/743B (thay vì nối thẳng); chỉnh CT.33 theo hành lang QL60 (Thân Cửu Nghĩa – Rạch Miễu 2 – Hàm Luông – Cổ Chiên – Đại Ngãi).
