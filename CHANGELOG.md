@@ -4,6 +4,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 
 ## 2026-11-12
+- Rà soát lại hướng tuyến cao tốc trên ảnh vệ tinh: nối Chơn Thành vào TP.HCM theo ĐT.747B/743A/743B (thay vì nối thẳng); chỉnh CT.33 theo hành lang QL60 (Thân Cửu Nghĩa – Rạch Miễu 2 – Hàm Luông – Cổ Chiên – Đại Ngãi).
 - Sửa lỗi: các tuyến cao tốc (Mộc Bài, Long Thành – Dầu Giây, Chơn Thành, Trung Lương, Bến Lức – Long Thành, Biên Hòa – Vũng Tàu) bị đảo tọa độ nên vẽ sai vị trí; đã chỉnh lại và đối chiếu với ảnh vệ tinh.
 - Bản đồ dự án & metro: đối chiếu quy hoạch cao tốc (QĐ 2470/QĐ-BXD 2026, QĐ 1454/QĐ-TTg) — nối Chơn Thành về đến Gò Dưa (Vành đai 2) qua An Phú; cập nhật trạng thái Bến Lức – Long Thành (khai thác từ 1/10/2026), Biên Hòa – Vũng Tàu (tạm khai thác một số đoạn); thêm Dầu Giây – Phan Thiết, Dầu Giây – Liên Khương, Chơn Thành – Hoa Lư, Gò Dầu – Xa Mát và CT.33 TP.HCM – Sóc Trăng (vẽ sơ đồ hướng, dạng chấm).
 - Bản đồ dự án & metro: thêm nhóm "Cao tốc dẫn vào TP.HCM" (Mộc Bài, Long Thành – Dầu Giây, Chơn Thành, Trung Lương, Bến Lức – Long Thành, Biên Hòa – Vũng Tàu), số hóa từ OpenStreetMap; một số đoạn dữ liệu thiếu nối thẳng, mang tính tham khảo. Mặc định tắt khi mở bản đồ.
