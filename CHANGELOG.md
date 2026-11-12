@@ -3,6 +3,11 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-12
+- Bản đồ dự án & metro: đối chiếu quy hoạch cao tốc (QĐ 2470/QĐ-BXD 2026, QĐ 1454/QĐ-TTg) — nối Chơn Thành về đến Gò Dưa (Vành đai 2) qua An Phú; cập nhật trạng thái Bến Lức – Long Thành (khai thác từ 1/10/2026), Biên Hòa – Vũng Tàu (tạm khai thác một số đoạn); thêm Dầu Giây – Phan Thiết, Dầu Giây – Liên Khương, Chơn Thành – Hoa Lư, Gò Dầu – Xa Mát và CT.33 TP.HCM – Sóc Trăng (vẽ sơ đồ hướng, dạng chấm).
+- Bản đồ dự án & metro: thêm nhóm "Cao tốc dẫn vào TP.HCM" (Mộc Bài, Long Thành – Dầu Giây, Chơn Thành, Trung Lương, Bến Lức – Long Thành, Biên Hòa – Vũng Tàu), số hóa từ OpenStreetMap; một số đoạn dữ liệu thiếu nối thẳng, mang tính tham khảo. Mặc định tắt khi mở bản đồ.
+- Bản đồ dự án & metro: đổi tên "Vành đai 1" thành "Vành đai trong". Vẽ lại hướng tuyến theo đường thật trên OpenStreetMap: đoạn Bảy Hiền – Âu Cơ – Thoại Ngọc Hầu – Hương lộ 2 – Tên Lửa – Vành đai trong nối dài đến Nguyễn Văn Linh (các đoạn chưa xây vẽ nét chấm). Vành đai 2: sửa đoạn phía nam từ An Lạc theo Hồ Học Lãm, bến phà Phú Định, nối vào Nguyễn Văn Linh.
+
 ## 2026-11-09
 - Bản đồ dự án & metro: vẽ lại hướng tuyến các tuyến Tuyến 1 kéo dài (tây, Bình Dương), 2, 2A, 3, 4, 4B, 5, 6, 7, 8, 9, 10, Thủ Thiêm – Long Thành và Cần Giờ theo bản đồ quy hoạch (file QH08C); ga dời lên đúng tim tuyến (Tuyến 5, 7, 8, 9, 10 còn khớp lại vị trí ga theo ký hiệu ga trên bản vẽ), đoạn ngầm / trên cao khớp lại theo tuyến mới. Tuyến 2 nối dài lên Tây Ninh vẽ lại theo đường trong PDF (từ Tham Lương đến cuối tuyến trên bản vẽ). Đoạn PDF không vẽ (Tuyến 1 đến Biên Hòa, đầu Thủ Dầu Một) giữ nguyên.
 - Thêm hướng tuyến monorail TP.HCM – Bà Rịa – Vũng Tàu (phương án cũ, nhóm Dài hạn) lấy từ trang 2 bản đồ QH08C, gồm tuyến chính ra Vũng Tàu và nhánh ven biển phía đông.
