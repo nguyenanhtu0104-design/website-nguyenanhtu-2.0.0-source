@@ -4,6 +4,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 
 
 ## 2026-11-12
+- Sửa lỗi: các tuyến cao tốc (Mộc Bài, Long Thành – Dầu Giây, Chơn Thành, Trung Lương, Bến Lức – Long Thành, Biên Hòa – Vũng Tàu) bị đảo tọa độ nên vẽ sai vị trí; đã chỉnh lại và đối chiếu với ảnh vệ tinh.
 - Bản đồ dự án & metro: đối chiếu quy hoạch cao tốc (QĐ 2470/QĐ-BXD 2026, QĐ 1454/QĐ-TTg) — nối Chơn Thành về đến Gò Dưa (Vành đai 2) qua An Phú; cập nhật trạng thái Bến Lức – Long Thành (khai thác từ 1/10/2026), Biên Hòa – Vũng Tàu (tạm khai thác một số đoạn); thêm Dầu Giây – Phan Thiết, Dầu Giây – Liên Khương, Chơn Thành – Hoa Lư, Gò Dầu – Xa Mát và CT.33 TP.HCM – Sóc Trăng (vẽ sơ đồ hướng, dạng chấm).
 - Bản đồ dự án & metro: thêm nhóm "Cao tốc dẫn vào TP.HCM" (Mộc Bài, Long Thành – Dầu Giây, Chơn Thành, Trung Lương, Bến Lức – Long Thành, Biên Hòa – Vũng Tàu), số hóa từ OpenStreetMap; một số đoạn dữ liệu thiếu nối thẳng, mang tính tham khảo. Mặc định tắt khi mở bản đồ.
 - Bản đồ dự án & metro: đổi tên "Vành đai 1" thành "Vành đai trong". Vẽ lại hướng tuyến theo đường thật trên OpenStreetMap: đoạn Bảy Hiền – Âu Cơ – Thoại Ngọc Hầu – Hương lộ 2 – Tên Lửa – Vành đai trong nối dài đến Nguyễn Văn Linh (các đoạn chưa xây vẽ nét chấm). Vành đai 2: sửa đoạn phía nam từ An Lạc theo Hồ Học Lãm, bến phà Phú Định, nối vào Nguyễn Văn Linh.
