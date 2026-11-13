@@ -8,6 +8,7 @@ Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa
 - Tuyến 3 (metro): đổi tên "An Hạ – Tân Kiên – Tao Đàn", chiều dài khoảng 32,5 km theo phạm vi nghiên cứu điều chỉnh 6/2026; bỏ đoạn Tao Đàn – Hiệp Bình vì trùng với tuyến Thủ Dầu Một – TP.HCM.
 - Vành đai 4: sửa điểm đầu/cuối (Phú Mỹ – Châu Pha đến Cảng Hiệp Phước), chiều dài 159,31 km giai đoạn 1. Vành đai 3: bổ sung chiều dài 76,34 km theo dự án.
 - Cao tốc Biên Hòa – Vũng Tàu: cập nhật trạng thái đã thông xe giai đoạn 1 từ 18/5/2026. Cao tốc TP.HCM – Trung Lương: sửa tên, điểm đầu cuối, chiều dài 61,9 km toàn tuyến (đoạn vẽ khoảng 43 km).
+- Tuyến 1 Bình Dương (metro): vẽ lại theo báo cáo tham vấn 27/8/2026 — ga S1 đặt đúng tâm vòng xoay A1, tuyến đi giữa đường Hùng Vương; thêm ga S0B, S0A; ga S6–S11 theo lý trình dọc Mỹ Phước – Tân Vạn. Ga S12–S17 còn ước lượng (sai số vài trăm mét). Bỏ nguồn bando.manhvu.com khỏi tuyến này.
 - Các tuyến metro quy hoạch (4–10, Cần Giờ, Thủ Thiêm – Long Thành…) vẽ theo bản đồ quy hoạch, chỉ là hướng tham khảo, chưa có nguồn độc lập để kiểm. Cập nhật ngày dữ liệu 13/11/2026. Không đổi giao diện.
 
 ## 2026-11-12
