@@ -1,6 +1,6 @@
 tieu-de: World Atlas quý III/2026 — bản v1.5.27 (bố cục mới, xuất PDF)
 so: 03
-ngay: 2026-11-01
+ngay: 2026-11-13
 mo-ta: World Atlas v1.5.27: chọn nước là thấy ngay hồ sơ nước đó, hàng chọn kỳ nằm ngay dưới dải chọn nước, xuất PDF A4 cho hồ sơ từng nước, phần so sánh và các bảng 17 nước.
 trich-doan: Chọn quốc gia, hồ sơ hiện ngay bên dưới. Chọn kỳ (quý III, quý II, quý I, năm 2025, dự báo) ở hàng ngay dưới dải chọn nước. Hồ sơ nước, phần so sánh và các bảng 17 nước đều xuất được ra PDF A4 kèm tên và mã liên lạc của tác giả.
-trang-thai: nhap
+trang-thai: cong-bo
