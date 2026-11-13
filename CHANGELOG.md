@@ -3,6 +3,13 @@
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-13
+- Bản đồ dự án & metro: rà soát lại hướng tuyến metro, cao tốc, vành đai. Đối chiếu tim đường của Vành đai 3, Vành đai 4 và các cao tốc với OpenStreetMap — hướng tuyến khớp (độ lệch trung vị 0 m), không vẽ lại.
+- Tuyến 3 (metro): đổi tên "An Hạ – Tân Kiên – Tao Đàn", chiều dài khoảng 32,5 km theo phạm vi nghiên cứu điều chỉnh 6/2026; bỏ đoạn Tao Đàn – Hiệp Bình vì trùng với tuyến Thủ Dầu Một – TP.HCM.
+- Vành đai 4: sửa điểm đầu/cuối (Phú Mỹ – Châu Pha đến Cảng Hiệp Phước), chiều dài 159,31 km giai đoạn 1. Vành đai 3: bổ sung chiều dài 76,34 km theo dự án.
+- Cao tốc Biên Hòa – Vũng Tàu: cập nhật trạng thái đã thông xe giai đoạn 1 từ 18/5/2026. Cao tốc TP.HCM – Trung Lương: sửa tên, điểm đầu cuối, chiều dài 61,9 km toàn tuyến (đoạn vẽ khoảng 43 km).
+- Các tuyến metro quy hoạch (4–10, Cần Giờ, Thủ Thiêm – Long Thành…) vẽ theo bản đồ quy hoạch, chỉ là hướng tham khảo, chưa có nguồn độc lập để kiểm. Cập nhật ngày dữ liệu 13/11/2026. Không đổi giao diện.
+
 ## 2026-11-12
 - Cao tốc: vẽ lại Dầu Giây – Phan Thiết theo đường thật (OSM); nối Biên Hòa – Vũng Tàu vào nút giao Võ Nguyên Giáp; bỏ các tuyến chưa có hướng chính xác (Chơn Thành – Hoa Lư, Gò Dầu – Xa Mát, CT.33).
 - Cao tốc TP.HCM – Trung Lương: vẽ lại theo tim đường thực tế (trước đó bị lặp hai chiều và nối thẳng lệch khỏi đường).
