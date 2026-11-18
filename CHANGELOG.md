@@ -1,3 +1,6 @@
+## 2.24.0 · 18/11/2026
+Thêm Tìm nhà sau Cẩm nang, liên kết giỏ hàng và ký gửi theo dự án CH04.
+
 # CHANGELOG — Cẩm Nang BĐS
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
