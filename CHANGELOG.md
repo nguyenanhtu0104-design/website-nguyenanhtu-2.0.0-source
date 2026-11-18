@@ -6,6 +6,9 @@ Thêm Tìm nhà sau Cẩm nang, liên kết giỏ hàng và ký gửi theo dự 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
 
+## 2026-11-18
+- Bản đồ metro: vẽ lại Metro số 2 Thủ Dầu Một – TP.HCM (24 ga, đầu Bắc nối vào ga S4 Tuyến 1) theo bản đồ My Maps của dự án — hướng tuyến và vị trí ga mới, sửa ga C13/C14 đặt sai (lệch 0,5–1 km) và nhiều đoạn lệch 100–400 m. Không đổi giao diện.
+
 ## 2026-11-13
 - Bản đồ dự án & metro: rà soát lại hướng tuyến metro, cao tốc, vành đai. Đối chiếu tim đường của Vành đai 3, Vành đai 4 và các cao tốc với OpenStreetMap — hướng tuyến khớp (độ lệch trung vị 0 m), không vẽ lại.
 - Tuyến 3 (metro): đổi tên "An Hạ – Tân Kiên – Tao Đàn", chiều dài khoảng 32,5 km theo phạm vi nghiên cứu điều chỉnh 6/2026; bỏ đoạn Tao Đàn – Hiệp Bình vì trùng với tuyến Thủ Dầu Một – TP.HCM.
