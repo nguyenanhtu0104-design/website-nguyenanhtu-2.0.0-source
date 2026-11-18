@@ -207,7 +207,7 @@ const fanHome = au.fanpage ? `\n        <a class="author-cr" href="${esc(au.fanp
         </a>` : '';
 const fanFoot = au.fanpage ? `\n      <a class="pf-btn pf-btn-fb" href="${esc(au.fanpage)}" target="_blank" rel="noopener">Fanpage</a>` : '';
 const navTpl = rd('templates/partials/global-nav.html');
-const NAV_KEYS = ['nav_camnang', ...(cfg.publications || []).map((p) => p.navKey)];
+const NAV_KEYS = ['nav_camnang', 'nav_timnha', ...(cfg.publications || []).map((p) => p.navKey)];
 // 2.21.1: menu mục ấn phẩm mở thẳng kỳ mới nhất đã công bố (bản đọc nếu chỉ có HTML); chưa có kỳ nào thì về thư viện
 const pubOpenHref = (navKey) => {
   const sec = pubSections.find((s) => s.navKey === navKey);
@@ -335,6 +335,27 @@ function copyDir(src, dst) {
 rmrf(DIST); fs.mkdirSync(DIST, { recursive: true });
 copyDir(path.join(ROOT, 'assets'), path.join(DIST, 'assets'));
 
+// Danh mục Tìm nhà lấy đúng các dự án đang được liệt kê trong CH04.
+const handbookArticles = new Map(articles.map(a => [a.slug, a]));
+const inventory = json('data/project-inventory.json');
+const directory = {};
+for (const zone of categories.find(c => c.id === 'du-an-chon-loc').items) {
+  const region = handbookArticles.get(zone.article);
+  for (const {article: slug} of zone.projects || []) {
+    if (directory[slug]) continue;
+    const project = handbookArticles.get(slug);
+    const photo = project.thumbnail || region.thumbnail;
+    directory[slug] = {
+      name: project.title, region: region.title,
+      thumbnail: photo ? BASE+'assets/images/articles/'+photo+'-'+images[photo].v[0]+'.webp' : BASE+project.ogImage,
+      imageCaption: project.thumbnail ? 'Ảnh trong hồ sơ dự án' : photo ? 'Hình khu vực' : 'Bìa hồ sơ',
+      ...inventory[slug]
+    };
+  }
+}
+write('tim-nha/projects.json', JSON.stringify(directory));
+write('tim-nha/index.html', fill(rd('templates/tim-nha.html'), {...common, nav: navHtml('nav_timnha')}));
+
 // ── Trang bài
 const tplArticle = rd('templates/article.html');
 for (const a of articles) {
@@ -359,7 +380,7 @@ for (const a of articles) {
     ...common, introHead, introBody, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', leadBlock: a.lead ? leadSnippet(a.slug) : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(withSuffix(title)), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
-    accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: renderContent(dec.html), hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,
+    accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: renderContent(dec.html), directoryLink: directory[a.slug] ? `<p><a class="p-cta" href="${BASE}tim-nha/#${a.slug}">Xem giỏ hàng · Ký gửi căn</a></p>` : '', hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,
     jsonld: JSON.stringify(ld).replace(/</g, '\\u003c'),
   }));
 }
