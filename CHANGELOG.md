@@ -2,6 +2,27 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.38.0 · 19/11/2026 — Nạp quỹ căn hộ đại lý, tra được từng căn
+- **Nạp bảng hàng thật lần đầu**: 30 căn Beacon (toà E5, E3, E1) và 50 căn cụm B1-B2-B3 (toàn bộ ở toà B2), từ hai file quỹ chung Tú gửi 19/11/2026. Mỗi căn có mã, toà, tầng, loại, diện tích thông thuỷ và tim tường, giá đã gồm VAT và phí bảo trì, tình trạng.
+- **Nhập mã căn là ra căn**: ô tìm trong hồ sơ phân khu, gõ `E512A06` hoặc `B20519` ra đúng căn đó.
+- Bộ lọc theo toà, loại căn và tình trạng. Thêm được từng căn vào giỏ quan tâm.
+- **Ghi rõ phạm vi**: đây là quỹ chung chủ đầu tư chia cho đại lý, không phải toàn bộ giỏ hàng. Beacon có 2.211 căn nhưng quỹ này 30 căn; cụm B có 2.224 căn nhưng quỹ này 50 căn. Phân khu chưa có quỹ thì nói thẳng là chưa có, không để trống cho khách tự hiểu.
+- Dữ liệu để ở `can-ho.json`, thay file là xong, không phải sửa mã.
+
+## 2.37.0 · 19/11/2026 — Đặt lại sa bàn cho khớp hiện trạng
+- **Sửa lệch vị trí Tú báo** (dãy đơn lập xanh lá nằm đè lên đường). Kiểm lại thì `geometry.json` không sai: khung từng căn vẫn nằm đúng ô màu trên tổng mặt bằng, lệch dưới 2 m. Sai là ở phép chiếu từ bản vẽ ra toạ độ thật.
+- **Phép chiếu giải lại từ hai nút giao đã thi công** trên đường 3/2 (đầu Tây Nam và đầu Đông Bắc, cách nhau 1708 m): Bắc 35,50° (trước 35,16°), tỷ lệ 2,1536 m mỗi đơn vị (trước 2,1958), điểm neo dời theo. Ba ghim cũ bị loại khỏi phép giải vì Beacon và Beachtro chưa xây, vị trí ghim là ước lượng từ chính tổng mặt bằng — dùng lại thành vòng luẩn quẩn.
+- Chồng khung từng căn lên ảnh vệ tinh để đối chiếu: lưới lô nay nằm trên nền móng đã thi công, không còn đè lên đường nội khu.
+- Đã thử hai cách dò khớp tự động bằng tương quan ảnh, cả hai đều không hội tụ (lưới lô lặp đều nên tương quan có nhiều đỉnh ngang nhau). Ghi lại để lần sau không mất công làm lại.
+- **Chưa đo được sai số bằng số** vì mới có hai mốc. Cần thêm một ghim thứ ba trên công trình đã xây.
+
+## 2.36.0 · 19/11/2026 — Sa bàn nhìn bao quát cả Bãi Sau và thành phố
+- **Thêm lớp ảnh nền xa** rộng gấp hơn bốn lần khu đất. Trước đây ảnh nền cắt sát ranh dự án nên không thấy biển, không thấy phố, khách không hình dung được tầm nhìn. Nay kéo ra là thấy trọn Bãi Sau, Núi Nhỏ và khu dân cư quanh dự án.
+- **Kéo xa nhất tăng từ 3,3 km lên 7,9 km**, mặt phẳng cắt xa nới theo, nên zoom hết cỡ không bị cụt cảnh.
+- Sửa thứ tự vẽ: lớp tổng mặt bằng mờ trước đây che mất lớp xa, tạo một mảng tối hình thoi giữa màn hình.
+- Hai lớp ảnh nền cùng độ sáng nên không còn thấy đường ranh hình chữ nhật giữa vùng nét và vùng xa.
+- Ghi nguyên tắc mục "Tìm nhà" Tú giao vào PROJECT_RULES §16 để các bản sau bám theo.
+
 ## 2.35.1 · 19/11/2026 — Bật ảnh vệ tinh chỉ bằng một biến môi trường
 - Chỉ cần đặt **`ARCGIS_API_KEY`** trên Cloudflare là có ảnh vệ tinh; đường dẫn ô ảnh do máy chủ tự dựng, thử hai điểm cuối của Esri rồi mới chịu thua. Trước đó phải tự gõ cả mẫu đường dẫn, dễ sai.
 - Khi đặt khoá mà vẫn không lấy được ô ảnh, máy chủ trả lỗi chứ không lặng lẽ đưa ảnh OpenStreetMap ra dưới dòng ghi nguồn Esri; trang tự quay về OpenStreetMap và sửa lại dòng ghi nguồn cho đúng.

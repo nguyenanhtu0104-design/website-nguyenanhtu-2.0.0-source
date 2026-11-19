@@ -31,6 +31,7 @@ const donVi = (met) => met / (GEO && GEO.tyLe ? GEO.tyLe.metTrenDonVi : 2.1958);
 // mặt bằng tầng điển hình (hồ sơ tư vấn 7/8/2026, trang 67 và 99).
 // Thứ tự toà con từ trái sang phải trên tổng mặt bằng, khớp mã căn trong layout tầng.
 let CHAN = null;
+let CAN = null;   // quỹ căn hộ chủ đầu tư chia cho đại lý, nạp từ can-ho.json
 const KHOI = [
   { zone: 'beachtro', col: [.42, .56, .66], ten: 'Beachtro',
     thap: [['E9', 36], ['E8', 40], ['E7', 38], ['E6', 34]] },
@@ -83,7 +84,7 @@ const rgb = c => '#' + c.map(v => Math.round(v * 255).toString(16).padStart(2, '
 /* ---------- dữ liệu ---------- */
 const U = [];            // căn Casa Villa mô phỏng
 let inv = { updatedAt: null, source: null, units: {} };
-const state = { zone: 'all', type: -1, sel: -1, hover: -1, tab: 'explore', mode: 'type', cart: [], q: '', sheet: 0, base: 'osm', sunT: null, osm: 'chua', night: false, hideLabels: false, blocks: true, cut: 0, market: 'all', rail: null, ranh: true };
+const state = { zone: 'all', type: -1, sel: -1, hover: -1, tab: 'explore', mode: 'type', cart: [], q: '', sheet: 0, base: 'osm', sunT: null, osm: 'chua', night: false, hideLabels: false, blocks: true, cut: 0, market: 'all', rail: null, ranh: true, canToa: '', canTT: '', canLoai: '', qcan: '' };
 let GEO = null, SUN = null;
 try { state.cart = JSON.parse(localStorage.getItem('blanca.cart.v1') || '[]').filter(x => x && x.k && x.label).slice(0, 20); } catch {}
 const saveCart = () => { try { localStorage.setItem('blanca.cart.v1', JSON.stringify(state.cart)); } catch {} };
@@ -219,13 +220,15 @@ function sunNow() {
 }
 
 /* ---------- camera ---------- */
+// Kéo xa nhất: đủ thấy hết Bãi Sau, Núi Nhỏ và phố Vũng Tàu quanh dự án.
+const XA_NHAT = 3600;
 const HOME = { tx: 476, ty: PLAN_H - 232, tz: 0, dist: 940, yaw: .3, pitch: .92 };
 function homeView() { return { ...HOME, dist: HOME.dist * (innerWidth < 860 ? 1.1 : Math.min(1.3, Math.max(.9, 950 / Math.max(620, canvas.clientWidth)))) }; }
 const C = { ...HOME }, T = { ...HOME };
 const W = y => PLAN_H - y; // y ảnh → Y thế giới
 function fly(o, instant) {
   Object.assign(T, o);
-  T.pitch = Math.max(.2, Math.min(1.5, T.pitch)); T.dist = Math.max(28, Math.min(1500, T.dist)); if (T.tz == null) T.tz = 0;
+  T.pitch = Math.max(.2, Math.min(1.5, T.pitch)); T.dist = Math.max(28, Math.min(XA_NHAT, T.dist)); if (T.tz == null) T.tz = 0;
   if (instant || reduce) Object.assign(C, T);
   dirty = true;
 }
@@ -458,7 +461,7 @@ function resize() {
 function viewProj() {
   const cp = Math.cos(C.pitch), e = [C.tx + C.dist * Math.sin(C.yaw) * cp, C.ty - C.dist * Math.cos(C.yaw) * cp, C.tz + C.dist * Math.sin(C.pitch)];
   const near = Math.max(2, C.dist * .04);
-  return { vp: M.mul(M.persp(.66, canvas.width / canvas.height, near, 6000), M.look(e, [C.tx, C.ty, C.tz], [0, 0, 1])), eye: e };
+  return { vp: M.mul(M.persp(.66, canvas.width / canvas.height, near, 16000), M.look(e, [C.tx, C.ty, C.tz], [0, 0, 1])), eye: e };
 }
 let lastVP = null;
 const FOG = [.086, .106, .094];
@@ -504,7 +507,15 @@ function drawGround(vp) {
   gl.uniform2f(U_.g_uPad, 2.708, 3.148); gl.uniform1f(U_.g_uRot, 0);
   gl.uniform1i(U_.g_uMask, 1); gl.uniform1f(U_.g_uDim, state.base === 'osm' ? (osm.tex ? 1 : .4) : 0); gl.uniform1f(U_.g_uAlpha, 1);
   gl.drawArrays(gl.TRIANGLES, 0, 6);
-  // lớp 2: khảm OpenStreetMap, xoay về đúng hướng Bắc thật
+  // lớp 2: khảm xa, rộng gấp bốn khu đất, cho thấy biển và phố xung quanh
+  if (osmOn && osmXa.tex) {
+    gl.bindTexture(gl.TEXTURE_2D, osmXa.tex);
+    gl.uniform2f(U_.g_uOrigin, osmXa.cx, osmXa.cy); gl.uniform2f(U_.g_uSize, osmXa.w, osmXa.h);
+    gl.uniform2f(U_.g_uPad, 1, 1); gl.uniform1f(U_.g_uRot, -rad(geo.north));
+    gl.uniform1i(U_.g_uMask, NEN.kieu === 've-tinh' ? 4 : 2); gl.uniform1f(U_.g_uDim, 0); gl.uniform1f(U_.g_uAlpha, 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+  }
+  // lớp 3: khảm gần, đúng khu đất, phân giải cao
   if (osmOn) {
     gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.bindTexture(gl.TEXTURE_2D, osm.tex);
@@ -577,6 +588,7 @@ const urlTile = (z, x, y) => NEN.qua === 'api'
   ? `/api/nen/${z}/${x}/${y}`
   : `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
 const osm = { tex: null, cx: 0, cy: 0, w: 0, h: 0, zoom: 0, soTile: 0 };
+const osmXa = { tex: null, cx: 0, cy: 0, w: 0, h: 0, zoom: 0, soTile: 0 };
 const tileX = (lon, n) => (lon + 180) / 360 * n;
 const tileY = (lat, n) => { const r = rad(lat); return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * n; };
 const lonOf = (x, n) => x / n * 360 - 180;
@@ -588,52 +600,66 @@ function tai1Tile(url) {
     im.src = url;
   });
 }
+// Ghép một khảm ảnh nền. "ra" là hệ số nới rộng quanh tâm mặt bằng:
+// 1 là vừa khít khu đất, lớn hơn thì thấy thêm biển, núi và phố xung quanh.
+async function ghepKham(dich, ra, toiDa, zCao, zThap, choPhepLui) {
+  const goc = [[0, 0], [PLAN_W, 0], [PLAN_W, PLAN_H], [0, PLAN_H]].map(([px, py]) => geo.latLon(px, PLAN_H - py));
+  const la = goc.map(g => g[0]), lo = goc.map(g => g[1]);
+  const cLat = (Math.min(...la) + Math.max(...la)) / 2, cLon = (Math.min(...lo) + Math.max(...lo)) / 2;
+  const nLat = (Math.max(...la) - Math.min(...la)) / 2 * ra, nLon = (Math.max(...lo) - Math.min(...lo)) / 2 * ra;
+  const lats = [cLat - nLat, cLat + nLat], lons = [cLon - nLon, cLon + nLon];
+  let z = zCao, tx0, tx1, ty0, ty1, n;
+  for (; z >= zThap; z--) {
+    n = Math.pow(2, z);
+    tx0 = Math.floor(tileX(Math.min(...lons), n)); tx1 = Math.floor(tileX(Math.max(...lons), n));
+    ty0 = Math.floor(tileY(Math.max(...lats), n)); ty1 = Math.floor(tileY(Math.min(...lats), n));
+    if ((tx1 - tx0 + 1) * (ty1 - ty0 + 1) <= toiDa) break;
+  }
+  const cv = document.createElement('canvas');
+  cv.width = (tx1 - tx0 + 1) * 256; cv.height = (ty1 - ty0 + 1) * 256;
+  const cx2 = cv.getContext('2d');
+  const keo = () => {
+    const js = [];
+    for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++)
+      js.push(tai1Tile(urlTile(z, tx, ty)).then(im => { if (im) cx2.drawImage(im, (tx - tx0) * 256, (ty - ty0) * 256); return !!im; }));
+    return Promise.all(js);
+  };
+  let duoc = (await keo()).filter(Boolean).length;
+  if (!duoc && choPhepLui && NEN.qua === 'api') {
+    // Nhà cung cấp riêng hỏng: quay về OpenStreetMap và sửa lại dòng ghi nguồn cho đúng.
+    NEN.qua = 'osm'; NEN.kieu = 'duong-pho'; NEN.ghiNhan = '© những người đóng góp OpenStreetMap';
+    duoc = (await keo()).filter(Boolean).length;
+  }
+  if (!duoc) throw Error('khong tai duoc tile');
+  const lonW = lonOf(tx0, n), lonE = lonOf(tx1 + 1, n), latN = latOf(ty0, n), latS = latOf(ty1 + 1, n);
+  const [wx, wy] = geo.world((latN + latS) / 2, (lonW + lonE) / 2);
+  dich.cx = wx; dich.cy = wy;
+  dich.w = (lonE - lonW) * geo.mLon / geo.mpu;
+  dich.h = (latN - latS) * geo.mLat / geo.mpu;
+  dich.zoom = z; dich.soTile = duoc;
+  if (!dich.tex) dich.tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, dich.tex);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cv);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+}
 async function loadOsm() {
   if (state.osm === 'dang' || state.osm === 'xong') return;
   if (!geo.ok) { state.osm = 'loi'; render(); return; }
   state.osm = 'dang'; render();
   try {
-    const goc = [[0, 0], [PLAN_W, 0], [PLAN_W, PLAN_H], [0, PLAN_H]].map(([px, py]) => geo.latLon(px, PLAN_H - py));
-    const lats = goc.map(g => g[0]), lons = goc.map(g => g[1]);
-    let z = 17, tx0, tx1, ty0, ty1, n;
-    for (; z >= 13; z--) {
-      n = Math.pow(2, z);
-      tx0 = Math.floor(tileX(Math.min(...lons), n)); tx1 = Math.floor(tileX(Math.max(...lons), n));
-      ty0 = Math.floor(tileY(Math.max(...lats), n)); ty1 = Math.floor(tileY(Math.min(...lats), n));
-      if ((tx1 - tx0 + 1) * (ty1 - ty0 + 1) <= 40) break;
-    }
-    const cols = tx1 - tx0 + 1, rows = ty1 - ty0 + 1;
-    const cv = document.createElement('canvas'); cv.width = cols * 256; cv.height = rows * 256;
-    const cx2 = cv.getContext('2d');
-    const jobs = [];
-    for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++)
-      jobs.push(tai1Tile(urlTile(z, tx, ty)).then(im => { if (im) cx2.drawImage(im, (tx - tx0) * 256, (ty - ty0) * 256); return !!im; }));
-    let kq = await Promise.all(jobs);
-    let duoc = kq.filter(Boolean).length;
-    if (!duoc && NEN.qua === 'api') {
-      NEN.qua = 'osm'; NEN.kieu = 'duong-pho'; NEN.ghiNhan = '© những người đóng góp OpenStreetMap';
-      const lai = [];
-      for (let ty = ty0; ty <= ty1; ty++) for (let tx = tx0; tx <= tx1; tx++)
-        lai.push(tai1Tile(urlTile(z, tx, ty)).then(im => { if (im) cx2.drawImage(im, (tx - tx0) * 256, (ty - ty0) * 256); return !!im; }));
-      kq = await Promise.all(lai); duoc = kq.filter(Boolean).length;
-    }
-    if (!duoc) throw Error('khong tai duoc tile');
-    const lonW = lonOf(tx0, n), lonE = lonOf(tx1 + 1, n), latN = latOf(ty0, n), latS = latOf(ty1 + 1, n);
-    const [wx, wy] = geo.world((latN + latS) / 2, (lonW + lonE) / 2);
-    osm.cx = wx; osm.cy = wy;
-    osm.w = (lonE - lonW) * geo.mLon / geo.mpu;
-    osm.h = (latN - latS) * geo.mLat / geo.mpu;
-    osm.zoom = z; osm.soTile = duoc;
-    if (!osm.tex) osm.tex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, osm.tex);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cv);
-    gl.generateMipmap(gl.TEXTURE_2D);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    state.osm = 'xong'; dirty = true;
-  } catch (e) { console.warn('Không tải được ô bản đồ:', e.message || e); state.osm = 'loi'; if (state.base !== 'plan') state.base = 'plan'; }
+    // Lớp gần: đúng khu đất, phân giải cao để soi từng lô.
+    await ghepKham(osm, 1, 40, 17, 13, true);
+    state.osm = 'xong'; dirty = true; render();
+    // Lớp xa: rộng gấp bốn, để thấy biển, Bãi Sau và phố xung quanh. Hỏng cũng không sao.
+    try { await ghepKham(osmXa, 4.2, 30, 15, 11, false); dirty = true; } catch (e) { /* bỏ qua */ }
+  } catch (e) {
+    console.warn('Không tải được ô bản đồ:', e.message || e);
+    state.osm = 'loi'; if (state.base !== 'plan') state.base = 'plan';
+  }
   render();
 }
 
@@ -754,7 +780,7 @@ canvas.addEventListener('pointermove', e => {
   const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
   if (ptrs.size >= 2 && pinch0) {
     const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
-    T.dist = Math.max(28, Math.min(1500, pinch0.dist * pinch0.d / Math.max(10, d))); C.dist = T.dist;
+    T.dist = Math.max(28, Math.min(XA_NHAT, pinch0.dist * pinch0.d / Math.max(10, d))); C.dist = T.dist;
     pan((cx - pinch0.cx), (cy - pinch0.cy)); pinch0.cx = cx; pinch0.cy = cy; dirty = true; return;
   }
   if (!down) return;
@@ -776,7 +802,7 @@ const endPtr = e => {
 canvas.addEventListener('pointerup', endPtr); canvas.addEventListener('pointercancel', endPtr);
 canvas.addEventListener('pointerleave', () => { if (state.hover >= 0 && !ptrs.size) { state.hover = -1; refreshStates(); $('#tip').hidden = true; } });
 canvas.addEventListener('contextmenu', e => e.preventDefault());
-canvas.addEventListener('wheel', e => { e.preventDefault(); T.dist = Math.max(28, Math.min(1500, T.dist * Math.exp(e.deltaY * .0012))); dirty = true; }, { passive: false });
+canvas.addEventListener('wheel', e => { e.preventDefault(); T.dist = Math.max(28, Math.min(XA_NHAT, T.dist * Math.exp(e.deltaY * .0012))); dirty = true; }, { passive: false });
 let lastTap = 0;
 function clickAt(x, y) {
   const id = pickAt(x, y);
@@ -788,7 +814,7 @@ function clickAt(x, y) {
 canvas.addEventListener('keydown', e => {
   const k = e.key;
   if (k === 'ArrowLeft') T.yaw -= .12; else if (k === 'ArrowRight') T.yaw += .12; else if (k === 'ArrowUp') T.pitch = Math.min(1.5, T.pitch + .08); else if (k === 'ArrowDown') T.pitch = Math.max(.2, T.pitch - .08);
-  else if (k === '+' || k === '=') T.dist = Math.max(28, T.dist * .85); else if (k === '-') T.dist = Math.min(1500, T.dist / .85); else if (k === 'Escape') { selectUnit(-1); return; } else return;
+  else if (k === '+' || k === '=') T.dist = Math.max(28, T.dist * .85); else if (k === '-') T.dist = Math.min(XA_NHAT, T.dist / .85); else if (k === 'Escape') { selectUnit(-1); return; } else return;
   e.preventDefault(); dirty = true;
 });
 
@@ -842,7 +868,7 @@ function envHtml() {
   ${dangXem ? '<p class="small mute">Đang theo giờ thực. Kéo thanh giờ ở đáy sa bàn để xem nắng đổ hướng nào vào giờ khác trong ngày hôm nay.</p>' : '<p class="small"><button class="btn" data-sun="now">↺ Về giờ thực</button></p>'}
   <div class="note">Hướng nắng và bóng đổ trên sa bàn đổi theo mùa và theo giờ thật của Vũng Tàu, không phải hiệu ứng cố định.</div>
   <h3>Nền bản đồ</h3>
-  <p class="small mute">${state.osm === 'xong' ? `Đã ghép ${osm.soTile} ô ${NEN.kieu === 've-tinh' ? 'ảnh vệ tinh' : 'bản đồ'} ở mức thu phóng ${osm.zoom}, xoay về đúng hướng Bắc thật.` : state.osm === 'loi' ? 'Chưa tải được ô bản đồ.' : 'Đang tải nền bản đồ…'}</p>
+  <p class="small mute">${state.osm === 'xong' ? `Đã ghép ${osm.soTile} ô ${NEN.kieu === 've-tinh' ? 'ảnh vệ tinh' : 'bản đồ'} ở mức thu phóng ${osm.zoom} cho khu đất${osmXa.soTile ? `, thêm ${osmXa.soTile} ô ở mức ${osmXa.zoom} mở rộng ra biển và khu xung quanh` : ''}, xoay về đúng hướng Bắc thật.` : state.osm === 'loi' ? 'Chưa tải được ô bản đồ.' : 'Đang tải nền bản đồ…'}</p>
   <p>${baseSeg()}</p>
   <h3>Màu khối</h3>
   <p>${legendHtml()}</p>
@@ -962,6 +988,7 @@ function beaconHtml() {
   <label>Chọn bản vẽ<select id="sheet">${BEACON_SHEETS.map((n, i) => `<option value="${i}" ${i === state.sheet ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
   <p><img src="beacon-${sheet}.webp" alt="Mặt bằng Beacon: ${esc(BEACON_SHEETS[state.sheet])}" style="width:100%;border-radius:8px;border:1px solid var(--line);cursor:zoom-in" data-zoom="beacon-${sheet}.webp"></p>
   <p class="mute small">Mặt đứng ghi E2, mặt bằng ghi Beacon 1: giữ đúng phạm vi từng bản vẽ.</p>
+  ${canHoHtml('beacon')}
   <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="z:beacon" data-label="Beacon Tower (chung)" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Quan tâm Beacon'}</button><a class="btn" href="/cam-nang/blanca-beacon-tower/" target="_top">Hồ sơ phân khu →</a></div>`;
 }
 const BEACHTRO_MIX = [['Studio', 24], ['1PN+', 28], ['2PN', 4], ['2PN+', 34], ['3PN', 4], ['3PN view kép', 4], ['3PN+', 2]];
@@ -974,11 +1001,48 @@ function beachtroHtml() {
   <div class="note">Chưa có bảng hàng chính thức nên chưa hiện diện tích và giá từng căn.</div>
   <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="z:beachtro" data-label="Beachtro Tower (chung)" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Quan tâm Beachtro'}</button><a class="btn" href="/cam-nang/blanca-beachtro-tower/" target="_top">Hồ sơ phân khu →</a></div>`;
 }
+
+/* ---------- quỹ căn hộ chia cho đại lý ---------- */
+const tien = (n) => n == null ? '—' : (n / 1e9).toFixed(2).replace('.', ',') + ' tỷ';
+const canPK = (pk) => (CAN && CAN.can ? CAN.can.filter(c => c.phanKhu === pk) : []);
+function canLoc(ds) {
+  const q = state.qcan.trim().toLowerCase().replace(/\s+/g, '');
+  return ds.filter(c =>
+    (!state.canToa || c.toa === state.canToa) &&
+    (!state.canTT || c.tinhTrang === state.canTT) &&
+    (!state.canLoai || c.loai === state.canLoai) &&
+    (!q || c.ma.toLowerCase().includes(q)));
+}
+function canHoHtml(pk) {
+  const ds = canPK(pk);
+  if (!CAN) return '';
+  if (!ds.length) return `<div class="note">Chưa nhận được quỹ căn hộ của phân khu này. Anh/chị gửi yêu cầu để được báo khi có.</div>`;
+  const loc = canLoc(ds), trong = ds.filter(c => c.tinhTrang === 'trong').length;
+  const uniq = (f) => [...new Set(ds.map(f))].sort();
+  const sel = (ten, khoa, gt, nhan) => `<label class="small">${nhan}
+    <select data-canloc="${khoa}"><option value="">Tất cả</option>${gt.map(v => `<option value="${esc(v)}"${state[khoa] === v ? ' selected' : ''}>${esc(v)}</option>`).join('')}</select></label>`;
+  return `<h3>Quỹ căn hộ đại lý</h3>
+  <p class="mute small">${ds.length} căn trong quỹ chung chủ đầu tư chia cho đại lý, ${trong} căn còn trống. Đây <b>không phải</b> toàn bộ giỏ hàng phân khu. Giá đã gồm VAT và kinh phí bảo trì. Cập nhật ${esc(CAN.capNhat)}.</p>
+  <div class="canloc">
+    <label class="small">Mã căn <input id="qcan" type="search" inputmode="latin" placeholder="ví dụ ${esc(ds[0].ma)}" value="${esc(state.qcan)}"></label>
+    ${sel('toa', 'canToa', uniq(c => c.toa), 'Toà')}
+    ${sel('loai', 'canLoai', uniq(c => c.loai), 'Loại căn')}
+    <label class="small">Tình trạng <select data-canloc="canTT"><option value="">Tất cả</option><option value="trong"${state.canTT === 'trong' ? ' selected' : ''}>Còn trống</option><option value="coc"${state.canTT === 'coc' ? ' selected' : ''}>Đã cọc</option></select></label>
+  </div>
+  ${loc.length ? `<table><thead><tr><th>Mã căn</th><th>Loại</th><th class="r">Thông thủy</th><th class="r">Giá</th><th>Tình trạng</th><th></th></tr></thead><tbody>
+  ${loc.map(c => { const k = 'can:' + c.ma; return `<tr><td><b>${esc(c.ma)}</b><br><span class="mute small">Toà ${esc(c.toa)} · tầng ${esc(c.tang)}</span></td>
+    <td>${esc(c.loai)}</td><td class="r">${c.thongThuy ?? '—'} m²</td><td class="r">${tien(c.gia)}</td>
+    <td><span class="tt ${c.tinhTrang}">${c.tinhTrang === 'trong' ? 'Còn trống' : 'Đã cọc'}</span></td>
+    <td class="r"><button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="${esc(c.ma)} · ${esc(c.loai)}" data-sub="${c.thongThuy ?? '—'} m² · ${tien(c.gia)}" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}
+  </tbody></table>` : '<div class="note">Không có căn nào khớp bộ lọc.</div>'}
+  <p class="mute small">Nguồn: ${esc(CAN.nguon)}</p>`;
+}
 function clusterHtml() {
   const z = ZONES.find(o => o.key === state.zone), k = 'z:' + z.key, on = inCart(k);
   return `<h2>${esc(z.name)}</h2><p class="mute">${z.noGeo ? 'Chưa xác định vị trí trên tổng mặt bằng nên chưa có khối nhấp trên sa bàn. Hồ sơ phân khu vẫn đọc được bên dưới.' : `Khối đế 2 tầng dựng dạng hộp, ba toà căn hộ theo số tầng: ${esc(z.sub.split(' · ')[0])} · ${esc(z.sub.split(' · ')[1])}. Hình gấp khúc của mặt bằng tầng điển hình sẽ bổ sung khi có bản vẽ.`}</p>
   <div class="note">Số căn, diện tích và giá của phân khu này chưa có bảng hàng chính thức. Anh/chị gửi yêu cầu để được báo thông tin mới nhất.</div>
-  <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="${k}" data-label="${esc(z.name)}" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Thêm vào giỏ quan tâm'}</button><a class="btn" href="/cam-nang/blanca-${z.profile}/" target="_top">Hồ sơ phân khu →</a></div>`;
+  <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="${k}" data-label="${esc(z.name)}" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Thêm vào giỏ quan tâm'}</button><a class="btn" href="/cam-nang/blanca-${z.profile}/" target="_top">Hồ sơ phân khu →</a></div>
+  ${canHoHtml(z.key)}`;
 }
 function cartHtml() {
   if (!state.cart.length) return `<h2>Giỏ quan tâm</h2><p class="mute">Giỏ đang trống. Chạm vào căn trên sa bàn hoặc chọn trong danh sách, rồi bấm "Thêm vào giỏ quan tâm". Anh/chị có thể gửi cả giỏ để được tư vấn một lần.</p><div class="row"><button class="btn primary" data-go="explore">Khám phá sa bàn</button></div>${consultMini()}`;
@@ -1040,6 +1104,11 @@ async function submitForm(form) {
 }
 
 /* ---------- sự kiện giao diện ---------- */
+document.addEventListener('change', e => {
+  const k = e.target.dataset && e.target.dataset.canloc;
+  if (!k) return;
+  state[k] = e.target.value; state.keepScroll = true; render();
+});
 document.addEventListener('click', e => {
   const el = e.target.closest('[data-tab],[data-zone],[data-go],[data-type],[data-unit],[data-cart],[data-ask],[data-mode],[data-zoom],[data-base],[data-sun]'); if (!el) return;
   const d = el.dataset;
@@ -1064,6 +1133,7 @@ document.addEventListener('input', e => {
     const c = $('#clock'); if (c) c.textContent = gioPhut(state.sunT);
     return;
   }
+  if (e.target.id === 'qcan') { state.qcan = e.target.value; const pos = e.target.selectionStart; state.keepScroll = true; render(); const q = $('#qcan'); if (q) { q.focus(); q.setSelectionRange(pos, pos); } return; }
   if (e.target.id === 'q') { state.q = e.target.value; const pos = e.target.selectionStart; state.keepScroll = true; render(); const q = $('#q'); q.focus(); q.setSelectionRange(pos, pos); } });
 document.addEventListener('change', e => {
   if (e.target.id === 'sunh') { state.keepScroll = true; render(); return; }
@@ -1074,7 +1144,7 @@ $('#lbClose').onclick = () => { $('#lightbox').hidden = true; };
 $('#lightbox').onclick = e => { if (e.target.id === 'lightbox') $('#lightbox').hidden = true; };
 addEventListener('keydown', e => { if (e.key === 'Escape') $('#lightbox').hidden = true; });
 $('#bIn').onclick = () => { T.dist = Math.max(28, T.dist * .72); dirty = true; };
-$('#bOut').onclick = () => { T.dist = Math.min(1500, T.dist / .72); dirty = true; };
+$('#bOut').onclick = () => { T.dist = Math.min(XA_NHAT, T.dist / .72); dirty = true; };
 $('#bNorth').onclick = () => { fly({ ...T, yaw: -rad(geo.north) }); };
 $('#bHome').onclick = () => { selectUnit(-1); selectZone('all'); fly({ ...homeView(), yaw: T.yaw }); };
 $('#bRanh').onclick = () => { state.ranh = !state.ranh; dirty = true; render(); };
@@ -1113,18 +1183,19 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
 /* ---------- khởi động ---------- */
 (async () => {
   render(); buildLabels();
-  const [geoRaw, invData, plan, gref, chan, ranh] = await Promise.all([
+  const [geoRaw, invData, plan, gref, chan, canHo, ranh] = await Promise.all([
     fetch('geometry.json').then(r => r.json()),
     fetch('inventory.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = 'plan.webp'; }),
     fetch('georef.json').then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('chan-thap.json').then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('can-ho.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('ranh-du-an.json').then(r => r.ok ? r.json() : null).catch(() => null),
   ]);
   if (invData && invData.units) inv = invData;
   if (gref) { GEO = gref; geo.init(gref); }
   else geo.init({ tyLe: { metTrenDonVi: geo.mpu }, huong: { bacSoVoiTrucDocAnh: geo.north }, neo: { lat: geo.lat0, lon: geo.lon0, planX: 488, planY: 268 } });
-  RANH = ranh; CHAN = chan;
+  RANH = ranh; CHAN = chan; CAN = canHo;
   await hoiNen();
   TOWERS = dungThap();
   capNhatNang();
@@ -1135,6 +1206,6 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     catch (err) { console.error(err); $('#nogl').hidden = false; }
   } else $('#nogl').hidden = false;
   render(); openHash();
-  window.__blanca = { state, U, C, T, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS };
+  window.__blanca = { state, U, C, T, osmXa, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS };
 })().catch(err => { console.error(err); $('#pane').innerHTML = '<h2>Chưa tải được dữ liệu sa bàn</h2><p class="mute">Vui lòng tải lại trang hoặc nhắn Zalo ' + ZALO_TXT + '.</p>'; });
 })();

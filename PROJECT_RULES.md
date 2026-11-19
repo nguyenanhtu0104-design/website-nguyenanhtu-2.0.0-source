@@ -263,6 +263,9 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 
 ## 14. Nhật ký thay đổi nguyên tắc
 
+- **19/11/2026 — Mốc định vị chỉ lấy trên công trình đã thi công.** Ghim đặt ở vị trí công trình chưa xây là ước lượng từ chính tổng mặt bằng, đưa vào phép giải sẽ tự khẳng định cái sai của mình. Chỉ dùng nút giao, vòng xoay, công trình đã có trên ảnh vệ tinh. Mốc càng xa nhau càng chắc.
+- **19/11/2026 — Không dò khớp sa bàn bằng tương quan ảnh.** Lưới lô lặp đều nên hàm tương quan có nhiều đỉnh gần bằng nhau, lệch nhau đúng một hàng lô; đã thử hai cách đều chạy ra biên dải tìm. Dùng điểm mốc, không dùng dò tự động.
+
 - **19/11/2026 — Hình khối lấy từ bản vẽ trực giao, không lấy từ ảnh phối cảnh.** Phối cảnh là ảnh vẽ xiên nên không đo được. Tổng mặt bằng thì đo được: mảng tô công trình trên đó chính là đường bao chân công trình, dùng được. Mặt bằng tầng điển hình trong hồ sơ dùng để đối chiếu thứ tự toà con và hình dáng. Thiếu dữ liệu thì ghi rõ "chưa công bố", không đoán.
 - **19/11/2026 — Ảnh nền bản đồ phải đi qua `/api/nen`.** Không nhúng thẳng đường dẫn ô ảnh của nhà cung cấp vào mã chạy ở trình duyệt: khoá sẽ lộ và không đổi được nhà cung cấp. Đặt mẫu đường dẫn ở biến môi trường `NEN_TILE_URL`, dòng ghi nguồn ở `NEN_GHI_NHAN`, loại ảnh ở `NEN_KIEU`. Không đặt gì thì chạy OpenStreetMap.
 - **19/11/2026 — Không dùng ô ảnh vệ tinh Google.** Đường dẫn ô ảnh Google lưu truyền trên mạng không có giấy phép cho trang thương mại; muốn dùng Google phải qua Map Tiles API có tính tiền. Trang này đi đường khác (xem §15).
@@ -329,3 +332,47 @@ Nhà cung cấp đã khảo sát:
 Có khoá rồi thì vào Cloudflare Pages → Settings → Environment variables, thêm `ARCGIS_API_KEY`, deploy lại. Không phải sửa mã, không phải đụng gói cập nhật.
 
 **Tuyệt đối không đặt khoá vào gói cập nhật hay bất kỳ file nào trong kho nguồn.** Kho `website-nguyenanhtu-2.0.0-source` là kho công khai: khoá đẩy lên đó coi như đã lộ và phải thu hồi ngay.
+
+## 16. Nguyên tắc mục "Tìm nhà" (Tú giao 19/11/2026)
+
+**Mục tiêu:** nền tảng kiểm tra tình trạng giỏ hàng sơ cấp và thứ cấp của một dự án; nhận ký gửi sản phẩm thứ cấp; lấy insight khách quan tâm. Làm chuẩn trên Blanca City rồi nhân ra các dự án khác.
+
+### 16.1 Công khai và không công khai
+- **Công khai:** xem giỏ hàng; check căn; làm bản tính; bản cân đối tài chính. Hai lối vào: khách tự thao tác hết rồi yêu cầu xuất tài liệu, hoặc chọn căn qua thanh lọc/tìm căn trống rồi yêu cầu gửi tài liệu.
+- **Không công khai:** dữ liệu người ký gửi thứ cấp. Không bao giờ đưa ra trang công khai, không đưa vào kho nguồn.
+
+### 16.2 Giỏ hàng trên khối 3D
+- Phân biệt sơ cấp và thứ cấp; thứ cấp tách tiếp bán và cho thuê. Loại căn phải đánh dấu nhận biết được ngay trên khối 3D.
+- Căn đã bán hoặc chưa mở bán: **để trống** trên khối 3D.
+- Cập nhật giỏ hàng định kỳ **thứ Sáu hàng tuần**, kèm nút cập nhật ngay.
+- Xem được layout từng tầng trên khối 3D.
+- Nhấp vào căn đang sáng đèn "mở": có hiệu ứng mở tầng trên khối 3D và hiện chi tiết kỹ thuật loại căn đó.
+
+### 16.3 Mặt bằng tầng
+- Mặt cắt tầng phải dán layout thật vào, chọn được căn ngay trên mặt bằng đó.
+- Nhập mã căn cũng ra đúng căn đó.
+
+### 16.4 Bản tính
+- Chọn hoặc nhập căn thì chạy ra bản tính cụ thể của căn, dùng lại bản tính đã có trên web (`assets/tools/shared/` và các `*-bang-tinh`).
+- Mở rộng tiếp sang phần vay và phương án tài chính.
+
+### 16.5 Form ký gửi
+Ưu tiên xác minh người gửi. Trường bắt buộc:
+- Tên người ký gửi, số điện thoại, email
+- Thông tin căn: mã căn; giá mua gồm VAT và phí bảo trì (giá trên hợp đồng); giá bán (giá mua + chênh lệch); **giá chênh do hệ thống tự tính**; ô tích thương lượng / giá net
+- Hình ảnh thực tế căn nếu có — **không nhận ảnh phối cảnh**
+- Tài liệu xác minh căn (công khai được): ảnh trên hợp đồng, tiêu đề hợp đồng, bảng tính căn, ngày ký hợp đồng
+- Tài liệu xác minh chính chủ (**bảo mật**): CCCD hoặc VNeID, phần thông tin cá nhân trên hợp đồng
+- Mọi mục chụp ảnh đều phải có mẫu hướng dẫn vị trí chụp
+
+### 16.6 Hoa hồng môi giới
+Tính trên tỷ lệ % của giá bán cuối cùng = giá mua + chênh lệch (giá mua **chưa** gồm VAT và phí bảo trì). Bảng tích chọn:
+- Giao dịch trong 30 ngày: 3% · 2% · 1%
+- Giao dịch sau 30 ngày: 3% · 2% · 1%
+
+Hệ thống lấy giá cuối trên hợp đồng cộng mức chênh mong muốn đã nhập để tính ra số tiền hoa hồng cho mỗi mức tỷ lệ — gọi là **mức hoa hồng dự tính**.
+
+### 16.7 Tự động
+- Gửi email và Zalo xác nhận đã đăng ký ký gửi, cảm ơn, kèm lời chúc sớm thanh khoản.
+- Sau ngày đăng ký 15 ngày: tự nhắc chăm sóc, hỏi lại căn đã bán chưa để cập nhật hệ thống.
+

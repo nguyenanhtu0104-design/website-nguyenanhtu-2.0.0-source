@@ -175,3 +175,16 @@ summary{padding:12px 0;cursor:pointer;font-weight:600}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
+
+/* bộ lọc quỹ căn hộ */
+.canloc { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 10px 0 4px; }
+.canloc label { display: grid; gap: 3px; color: var(--mute); }
+.canloc input, .canloc select {
+  font: inherit; font-size: 13px; color: var(--ink);
+  background: var(--card2, rgba(255,255,255,.05));
+  border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; min-width: 104px;
+}
+.canloc input:focus-visible, .canloc select:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.tt { font-size: 12px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.tt.trong { background: rgba(94,200,120,.16); color: #7fd79a; }
+.tt.coc { background: rgba(230,170,70,.16); color: #e3b366; }

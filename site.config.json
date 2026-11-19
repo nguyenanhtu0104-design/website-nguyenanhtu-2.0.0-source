@@ -1,5 +1,5 @@
 {
-  "version": "2.35.1",
+  "version": "2.38.0",
   "timNha": { "congBo": true, "ghiChu": "false = chưa công bố: không có trong menu, không có liên kết từ bài, gắn noindex; trang vẫn tạo để xem thử qua link trực tiếp. Đổi thành true khi muốn công bố." },
   "ctaCategories": [
     "du-an-chon-loc"
