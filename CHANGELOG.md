@@ -2,6 +2,11 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2026-11-19 — Nội dung: đổi tên vùng "Thành Phố Đông Nam" → "Thành Phố Phía Nam", thêm The Peak Garden
+- Đổi tên vùng (slug giữ nguyên `truc-nguyen-huu-tho-thuong-cang-hiep-phuoc`, không đổi URL) trong tiêu đề vùng, dòng phụ, `seoTitle`, từ khoá tìm kiếm và chữ phụ đề của các bài dự án thuộc vùng; đồng bộ cả nhãn vùng trên bản đồ dự án (`du-an-cam-nang.json`).
+- Thêm trang `the-peak-garden` (Hưng Lộc Phát, Quận 7 cũ) vào vùng, trạng thái stub (đang cập nhật, noindex); thêm điểm trên bản đồ dự án theo toạ độ đã có sẵn trong công cụ.
+- Không đổi giao diện, CSS, JS hay version.
+
 ## 2.40.0 · 19/11/2026 — Chuẩn hoá định vị sa bàn, ảnh nền z18, ảnh đại diện từ khối 3D, tự động hoá ký gửi
 - **Công cụ định vị chuẩn `scripts/khop-sa-ban.py`** cho mọi dự án: tải ảnh vệ tinh z18, tinh chỉnh tịnh tiến có tự kiểm (chỉ nhận khi đỉnh tụ trong 3 m, không chạm biên, tương quan tăng ít nhất 1,5 lần), ảnh nghiệm thu từng khối có lưới đo, và đổi toạ độ VN-2000 (bảng toạ độ quy hoạch 1/500) sang mốc KML. Kiểm ngược: đặt lại điểm neo bản cũ thì công cụ tự tìm đúng độ dời 4,7 m Tây, 21,1 m Nam.
 - **Nghiệm thu Blanca ghi vào `georef.json`**: toàn khu hội tụ (lệch còn 0,6 m). Đơn lập và hai dãy nhà phố dọc khớp nền móng. Các dãy nhà phố ngang phía Đông còn lệch cỡ nửa bước dãy, Grand Villa và song lập chưa kiểm chắc vì chưa xây rõ — ghi rõ, không giấu. Cách dứt điểm: toạ độ VN-2000 từ quy hoạch 1/500.
