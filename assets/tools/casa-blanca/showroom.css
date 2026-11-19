@@ -188,3 +188,36 @@ summary{padding:12px 0;cursor:pointer;font-weight:600}
 .tt { font-size: 12px; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
 .tt.trong { background: rgba(94,200,120,.16); color: #7fd79a; }
 .tt.coc { background: rgba(230,170,70,.16); color: #e3b366; }
+
+/* phiếu ký gửi */
+form h4 { margin: 16px 0 6px; font-size: 14px; letter-spacing: .01em; }
+form h4:first-of-type { margin-top: 4px; }
+.tinh { margin: 6px 0 10px; font-size: 14px; }
+.tinh b { color: var(--gold); }
+.hhtbl { width: 100%; border-collapse: collapse; margin: 6px 0 4px; font-size: 13px; }
+.hhtbl th, .hhtbl td { padding: 6px 4px; border-bottom: 1px solid var(--line); }
+.hhtbl thead th { font-weight: 600; color: var(--mute); font-size: 12px; }
+.hhtbl tbody th { text-align: left; width: 48px; }
+.hho { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.hho span { font-variant-numeric: tabular-nums; }
+.mauchup { border: 1px solid var(--line); border-radius: 9px; margin: 6px 0; }
+.mauchup summary { padding: 8px 10px; cursor: pointer; font-size: 13px; }
+.mauchup-in { display: flex; gap: 12px; align-items: flex-start; padding: 0 10px 10px; color: var(--mute); }
+.mauchup-in p { margin: 0; }
+
+/* độ cao camera và góc nhìn ra biển */
+.bb.docao { display: inline-flex; align-items: center; gap: 6px; padding-right: 4px; }
+.bb.docao .mute { font-size: 12px; color: var(--mute); white-space: nowrap; }
+.bb.docao b { color: var(--ink); font-variant-numeric: tabular-nums; min-width: 44px; display: inline-block; }
+.bb.docao button { font: inherit; font-size: 12px; color: var(--ink); background: rgba(255,255,255,.06);
+  border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; cursor: pointer; }
+.bb.docao button:hover { border-color: var(--gold); }
+.bb.docao button:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+@media (max-width: 860px) { .bb.docao .mute { display: none; } }
+
+/* ?chup=1 — chụp ảnh đại diện giỏ hàng từ khối 3D */
+html.chup #app { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+html.chup #panel, html.chup .topbar, html.chup .zonebar, html.chup .rail, html.chup .bottombar,
+html.chup .caption, html.chup #labels, html.chup #leaders, html.chup #tip, html.chup .compass,
+html.chup #compass, html.chup .legend { display: none !important; }
+html.chup .tools, html.chup .floors, html.chup #floorRail { display: none !important; }

@@ -1,6 +1,6 @@
 {
  "duAn": "Blanca City",
- "trangThai": "khop-hai-nut-giao-da-thi-cong-chua-do-duoc-sai-so",
+ "trangThai": "huong-va-ty-le-tu-hai-nut-giao-vi-tri-khop-nen-mong-tren-anh-ve-tinh",
  "anh": {
   "file": "plan.webp",
   "rongDonVi": 960,
@@ -10,8 +10,8 @@
   "diem": "tâm hình bao công trình",
   "planX": 440.4,
   "planY": 196.4,
-  "lat": 10.382614,
-  "lon": 107.132794,
+  "lat": 10.382422,
+  "lon": 107.132757,
   "nguon": "khớp bình phương tối thiểu trên 5 mốc, từ /home/claude/kml5/doc.kml: tâm công viên nước, tâm Beacon, tâm beachtro, nút giao đầu Tây Nam, nút giao đầu Đông Bắc"
  },
  "tyLe": {
@@ -44,6 +44,40 @@
   "tyLeChuaChac": "Tỷ lệ còn tản: 2,50 (3 mốc gần nhau), 2,20 (5 mốc), 2,15 (riêng hai nút giao). Lấy 2,1958."
  },
  "canKiemThem": "Tỷ lệ 2,1536 m/đơn vị vẫn cho bề ngang nhà phố khoảng 8,4 m trong khi tài liệu bán hàng ghi 7,5 m. Tổng mặt bằng là bản vẽ tiếp thị, không vẽ đúng một tỷ lệ thống nhất. Vì vậy vẫn giữ nguyên tắc: không công bố số đo khoảng cách hay diện tích lấy từ phép chiếu này.",
- "cachGiai": "Giải thẳng từ hai nút giao đã thi công trên đường 3/2 (đầu Tây Nam và đầu Đông Bắc, cách nhau 1708 m) trong ghim My Maps của Tú ngày 19/11/2026. Ba ghim còn lại (tâm công viên nước, tâm Beacon, tâm beachtro) bị loại khỏi phép giải vì Beacon và Beachtro chưa xây nên vị trí ghim là ước lượng từ chính tổng mặt bằng, dùng lại sẽ thành vòng luẩn quẩn.",
- "kiemChung": "Chồng khung từng căn lên ảnh vệ tinh Esri ngày 19/11/2026: lưới lô trùng nền móng đã thi công rõ hơn hẳn phép chiếu cũ (35,16° / 2,1958 m). Chưa đo được sai số bằng số vì mới có hai mốc; cần thêm một mốc thứ ba trên công trình đã xây để tính ra sai số mét."
+ "cachGiai": "Hướng Bắc và tỷ lệ giải thẳng từ hai nút giao đã thi công trên đường 3/2 (cách nhau 1708 m) trong ghim My Maps của Tú. Vị trí (điểm neo) sau đó dời thêm 4,1 m về Tây và 21,2 m về Nam bằng cách khớp lưới lô trên tổng mặt bằng với lưới nền móng đã thi công trên ảnh vệ tinh Esri ngày 19/11/2026: hệ số tương quan tăng từ 0,021 lên 0,050, mười đỉnh cao nhất tụ trong bán kính 3 m nên không phải nhầm sang hàng lô bên cạnh.",
+ "kiemChung": "Chồng khung từng căn lên ảnh vệ tinh: dãy nhà trong mô hình nằm trên dãy nền móng thật. Hai nút giao nay lệch khoảng 22 m so với ghim của Tú — chấp nhận, vì ghim đặt tay trên bản đồ sai số cỡ chục mét, còn nền móng trên ảnh vệ tinh là hiện trạng đo được.",
+ "nghiemThu": {
+  "ngay": "2026-11-19",
+  "congCu": "scripts/khop-sa-ban.py dich + soi, ảnh Esri World Imagery z18 (0,59 m mỗi điểm ảnh)",
+  "toanKhu": "Hội tụ: lệch tịnh tiến còn 0,6 m, mười đỉnh tương quan tụ trong 1,2 m. Kiểm ngược: đặt lại điểm neo bản 2.38.0 thì công cụ tự tìm ra đúng độ dời 4,7 m Tây, 21,1 m Nam.",
+  "theoKhu": [
+   {
+    "khu": "Đơn lập (DL), giữa dự án",
+    "ketQua": "khớp",
+    "ghiChu": "lệch dưới 5 m, đỉnh tụ 1,3 m"
+   },
+   {
+    "khu": "Nhà phố (TH), hai dãy dọc x 690–700",
+    "ketQua": "khớp",
+    "ghiChu": "lệch khoảng 4 m"
+   },
+   {
+    "khu": "Nhà phố (TH), các dãy ngang x 720–780",
+    "ketQua": "lệch",
+    "ghiChu": "có dãy mô hình nằm giữa hai dãy thật, cỡ nửa bước dãy (khoảng 8 m); tương quan chạm biên nên không tự sửa được"
+   },
+   {
+    "khu": "Grand Villa (GV)",
+    "ketQua": "chưa kiểm chắc",
+    "ghiChu": "nhiều lô mới đổ móng, tương quan chạm biên"
+   },
+   {
+    "khu": "Song lập (SL), phía Tây",
+    "ketQua": "chưa kiểm được",
+    "ghiChu": "phần lớn chưa xây"
+   }
+  ],
+  "nguyenNhan": "Tổng mặt bằng là bản vẽ tiếp thị, không vẽ đúng một tỷ lệ bên trong. Một phép chiếu chung khớp được khu giữa thì khu rìa vẫn lệch.",
+  "cachDutDiem": "Xin bản đồ quy hoạch tổng mặt bằng 1/500 có bảng toạ độ VN-2000 (kinh tuyến trục 107°45′, EPSG:5899) rồi chạy lệnh vn2000 đổi ra mốc."
+ }
 }

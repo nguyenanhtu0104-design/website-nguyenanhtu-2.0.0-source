@@ -361,10 +361,15 @@ for (const zone of categories.find(c => c.id === 'du-an-chon-loc').items) {
     if (directory[slug]) continue;
     const project = handbookArticles.get(slug);
     const photo = project.thumbnail || region.thumbnail;
+    // Dự án có sa bàn 3D: ảnh đại diện chụp từ chính khối 3D (scripts/chup-anh-sa-ban.py), PROJECT_RULES §17.
+    const saBan = inventory[slug] && inventory[slug].saBan;
+    const anh3d = saBan && fs.existsSync(path.join(ROOT, 'assets/tools', saBan, 'anh-dai-dien.webp'));
     directory[slug] = {
       name: project.title, region: region.title,
-      thumbnail: photo ? BASE+'assets/images/articles/'+photo+'-'+images[photo].v[0]+'.webp' : BASE+project.ogImage,
-      imageCaption: project.thumbnail ? 'Ảnh trong hồ sơ dự án' : photo ? 'Hình khu vực' : 'Bìa hồ sơ',
+      thumbnail: anh3d ? BASE+'assets/tools/'+saBan+'/anh-dai-dien.webp'
+        : photo ? BASE+'assets/images/articles/'+photo+'-'+images[photo].v[0]+'.webp' : BASE+project.ogImage,
+      thumbnailNho: anh3d ? BASE+'assets/tools/'+saBan+'/anh-dai-dien-640.webp' : undefined,
+      imageCaption: anh3d ? 'Sa bàn 3D' : project.thumbnail ? 'Ảnh trong hồ sơ dự án' : photo ? 'Hình khu vực' : 'Bìa hồ sơ',
       ...inventory[slug]
     };
   }

@@ -223,6 +223,25 @@ function sunNow() {
 // Kéo xa nhất: đủ thấy hết Bãi Sau, Núi Nhỏ và phố Vũng Tàu quanh dự án.
 const XA_NHAT = 3600;
 const HOME = { tx: 476, ty: PLAN_H - 232, tz: 0, dist: 940, yaw: .3, pitch: .92 };
+// Góc nhìn tư vấn view: đứng trên dự án nhìn ra biển, ở độ cao camera cho trước (mét so với mặt đất).
+// Hướng ra biển: bờ Bãi Sau đoạn này chạy theo phương vị khoảng 60° (đo trên ảnh vệ tinh), nên pháp tuyến
+// ra biển là 150°. Quy về toạ độ sa bàn: Bắc nằm ở góc `bac` thuận kim đồng hồ so với trục dọc ảnh,
+// nên phương vị β ứng với góc ảnh (bac + β).
+const PHUONG_BIEN = 150;
+function gocDoCao(met) {
+  const mpu = (GEO && GEO.tyLe && GEO.tyLe.metTrenDonVi) || 2.1536;
+  const bac = (GEO && GEO.huong && GEO.huong.bacSoVoiTrucDocAnh) || geo.north || 35.5;
+  const a = rad(bac + PHUONG_BIEN);                 // góc so với trục dọc ảnh, thuận kim đồng hồ
+  const nhin = [Math.sin(a), Math.cos(a)];          // hướng nhìn trong toạ độ thế giới (y lên)
+  const pitch = met >= 900 ? .62 : .5;
+  const dist = met / mpu / Math.sin(pitch);
+  const tam = [476 + nhin[0] * 90, (PLAN_H - 230) + nhin[1] * 90];  // đặt dự án ở nửa dưới khung, biển ở nửa trên
+  return { tx: tam[0], ty: tam[1], tz: 0, dist, pitch, yaw: Math.atan2(-nhin[0], nhin[1]) };
+}
+function doCaoMet() {
+  const mpu = (GEO && GEO.tyLe && GEO.tyLe.metTrenDonVi) || 2.1536;
+  return Math.max(0, (C.tz + C.dist * Math.sin(C.pitch)) * mpu);
+}
 function homeView() { return { ...HOME, dist: HOME.dist * (innerWidth < 860 ? 1.1 : Math.min(1.3, Math.max(.9, 950 / Math.max(620, canvas.clientWidth)))) }; }
 const C = { ...HOME }, T = { ...HOME };
 const W = y => PLAN_H - y; // y ảnh → Y thế giới
@@ -250,7 +269,10 @@ function zoneView(key, type = -1) {
 
 /* ---------- WebGL ---------- */
 const canvas = $('#gl');
-const gl = canvas.getContext('webgl2', { antialias: true, alpha: false, preserveDrawingBuffer: false });
+// ?chup=1: chế độ chụp ảnh đại diện giỏ hàng từ khối 3D (scripts/chup-anh-sa-ban.py). Ẩn toàn bộ giao diện.
+const CHUP = new URLSearchParams(location.search).get('chup') === '1';
+if (CHUP) document.documentElement.classList.add('chup');
+const gl = canvas.getContext('webgl2', { antialias: true, alpha: false, preserveDrawingBuffer: CHUP });
 let dirty = true, pickDirty = true, nInst = 0, prog, gprog, lprog, ranhVAO = null, ranhN = 0, RANH = null, boxVAO, roofVAO, gVAO, stat, dyn, planTex, fbo, fboTex, fboDepth, fboW = 0, fboH = 0;
 const dynArr = [];
 const U_ = {};
@@ -315,7 +337,7 @@ void main(){
 }`;
 const GFS = `#version 300 es
 precision highp float; precision highp int;
-in vec2 vUV; uniform sampler2D uTex; uniform vec3 uFog; uniform int uMask; uniform float uDim; uniform float uAlpha; uniform float uNight;
+in vec2 vUV; uniform sampler2D uTex; uniform vec3 uFog; uniform int uMask; uniform float uDim; uniform float uAlpha; uniform float uNight; uniform float uFeather;
 out vec4 o;
 void main(){
   vec2 uv=clamp(vUV,0.,1.);
@@ -339,6 +361,12 @@ void main(){
     c=col;
   } else if(uMask==4){
     // Ảnh vệ tinh: giữ nguyên màu thật, chỉ hạ sáng và tăng tương phản nhẹ cho hợp nền tối.
+    // Mặt biển: Esri ghép ảnh nhiều ngày nên nước có từng mảng tông khác nhau. Lấy tông vùng rộng
+    // qua mipmap mức cao, nhận ra nước, thay tông nền bằng một màu biển chung nhưng giữ chi tiết sóng.
+    vec3 lo=textureLod(uTex,uv,5.5).rgb;
+    float nuoc=smoothstep(.015,.06,lo.g-lo.r)*smoothstep(.015,.05,lo.b-lo.r)
+              *(1.-smoothstep(.30,.42,dot(lo,vec3(.3,.59,.11))));
+    c=mix(c,vec3(.075,.215,.205)+(c-lo)*.35,nuoc);
     c=clamp((c-.5)*1.12+.5,0.,1.)*.82;
     c=mix(c,c*vec3(1.02,1.0,.95),.5);
   } else {
@@ -354,7 +382,10 @@ void main(){
   float edge=smoothstep(0.,.055,dx);
   c=mix(c,uFog,max(edge,uDim));
   c=mix(c,c*vec3(.55,.62,.86),uNight*.75);
-  o=vec4(c,uAlpha);
+  // uFeather > 0: mờ dần alpha trong dải sát mép (tính theo phần của cạnh) để khảm gần hoà vào khảm xa
+  float trong=min(min(vUV.x,1.-vUV.x),min(vUV.y,1.-vUV.y));
+  float a=uFeather>0. ? smoothstep(0.,uFeather,trong) : 1.;
+  o=vec4(c,uAlpha*a);
 }`;
 const LVS = `#version 300 es
 precision highp float;
@@ -388,7 +419,7 @@ function roofMesh() {
 function initGL(plan) {
   prog = mk(VS, FS); gprog = mk(GVS, GFS);
   for (const k of ['uVP', 'uPass', 'uShadow', 'uPick', 'uEye', 'uFog', 'uUnits', 'uSun', 'uNight', 'uCut']) U_[k] = gl.getUniformLocation(prog, k);
-  for (const k of ['uVP', 'uFog', 'uTex', 'uOrigin', 'uSize', 'uPad', 'uRot', 'uMask', 'uDim', 'uAlpha', 'uNight']) U_['g_' + k] = gl.getUniformLocation(gprog, k);
+  for (const k of ['uVP', 'uFog', 'uTex', 'uOrigin', 'uSize', 'uPad', 'uRot', 'uMask', 'uDim', 'uAlpha', 'uNight', 'uFeather']) U_['g_' + k] = gl.getUniformLocation(gprog, k);
   nInst = U.length + TOWERS.length;
   stat = gl.createBuffer(); dyn = gl.createBuffer();
   const mkVAO = mesh => {
@@ -499,7 +530,7 @@ function drawGround(vp) {
   const night = nightLevel();
   const osmOn = osm.tex && (state.base === 'osm' || state.base === 'blend');
   gl.useProgram(gprog); gl.uniformMatrix4fv(U_.g_uVP, false, vp); gl.uniform3fv(U_.g_uFog, FOG);
-  gl.uniform1i(U_.g_uTex, 0); gl.uniform1f(U_.g_uNight, night);
+  gl.uniform1i(U_.g_uTex, 0); gl.uniform1f(U_.g_uNight, night); gl.uniform1f(U_.g_uFeather, 0);
   gl.activeTexture(gl.TEXTURE0); gl.bindVertexArray(gVAO); gl.depthMask(false);
   // lớp 1: ảnh tổng mặt bằng (ở chế độ "bản đồ thật" chỉ còn là nền mờ bao quanh)
   gl.bindTexture(gl.TEXTURE_2D, planTex);
@@ -521,9 +552,10 @@ function drawGround(vp) {
     gl.bindTexture(gl.TEXTURE_2D, osm.tex);
     gl.uniform2f(U_.g_uOrigin, osm.cx, osm.cy); gl.uniform2f(U_.g_uSize, osm.w, osm.h);
     gl.uniform2f(U_.g_uPad, 1, 1); gl.uniform1f(U_.g_uRot, -rad(geo.north));
+    gl.uniform1f(U_.g_uFeather, osmXa.tex ? .07 : 0);
     gl.uniform1i(U_.g_uMask, NEN.kieu === 've-tinh' ? 4 : 2); gl.uniform1f(U_.g_uDim, 0); gl.uniform1f(U_.g_uAlpha, state.base === 'blend' ? .55 : 1);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-    gl.disable(gl.BLEND);
+    gl.uniform1f(U_.g_uFeather, 0); gl.disable(gl.BLEND);
   }
   gl.depthMask(true);
 }
@@ -602,8 +634,11 @@ function tai1Tile(url) {
 }
 // Ghép một khảm ảnh nền. "ra" là hệ số nới rộng quanh tâm mặt bằng:
 // 1 là vừa khít khu đất, lớn hơn thì thấy thêm biển, núi và phố xung quanh.
-async function ghepKham(dich, ra, toiDa, zCao, zThap, choPhepLui) {
-  const goc = [[0, 0], [PLAN_W, 0], [PLAN_W, PLAN_H], [0, PLAN_H]].map(([px, py]) => geo.latLon(px, PLAN_H - py));
+async function ghepKham(dich, ra, toiDa, zCao, zThap, choPhepLui, theoRanh) {
+  // theoRanh: lấy khung theo ranh dự án (KML) thay vì cả tấm ảnh tổng mặt bằng — ảnh nét chỉ cần ở chỗ có căn.
+  const dinh = theoRanh && RANH && (RANH.dinh || RANH.diem || RANH.toaDo);
+  const goc = dinh && dinh.length > 2 ? dinh.map(p => [p[0], p[1]])
+    : [[0, 0], [PLAN_W, 0], [PLAN_W, PLAN_H], [0, PLAN_H]].map(([px, py]) => geo.latLon(px, PLAN_H - py));
   const la = goc.map(g => g[0]), lo = goc.map(g => g[1]);
   const cLat = (Math.min(...la) + Math.max(...la)) / 2, cLon = (Math.min(...lo) + Math.max(...lo)) / 2;
   const nLat = (Math.max(...la) - Math.min(...la)) / 2 * ra, nLon = (Math.max(...lo) - Math.min(...lo)) / 2 * ra;
@@ -651,11 +686,23 @@ async function loadOsm() {
   if (!geo.ok) { state.osm = 'loi'; render(); return; }
   state.osm = 'dang'; render();
   try {
-    // Lớp gần: đúng khu đất, phân giải cao để soi từng lô.
-    await ghepKham(osm, 1, 40, 17, 13, true);
+    // Lớp gần: trong ranh dự án, nạp z17 trước cho nhanh.
+    await ghepKham(osm, 1.15, 48, 17, 13, true, true);
     state.osm = 'xong'; dirty = true; render();
     // Lớp xa: rộng gấp bốn, để thấy biển, Bãi Sau và phố xung quanh. Hỏng cũng không sao.
     try { await ghepKham(osmXa, 4.2, 30, 15, 11, false); dirty = true; } catch (e) { /* bỏ qua */ }
+    // Nâng lớp gần lên z18 (0,6 m mỗi điểm ảnh) để nhìn rõ từng căn ở độ cao 500–1000 m.
+    // Chỉ làm trên máy có texture đủ lớn; điện thoại yếu giữ z17. Hỏng thì giữ bản z17.
+    if (CHUP || (gl.getParameter(gl.MAX_TEXTURE_SIZE) >= 4096 && !(navigator.connection && navigator.connection.saveData))) {
+      const tam = { tex: null };
+      try { await ghepKham(tam, 1.15, 196, 18, 18, false, true);
+        if (tam.soTile) { if (osm.tex) gl.deleteTexture(osm.tex); Object.assign(osm, tam); dirty = true; render(); } }
+      catch (e) { if (tam.tex) gl.deleteTexture(tam.tex); }
+    }
+    if (CHUP) {
+      state.hideLabels = true; fly(gocDoCao(+(new URLSearchParams(location.search).get('docao') || 1000)), true);
+      dirty = true; requestAnimationFrame(() => requestAnimationFrame(() => { window.__sanSangChup = true; }));
+    }
   } catch (e) {
     console.warn('Không tải được ô bản đồ:', e.message || e);
     state.osm = 'loi'; if (state.base !== 'plan') state.base = 'plan';
@@ -738,6 +785,15 @@ function placeLabels() {
   }
 }
 
+/* ---------- độ cao camera ---------- */
+let doCaoCu = -1;
+function hienDoCao() {
+  const el = document.getElementById('doCao'); if (!el) return;
+  const m = doCaoMet(), r = m >= 1000 ? Math.round(m / 50) * 50 : Math.round(m / 10) * 10;
+  if (r === doCaoCu) return; doCaoCu = r;
+  el.textContent = r >= 1000 ? (r / 1000).toFixed(r % 1000 ? 2 : 0).replace('.', ',') + ' km' : r + ' m';
+}
+
 /* ---------- vòng lặp ---------- */
 let last = 0, hoverReq = null;
 function frame(t) {
@@ -750,7 +806,7 @@ function frame(t) {
     if (Math.abs(d) > (key === 'dist' ? C.dist * 5e-4 : 5e-4)) { C[key] += d * k; moving = true; } else C[key] = T[key];
   }
   if (hoverReq) { const r = hoverReq; hoverReq = null; doHover(r.x, r.y); }
-  if (moving || dirty) { resize(); gl.bindFramebuffer(gl.FRAMEBUFFER, null); drawScene(false); placeLabels(); veLaBan(); dirty = false; }
+  if (moving || dirty) { resize(); gl.bindFramebuffer(gl.FRAMEBUFFER, null); drawScene(false); placeLabels(); veLaBan(); hienDoCao(); dirty = false; }
 }
 function doHover(x, y) {
   const id = pickAt(x, y);
@@ -1053,12 +1109,91 @@ function cartHtml() {
   <h3>Gửi yêu cầu tư vấn cho cả giỏ</h3>${formHtml('request')}`;
 }
 function consultMini() { return `<div class="card contact"><div class="avatar">AT</div><div><b>Nguyễn Anh Tú</b><br><span class="mute small">Project Director · ERA Vietnam</span></div></div><div class="row"><a class="btn primary" href="tel:${ZALO}">Gọi ${ZALO_TXT}</a><a class="btn" href="https://zalo.me/${ZALO}" target="_blank" rel="noopener">Nhắn Zalo</a></div>`; }
+
+/* ---------- phiếu ký gửi thứ cấp (PROJECT_RULES §16.5–16.7) ---------- */
+const VAT_KPBT = 1.12;          // VAT 10% + kinh phí bảo trì 2%, chỉ dùng khi chủ nhà không điền giá gốc
+const docSo = (v) => { const n = Number(String(v || '').replace(/[^\d]/g, '')); return Number.isFinite(n) && n > 0 ? n : 0; };
+const soVN = (n) => n ? n.toLocaleString('vi-VN') + ' đ' : '—';
+const MUC_HH = [3, 2, 1];
+function mauChup(ten, moTa, svg) {
+  return `<details class="mauchup"><summary>${esc(ten)}</summary><div class="mauchup-in">${svg}<p class="mute small">${esc(moTa)}</p></div></details>`;
+}
+const khungTrang = (hl) => `<svg viewBox="0 0 96 124" width="96" height="124" aria-hidden="true">
+  <rect x="3" y="3" width="90" height="118" rx="4" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/>
+  ${[...Array(9)].map((_, i) => `<rect x="12" y="${20 + i * 11}" width="${i % 3 === 2 ? 48 : 72}" height="4" rx="2" fill="currentColor" opacity=".22"/>`).join('')}
+  <rect x="${hl[0]}" y="${hl[1]}" width="${hl[2]}" height="${hl[3]}" rx="3" fill="none" stroke="#e3b366" stroke-width="2.5"/>
+</svg>`;
+const khungThe = `<svg viewBox="0 0 124 84" width="124" height="84" aria-hidden="true">
+  <rect x="3" y="3" width="118" height="78" rx="7" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".55"/>
+  <rect x="12" y="20" width="30" height="38" rx="3" fill="currentColor" opacity=".18"/>
+  ${[...Array(4)].map((_, i) => `<rect x="50" y="${22 + i * 10}" width="${i === 0 ? 58 : 46}" height="4" rx="2" fill="currentColor" opacity=".22"/>`).join('')}
+  <rect x="7" y="7" width="110" height="70" rx="5" fill="none" stroke="#e3b366" stroke-width="2.5"/>
+</svg>`;
+function consignHtml(u) {
+  const consent = `<label class="check"><input type="checkbox" name="consent" required> <span>Tôi xác nhận là chủ sở hữu hoặc được chủ sở hữu uỷ quyền ký gửi căn này, và đồng ý để Nguyễn Anh Tú lưu, dùng thông tin để môi giới. Xem <a href="/chinh-sach-bao-mat/" target="_top">chính sách bảo mật</a>.</span></label>`;
+  return `<form data-kind="consign" novalidate>
+  <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <h4>Người ký gửi</h4>
+  <label>Họ tên<input name="name" required minlength="2" maxlength="80" autocomplete="name"></label>
+  <label>Số điện thoại / Zalo<input name="phone" required inputmode="tel" pattern="[0-9+ .\-]{9,16}" autocomplete="tel" placeholder="09xx xxx xxx"></label>
+  <label>Email<input name="email" type="email" required maxlength="120" autocomplete="email" placeholder="ten@email.com"></label>
+
+  <h4>Thông tin căn</h4>
+  <label>Nhu cầu<select name="purpose"><option>Bán</option><option>Cho thuê</option></select></label>
+  <label>Mã căn<input name="unit" required maxlength="80" value="${u ? esc(u.code) : ''}" placeholder="Ví dụ E50715, B20519, DL-012"></label>
+  <label>Giá mua trên hợp đồng, đã gồm VAT và kinh phí bảo trì<input name="giaMuaHD" inputmode="numeric" required maxlength="20" placeholder="5500000000"></label>
+  <label>Giá bán mong muốn<input name="giaBan" inputmode="numeric" required maxlength="20" placeholder="5900000000"></label>
+  <p class="tinh">Giá chênh: <b id="hhChenh">—</b> <span class="mute small">(giá bán trừ giá mua trên hợp đồng, hệ thống tự tính)</span></p>
+  <label class="check"><input type="checkbox" name="thuongLuong"> <span>Giá còn thương lượng</span></label>
+  <label class="check"><input type="checkbox" name="giaNet"> <span>Giá net (chủ nhà nhận đủ, phí và thuế bên mua chịu)</span></label>
+  <label>Giá mua chưa gồm VAT và kinh phí bảo trì <span class="mute small">(không bắt buộc — dùng để tính hoa hồng)</span><input name="giaMuaGoc" inputmode="numeric" maxlength="20" placeholder="Để trống thì hệ thống tạm tính"></label>
+
+  <h4>Hoa hồng môi giới</h4>
+  <p class="mute small">Tính trên giá bán cuối cùng = giá mua <b>chưa gồm</b> VAT và kinh phí bảo trì, cộng giá chênh. Chọn một mức:</p>
+  <table class="hhtbl"><thead><tr><th>Mức</th><th class="r">Giao dịch trong 30 ngày</th><th class="r">Giao dịch sau 30 ngày</th></tr></thead><tbody>
+  ${MUC_HH.map(p => `<tr><th>${p}%</th>
+    <td class="r"><label class="hho"><input type="radio" name="hhMuc" value="trong30-${p}"> <span data-hh="trong30-${p}">—</span></label></td>
+    <td class="r"><label class="hho"><input type="radio" name="hhMuc" value="sau30-${p}"> <span data-hh="sau30-${p}">—</span></label></td></tr>`).join('')}
+  </tbody></table>
+  <p class="mute small" id="hhGoc">Chưa đủ số để tính.</p>
+
+  <h4>Tài liệu xác minh căn <span class="mute small">(được công khai thông tin)</span></h4>
+  ${mauChup('Ảnh trang có tiêu đề hợp đồng', 'Chụp rõ phần tiêu đề và số hợp đồng ở đầu trang. Không cần che gì.', khungTrang([10, 10, 76, 16]))}
+  ${mauChup('Ảnh bảng tính căn trong hợp đồng', 'Chụp trọn bảng diện tích, đơn giá và tổng giá. Giữ bảng nằm ngang, đủ bốn góc.', khungTrang([10, 52, 76, 34]))}
+  <label>Ngày ký hợp đồng<input name="ngayHD" type="date" max="2099-12-31"></label>
+  <h4>Tài liệu xác minh chính chủ <span class="mute small">(bảo mật, không công khai)</span></h4>
+  ${mauChup('Ảnh CCCD hoặc VNeID', 'Chụp mặt có ảnh và số định danh, đủ bốn góc thẻ, không loá. Chỉ dùng để đối chiếu chính chủ.', khungThe)}
+  ${mauChup('Ảnh phần thông tin cá nhân trên hợp đồng', 'Chụp đúng khối thông tin bên mua trên hợp đồng.', khungTrang([10, 28, 76, 24]))}
+  <h4>Hình ảnh thực tế căn <span class="mute small">(nếu có)</span></h4>
+  <p class="mute small">Chỉ nhận ảnh chụp thực tế. <b>Không nhận ảnh phối cảnh</b> của chủ đầu tư.</p>
+  <div class="note small">Gửi phiếu xong anh/chị sẽ nhận một <b>mã phiếu</b>. Gửi các ảnh trên qua Zalo ${ZALO_TXT} kèm mã phiếu đó. Trang chưa nhận tải ảnh trực tiếp để tránh giữ giấy tờ tuỳ thân trên máy chủ khi chưa có chỗ lưu riêng.</div>
+  <label>Ghi chú thêm<textarea name="note" maxlength="400" placeholder="Hướng, tầng, nội thất, thời điểm bàn giao…"></textarea></label>
+  ${consent}
+  <button class="btn primary block" type="submit">Gửi phiếu ký gửi</button><div class="status" role="status" aria-live="polite"></div></form>`;
+}
+function capNhatHoaHong(form) {
+  if (!form) return;
+  const g = n => docSo(form.elements[n] && form.elements[n].value);
+  const hd = g('giaMuaHD'), ban = g('giaBan'), goc0 = g('giaMuaGoc');
+  const chenh = hd && ban ? ban - hd : 0;
+  const el = $('#hhChenh', form); if (el) el.textContent = chenh ? soVN(chenh) : '—';
+  const goc = goc0 || (hd ? Math.round(hd / VAT_KPBT) : 0);
+  const nen = goc ? goc + chenh : 0;
+  const ghi = $('#hhGoc', form);
+  if (ghi) ghi.textContent = nen
+    ? `Giá bán cuối dùng để tính hoa hồng: ${soVN(nen)}${goc0 ? '' : ' — giá gốc là tạm tính bằng giá hợp đồng chia 1,12 vì chưa điền'}.`
+    : 'Chưa đủ số để tính.';
+  for (const sp of form.querySelectorAll('[data-hh]')) {
+    const p = Number(sp.dataset.hh.split('-')[1]);
+    sp.textContent = nen ? soVN(Math.round(nen * p / 100)) : '—';
+  }
+}
 function consultHtml() {
   const u = state.sel >= 0 ? U[state.sel] : null;
   return `<h2>Tư vấn trực tiếp</h2>${consultMini()}
   <p class="mute small">Tư vấn viên giải đáp về pháp lý, tiến độ, so sánh phân khu và cách tính dòng tiền. Thông tin mang tính tham khảo, không phải cam kết về giá hay chính sách bán hàng.</p>
   <h3>Đặt lịch gọi lại</h3>${formHtml('callback')}
-  <details id="consignBox"${state.openConsign ? ' open' : ''}><summary>Ký gửi căn (bán hoặc cho thuê)</summary>${formHtml('consign', u)}</details>`;
+  <details id="consignBox"${state.openConsign ? ' open' : ''}><summary>Ký gửi căn (bán hoặc cho thuê)</summary>${consignHtml(u)}</details>`;
 }
 let formOpened = performance.now();
 function formHtml(kind, u) {
@@ -1077,19 +1212,38 @@ async function submitForm(form) {
   if (get('name').length < 2) { status.textContent = 'Vui lòng nhập họ tên.'; status.classList.add('err'); form.name.focus(); return; }
   if (!/^(\+84|84|0)\d{8,9}$/.test(phone)) { status.textContent = 'Số điện thoại chưa đúng. Ví dụ: 0978 618 149.'; status.classList.add('err'); form.phone.focus(); return; }
   if (!f.get('consent')) { status.textContent = 'Cần tick đồng ý để chúng tôi liên hệ.'; status.classList.add('err'); return; }
-  if (kind === 'consign' && !get('unit')) { status.textContent = 'Vui lòng ghi mã căn hoặc vị trí.'; status.classList.add('err'); form.unit.focus(); return; }
+  if (kind === 'consign') {
+    const sai = (msg, tr) => { status.textContent = msg; status.classList.add('err'); if (tr) tr.focus(); };
+    if (!get('unit')) { sai('Vui lòng ghi mã căn.', form.unit); return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(get('email'))) { sai('Email chưa đúng.', form.email); return; }
+    if (!docSo(get('giaMuaHD'))) { sai('Vui lòng ghi giá mua trên hợp đồng.', form.giaMuaHD); return; }
+    if (!docSo(get('giaBan'))) { sai('Vui lòng ghi giá bán mong muốn.', form.giaBan); return; }
+    if (docSo(get('giaBan')) < docSo(get('giaMuaHD'))) { sai('Giá bán đang thấp hơn giá mua. Kiểm tra lại giúp em.', form.giaBan); return; }
+  }
   const body = {
     kind, project: PROJECT, zone: ZONES.find(z => z.key === state.zone)?.name || '', name: get('name'), phone, consent: true,
     units: kind === 'request' ? state.cart.map(c => c.label + (c.sub ? ' (' + c.sub + ')' : '')) : [],
     intent: get('intent'), budget: get('budget'), note: get('note'), when: get('when'), purpose: get('purpose'), unit: get('unit'), price: get('price'),
     website: get('website'), t: Math.round(performance.now() - formOpened), page: location.pathname + location.hash,
   };
+  if (kind === 'consign') {
+    const hd = docSo(get('giaMuaHD')), ban = docSo(get('giaBan')), goc0 = docSo(get('giaMuaGoc'));
+    const goc = goc0 || Math.round(hd / VAT_KPBT), chenh = ban - hd, nen = goc + chenh;
+    const muc = get('hhMuc'), p = muc ? Number(muc.split('-')[1]) : 0;
+    Object.assign(body, {
+      email: get('email'), giaMuaHD: hd, giaBan: ban, giaChenh: chenh,
+      giaMuaGoc: goc, giaGocTamTinh: !goc0, giaBanCuoi: nen,
+      thuongLuong: !!f.get('thuongLuong'), giaNet: !!f.get('giaNet'),
+      ngayHD: get('ngayHD'), hoaHongMuc: muc, hoaHongPhanTram: p,
+      hoaHongDuTinh: p ? Math.round(nen * p / 100) : 0,
+    });
+  }
   btn.disabled = true; const old = btn.textContent; btn.textContent = 'Đang gửi…'; status.textContent = '';
   try {
     const r = await fetch('/api/tim-nha', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
     const j = await r.json().catch(() => ({}));
     if (!r.ok || !j.ok || !j.stored) throw Error(j.error || r.status);
-    form.outerHTML = `<div class="done" role="status"><b>Đã nhận phiếu ${esc(j.id)}</b><p>${kind === 'consign' ? 'Phiếu ký gửi' : kind === 'callback' ? 'Lịch gọi lại' : 'Yêu cầu của anh/chị'} đã được lưu. Tư vấn viên sẽ liên hệ qua số ${esc(phone)} sớm nhất. Cần gấp, nhắn Zalo ${ZALO_TXT}.</p></div>`;
+    form.outerHTML = `<div class="done" role="status"><b>Đã nhận phiếu ${esc(j.id)}</b><p>${kind === 'consign' ? 'Phiếu ký gửi' : kind === 'callback' ? 'Lịch gọi lại' : 'Yêu cầu của anh/chị'} đã được lưu. Tư vấn viên sẽ liên hệ qua số ${esc(phone)} sớm nhất. Cần gấp, nhắn Zalo ${ZALO_TXT}.</p>${kind === 'consign' ? `${j.auto && j.auto.camOn ? `<p>Thư xác nhận đã gửi tới <b>${esc(body.email)}</b>. Sau ${15} ngày em sẽ hỏi lại anh/chị tình trạng căn qua email.</p>` : ''}<p><b>Còn một bước:</b> gửi các ảnh hợp đồng và giấy tờ chính chủ qua Zalo ${ZALO_TXT}, nhắn kèm mã phiếu <b>${esc(j.id)}</b>. Chưa có ảnh thì chưa đăng căn lên giỏ hàng được.</p><a class="btn block" href="https://zalo.me/${ZALO}" target="_blank" rel="noopener">Mở Zalo gửi ảnh kèm mã ${esc(j.id)}</a>` : ''}</div>`;
     if (kind === 'request') { state.cart = []; saveCart(); refreshStates(); renderTabs(); }
   } catch (err) {
     btn.disabled = false; btn.textContent = old;
@@ -1133,6 +1287,8 @@ document.addEventListener('input', e => {
     const c = $('#clock'); if (c) c.textContent = gioPhut(state.sunT);
     return;
   }
+  const fc = e.target.closest && e.target.closest('form[data-kind=consign]');
+  if (fc) { capNhatHoaHong(fc); return; }
   if (e.target.id === 'qcan') { state.qcan = e.target.value; const pos = e.target.selectionStart; state.keepScroll = true; render(); const q = $('#qcan'); if (q) { q.focus(); q.setSelectionRange(pos, pos); } return; }
   if (e.target.id === 'q') { state.q = e.target.value; const pos = e.target.selectionStart; state.keepScroll = true; render(); const q = $('#q'); q.focus(); q.setSelectionRange(pos, pos); } });
 document.addEventListener('change', e => {
@@ -1146,6 +1302,7 @@ addEventListener('keydown', e => { if (e.key === 'Escape') $('#lightbox').hidden
 $('#bIn').onclick = () => { T.dist = Math.max(28, T.dist * .72); dirty = true; };
 $('#bOut').onclick = () => { T.dist = Math.min(XA_NHAT, T.dist / .72); dirty = true; };
 $('#bNorth').onclick = () => { fly({ ...T, yaw: -rad(geo.north) }); };
+for (const b of document.querySelectorAll('[data-docao]')) b.onclick = () => { selectUnit(-1); fly(gocDoCao(+b.dataset.docao)); };
 $('#bHome').onclick = () => { selectUnit(-1); selectZone('all'); fly({ ...homeView(), yaw: T.yaw }); };
 $('#bRanh').onclick = () => { state.ranh = !state.ranh; dirty = true; render(); };
 $('#bNight').onclick = () => { state.night = !state.night; dirty = true; render(); };
@@ -1206,6 +1363,6 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     catch (err) { console.error(err); $('#nogl').hidden = false; }
   } else $('#nogl').hidden = false;
   render(); openHash();
-  window.__blanca = { state, U, C, T, osmXa, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS };
+  window.__blanca = { gocDoCao, doCaoMet, state, U, C, T, osmXa, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS };
 })().catch(err => { console.error(err); $('#pane').innerHTML = '<h2>Chưa tải được dữ liệu sa bàn</h2><p class="mute">Vui lòng tải lại trang hoặc nhắn Zalo ' + ZALO_TXT + '.</p>'; });
 })();

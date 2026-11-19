@@ -6,7 +6,14 @@
 <meta name="robots" content="noindex,follow">
 <meta name="theme-color" content="#12100d">
 <title>Blanca City · Sa bàn 3D và giỏ hàng | Nguyễn Anh Tú</title>
-<link rel="stylesheet" href="showroom.css?v=2.38.0">
+<meta name="description" content="Sa bàn 3D Blanca City trên ảnh vệ tinh thật: Casa Villa, Beacon, Beachtro, cụm B. Tra căn, xem view biển, ký gửi.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Blanca City · Sa bàn 3D và giỏ hàng">
+<meta property="og:description" content="Sa bàn 3D trên ảnh vệ tinh thật, nhìn ra biển Bãi Sau. Tra mã căn, xem quỹ căn, ký gửi.">
+<meta property="og:image" content="https://nguyenanhtu.vn/assets/tools/casa-blanca/anh-chia-se.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="showroom.css?v=2.40.0">
 </head>
 <body>
 <div id="app">
@@ -56,6 +63,11 @@
     <footer class="bottombar">
       <button class="bb" id="bNorth">▲ <span>Bắc</span></button>
       <button class="bb" id="bHome">↻ <span>Toàn cảnh</span></button>
+      <div class="bb docao" role="group" aria-label="Góc nhìn ra biển theo độ cao">
+        <span class="mute">Độ cao <b id="doCao">—</b></span>
+        <button type="button" data-docao="500" title="Nhìn ra biển từ độ cao 500 m">500 m</button>
+        <button type="button" data-docao="1000" title="Nhìn ra biển từ độ cao 1 km">1 km</button>
+      </div>
       <div class="bb time"><b id="clock">—</b><input id="sunh" type="range" min="0" max="143" step="1" aria-label="Giờ trong ngày để xem hướng nắng"></div>
       <button class="bb" id="bBase">🗺 <span id="baseName">Bản đồ</span></button>
       <button class="bb" id="bRanh" aria-pressed="true">⬠ <span>Ranh đất</span></button>
@@ -79,6 +91,6 @@
   <img id="lbImg" alt="">
 </div>
 <noscript><p style="padding:20px;color:#eee">Trang này cần JavaScript để hiện sa bàn và giỏ hàng. Liên hệ Zalo 0978 618 149.</p></noscript>
-<script src="showroom.js?v=2.38.0"></script>
+<script src="showroom.js?v=2.40.0"></script>
 </body>
 </html>

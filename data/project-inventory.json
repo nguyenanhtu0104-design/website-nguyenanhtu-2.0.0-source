@@ -1,10 +1,21 @@
 {
-  "artisan-park": {
-    "primaryCount": 32,
-    "secondaryCount": null,
-    "meanAskingVnd": 15948113846,
-    "inventoryUrl": null,
-    "updatedAt": null,
-    "snapshotDate": "2026-11-17"
-  }
+ "artisan-park": {
+  "primaryCount": 32,
+  "secondaryCount": null,
+  "meanAskingVnd": 15948113846,
+  "inventoryUrl": null,
+  "updatedAt": null,
+  "snapshotDate": "2026-11-17"
+ },
+ "blanca-city": {
+  "saBan": "casa-blanca",
+  "primaryCount": null,
+  "secondaryCount": null,
+  "meanAskingVnd": null,
+  "inventoryUrl": null,
+  "updatedAt": "2026-11-19",
+  "snapshotDate": "2026-11-19",
+  "ghiChu": "quyDaiLy = quỹ chung chủ đầu tư chia cho đại lý (30 căn Beacon, 50 căn toà B2), không phải toàn bộ giỏ hàng sơ cấp.",
+  "quyDaiLy": 80
+ }
 }

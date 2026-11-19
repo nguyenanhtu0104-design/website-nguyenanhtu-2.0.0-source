@@ -2,6 +2,27 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.40.0 · 19/11/2026 — Chuẩn hoá định vị sa bàn, ảnh nền z18, ảnh đại diện từ khối 3D, tự động hoá ký gửi
+- **Công cụ định vị chuẩn `scripts/khop-sa-ban.py`** cho mọi dự án: tải ảnh vệ tinh z18, tinh chỉnh tịnh tiến có tự kiểm (chỉ nhận khi đỉnh tụ trong 3 m, không chạm biên, tương quan tăng ít nhất 1,5 lần), ảnh nghiệm thu từng khối có lưới đo, và đổi toạ độ VN-2000 (bảng toạ độ quy hoạch 1/500) sang mốc KML. Kiểm ngược: đặt lại điểm neo bản cũ thì công cụ tự tìm đúng độ dời 4,7 m Tây, 21,1 m Nam.
+- **Nghiệm thu Blanca ghi vào `georef.json`**: toàn khu hội tụ (lệch còn 0,6 m). Đơn lập và hai dãy nhà phố dọc khớp nền móng. Các dãy nhà phố ngang phía Đông còn lệch cỡ nửa bước dãy, Grand Villa và song lập chưa kiểm chắc vì chưa xây rõ — ghi rõ, không giấu. Cách dứt điểm: toạ độ VN-2000 từ quy hoạch 1/500.
+- **Ảnh vệ tinh z18 (0,6 m mỗi điểm ảnh)** trong ranh dự án, nạp z17 trước rồi nâng lên. Điện thoại yếu giữ z17.
+- **Độ cao camera hiện bằng mét** và **hai góc nhìn 500 m, 1 km** đứng sau Beacon, Beachtro nhìn thẳng ra biển (phương vị 150°, pháp tuyến bờ Bãi Sau đo trên ảnh vệ tinh).
+- Mặt biển đều tông: shader lấy tông vùng rộng qua mipmap, thay bằng một màu biển chung, giữ sóng. Mép lớp ảnh gần mờ dần vào lớp xa.
+- **Ảnh đại diện giỏ hàng chụp từ khối 3D**: chế độ `?chup=1`, script `scripts/chup-anh-sa-ban.py` ra ảnh thẻ 1200×600, bản nhẹ 640×320 và ảnh chia sẻ 1200×630. Thẻ Blanca ở trang Tìm nhà nay dùng ảnh này, ghi "Sa bàn 3D"; link sa bàn có ảnh xem trước khi dán lên Facebook, Zalo.
+- Thẻ Blanca ghi **"Quỹ đại lý: 80 căn"** thay vì "Sơ cấp", để không hiểu nhầm là cả dự án chỉ còn 80 căn.
+- **Tự động hoá ký gửi không cần Zalo OA**: thư cảm ơn và xác nhận cho chủ nhà; thư báo Tú kèm tệp lịch nhắc chăm sóc ngày thứ 15; ngày thứ 15 tự gửi thư nhắc Tú và thư hỏi chủ nhà căn đã bán chưa (Resend hẹn giờ, không cần máy chủ riêng). Lỗi thư không làm mất phiếu.
+- **PROJECT_RULES §17**: quy trình chuẩn dựng sa bàn dự án mới — đầu vào cần xin, ba tầng định vị, tiêu chí nghiệm thu, ảnh nền và độ cao, tự động hoá ký gửi. Sửa hai dòng nhật ký §14 mâu thuẫn với kết quả kiểm chứng mới.
+
+## 2.39.0 · 19/11/2026 — Phiếu ký gửi đầy đủ, sa bàn khớp nền móng thật
+- **Phiếu ký gửi dựng theo PROJECT_RULES §16.5–16.7**: người ký gửi (tên, điện thoại, email), thông tin căn (mã căn, giá mua trên hợp đồng gồm VAT và KPBT, giá bán mong muốn, ô tích thương lượng và giá net), ngày ký hợp đồng.
+- **Giá chênh hệ thống tự tính**, hiện ngay khi gõ.
+- **Bảng hoa hồng sáu mức** (3% · 2% · 1% cho giao dịch trong và sau 30 ngày), tự tính số tiền dự tính trên giá bán cuối = giá mua chưa gồm VAT và KPBT cộng giá chênh. Chủ nhà không điền giá gốc thì tạm tính bằng giá hợp đồng chia 1,12 và **ghi rõ là tạm tính**. Máy chủ tính lại toàn bộ số tiền, không tin số do trình duyệt gửi.
+- **Tài liệu xác minh tách hai nhóm**: nhóm công khai (ảnh tiêu đề hợp đồng, bảng tính căn, ngày ký) và nhóm bảo mật (CCCD hoặc VNeID, phần thông tin cá nhân trên hợp đồng). Mỗi mục có **hình hướng dẫn vị trí chụp**.
+- Nói rõ chỉ nhận ảnh chụp thực tế, **không nhận ảnh phối cảnh**.
+- Chặn lỗi trước khi gửi: email sai, thiếu giá, giá bán thấp hơn giá mua.
+- **Chưa nhận tải ảnh trực tiếp**: gửi phiếu xong khách nhận mã phiếu rồi gửi ảnh qua Zalo kèm mã. Giấy tờ tuỳ thân chưa có chỗ lưu riêng nên không giữ trên máy chủ.
+- **Sa bàn khớp nền móng thật**: hướng Bắc và tỷ lệ giữ từ hai nút giao, riêng vị trí dời thêm 4,1 m về Tây và 21,2 m về Nam bằng cách khớp lưới lô với lưới nền móng đã thi công trên ảnh vệ tinh. Hệ số tương quan tăng từ 0,021 lên 0,050, mười đỉnh cao nhất tụ trong bán kính 3 m nên không phải nhầm sang hàng lô bên cạnh.
+
 ## 2.38.0 · 19/11/2026 — Nạp quỹ căn hộ đại lý, tra được từng căn
 - **Nạp bảng hàng thật lần đầu**: 30 căn Beacon (toà E5, E3, E1) và 50 căn cụm B1-B2-B3 (toàn bộ ở toà B2), từ hai file quỹ chung Tú gửi 19/11/2026. Mỗi căn có mã, toà, tầng, loại, diện tích thông thuỷ và tim tường, giá đã gồm VAT và phí bảo trì, tình trạng.
 - **Nhập mã căn là ra căn**: ô tìm trong hồ sơ phân khu, gõ `E512A06` hoặc `B20519` ra đúng căn đó.

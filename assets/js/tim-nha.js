@@ -45,12 +45,12 @@ function drawDirectory(){
  for(const [key,p] of Object.entries(projects).sort(([a],[b])=>a==='artisan-park'?-1:b==='artisan-park'?1:projects[a].name.localeCompare(projects[b].name,'vi'))){
   if(!norm(p.name+' '+p.region).includes(q))continue;
   const card=document.createElement('button');card.className='property';card.type='button';card.setAttribute('aria-pressed',String(key===slug));
-  const photo=new Image();photo.src=p.thumbnail;photo.loading='lazy';photo.alt=p.imageCaption+' · '+p.name;card.append(photo);
+  const photo=new Image();photo.src=p.thumbnail;if(p.thumbnailNho){photo.srcset=p.thumbnailNho+' 640w, '+p.thumbnail+' 1200w';photo.sizes='(max-width:600px) 100vw, 300px';}photo.loading='lazy';photo.decoding='async';photo.alt=p.imageCaption+' · '+p.name;card.append(photo);
   function line(tag,value,parent=card){const child=document.createElement(tag);child.textContent=value;parent.append(child);return child;}
   line('small',p.imageCaption+' · '+p.region);line('strong',p.name);
   const metrics=line('span','');metrics.className='metrics';
   const count=v=>v==null?'Chưa cập nhật':v+' căn';
-  line('span','Sơ cấp: '+count(p.primaryCount),metrics);line('span','Thứ cấp: '+count(p.secondaryCount),metrics);
+  if(p.quyDaiLy!=null)line('span','Quỹ đại lý: '+p.quyDaiLy.toLocaleString('vi-VN')+' căn',metrics);else line('span','Sơ cấp: '+count(p.primaryCount),metrics);line('span','Thứ cấp: '+count(p.secondaryCount),metrics);
   line('span','Giá chào TB: '+(p.meanAskingVnd==null?'Chưa cập nhật':(p.meanAskingVnd/1e9).toLocaleString('vi-VN',{maximumFractionDigits:2})+' tỷ/căn'),metrics);
   if(p.snapshotDate)line('small','Bảng giá '+p.snapshotDate.split('-').reverse().join('/')+' · gồm VAT');
   card.onclick=()=>{selector.value=key;selector.dispatchEvent(new Event('change'));el('selectedProject').scrollIntoView({block:'start'});};

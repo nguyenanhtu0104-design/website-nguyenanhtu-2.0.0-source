@@ -263,14 +263,15 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 
 ## 14. Nhật ký thay đổi nguyên tắc
 
-- **19/11/2026 — Mốc định vị chỉ lấy trên công trình đã thi công.** Ghim đặt ở vị trí công trình chưa xây là ước lượng từ chính tổng mặt bằng, đưa vào phép giải sẽ tự khẳng định cái sai của mình. Chỉ dùng nút giao, vòng xoay, công trình đã có trên ảnh vệ tinh. Mốc càng xa nhau càng chắc.
-- **19/11/2026 — Không dò khớp sa bàn bằng tương quan ảnh.** Lưới lô lặp đều nên hàm tương quan có nhiều đỉnh gần bằng nhau, lệch nhau đúng một hàng lô; đã thử hai cách đều chạy ra biên dải tìm. Dùng điểm mốc, không dùng dò tự động.
+- **19/11/2026 — Chuẩn hoá quy trình dựng sa bàn dự án mới (§17).** Mọi dự án sau làm theo đúng §17: đầu vào xin trước, ba tầng định vị, tiêu chí nghiệm thu, ảnh đại diện chụp từ khối 3D, tự động hoá ký gửi bằng email.
 
-- **19/11/2026 — Hình khối lấy từ bản vẽ trực giao, không lấy từ ảnh phối cảnh.** Phối cảnh là ảnh vẽ xiên nên không đo được. Tổng mặt bằng thì đo được: mảng tô công trình trên đó chính là đường bao chân công trình, dùng được. Mặt bằng tầng điển hình trong hồ sơ dùng để đối chiếu thứ tự toà con và hình dáng. Thiếu dữ liệu thì ghi rõ "chưa công bố", không đoán.
+- **19/11/2026 — Mốc định vị chỉ lấy trên công trình đã thi công.** Ghim đặt ở vị trí công trình chưa xây là ước lượng từ chính tổng mặt bằng, đưa vào phép giải sẽ tự khẳng định cái sai của mình. Chỉ dùng nút giao, vòng xoay, công trình đã có trên ảnh vệ tinh. Mốc càng xa nhau càng chắc.
+- **19/11/2026 — Tương quan ảnh chỉ dùng để tinh chỉnh tịnh tiến, trong cửa sổ hẹp.** Dò tự động toàn ảnh, theo vùng hay theo từng khối đều hỏng: lưới lô lặp đều nên tương quan có nhiều đỉnh ngang nhau, lệch nhau đúng một dãy. Chỉ dùng sau khi điểm mốc đã cho hướng Bắc và tỷ lệ, tìm trong bán kính nhỏ hơn bước dãy, và chỉ nhận khi mười đỉnh cao nhất tụ trong 3 m, không chạm biên, tương quan tăng ít nhất 1,5 lần (`scripts/khop-sa-ban.py dich` tự kiểm ba điều kiện này).
+
+- **19/11/2026 — Hình khối lấy từ bản vẽ trực giao, không lấy từ ảnh phối cảnh.** (Thay cho dòng cũ cùng ngày cho rằng mảng màu trên tổng mặt bằng là cảnh quan — sai, đã kiểm lại.) Phối cảnh là ảnh vẽ xiên nên không đo được. Tổng mặt bằng thì đo được: mảng tô công trình trên đó chính là đường bao chân công trình, dùng được. Mặt bằng tầng điển hình trong hồ sơ dùng để đối chiếu thứ tự toà con và hình dáng. Thiếu dữ liệu thì ghi rõ "chưa công bố", không đoán.
 - **19/11/2026 — Ảnh nền bản đồ phải đi qua `/api/nen`.** Không nhúng thẳng đường dẫn ô ảnh của nhà cung cấp vào mã chạy ở trình duyệt: khoá sẽ lộ và không đổi được nhà cung cấp. Đặt mẫu đường dẫn ở biến môi trường `NEN_TILE_URL`, dòng ghi nguồn ở `NEN_GHI_NHAN`, loại ảnh ở `NEN_KIEU`. Không đặt gì thì chạy OpenStreetMap.
 - **19/11/2026 — Không dùng ô ảnh vệ tinh Google.** Đường dẫn ô ảnh Google lưu truyền trên mạng không có giấy phép cho trang thương mại; muốn dùng Google phải qua Map Tiles API có tính tiền. Trang này đi đường khác (xem §15).
 
-- **19/11/2026 — Không trích hình khối từ ảnh phối cảnh.** Tổng mặt bằng và phối cảnh là ảnh tiếp thị vẽ xiên, không phải bản vẽ trực giao: mảng màu trên đó là cảnh quan và mái, không phải chân công trình. Chỉ được dựng khối 3D từ số liệu có trong hồ sơ (số tầng, số căn) hoặc từ bản vẽ vector. Thiếu dữ liệu thì ghi rõ "chưa công bố", không đoán và không suy từ ảnh.
 - 2026-11-19 — **2.33.0** (Tú: "dựng đi rồi up lên web luôn để test hoàn thiện"): khối tháp trong sa bàn dựng từ **số tầng công bố trong hồ sơ chủ đầu tư**, quy đổi bằng công thức cố định (2 tầng khối đế 5 m, tầng căn hộ 3,6 m) chia cho tỷ lệ trong `georef.json`. **Không đoán số tầng**: toà nào hồ sơ chưa công bố thì ghi "chưa có số tầng công bố", như cụm B5 · B6 · B7. Mặt bằng chân tháp còn là khối hộp; khi dựng theo hình gấp khúc thật phải ghi nguồn trang bản vẽ.
 - 2026-11-19 — **2.31.0** (Tú hỏi: định vị khu đất sao phức tạp vậy, dự án sau có phải làm tay không): từ nay **định vị sa bàn phải giải bằng `scripts/dinh-vi-sa-ban.mjs` từ ít nhất 2 điểm mốc**, không đọc hoa gió trên bản vẽ, không ước lượng tỷ lệ từ bước lặp lô. Mỗi dự án có `diem-moc.json` trong thư mục công cụ. **Phải có mốc thứ ba để đo sai số**; chưa đo được sai số thì `georef.json` ghi `trangThai: giai-tu-2-moc-chua-do-sai-so` và không được công bố số đo khoảng cách hay diện tích suy từ phép chiếu.
 - 2026-11-19 — **2.30.0**: thêm `assets/tools/casa-blanca/ranh-du-an.json` (ranh Blanca City từ KML Tú vẽ trong My Maps) và vẽ lên sa bàn. **Ranh vẽ tay là tham chiếu, không phải ranh pháp lý — mọi nơi hiển thị phải nói rõ.** Phép chiếu sa bàn ↔ WGS84 hiện **có mâu thuẫn chưa giải**: hoa gió trên bản vẽ cho hướng Bắc 44°, còn khớp vào ranh thật cho khoảng 34°. Giữ 44° và ghi mâu thuẫn trong `georef.json` (`mauThuanCanGiaiQuyet`). **Cấm công bố số đo khoảng cách hay diện tích tính từ phép chiếu này cho tới khi chốt được hướng bằng 2–3 điểm mốc đối chiếu được.**
@@ -329,7 +330,7 @@ Nhà cung cấp đã khảo sát:
 - **Google** — chỉ hợp lệ qua Map Tiles API có tính tiền. Đường dẫn ô ảnh lưu truyền trên mạng không có giấy phép, không dùng.
 - **Mapbox Satellite** — 50.000 lượt tải bản đồ mỗi tháng miễn phí, điều khoản rõ ràng. Phương án dự phòng.
 
-Có khoá rồi thì vào Cloudflare Pages → Settings → Environment variables, thêm `ARCGIS_API_KEY`, deploy lại. Không phải sửa mã, không phải đụng gói cập nhật.
+Lớp gần lấy z18 trong ranh dự án (§17.4). Có khoá rồi thì vào Cloudflare Pages → Settings → Environment variables, thêm `ARCGIS_API_KEY`, deploy lại. Không phải sửa mã, không phải đụng gói cập nhật.
 
 **Tuyệt đối không đặt khoá vào gói cập nhật hay bất kỳ file nào trong kho nguồn.** Kho `website-nguyenanhtu-2.0.0-source` là kho công khai: khoá đẩy lên đó coi như đã lộ và phải thu hồi ngay.
 
@@ -375,4 +376,48 @@ Hệ thống lấy giá cuối trên hợp đồng cộng mức chênh mong mu�
 ### 16.7 Tự động
 - Gửi email và Zalo xác nhận đã đăng ký ký gửi, cảm ơn, kèm lời chúc sớm thanh khoản.
 - Sau ngày đăng ký 15 ngày: tự nhắc chăm sóc, hỏi lại căn đã bán chưa để cập nhật hệ thống.
+
+## 17. Quy trình dựng sa bàn cho dự án mới (chuẩn từ Blanca City, 19/11/2026)
+
+Blanca City là bản mẫu. Dự án sau sao chép khung `assets/tools/casa-blanca/` rồi thay dữ liệu, không viết lại mã.
+
+### 17.1 Đầu vào Tú gửi — xin theo thứ tự này
+1. **Bản đồ quy hoạch tổng mặt bằng 1/500 có bảng toạ độ VN-2000**, ghi rõ kinh tuyến trục (Bà Rịa – Vũng Tàu: 107°45′, EPSG:5899). Có bản này là định vị chính xác đến mét, bỏ qua bước ghim. Xin chủ đầu tư hoặc ban quản lý dự án.
+2. **Ranh dự án** vẽ trên Google My Maps theo bản đồ thật, tải KMZ về đính kèm.
+3. **Tổng mặt bằng** (ảnh) và **hồ sơ tư vấn PDF** có mặt bằng tầng điển hình, số tầng, số căn từng toà.
+4. **Ít nhất hai ghim** trên My Maps đặt tại công trình **đã thi công**, nhìn rõ trên ảnh vệ tinh: nút giao, vòng xoay, góc toà nhà đã xây. Cách nhau càng xa càng tốt. Ghim thứ ba trở đi dùng để đo sai số. Không ghim vào công trình chưa xây. Không ghim theo mã căn khi chưa có bảng hàng.
+5. **Bảng hàng .xlsx** (Mã căn, Toà, Tầng, Căn, Loại căn, diện tích thông thuỷ và tim tường, giá đã gồm VAT và KPBT, tình trạng). Tải về rồi đính kèm — môi trường làm việc của Claude không mở được link Google.
+6. **Chính sách bán hàng** và nói rõ **đợt nào đang áp dụng** cho quỹ đó.
+
+### 17.2 Các bước Claude làm
+1. **Khung thư mục** `assets/tools/<du-an>/`: `plan.webp`, `geometry.json`, `georef.json`, `ranh-du-an.json`, `diem-moc.json`, `chan-thap.json`, `can-ho.json`, `inventory.json`.
+2. **Định vị — ba tầng, tầng sau chỉ làm khi tầng trước xong:**
+   - Tầng 1, khung. Có toạ độ VN-2000: `python3 scripts/khop-sa-ban.py vn2000 moc.csv --ktt 107-45 > moc.kml`, rồi `node scripts/dinh-vi-sa-ban.mjs <thu-muc> moc.kml --ghi`. Không có: giải từ các ghim đã thi công.
+   - Tầng 2, tịnh tiến. `khop-sa-ban.py anh <thu-muc>` rồi `khop-sa-ban.py dich <thu-muc>`. Công cụ tự từ chối khi kết quả không tin được. Nhận thì thêm `--ghi`.
+   - Tầng 3, nghiệm thu. `khop-sa-ban.py soi <thu-muc>` ra bảng ảnh từng khối có lưới đo. Ghi kết quả vào `georef.json` mục `nghiemThu`: khối khớp, khối lệch bao nhiêu, khối chưa kiểm được.
+3. **Khối 3D.** Căn thấp tầng theo tổng mặt bằng. Tháp: chân tháp cắt từ đường bao công trình trên tổng mặt bằng, số tầng theo hồ sơ, đối chiếu thứ tự toà con với mã căn trên mặt bằng tầng điển hình.
+4. **Giỏ hàng.** Chuyển xlsx sang `can-ho.json`, ghi rõ `phamVi` (quỹ đại lý hay toàn bộ giỏ hàng). Thẻ dự án ở Tìm nhà dùng nhãn "Quỹ đại lý" khi không phải toàn bộ.
+5. **Góc nhìn.** Đặt `PHUONG_BIEN` = phương vị hướng view chính (pháp tuyến bờ biển, sông, công viên) đo trên ảnh vệ tinh. Kiểm hai nút 500 m và 1 km nhìn đúng hướng đó.
+6. **Ảnh đại diện.** Sau khi deploy: `python3 scripts/chup-anh-sa-ban.py https://nguyenanhtu.vn/assets/tools/<du-an>/<trang>.html assets/tools/<du-an>`, rồi thêm `"saBan": "<du-an>"` cho dự án trong `data/project-inventory.json`. Thẻ dự án và ảnh chia sẻ tự lấy ảnh này.
+7. Kiểm thử, đóng gói như §13.
+
+### 17.3 Tiêu chí nghiệm thu
+- Tầng 2 hội tụ: lệch tịnh tiến còn dưới 1,5 m. Bảng soi từng khối đã xem và ghi kết quả. Khu nào lệch thì ghi rõ trong `georef.json`, không giấu.
+- Không công bố số đo khoảng cách, diện tích lấy từ phép chiếu (§14).
+- Ảnh nền lớp gần đạt z18 trong ranh dự án trên máy tính; điện thoại yếu được phép giữ z17.
+- Giỏ hàng ghi rõ phạm vi. Căn đã bán hoặc chưa mở bán để trống trên khối 3D (§16.2).
+- Ảnh đại diện chụp ở z18, không lộ nút hay chữ của giao diện.
+
+### 17.4 Ảnh nền và độ cao
+- Lớp gần: z18 (0,6 m mỗi điểm ảnh) trong ranh dự án nới 15%, nạp z17 trước cho nhanh rồi thay bằng z18. Lớp xa: z14, rộng gấp bốn khu đất.
+- Độ cao camera hiện bằng mét ở thanh dưới. Kéo xa nhất 7,9 km.
+- Tông nước biển chuẩn hoá trong shader (lấy tông vùng rộng qua mipmap) để giấu các mảng ghép ảnh nhiều ngày của Esri. Mép lớp gần mờ dần vào lớp xa.
+
+### 17.5 Tự động hoá ký gửi không cần Zalo OA
+- Zalo cá nhân không có API. Nhắn Zalo tự động phải có Zalo OA và ZNS (trả phí theo tin, mẫu tin phải được duyệt). Không dùng.
+- Thay bằng email qua Resend, dùng biến đã có (`RESEND_API_KEY`, `MAIL_FROM`, `NOTIFY_TO`), thêm `ZALO_TU` nếu đổi số:
+  - Ngay khi nhận phiếu: thư cảm ơn và xác nhận cho chủ nhà (trả lời thư là về Tú); thư báo Tú kèm tệp lịch `.ics` nhắc chăm sóc 9:00 ngày thứ 15.
+  - Ngày thứ 15, 9:00: Resend tự gửi thư nhắc Tú, và thư hỏi chủ nhà căn đã giao dịch chưa. Hẹn giờ bằng `scheduled_at` của Resend, tối đa 30 ngày, không cần máy chủ hẹn giờ.
+- Ảnh giấy tờ: chủ nhà gửi qua Zalo của Tú kèm mã phiếu, nút mở Zalo có sẵn sau khi gửi.
+- Lỗi gửi thư không làm mất phiếu đã lưu; API trả về cờ `auto` cho biết thư nào đã đi.
 

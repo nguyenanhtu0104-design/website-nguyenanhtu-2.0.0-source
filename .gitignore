@@ -3,3 +3,6 @@ node_modules/
 __pycache__/
 .DS_Store
 update-*.zip
+
+# kết quả trung gian của scripts/khop-sa-ban.py
+.sa-ban/
