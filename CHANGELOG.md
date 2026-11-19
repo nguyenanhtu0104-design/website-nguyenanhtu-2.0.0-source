@@ -1,9 +1,98 @@
-## 2.24.0 · 18/11/2026
-Thêm Tìm nhà sau Cẩm nang, liên kết giỏ hàng và ký gửi theo dự án CH04.
-
 # CHANGELOG — Cẩm Nang BĐS
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
+
+## 2.35.1 · 19/11/2026 — Bật ảnh vệ tinh chỉ bằng một biến môi trường
+- Chỉ cần đặt **`ARCGIS_API_KEY`** trên Cloudflare là có ảnh vệ tinh; đường dẫn ô ảnh do máy chủ tự dựng, thử hai điểm cuối của Esri rồi mới chịu thua. Trước đó phải tự gõ cả mẫu đường dẫn, dễ sai.
+- Khi đặt khoá mà vẫn không lấy được ô ảnh, máy chủ trả lỗi chứ không lặng lẽ đưa ảnh OpenStreetMap ra dưới dòng ghi nguồn Esri; trang tự quay về OpenStreetMap và sửa lại dòng ghi nguồn cho đúng.
+- Máy chủ gửi kèm `Referer` theo `SITE_URL` nên khoá ArcGIS có thể khoá theo tên miền mà vẫn gọi được.
+- **Khoá không bao giờ nằm trong gói cập nhật.** Kho nguồn là kho công khai nên khoá chỉ được đặt ở biến môi trường Cloudflare.
+
+## 2.35.0 · 19/11/2026 — Chân tháp theo layout căn hộ, nền ảnh vệ tinh
+- **Beacon và Beachtro dựng theo đường bao công trình thật**, không còn khối hộp. Chân tháp cắt từ mảng công trình trên tổng mặt bằng rồi chia 48 lát dọc mỗi khối, giữ đúng hình chữ U hai cánh hai đầu và nét gấp khúc ở giữa. Đối chiếu mặt bằng tầng điển hình trong hồ sơ tư vấn (trang 67 cho Beacon, trang 99 cho Beachtro): thứ tự toà con từ trái sang phải đúng là E5 · E3 · E2 · E1 và E9 · E8 · E7 · E6, khớp mã căn in trên bản vẽ.
+- Mỗi toà con cao theo số tầng riêng nên khối tháp lên xuống bậc thang đúng như phối cảnh, thay vì một bức tường phẳng.
+- **Cụm B1–B3 và B5–B7 giữ khối hộp** vì trên tổng mặt bằng chúng đúng là sáu khối chữ nhật rời, không phải khối chữ U.
+- **Nền bản đồ nay cắm được ảnh vệ tinh.** Ô ảnh đi vòng qua `/api/nen/{z}/{x}/{y}` nên khoá của nhà cung cấp nằm ở server, không lộ ra trình duyệt; đổi nhà cung cấp chỉ cần sửa biến môi trường `NEN_TILE_URL`, không phải sửa mã. Chưa đặt khoá thì vẫn chạy OpenStreetMap như cũ. Ô ảnh được đệm ở biên Cloudflare một ngày.
+- Ảnh vệ tinh không bị tô lại theo tông thương hiệu như bản đồ đường phố, chỉ hạ sáng nhẹ cho hợp nền tối.
+- **Kiểm chứng phép chiếu lần đầu bằng ảnh vệ tinh**: chồng tổng mặt bằng lên ảnh thực địa, lưới nền móng, công viên nước và mép biển khớp nhau; ranh KML trùng hiện trạng. Vẫn giữ nguyên tắc không công bố số đo từ phép chiếu này.
+
+## 2.34.0 · 19/11/2026 — Số tầng Beacon và cụm B5-B6-B7 theo đính chính của Tú
+- **Beacon Tower**: 4 đoạn tháp nay có số tầng riêng theo Tú cho ngày 19/11/2026 — **E1 39 tầng · E2 40 tầng · E3 39 tầng · E5 36 tầng**. Bản 2.33.0 tạm lấy 40 tầng cho cả bốn vì hồ sơ không tách.
+- **Cụm B5 · B6 · B7**: Tú xác nhận cao giống cụm B1 · B2 · B3 — **B5 40 tầng, B6 và B7 mỗi toà 34 tầng**. Thẻ phân khu đổi từ "chưa công bố số tầng" sang "B5 40T · B6 B7 34T".
+- **Khối đế giữ dạng hộp** đúng yêu cầu; phần căn hộ vẫn là khối chữ nhật. Đã thử tách chân tháp từ lớp phủ xanh trên tổng mặt bằng nhưng lớp đó là cảnh quan mái khối đế chứ không phải chân tháp, đùn lên thành một bức tường dài nên bỏ. Muốn dựng theo nét gấp khúc thật thì cần mặt bằng tầng điển hình dạng vector (DWG/SVG), không lấy được từ ảnh phối cảnh.
+
+## 2.33.0 · 19/11/2026 — Dựng khối tháp theo hồ sơ kiến trúc
+- **Beachtro Tower** nay là 4 toà riêng mọc trên khối đế 2 tầng, đúng số tầng công bố: E9 36 tầng · E8 40 tầng · E7 38 tầng · E6 34 tầng (537 + 363 + 379 + 506 = 1.785 căn). Thứ tự từ trái sang phải theo phối cảnh trang 98.
+- **Beacon Tower** nay là khối đế 2 tầng với 4 đoạn tháp E5 · E3 · E2 · E1. Mặt đứng trang 61 ghi 3 tầng hầm, 2 tầng khối đế, tầng 3–38 căn hộ, tầng 39–40 duplex, trần cao 3,6 m. Hồ sơ không tách số tầng từng đoạn nên tạm lấy 40 tầng cho cả bốn.
+- **Cụm B1 · B2 · B3** sửa chiều cao cho đúng: B1 40 tầng, B2 và B3 mỗi toà 34 tầng, tổng **2.224 căn** (trang 49). Trước đây cả ba dựng ở khoảng nửa chiều cao thật.
+- Chiều cao quy đổi theo công thức thống nhất: 2 tầng khối đế cao 5 m, các tầng căn hộ cao 3,6 m, chia cho tỷ lệ sa bàn trong `georef.json`. Đổi tỷ lệ thì chiều cao tự tính lại.
+- **Cụm B5 · B6 · B7 chưa có số tầng công bố** trong hồ sơ, trang ghi rõ điều đó thay vì đoán.
+- Mặt bằng chân tháp vẫn là khối hộp, chưa theo hình gấp khúc như mặt bằng tầng điển hình (trang 63). Đã ghi trong phần "Về dữ liệu".
+
+
+## 2.32.0 · 19/11/2026 — Đính chính tên khối tháp, định vị bằng 3 điểm mốc
+- **Sửa sai tên hai khối tháp** theo đính chính của Tú: khối ghi **E1** trên tổng mặt bằng là **Beachtro Tower** (toà con E6, E7, E8, E9 · 1.785 căn), khối ghi **E2** là **Beacon Tower** (toà con E1, E2, E3, E5 · 2.211 căn). Trước đây sa bàn gọi nhầm cả hai là "Beacon E1" và "Beacon E2", và ghi Beachtro chưa có vị trí. Beachtro nay có khối trên sa bàn, nhấp được, có hồ sơ riêng kèm tỷ trọng loại căn. Cụm B1-B2-B3 cập nhật 2.234 căn. Nguồn: hồ sơ tư vấn Blanca City 7/8/2026, trang 14, 49, 80, 98.
+- **Định vị lại bằng 5 điểm mốc Tú đặt trong My Maps** thay cho đoán từ bản vẽ: hướng Bắc **35,16°**, tỷ lệ **2,1958 m/đơn vị**. Hướng hội tụ tốt qua ba cách tính độc lập (33,8° với 3 mốc, 35,2° với 5 mốc, 35,6° khi chỉ lấy hai nút giao cách nhau 1.708 m); tỷ lệ còn tản từ 2,15 đến 2,50. Lệch còn tới 72 m ở tâm công viên nước — đủ để đặt sa bàn đúng hướng và đúng khu vực, **không đủ để đo khoảng cách hay xác định ranh lô**. Công cụ `dinh-vi-sa-ban.mjs` nay khớp bình phương tối thiểu khi có từ 3 mốc trở lên và sửa lỗi sai dấu ở phép tính hướng.
+- **Vì sao còn lệch**: vị trí các mốc trên bản vẽ do đo bằng mắt từ ảnh phối cảnh, sai số vài chục mét; và tổng mặt bằng tiếp thị không phải bản vẽ đo đạc nên các phần có thể vẽ ở tỷ lệ hơi khác nhau — tỷ lệ 2,196 cho mặt tiền townhouse 8,6 m trong khi hồ sơ ghi 7,5 m. Đã ghi đủ trong `georef.json`.
+
+
+## 2.31.0 · 19/11/2026 — Công cụ định vị sa bàn, hết phải đoán
+- Thêm `scripts/dinh-vi-sa-ban.mjs`: đưa vào một KML có **2 ghim** nhận ra được trên cả ảnh tổng mặt bằng lẫn bản đồ, nó **giải thẳng** ra hướng Bắc, tỷ lệ mét trên mỗi đơn vị ảnh và điểm neo. Hai điểm là vừa đủ nên không còn tối ưu, không còn đoán. Ghim thứ ba trở đi không tham gia giải mà dùng để **đo sai số thật tính bằng mét**.
+- Mỗi dự án chỉ cần một file `diem-moc.json` nối tên ghim với toạ độ trên ảnh. Chạy một lệnh là xong, không phải làm tay.
+- Tự kiểm: cho công cụ một phép chiếu biết trước (Bắc 37,5°, tỷ lệ 1,9345) rồi bắt giải lại — ra đúng cả hai số, sai số 0,0 m tại điểm kiểm tra.
+- Thêm `assets/tools/casa-blanca/diem-moc.json` với mốc đầu tiên là tâm công viên nước. **Chưa giải được vì mới có 1 mốc**, cần mốc thứ hai.
+
+
+## 2.30.0 · 19/11/2026 — Ranh khu đất thật trên sa bàn
+- Nạp ranh Blanca City từ KML Tú vẽ trong Google My Maps (26 đỉnh, 104,8 ha) thành `assets/tools/casa-blanca/ranh-du-an.json`, vẽ lên sa bàn bằng đường viền vàng, có nút **Ranh đất** ở thanh dưới để bật tắt.
+- **Phát hiện mâu thuẫn về hướng, chưa chốt được.** Đặt sa bàn theo hướng Bắc 44° thì 15 trong 971 điểm công trình nằm ngoài ranh, điểm tệ nhất ra 93 m; hạ hướng xuống 32–36° thì không điểm nào ra ngoài. Hai nguồn chỉ 44° (hoa gió in trên tổng mặt bằng, đo hai cách được 43,8° và 43,9°; hướng bờ Bãi Sau ước lượng thô) chọi hai nguồn chỉ khoảng 34° (khớp công trình vào ranh; so trục chính công trình với trục chính ranh ra 33,8°). Chênh khoảng 10°, tức lệch khoảng 150 m ở hai đầu khu đất dài 1,7 km.
+- Giữ nguyên 44° và ghi toàn bộ mâu thuẫn vào `georef.json` để kiểm lại được. Cần 2–3 điểm mốc nhận ra trên cả tổng mặt bằng lẫn bản đồ mới giải đồng thời được hướng, tỷ lệ và vị trí.
+
+
+## 2.29.0 · 19/11/2026 — Công bố Tìm nhà, bỏ phần gió
+- **Đổi điểm neo sa bàn lên bản đồ** sang toạ độ Tú gửi: 10°22'59.9"N 107°08'02.6"E (10,383306 / 107,134056), Tú xác nhận ghim ở khung đất. Neo đặt tại tâm hình bao công trình trên tổng mặt bằng (440,4 / 196,4 đơn vị). So với điểm neo cũ lấy từ ghim Sun World trong mã nguồn bàn giao, sa bàn dịch khoảng 334 m (318 m bắc, 101 m đông). Hướng Bắc 44° và tỷ lệ 1,911 m/đơn vị giữ nguyên vì mỗi số đã có hai phép đo độc lập khớp nhau. Vị trí vẫn ghi là **sơ bộ**: ghim chỉ nói khung đất, chưa nói rơi đúng điểm nào trong khu 96,6 ha.
+- **Công bố Tìm nhà**: `timNha.congBo` đổi thành `true`. Menu, nút "Xem giỏ hàng · Ký gửi căn" ở 82 trang bài và các liên kết mở sa bàn trong bài đều trở lại; `/tim-nha/` bỏ `noindex`.
+- **Bỏ hẳn tính năng gió** theo yêu cầu: xoá `functions/api/thoi-tiet.js`, nút "Khói gió", hoa gió nhiều năm, số gió hiện thời và kim gió trên la bàn. Lý do: Open-Meteo miễn phí chỉ cho phi thương mại, website này là thương mại. Sa bàn không còn gọi dịch vụ ngoài nào.
+- **Nắng giữ nguyên** vì tính bằng thuật toán NOAA ngay trong trang từ tọa độ, ngày và giờ: hướng nắng, bóng đổ, mọc, đứng bóng, lặn và thanh kéo giờ vẫn chạy. Tab đổi tên thành "Nắng", nút dải trái đổi thành "Nắng".
+
+
+## 2.28.0 · 19/11/2026 — Tạm chưa công bố Tìm nhà
+- Thêm cờ `timNha.congBo` trong `site.config.json`, đang đặt `false`. Khi tắt: **Tìm nhà không còn trong menu**, không còn nút "Xem giỏ hàng · Ký gửi căn" ở 82 trang bài, mọi liên kết mở sa bàn trong nội dung bài được gỡ (giữ nguyên câu chữ), và `/tim-nha/` gắn `noindex, nofollow` kèm dải báo "Trang đang hoàn thiện, chưa công bố".
+- Trang Tìm nhà và sa bàn Blanca **vẫn được tạo** để xem thử qua link trực tiếp, giống cách làm với kỳ ấn phẩm `nhap`. `/tim-nha/` vốn không có trong sitemap và search index nên không cần gỡ thêm.
+- Đổi cờ thành `true` là công bố lại toàn bộ, không phải sửa nội dung bài nào.
+
+
+## 2.27.0 · 19/11/2026 — Blanca City: giao diện sa bàn kiểu bản đồ thật
+- **Nền bản đồ thật là mặc định**, tô lại theo tông thương hiệu ngay trong shader: nền nâu sẫm, đường kem, đường lớn màu đồng, cây ô liu, nước xanh lam. Nút ở thanh dưới đổi qua lại Bản đồ · Mặt bằng · Chồng lớp. Không tải được ô bản đồ thì tự lui về tổng mặt bằng, không vỡ trang.
+- **Bố cục mới quanh sa bàn**: thanh trên (phân khu đang xem, nguồn hàng Tất cả/Sơ cấp/Thứ cấp, chọn sa bàn, Tối, Ẩn thông số); dải phân khu có chấm màu và **số căn**; dải công cụ trái (Rổ giá có số, Mặt cắt, Khí hậu, Hạ tầng, Khối 3D) bằng icon nét; thanh cao độ bên phải; thanh dưới (Bắc, Toàn cảnh, **giờ nắng**, Khói gió, đổi nền) và dòng chú thích nguồn.
+- **Nhãn phân khu có khoảng giá** kèm đường chỉ xuống đúng vị trí trên sa bàn. Giá đọc từ `inventory.json` → `giaPhanKhu`; chưa có thì ghi "Chưa có bảng giá".
+- **Khói gió**: hạt trôi trên mặt đất theo **đúng hướng và tốc độ gió thật** lấy từ `/api/thoi-tiet`. Nút tắt khi chưa có dữ liệu gió.
+- **Mặt cắt theo cao độ**: cắt ngang khối Beacon và các cụm B tại Mái · T39 · T36 · T30 · T20 · T10 · T04.
+- **Ngày/đêm** bật tay, ngoài chế độ tự đổi theo mặt trời thật. **Ẩn thông số** giấu toàn bộ nhãn để xem khối sạch. **Khối 3D** tắt/bật nhà để xem riêng nền bản đồ.
+- **Hạ tầng**: liệt kê mốc kết nối lấy từ hồ sơ dự án, ghi rõ chưa có tọa độ nên chưa ghim được lên bản đồ.
+
+## 2.26.0 · 19/11/2026 — Blanca City: nắng, gió và nền bản đồ thật
+- **Nắng tính từ tọa độ thật**, không phải tùy chọn: thuật toán vị trí mặt trời NOAA chạy trong trang, lấy tọa độ khu đất, ngày và giờ Việt Nam. Hướng nắng và độ dài bóng đổ trong sa bàn 3D đổi theo mùa và theo giờ; chiều tối cảnh chuyển sang ánh sáng trời khuếch tán. Hiện phương vị, cao độ, giờ mọc, đứng bóng và lặn; có thanh kéo xem nắng đổ hướng nào vào giờ khác trong ngày, mặc định bám giờ thực. Kiểm chứng: Boulder hạ chí 73,43° đúng trị lý thuyết, xích đạo ngày phân 89,96°, mặt trời lặn tại Vũng Tàu 17:25 ngày 18/11 khớp nguồn độc lập.
+- **Gió lấy từ dữ liệu thời tiết thật tại tọa độ dự án** qua `functions/api/thoi-tiet.js`: gió hiện thời (hướng thổi từ, tốc độ, giật, nhiệt độ, độ ẩm) và **hoa gió 16 hướng của đúng tháng này** dựng từ 5 năm tái phân tích ERA5. Ghi rõ hướng thịnh hành, tần suất, tốc độ trung bình, tỷ lệ lặng gió, khoảng năm và số giờ quan trắc. Trang phân biệt **hướng gió thổi từ** với **chiều mũi tên mô phỏng** (ngược nhau). Chưa lấy được dữ liệu thì không hiện số nào, chỉ báo lỗi và cho thử lại.
+- **La bàn Bắc thật** trên sa bàn, xoay theo góc nhìn, kèm kim chỉ hướng mặt trời và hướng gió hiện thời.
+- **Nền OpenStreetMap thật** đặt dưới sa bàn, xoay về đúng hướng Bắc: ba chế độ Tổng mặt bằng · Bản đồ thật · Chồng lớp. Ô bản đồ chỉ tải khi người xem bật lớp này. Có ghi nguồn © những người đóng góp OpenStreetMap.
+- **Phép chiếu ghi thành `georef.json`** để kiểm tra lại được: hướng Bắc 44° đo hai cách độc lập từ hoa gió in trên tổng mặt bằng (tâm bốn chữ B/N/Đ/T cho 43,9°; bốn tia dài của ngôi sao cho 43,8°), đối chiếu chéo với hướng bờ Bãi Sau thật (~44°); tỷ lệ 1,911 m/đơn vị suy từ bước lặp tâm lô townhouse và song lập, khớp với công bố "hơn 1.600 m mặt tiền đường 3/2". **Điểm neo chưa kiểm tra thực địa nên vị trí tuyệt đối có thể lệch** — trang ghi rõ điều này.
+- Sửa nút dự phòng Zalo khi gửi phiếu lỗi: dùng liên kết thay cửa sổ bật lên, chắc hơn trên điện thoại.
+
+## 2.25.0 · 18/11/2026 — Blanca City: sa bàn 3D, giỏ hàng và nhận yêu cầu
+- **Sa bàn 3D thật** (`assets/tools/casa-blanca/blanca.html` + `showroom.js` + `showroom.css`): dựng lại bằng WebGL2 thuần, không thư viện ngoài, chỉ nạp ở trang công cụ. Thay cho `scene.js`/`zones.js` vẽ bằng canvas 2D. Nền là ảnh tổng mặt bằng đặt đúng mặt đất, có bóng đổ, mái dốc theo loại hình, dải tầng cho khối cao, sương xa và chuyển động camera mượt (tôn trọng "giảm chuyển động").
+- **939 căn Casa Villa chọn được từng căn**: mỗi căn có mã sa bàn (TH/SL/DL/GV-NNN), số dãy và số căn trong dãy, diện tích đất ước tính, số tầng và bản vẽ loại hình. Chọn bằng danh sách, bằng ô tìm kiếm hoặc nhấp thẳng lên khối 3D — cả ba mở cùng một hồ sơ; URL `#unit=TH-012` mở đúng căn đó.
+- **Giỏ quan tâm**: thêm căn hoặc phân khu vào giỏ (lưu trên máy khách), so sánh nhanh các căn đã chọn, rồi gửi một yêu cầu cho cả giỏ.
+- **Nhận yêu cầu căn, đặt lịch tư vấn và ký gửi** qua `functions/api/tim-nha.js` (dùng lại Google Sheet và Resend của hệ thống lead). Chỉ hiện "đã nhận" kèm mã phiếu **sau khi Google Sheet xác nhận đã ghi**; khi lưu hỏng thì báo rõ phiếu chưa được lưu và mở lối dự phòng sao chép nội dung gửi Zalo.
+- **Tình trạng căn** đọc từ `assets/tools/casa-blanca/inventory.json` (hiện trống): có bảng hàng thì bật được chế độ tô màu còn hàng / giữ chỗ / đã bán và hiện giá chào. Chưa có thì nút bị khóa và trang ghi rõ màu chỉ thể hiện loại hình.
+- Thao tác: kéo xoay 360°, kéo dọc đổi góc nhìn, cuộn hoặc chụm hai ngón để thu phóng, chuột phải hoặc Shift để trượt, phím mũi tên điều khiển bằng bàn phím. Kéo quá 6px thì không tính là chạm chọn, nên xoay/zoom không chọn nhầm căn.
+- Ảnh tổng mặt bằng được che hai khối chú thích in sẵn (dải chữ dưới và bảng màu bên phải) để sa bàn sạch; nội dung chú thích vẫn nằm trong hồ sơ dự án.
+- Đường dẫn cũ `/assets/tools/casa-blanca/` chuyển sang `blanca.html#casa`. Trang Tìm nhà nhúng sa bàn cao hơn và có nút mở toàn màn hình.
+- **Chưa làm** (chờ dữ liệu): bảng hàng thật, vị trí Beachtro Tower trên tổng mặt bằng, ghép sa bàn lên nền OpenStreetMap bằng điểm khống chế, mô phỏng nắng và gió.
+
+## 2.24.0 · 18/11/2026
+Thêm Tìm nhà sau Cẩm nang, liên kết giỏ hàng và ký gửi theo dự án CH04.
+
 
 
 ## 2026-11-18

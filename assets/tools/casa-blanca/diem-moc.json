@@ -1,0 +1,46 @@
+{
+  "duAn": "Blanca City",
+  "anh": {
+    "file": "plan.webp",
+    "rongDonVi": 960,
+    "caoDonVi": 540
+  },
+  "neo": {
+    "ten": "tâm hình bao công trình",
+    "planX": 440.4,
+    "planY": 196.4
+  },
+  "ranh": "blanca city",
+  "moc": [
+    {
+      "ten": "tâm công viên nước",
+      "planX": 494,
+      "planY": 258,
+      "ghiChu": "Tâm khu công viên nước Sun World trên plan.webp, vùng cảnh quan có hồ bơi khoảng x 391–597 và y 193–323."
+    },
+    {
+      "ten": "tâm Beacon",
+      "planX": 543.5,
+      "planY": 84.5,
+      "ghiChu": "Khối ghi E2 trên tổng mặt bằng. Tú xác nhận E2 là Beacon (các toà con E1, E2, E3, E5). Đo hình bao trên plan.webp: x 501–586, y 71–98."
+    },
+    {
+      "ten": "tâm beachtro",
+      "planX": 441.5,
+      "planY": 85.5,
+      "ghiChu": "KIỂM TRA, không tham gia giải. Khối ghi E1 trên tổng mặt bằng. Tú xác nhận E1 là Beachtro (các toà con E6, E7, E8, E9). Đo hình bao: x 395–488, y 73–98."
+    },
+    {
+      "ten": "nút giao đầu Tây Nam",
+      "planX": 89,
+      "planY": 66,
+      "ghiChu": "Đầu tây nam khu đất nơi giáp đường 3/2, đo trên plan.webp. Trùng gần như đúng đỉnh đầu tiên của ranh KML (lệch 9 m)."
+    },
+    {
+      "ten": "nút giao đầu Đông Bắc",
+      "planX": 882,
+      "planY": 64,
+      "ghiChu": "Đầu đông bắc khu đất nơi giáp đường 3/2, đo trên plan.webp, chỗ tuyến đường ranh phía đông cắt đường 3/2."
+    }
+  ]
+}

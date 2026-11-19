@@ -216,7 +216,23 @@ const pubOpenHref = (navKey) => {
   if (!is) return `${BASE}${sec.path}/`;
   return `${BASE}${sec.path}/${is.slug}/${is.html && !is.pdfs.length && !is.pages.length ? 'doc/' : ''}`;
 };
-const navHtml = (active) => fill(navTpl, { base: BASE, youtube: esc(au.youtube), phone: au.phone.replace('+84', '0'), phoneDisplay: esc(au.phoneDisplay), zalo: esc(au.zalo),
+// Tìm nhà: cfg.timNha.congBo === false thì gỡ khỏi menu, gỡ liên kết từ bài và gắn noindex.
+// Trang vẫn được tạo để xem thử qua link trực tiếp (cùng cách làm với kỳ ấn phẩm `nhap`, §6C).
+const TIMNHA_CONGBO = cfg.timNha ? cfg.timNha.congBo !== false : true;
+const goTimNhaKhoiNav = (html) => TIMNHA_CONGBO ? html : html.replace(/\s*<a class="rei-global-nav__link\{\{nav_timnha\}\}"[^>]*>.*?<\/a>/s, '');
+const navTplDung = goTimNhaKhoiNav(navTpl);
+// Khi chưa công bố, gỡ mọi liên kết tới sa bàn nằm trong nội dung bài.
+// 1) đoạn <p> chỉ chứa đúng một nút p-cta → bỏ cả đoạn
+// 2) thẻ <a> đứng riêng một mình → bỏ cả thẻ
+// 3) liên kết nằm giữa câu → chỉ bỏ thẻ <a>, giữ nguyên chữ để câu không gãy
+const RE_TOOL = '[^"]*\\/assets\\/tools\\/casa-blanca\\/[^"]*';
+const goLinkSaBan = (html) => TIMNHA_CONGBO ? html
+  : html
+      .replace(new RegExp(`<p>\\s*<a [^>]*href="${RE_TOOL}"[^>]*>[\\s\\S]*?<\\/a>\\s*<\\/p>\\s*`, 'g'), '')
+      .replace(new RegExp(`(^|<\\/p>|<\\/div>|<\\/ul>)\\s*<a [^>]*href="${RE_TOOL}"[^>]*>[\\s\\S]*?<\\/a>\\s*`, 'g'), '$1\n  ')
+      .replace(new RegExp(`<a [^>]*href="${RE_TOOL}"[^>]*>([\\s\\S]*?)<\\/a>`, 'g'), '$1');
+
+const navHtml = (active) => fill(navTplDung, { base: BASE, youtube: esc(au.youtube), phone: au.phone.replace('+84', '0'), phoneDisplay: esc(au.phoneDisplay), zalo: esc(au.zalo),
   href_atlas: pubOpenHref('nav_atlas'), href_atlasvn: pubOpenHref('nav_atlasvn'),
   ...Object.fromEntries(NAV_KEYS.map((k) => [k, k === active ? ' is-active' : ''])), nav_atlasgroup: ['nav_atlas', 'nav_atlasvn'].includes(active) ? ' is-active' : '' });
 const header = fill(rd('templates/partials/home-header.html'), { ...common, fanpage_home: fanHome });
@@ -354,7 +370,9 @@ for (const zone of categories.find(c => c.id === 'du-an-chon-loc').items) {
   }
 }
 write('tim-nha/projects.json', JSON.stringify(directory));
-write('tim-nha/index.html', fill(rd('templates/tim-nha.html'), {...common, nav: navHtml('nav_timnha')}));
+write('tim-nha/index.html', fill(rd('templates/tim-nha.html'), { ...common, nav: navHtml('nav_timnha'),
+  robots: TIMNHA_CONGBO ? '' : '<meta name="robots" content="noindex, nofollow">',
+  banner: TIMNHA_CONGBO ? '' : '<p class="tn-nhap" role="status"><b>Trang đang hoàn thiện, chưa công bố.</b> Mục Tìm nhà không có trong menu và không được lập chỉ mục. Nội dung, số liệu và giỏ hàng còn đang dựng.</p>' }));
 
 // ── Trang bài
 const tplArticle = rd('templates/article.html');
@@ -380,7 +398,7 @@ for (const a of articles) {
     ...common, introHead, introBody, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', leadBlock: a.lead ? leadSnippet(a.slug) : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(withSuffix(title)), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
-    accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: renderContent(dec.html), directoryLink: directory[a.slug] ? `<p><a class="p-cta" href="${BASE}tim-nha/#${a.slug}">Xem giỏ hàng · Ký gửi căn</a></p>` : '', hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,
+    accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: goLinkSaBan(renderContent(dec.html)), directoryLink: (TIMNHA_CONGBO && directory[a.slug]) ? `<p><a class="p-cta" href="${BASE}tim-nha/#${a.slug}">Xem giỏ hàng · Ký gửi căn</a></p>` : '', hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,
     jsonld: JSON.stringify(ld).replace(/</g, '\\u003c'),
   }));
 }

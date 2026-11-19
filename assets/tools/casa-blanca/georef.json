@@ -1,0 +1,47 @@
+{
+  "duAn": "Blanca City",
+  "trangThai": "du-de-dinh-huong-khong-du-de-do-dac",
+  "anh": {
+    "file": "plan.webp",
+    "rongDonVi": 960,
+    "caoDonVi": 540
+  },
+  "neo": {
+    "diem": "tâm hình bao công trình",
+    "planX": 440.4,
+    "planY": 196.4,
+    "lat": 10.38222,
+    "lon": 107.132899,
+    "nguon": "khớp bình phương tối thiểu trên 5 mốc, từ /home/claude/kml5/doc.kml: tâm công viên nước, tâm Beacon, tâm beachtro, nút giao đầu Tây Nam, nút giao đầu Đông Bắc"
+  },
+  "tyLe": {
+    "metTrenDonVi": 2.1958,
+    "cachDo": "Suy từ khớp bình phương tối thiểu trên 5 mốc, không ước lượng từ bản vẽ."
+  },
+  "huong": {
+    "bacSoVoiTrucDocAnh": 35.16,
+    "donVi": "độ, thuận chiều kim đồng hồ, 0 = hướng lên của ảnh",
+    "cachDo": "Suy từ khớp bình phương tối thiểu trên 5 mốc, không đọc hoa gió trên bản vẽ."
+  },
+  "saiSo": "Lệch lớn nhất 72.2 m tại các mốc.",
+  "ranhThucTe": {
+    "file": "ranh-du-an.json",
+    "nguon": "KML Tú vẽ trong Google My Maps 19/11/2026",
+    "dienTichHa": 104.8,
+    "ghiChu": "Ranh vẽ tay, là tham chiếu chứ không phải ranh pháp lý."
+  },
+  "mocDinhVi": {
+    "nguon": "5 ghim Tú đặt trong Google My Maps 19/11/2026",
+    "cachGiai": "scripts/dinh-vi-sa-ban.mjs, khớp bình phương tối thiểu trên cả 5 mốc",
+    "lechTungMoc": {
+      "tâm công viên nước": 72.2,
+      "tâm Beacon": 8.8,
+      "tâm beachtro": 2.5,
+      "nút giao đầu Tây Nam": 43.7,
+      "nút giao đầu Đông Bắc": 42.7
+    },
+    "hoiTu": "Hướng Bắc hội tụ tốt: 33,8° khi giải 3 mốc, 35,2° khi giải 5 mốc, 35,6° khi chỉ lấy riêng hai nút giao cách nhau 1.708 m. Lấy 35,16°.",
+    "tyLeChuaChac": "Tỷ lệ còn tản: 2,50 (3 mốc gần nhau), 2,20 (5 mốc), 2,15 (riêng hai nút giao). Lấy 2,1958."
+  },
+  "canKiemThem": "Lệch còn tới 72 m ở tâm công viên nước. Hai nguyên nhân có thể: (1) vị trí các mốc ĐO TRÊN BẢN VẼ do Claude ước lượng bằng mắt từ ảnh phối cảnh, sai số vài chục mét; (2) tổng mặt bằng tiếp thị không phải bản vẽ đo đạc — các phần khác nhau có thể vẽ ở tỷ lệ hơi khác nhau, nên không một phép đồng dạng nào khớp được toàn bộ. Bằng chứng: tỷ lệ 2,196 cho mặt tiền townhouse 8,6 m trong khi hồ sơ ghi 7,5 m, lệch 15%. KẾT LUẬN: phép chiếu đủ tốt để đặt sa bàn lên bản đồ cho đúng hướng và đúng khu vực, KHÔNG đủ để đo khoảng cách, diện tích hay xác định ranh lô."
+}

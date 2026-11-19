@@ -1,1 +1,84 @@
-<!DOCTYPE html><html lang="vi"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Blanca City · Chọn phân khu</title><style>*{box-sizing:border-box}body{margin:0;background:#f3f0e8;color:#233f39;font:16px/1.5 system-ui}main{max-width:1360px;margin:auto;padding:18px}h1{font:clamp(32px,5vw,58px) Georgia;margin:10px 0}a{color:#30584a}canvas{width:100%;height:57vh;min-height:300px;display:block;background:#e7e5dc;touch-action:none;border-radius:14px}button,select{font:inherit;padding:7px 12px;border:1px solid #9fafa4;border-radius:7px;background:white;color:inherit}nav{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}img{max-width:650px;width:100%}figure{margin:0}small{display:block}header{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}</style><main><a href="/cam-nang/blanca-city/">← Hồ sơ Blanca City</a><header><h1>Blanca City</h1><label>Chọn phân khu <select id="zone"><option value="all">Toàn dự án</option><option value="casa">Casa Villa</option><option value="beacon">Beacon Tower</option><option value="beachtro">Beachtro Tower</option><option value="b123">Cụm B1 · B2 · B3</option><option value="b567">Cụm B5 · B6 · B7</option></select></label></header><p><a href="https://www.openstreetmap.org/?mlat=10.3801303&amp;mlon=107.1345989#map=16/10.3801303/107.1345989" target="_blank" rel="noopener">Mở vị trí khu vực trên OpenStreetMap ↗</a></p><details><summary>Bản đồ khu vực · Vũng Tàu</summary><iframe title="Bản đồ thực địa khu vực Blanca City" style="width:100%;height:34vh;border:0;border-radius:12px" src="https://www.openstreetmap.org/export/embed.html?bbox=107.121%2C10.372%2C107.148%2C10.389&amp;layer=mapnik&amp;marker=10.3801303%2C107.1345989"></iframe><small>Ghim tham chiếu tại Sun World Vũng Tàu · 10.3801303° Bắc, 107.1345989° Đông. Ranh Casa Villa đang chờ đối chiếu tọa độ.</small></details><h2>Sa bàn Blanca City</h2><nav><select hidden id="type" aria-label="Nhóm sản phẩm"><option value="-1">Toàn phân khu</option></select><button id="minus">Thu nhỏ</button><button id="plus">Phóng to</button><button id="turn">Xoay 45°</button><button id="home">Toàn cảnh</button></nav><canvas id="view" aria-label="Sa bàn khối Casa Villa"></canvas><small>Chạm vào khối nhà để mở phân khu. Kéo ngang để xoay 360°, kéo dọc để đổi góc nhìn. Cuộn để zoom.</small><section id="detail"></section><p id="info"></p><p>Kích thước lô townhouse và các dãy song lập có viền màu được đọc theo trang 10 và 17. Các dãy còn thiếu chú thích dùng kích thước điển hình. Bao khối dựa trên đường kích thước mặt bằng trang 13, 20, 27. Grand Villa dùng khối ước tính. Vị trí dãy bám theo tổng mặt bằng trang 2. Các căn được chia đều theo chiều dài dãy để mô phỏng mật độ. Ranh từng lô, khoảng lùi, mái và chiều cao tầng là ước tính. Tầng hầm nằm dưới mặt đất.</p><div id="docs"></div></main><script src="zones.js"></script><script src="scene.js"></script></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#12100d">
+<title>Blanca City · Sa bàn 3D và giỏ hàng | Nguyễn Anh Tú</title>
+<link rel="stylesheet" href="showroom.css?v=2.35.1">
+</head>
+<body>
+<div id="app">
+  <section id="stage" aria-label="Sa bàn 3D Blanca City">
+    <canvas id="gl" tabindex="0" aria-label="Sa bàn 3D Blanca City trên nền bản đồ thật. Kéo để xoay, cuộn hoặc chụm hai ngón để thu phóng, chạm vào khối để xem hồ sơ. Có thể dùng danh sách căn bên cạnh thay cho thao tác chạm."></canvas>
+    <div id="labels"></div>
+    <svg id="leaders" aria-hidden="true"></svg>
+    <div id="tip" hidden></div>
+
+    <header class="topbar">
+      <a class="tb back" href="/cam-nang/blanca-city/" target="_top" aria-label="Về hồ sơ Blanca City">←</a>
+      <div class="title"><b>Blanca City</b><span>96,6 ha · Vũng Tàu</span></div>
+      <div class="tb seg" role="group" aria-label="Nguồn hàng" id="marketSeg"></div>
+      <label class="tb sel"><span class="sr">Sa bàn</span><select id="boardSel"><option value="blanca">Sa bàn: Toàn khu Blanca City</option></select></label>
+      <button class="tb" id="bNight" aria-pressed="false">☾ <span>Tối</span></button>
+      <button class="tb" id="bLabels" aria-pressed="false">👁 <span>Ẩn thông số</span></button>
+    </header>
+
+    <nav class="zonebar" id="zoneChips" aria-label="Chọn phân khu"></nav>
+
+    <nav class="rail" id="rail" aria-label="Công cụ">
+      <button class="rb" data-rail="cart"><i><svg viewBox="0 0 24 24"><path d="M4 7h16l-1.6 11.2a2 2 0 0 1-2 1.8H7.6a2 2 0 0 1-2-1.8Z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></i><em id="railCart">0</em><span>Rổ giá</span></button>
+      <button class="rb" data-rail="floors"><i><svg viewBox="0 0 24 24"><path d="M3 18h18M3 13h18M3 8h18"/><path d="M8 8V5h8v3"/></svg></i><span>Mặt cắt</span></button>
+      <button class="rb" data-rail="env"><i><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M19 5l-1.5 1.5M6.5 17.5 5 19"/></svg></i><span>Nắng</span></button>
+      <button class="rb" data-rail="infra"><i><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/></svg></i><span>Hạ tầng</span></button>
+      <button class="rb" data-rail="blocks"><i><svg viewBox="0 0 24 24"><path d="M4 20V9l5-3 5 3v11"/><path d="M14 20V12l6-2v10"/><path d="M4 20h16"/></svg></i><span>Khối 3D</span></button>
+    </nav>
+
+    <nav class="floors" id="floorRail" hidden aria-label="Chọn cao độ cắt"></nav>
+
+    <div class="tools" role="group" aria-label="Thu phóng">
+      <button type="button" id="bIn" aria-label="Phóng to">＋</button>
+      <button type="button" id="bOut" aria-label="Thu nhỏ">－</button>
+    </div>
+
+    <div id="compass" aria-hidden="true">
+      <svg viewBox="-50 -50 100 100" width="74" height="74">
+        <circle r="46" fill="#0b0a08cc" stroke="#3d382d"/>
+        <g id="cRose">
+          <path d="M0-40 8-6 0 2 -8-6Z" fill="#e9c683"/><path d="M0 40 8 6 0-2 -8 6Z" fill="#7b7466"/>
+          <text y="-30" text-anchor="middle" font-size="13" font-weight="700" fill="#12100d">B</text>
+        </g>
+        <g id="cSun" style="display:none"><circle cy="-38" r="5.5" fill="#ffd45e"/><circle cy="-38" r="10" fill="#ffd45e" opacity=".25"/></g>
+      </svg>
+    </div>
+
+    <footer class="bottombar">
+      <button class="bb" id="bNorth">▲ <span>Bắc</span></button>
+      <button class="bb" id="bHome">↻ <span>Toàn cảnh</span></button>
+      <div class="bb time"><b id="clock">—</b><input id="sunh" type="range" min="0" max="143" step="1" aria-label="Giờ trong ngày để xem hướng nắng"></div>
+      <button class="bb" id="bBase">🗺 <span id="baseName">Bản đồ</span></button>
+      <button class="bb" id="bRanh" aria-pressed="true">⬠ <span>Ranh đất</span></button>
+      <span class="brand">Nguyễn Anh Tú · Sa bàn 3D</span>
+    </footer>
+    <p class="caption" id="caption"></p>
+
+    <div id="nogl" hidden>
+      <b>Trình duyệt chưa bật được đồ họa 3D.</b>
+      <span>Anh/chị vẫn chọn căn, thêm vào giỏ và gửi yêu cầu bằng danh sách bên cạnh.</span>
+    </div>
+  </section>
+
+  <aside id="panel" aria-label="Hồ sơ và giỏ hàng">
+    <nav class="tabs" id="tabs" role="tablist"></nav>
+    <div id="pane" role="tabpanel" tabindex="-1"></div>
+  </aside>
+</div>
+<div id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Xem bản vẽ">
+  <button type="button" id="lbClose" aria-label="Đóng">×</button>
+  <img id="lbImg" alt="">
+</div>
+<noscript><p style="padding:20px;color:#eee">Trang này cần JavaScript để hiện sa bàn và giỏ hàng. Liên hệ Zalo 0978 618 149.</p></noscript>
+<script src="showroom.js?v=2.35.1"></script>
+</body>
+</html>

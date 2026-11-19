@@ -1,0 +1,28 @@
+{
+ "updatedAt": null,
+ "source": null,
+ "note": "Điền units theo mã sa bàn, ví dụ TH-012: {status: available|reserved|sold, code: mã căn chính thức, priceVnd: số}. giaPhanKhu: khoảng giá chào mỗi phân khu bằng đồng, để null khi chưa có bảng giá — nhãn trên sa bàn sẽ ghi 'Chưa có bảng giá'.",
+ "units": {},
+ "giaPhanKhu": {
+  "casa": {
+   "min": null,
+   "max": null
+  },
+  "beacon": {
+   "min": null,
+   "max": null
+  },
+  "b123": {
+   "min": null,
+   "max": null
+  },
+  "b567": {
+   "min": null,
+   "max": null
+  },
+  "beachtro": {
+   "min": null,
+   "max": null
+  }
+ }
+}

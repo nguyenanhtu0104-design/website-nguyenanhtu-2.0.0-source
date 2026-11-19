@@ -1,5 +1,2 @@
-DELETED_FILES.txt
-assets/images/og/global-city-diners-square.jpg
-assets/images/og/global-city-waterfront-park.jpg
-content/articles/global-city-diners-square.html
-content/articles/global-city-waterfront-park.html
+assets/tools/casa-blanca/scene.js
+assets/tools/casa-blanca/zones.js
