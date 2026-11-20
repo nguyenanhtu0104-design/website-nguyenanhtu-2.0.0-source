@@ -445,3 +445,9 @@ Blanca City là bản mẫu. Dự án sau sao chép khung `assets/tools/casa-bla
 - **Công thức chung cho trang và máy chủ:** `assets/js/danh-gia.js` và `functions/api/danh-gia.js`; sửa một bên thì sửa bên kia và chạy `node tests/danh-gia-api.mjs`.
 - **Xuất bản đánh giá phải qua form** `/api/danh-gia`; máy chủ tính lại điểm. Email khách tự động; Zalo do Tú gửi tay (§17.5); nhắc ngày 3 (khách) và ngày 7 (Tú). Nhận định viết tay của khách không đi vào link mở lại.
 - **Công bố:** `danhGia.congBo: true` → hiện mục "Đánh giá" trên menu, nút ở bài dự án đang bán, vào sitemap, bỏ noindex.
+
+### 18.x Mẫu nhập đánh giá (Tú gửi kèm khi hoàn thiện dự án)
+- Mẫu trắng: `docs/mau-nhap-lieu/Mau-nhap-danh-gia-du-an.docx` (tạo lại bằng `node docs/mau-nhap-lieu/gen.js` từ `data.json`).
+- Phần 1 (SWOT + Thang điểm 1–5, 19 chỉ số) → đưa vào bài dự án trong `content/articles/<slug>.html` (khối `swot-grid` và danh sách thang điểm; tự tính TB nhóm và tổng = TB 6 tiêu chí).
+- Phần 2 (29 thẻ) → `data/danh-gia/du-an.json`: cột Dữ kiện → `the.<id>.duKien` (qua lint trung lập); Điểm/Nhận xét → `chuyenGia.the.<id>.{s,nx}`; ô "Có, công bố" → `duyet:true`, ngược lại `duyet:false`.
+- Ô trống: Claude bổ sung từ hồ sơ/bài web, liệt kê để Tú duyệt; không tự chấm điểm thay Tú.

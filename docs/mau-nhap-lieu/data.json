@@ -1,0 +1,675 @@
+{
+ "tieuChi": [
+  [
+   "Nền tảng dự án",
+   [
+    "CĐT / nhà phát triển uy tín",
+    "Pháp lý an tâm",
+    "Chính sách tốt"
+   ]
+  ],
+  [
+   "Vị trí",
+   [
+    "Tiện ích sinh hoạt trong 10 phút",
+    "Kết nối đường lớn · metro · cao tốc",
+    "Vùng chức năng quan trọng",
+    "Mật độ dân đông đúc",
+    "Hạ tầng đồng bộ"
+   ]
+  ],
+  [
+   "Lợi ích cư dân",
+   [
+    "Tiện ích sinh hoạt gia đình",
+    "Dịch vụ cá nhân hóa",
+    "Năng lực vận hành cộng đồng",
+    "Không gian xanh, sức khỏe thể chất",
+    "Không gian làm việc, thư giãn",
+    "Không gian tiếp khách",
+    "Công trình bền vững, tiết kiệm năng lượng"
+   ]
+  ],
+  [
+   "Lợi ích nhà đầu tư",
+   [
+    "Tiềm năng phát triển mạnh",
+    "Mức độ quan trọng trong cấu trúc đầu tư BĐS",
+    "Tài sản vận hành dòng tiền",
+    "Tài sản độc bản, tăng địa vị, truyền đời"
+   ]
+  ]
+ ],
+ "chuDe": [
+  {
+   "id": "A",
+   "ten": "Pháp lý"
+  },
+  {
+   "id": "B",
+   "ten": "Vị trí & kết nối"
+  },
+  {
+   "id": "C",
+   "ten": "Quy hoạch"
+  },
+  {
+   "id": "D",
+   "ten": "Bản chất dự án"
+  },
+  {
+   "id": "E",
+   "ten": "Tiềm năng đầu tư"
+  },
+  {
+   "id": "F",
+   "ten": "Tài chính & mức phù hợp"
+  }
+ ],
+ "the": [
+  {
+   "id": "A1",
+   "chuDe": "A",
+   "tang": "logic",
+   "ten": "Các pháp nhân của dự án",
+   "vanDe": "Bạn đã hiểu rõ vai trò của từng pháp nhân trong dự án này chưa — ai sở hữu đất, ai phát triển, ai ký hợp đồng với bạn, ai xây và ai vận hành?",
+   "duKienGoiY": [
+    "Tên pháp nhân chủ đầu tư, chủ sở hữu quỹ đất, đơn vị phát triển, tổng thầu, đơn vị vận hành.",
+    "Pháp nhân đứng tên trên hợp đồng mua bán."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "A2",
+   "chuDe": "A",
+   "tang": "logic",
+   "ten": "Bộ pháp lý hiện tại",
+   "vanDe": "Bạn đánh giá bộ pháp lý hiện tại của dự án như thế nào?",
+   "duKienGoiY": [
+    "Quy hoạch 1/500, giấy phép xây dựng, văn bản đủ điều kiện bán nhà ở hình thành trong tương lai.",
+    "Loại đất và thời hạn sử dụng; tình trạng thế chấp, giải chấp."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B1",
+   "chuDe": "B",
+   "tang": "logic",
+   "ten": "Vùng chức năng của vị trí",
+   "vanDe": "Vị trí dự án nằm trong vùng chức năng nào của thành phố?",
+   "duKienGoiY": [
+    "Vùng chức năng theo quy hoạch chung TP.HCM (trung tâm, khoa học công nghệ, cảng, công nghiệp…).",
+    "Bài phân tích vùng trên Cẩm nang."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B2",
+   "chuDe": "B",
+   "tang": "logic",
+   "ten": "Chất lượng cư dân quanh khu",
+   "vanDe": "Bạn đánh giá chất lượng cư dân quanh khu vực này như thế nào: mật độ dân, đối tượng cư dân, và điều gì khiến khu vực này thu hút dân đến sinh sống?",
+   "duKienGoiY": [
+    "Mật độ dân số phường, xã.",
+    "Các khu dân cư, dự án đã có người ở xung quanh."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B3",
+   "chuDe": "B",
+   "tang": "logic",
+   "ten": "Tiện ích nổi bật quanh khu",
+   "vanDe": "Hãy kể tên 5 tiện ích nổi bật nhất ở khu vực này mà bạn cảm thấy cần thiết với môi trường sống của bạn và những người dân xung quanh đây.",
+   "duKienGoiY": [
+    "Tiện ích ngoại khu đã vận hành trong bán kính 2–5 km: trường, bệnh viện, chợ, trung tâm thương mại, công viên."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B4",
+   "chuDe": "B",
+   "tang": "logic",
+   "ten": "Liên kết đến các tiện ích",
+   "vanDe": "Bạn đánh giá khả năng liên kết đến các tiện ích đó từ dự án này như thế nào?",
+   "duKienGoiY": [
+    "Tiện ích ngoại khu đã vận hành trong bán kính 2–5 km: trường, bệnh viện, chợ, trung tâm thương mại, công viên."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B5",
+   "chuDe": "B",
+   "tang": "niem-tin",
+   "ten": "Di chuyển lúc bàn giao (TOD)",
+   "vanDe": "Với mô hình đô thị TOD, người ta sẽ quan tâm nhiều đến khả năng di chuyển của cư dân. Bạn đánh giá khả năng di chuyển ở thời điểm dự án được bàn giao sẽ như thế nào?",
+   "duKienGoiY": [
+    "Thời gian di chuyển giờ cao điểm tới các điểm đến chính.",
+    "Tuyến xe buýt, ga metro đã vận hành."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B6",
+   "chuDe": "B",
+   "tang": "niem-tin",
+   "ten": "Di chuyển khi quy hoạch được thực hiện",
+   "vanDe": "Và trong tương lai, nếu các quy hoạch được thực hiện?",
+   "duKienGoiY": [
+    "Danh sách hạ tầng hiện có và tương lai, kèm trạng thái: chủ trương, giải phóng mặt bằng, đã khởi công, đã thông xe."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B7",
+   "chuDe": "B",
+   "tang": "logic",
+   "ten": "Kết nối hạ tầng giao thông",
+   "vanDe": "Liệt kê những kết nối với hạ tầng giao thông quan trọng như: các đường lớn, cao tốc, sân bay và metro (nếu có ở hiện tại và trong tương lai) của dự án này?",
+   "duKienGoiY": [
+    "Đường lớn, cao tốc, vành đai, sân bay, ga metro trong bán kính 5–10 km.",
+    "Trạng thái từng công trình: đang khai thác, đang thi công, mới có quy hoạch."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "B8",
+   "chuDe": "B",
+   "tang": "niem-tin",
+   "ten": "Lý do người dân chọn vị trí này",
+   "vanDe": "Theo bạn: người dân chọn ở vị trí này chủ yếu để kết nối với vùng nào, và vị trí này giúp họ được gì?",
+   "duKienGoiY": [
+    "Khoảng cách tới các vùng việc làm, học tập lớn."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "C1",
+   "chuDe": "C",
+   "tang": "logic",
+   "ten": "Thay đổi quy hoạch quan trọng nhất",
+   "vanDe": "Kể ít nhất 3 thay đổi quy hoạch quan trọng của khu vực trong tương lai. Thay đổi nào quan trọng nhất?",
+   "duKienGoiY": [
+    "Các đồ án quy hoạch, dự án hạ tầng, khu chức năng mới đã được phê duyệt quanh dự án."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "C2",
+   "chuDe": "C",
+   "tang": "niem-tin",
+   "ten": "Mốc thời gian của quy hoạch",
+   "vanDe": "Các thay đổi đó nhiều khả năng xảy ra trong bao lâu?",
+   "duKienGoiY": [
+    "Mốc hoàn thành trong văn bản phê duyệt; tiến độ thực tế của từng công trình."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "C3",
+   "chuDe": "C",
+   "tang": "logic",
+   "ten": "Tác động của quy hoạch đến dự án",
+   "vanDe": "Bạn đánh giá như thế nào về những gì sẽ xảy ra bởi quy hoạch, và nó tác động như thế nào đến dự án bạn đang quan tâm?",
+   "duKienGoiY": [
+    "Quy hoạch phân khu, hạ tầng và khu chức năng mới quanh dự án; khoảng cách từ dự án tới từng thay đổi."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "C4",
+   "chuDe": "C",
+   "tang": "niem-tin",
+   "ten": "Mức tin vào quy hoạch",
+   "vanDe": "Bạn tin vào các quy hoạch đó tới đâu?",
+   "duKienGoiY": [
+    "Nguồn của từng thông tin quy hoạch: văn bản nhà nước, đề xuất tư vấn hay tin báo."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "D1",
+   "chuDe": "D",
+   "tang": "logic",
+   "ten": "Phân khúc và mức đáp ứng",
+   "vanDe": "Theo bạn nhận định thì đây là dòng sản phẩm gì?",
+   "duKienGoiY": [
+    "Đơn giá, tiêu chuẩn bàn giao, tiện ích, đơn vị vận hành so với dự án cùng phân khúc."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "D2",
+   "chuDe": "D",
+   "tang": "phu-hop",
+   "ten": "Cộng đồng tôi hình dung",
+   "vanDe": "Cộng đồng sống mà bạn hình dung khi dự án đi vào hoạt động?",
+   "duKienGoiY": [
+    "Cơ cấu loại căn (studio, 1PN, 2PN, 3PN, penthouse).",
+    "Quy mô dự án, mức giá."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "D3",
+   "chuDe": "D",
+   "tang": "phu-hop",
+   "ten": "Môi trường sống",
+   "vanDe": "Bạn đánh giá môi trường sống mà dự án này mang lại?",
+   "duKienGoiY": [
+    "Mật độ xây dựng, tỷ lệ cây xanh, mặt nước, tiện ích an ninh."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "D4",
+   "chuDe": "D",
+   "tang": "niem-tin",
+   "ten": "Năng lực chủ đầu tư và đơn vị vận hành",
+   "vanDe": "Nhận định của bạn về năng lực phát triển và khả năng vận hành của chủ đầu tư và đơn vị quản lý?",
+   "duKienGoiY": [
+    "Các dự án đã bàn giao, tiến độ thực tế so với cam kết, thời gian ra sổ.",
+    "Đơn vị vận hành và các dự án họ đang vận hành."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "D5",
+   "chuDe": "D",
+   "tang": "logic",
+   "ten": "Điểm mạnh nội tại",
+   "vanDe": "Những điểm nào về nội tại dự án mà bạn đánh giá cao?",
+   "duKienGoiY": [
+    "Phối cảnh, mặt bằng căn, danh mục vật liệu bàn giao, chứng chỉ công trình xanh nếu có."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "D6",
+   "chuDe": "D",
+   "tang": "logic",
+   "ten": "Hạn chế của dự án",
+   "vanDe": "Liệt kê những mặt hạn chế của dự án.",
+   "duKienGoiY": [
+    "Mật độ cư dân, số căn mỗi thang máy, chỗ đậu xe, hướng nắng, khoảng cách giữa các tòa."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "E1",
+   "chuDe": "E",
+   "tang": "niem-tin",
+   "ten": "Thời điểm tham gia",
+   "vanDe": "Dự án đang ở giai đoạn nào của quy hoạch khu vực — tham gia lúc này là quá sớm, đúng lúc hay đã muộn?",
+   "duKienGoiY": [
+    "Mức độ hoàn thiện hạ tầng và dân cư khu vực; lịch sử giá khu vực."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "E2",
+   "chuDe": "E",
+   "tang": "niem-tin",
+   "ten": "Tiềm năng tương lai",
+   "vanDe": "Bạn thấy tiềm năng của dự án trong tương lai ra sao, và nó mang lại điều gì cho bạn khi đầu tư vào?",
+   "duKienGoiY": [
+    "Hạ tầng, dân cư, việc làm và nguồn cung cạnh tranh trong khu vực."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "E3",
+   "chuDe": "E",
+   "tang": "phu-hop",
+   "ten": "Vì sao chọn loại tài sản này",
+   "vanDe": "Bạn chọn loại tài sản này vì điều gì? Dự án có đáp ứng đúng lý do đó không?",
+   "duKienGoiY": [
+    "Đặc điểm quỹ đất, vị trí; số lượng sản phẩm tương tự trong khu vực."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "E4",
+   "chuDe": "E",
+   "tang": "niem-tin",
+   "ten": "Ai sẽ mua lại, thuê lại",
+   "vanDe": "Khi cần bán lại hoặc cho thuê, ai sẽ là người mua lại, thuê lại tài sản này — và khả năng họ trả tiền cho nó có cao không?",
+   "duKienGoiY": [
+    "Tốc độ tăng dân số khu vực; khu việc làm lân cận.",
+    "Giá thuê và thời gian tin rao bán ở dự án lân cận."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "F1",
+   "chuDe": "F",
+   "tang": "logic",
+   "ten": "Giá bán so với giá trị",
+   "vanDe": "Giá bán có hợp lý với giá trị sản phẩm theo nhận định của bạn, khi so với 3 dự án cùng phân khúc gần nhất?",
+   "duKienGoiY": [
+    "Đơn giá thông thủy đã gồm VAT; giá dự án cùng phân khúc trong bán kính 3 km."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "F2",
+   "chuDe": "F",
+   "tang": "logic",
+   "ten": "Chính sách bán hàng",
+   "vanDe": "Chính sách bán hàng nào hợp với dòng tiền của bạn, và dự án có chính sách đó không?",
+   "duKienGoiY": [
+    "Các phương thức thanh toán, chiết khấu, thời gian hỗ trợ lãi suất, ngân hàng hỗ trợ vay."
+   ],
+   "theoDuAn": true
+  },
+  {
+   "id": "F3",
+   "chuDe": "F",
+   "tang": "phu-hop",
+   "ten": "Loại căn và lý do chọn",
+   "vanDe": "Nếu mua, bạn chọn loại căn nào, giá trị khoảng bao nhiêu — và vì ngân sách hay vì loại đó dễ thanh khoản?",
+   "duKienGoiY": [
+    "Bảng giá theo loại căn; tỷ lệ từng loại trong dự án."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "F5",
+   "chuDe": "F",
+   "tang": "phu-hop",
+   "ten": "Phương án khi có việc phát sinh",
+   "vanDe": "Nếu có việc phát sinh trong ngắn hạn khi tài sản chưa bán được, bạn sẽ xử lý thế nào?",
+   "duKienGoiY": [
+    "Thời gian bán lại trung bình ở khu vực; khả năng thế chấp tài sản."
+   ],
+   "theoDuAn": false
+  },
+  {
+   "id": "F6",
+   "chuDe": "F",
+   "tang": "logic",
+   "ten": "So với lựa chọn khác",
+   "vanDe": "Ngoài dự án này, bạn còn cân nhắc dự án hay kênh đầu tư nào khác? Dự án này có hơn không?",
+   "duKienGoiY": [
+    "Dự án cùng khu vực, cùng tầm giá; lợi suất các kênh khác (gửi tiết kiệm, vàng, chứng khoán)."
+   ],
+   "theoDuAn": false
+  }
+ ],
+ "mau": {
+  "ten": "",
+  "slug": "",
+  "capNhat": "",
+  "swot": null,
+  "diem": {},
+  "the": {}
+ },
+ "nm": {
+  "ten": "Nam Mekong Grand Plaza",
+  "slug": "nam-mekong-grand-plaza",
+  "capNhat": "Hồ sơ dự án cập nhật 9/2026",
+  "swot": {
+   "S": {
+    "items": [
+     [
+      "An toàn",
+      "đô thị chỉn chu – pháp lý đầy đủ – CĐT có năng lực kỹ thuật xây dựng tốt"
+     ],
+     [
+      "Sản phẩm chất lượng",
+      "thiết kế tối ưu – xây dựng bền vững – vận hành chuyên nghiệp"
+     ],
+     [
+      "Vị trí đẹp",
+      "ngay lõi trung tâm WTC – chỉ 6 quỹ đất ở tại vòng xoay – 1 trong 3 trục đường lớn nhất TPM"
+     ],
+     [
+      "Đa dụng",
+      "nơi ở cao cấp – đáp ứng mọi thế hệ và phục vụ tốt tệp dân cư business"
+     ]
+    ],
+    "kl": "→ Thanh khoản cao → Giá trị gia tăng"
+   },
+   "W": {
+    "items": [
+     [
+      "Mật độ cao",
+      "FAR 11,91, mật độ xây dựng 57,26%, 1.622 căn trên 13.095 m² — cần cân nhắc tải thang máy, bãi xe và không gian chung vào giờ cao điểm"
+     ],
+     [
+      "Chưa có sản phẩm hoàn thiện để kiểm chứng",
+      "mở bán 10/2026, bàn giao dự kiến Q4/2028; thông tin thiết kế và tổng thầu còn đang cập nhật"
+     ],
+     [
+      "Chính sách ở mức trung bình",
+      "3/5 — thấp nhất trong 6 tiêu chí chính của thang điểm"
+     ],
+     [
+      "Phụ thuộc tiến độ hạ tầng khu vực",
+      "giá trị vòng xoay A1 gắn với nhà ga metro trung tâm và quần thể WTC; mốc hoàn thiện hạ tầng vùng hướng tới 2031"
+     ]
+    ],
+    "kl": ""
+   },
+   "O": {
+    "items": [
+     [
+      "Đô thị trọng điểm",
+      "TPM Bình Dương là 1 trong 3 vùng lõi của TP.HCM → nguồn vốn được tập trung để phát triển"
+     ],
+     [
+      "Giai đoạn của BĐS TPM",
+      "hạ tầng hoàn thiện – dân cư hiện hữu – các CĐT bắt đầu tham gia – mục tiêu 2031"
+     ],
+     [
+      "Giá sàn",
+      "thị trường còn mới – dư địa còn rộng → cơ hội tích lũy BĐS trung tâm"
+     ]
+    ],
+    "kl": "Lựa chọn tốt nhất trong tầm giá: 55 triệu/m² hiện nay chỉ mua được căn hộ tầm trung ở địa bàn TP.HCM cũ"
+   },
+   "T": {
+    "items": [
+     [
+      "Chưa được đánh giá đúng",
+      "về điểm bùng nổ thị trường tại TPM Bình Dương, sức hút của vùng chức năng khoa học công nghệ – giáo dục tri thức cao và cấu trúc chức năng của vòng xoay WTC"
+     ],
+     [
+      "Không phải mục tiêu ngắn hạn",
+      ""
+     ]
+    ],
+    "kl": "→ Đầu tư dài hạn – tích tài sản – nâng tầm địa vị"
+   }
+  },
+  "diem": {
+   "CĐT / nhà phát triển uy tín": "4",
+   "Pháp lý an tâm": "4",
+   "Chính sách tốt": "3",
+   "Tiện ích sinh hoạt trong 10 phút": "4,5",
+   "Kết nối đường lớn · metro · cao tốc": "4,5",
+   "Vùng chức năng quan trọng": "4,5",
+   "Mật độ dân đông đúc": "4",
+   "Hạ tầng đồng bộ": "4",
+   "Tiện ích sinh hoạt gia đình": "4",
+   "Dịch vụ cá nhân hóa": "4",
+   "Năng lực vận hành cộng đồng": "3,5",
+   "Không gian xanh, sức khỏe thể chất": "4,5",
+   "Không gian làm việc, thư giãn": "4,5",
+   "Không gian tiếp khách": "4,5",
+   "Công trình bền vững, tiết kiệm năng lượng": "3,5",
+   "Tiềm năng phát triển mạnh": "4,5",
+   "Mức độ quan trọng trong cấu trúc đầu tư BĐS": "4,5",
+   "Tài sản vận hành dòng tiền": "4,5",
+   "Tài sản độc bản, tăng địa vị, truyền đời": "4,5"
+  },
+  "the": {
+   "A1": {
+    "duKien": [
+     "Chủ đầu tư: Công ty CP Tập đoàn Nam Mê Kông (mã VC3, niêm yết HNX), thành lập 05/05/1993; lĩnh vực bất động sản, năng lượng tái tạo, cảng biển – logistics.",
+     "Tư vấn thiết kế: CDC và DK LAUD Việt Nam. Đơn vị vận hành: CBRE. Tổng thầu: đang cập nhật.",
+     "Hợp đồng mua bán ký trực tiếp với Công ty CP Tập đoàn Nam Mê Kông."
+    ]
+   },
+   "A2": {
+    "duKien": [
+     "Đủ điều kiện bán hàng theo hồ sơ cập nhật 9/2026.",
+     "Vietinbank bảo lãnh nghĩa vụ tài chính của chủ đầu tư với người mua.",
+     "Căn hộ sở hữu lâu dài; người nước ngoài sở hữu 50 năm.",
+     "Tình trạng thế chấp, giải chấp: chưa có trong hồ sơ công khai."
+    ]
+   },
+   "B1": {
+    "duKien": [
+     "Lô A4, vòng xoay WTC Gateway (vòng xoay A1), Thành phố mới Bình Dương.",
+     "Định hướng chức năng của khu vực: xem bài phân tích vùng (liên kết bên dưới)."
+    ],
+    "lienKet": [
+     {
+      "nhan": "Bài phân tích Thành phố mới Bình Dương",
+      "url": "/cam-nang/thanh-pho-moi-binh-duong/"
+     }
+    ]
+   },
+   "B3": {
+    "duKien": [
+     "Theo hồ sơ dự án, tại khối đế và liền kề: trung tâm thương mại 6 tầng, nhà ga metro trung tâm, trung tâm hội nghị triển lãm, quảng trường đi bộ.",
+     "Trong khu vực: Aeon Mall, Hikari, công viên 70 ha, Trung tâm Khoa học – Công nghệ, trường quốc tế. Khoảng cách và thời gian di chuyển: chưa có số liệu."
+    ]
+   },
+   "B5": {
+    "duKien": [
+     "Lô A4, vòng xoay WTC Gateway (vòng xoay A1), Thành phố mới Bình Dương.",
+     "Thời gian di chuyển giờ cao điểm: chưa có số liệu."
+    ]
+   },
+   "B6": {
+    "duKien": [
+     "Theo hồ sơ dự án: nhà ga metro trung tâm nằm cạnh dự án; tuyến metro dự kiến khởi công cuối 2026.",
+     "Mốc hoàn thiện hạ tầng vùng theo kế hoạch: năm 2031."
+    ],
+    "lienKet": [
+     {
+      "nhan": "Bài phân tích Thành phố mới Bình Dương",
+      "url": "/cam-nang/thanh-pho-moi-binh-duong/"
+     }
+    ]
+   },
+   "B8": {
+    "duKien": [
+     "Liền kề: quần thể WTC, trung tâm hội nghị triển lãm, Trung tâm Khoa học – Công nghệ."
+    ]
+   },
+   "D1": {
+    "duKien": [
+     "Giá tham chiếu trung bình 55 triệu/m² thông thủy.",
+     "54 tiện ích nội khu; đơn vị vận hành CBRE."
+    ]
+   },
+   "D2": {
+    "duKien": [
+     "1.622 căn; cơ cấu theo thiết kế: Studio 6,0% · 1PN+ 52,5% · 2PN+ 6,2% · 3PN 10,4% · Penthouse 0,9%."
+    ]
+   },
+   "D3": {
+    "duKien": [
+     "Theo hồ sơ thiết kế: kiến trúc lấy cảm hứng gốm đất nung Bình Dương, mái giật cấp phủ mảng xanh.",
+     "Mật độ xây dựng 57,26%."
+    ]
+   },
+   "D4": {
+    "duKien": [
+     "Chủ đầu tư: Công ty CP Tập đoàn Nam Mê Kông (mã VC3, niêm yết HNX), thành lập 05/05/1993; lĩnh vực bất động sản, năng lượng tái tạo, cảng biển – logistics.",
+     "Tư vấn thiết kế: CDC và DK LAUD Việt Nam. Đơn vị vận hành: CBRE.",
+     "Tiến độ bàn giao và thời gian ra sổ của các dự án trước: chưa có trong hồ sơ."
+    ]
+   },
+   "D5": {
+    "duKien": [
+     "Khu đất 13.095 m²; hệ số sử dụng đất 11,91; mật độ xây dựng 57,26%.",
+     "1.622 căn trong 2 tháp: G1 905 căn (36 căn/sàn tầng 3–23), G2 717 căn (29 căn/sàn tầng 3–23); tối đa 30 tầng.",
+     "12 thang máy chính + 2 thang hàng; chiều cao tầng 3,3 m; hành lang 1,8 m; 50 căn sân vườn tầng 3–4; các tầng 12, 19, 27, 29, 30 cao 6,6 m.",
+     "Số chỗ đậu ô tô và danh mục vật liệu bàn giao: đang cập nhật.",
+     "54 tiện ích nội khu chia 5 nhóm: sống hằng ngày, sức khỏe, gia đình, làm việc, thư giãn."
+    ]
+   },
+   "D6": {
+    "duKien": [
+     "Hệ số sử dụng đất 11,91: 1.622 căn trên khu đất 13.095 m².",
+     "12 thang máy chính + 2 thang hàng cho 2 tháp; số chỗ đậu ô tô đang cập nhật."
+    ]
+   },
+   "E1": {
+    "duKien": [
+     "Mở bán giai đoạn 1 tháng 10/2026; bàn giao dự kiến quý 4/2028.",
+     "Mốc hoàn thiện hạ tầng vùng theo kế hoạch: năm 2031."
+    ]
+   },
+   "E4": {
+    "duKien": [
+     "Liền kề: quần thể WTC, trung tâm hội nghị triển lãm, Trung tâm Khoa học – Công nghệ.",
+     "Quanh vòng xoay A1 có 6 lô đất ở theo quy hoạch; dự án là lô đầu tiên mở bán.",
+     "Tỷ lệ lấp đầy và giá thuê thực tế của các dự án lân cận: chưa có số liệu công bố."
+    ]
+   },
+   "F1": {
+    "duKien": [
+     "Giá tham chiếu trung bình 55 triệu/m² thông thủy.",
+     "Chiết khấu tối đa 9,5%; hỗ trợ lãi vay 24 tháng."
+    ]
+   },
+   "F2": {
+    "duKien": [
+     "5 phương thức thanh toán: chuẩn · vay 30% · vay 20% · thanh toán sớm 70% · thanh toán sớm 95%.",
+     "7 ngân hàng hỗ trợ vay: Vietcombank, MBBank, BIDV, VPBank, VietinBank, ACB, HDBank."
+    ],
+    "lienKet": [
+     {
+      "nhan": "Bảng tính thanh toán Nam Mekong Grand Plaza",
+      "url": "/assets/tools/nam-mekong-bang-tinh/"
+     },
+     {
+      "nhan": "Bản tính tài chính · vay ngân hàng",
+      "url": "/ban-tinh-tai-chinh/"
+     }
+    ],
+    "luaChon": [
+     "Thanh toán chuẩn",
+     "Vay 30%",
+     "Vay 20%",
+     "Thanh toán sớm 70%",
+     "Thanh toán sớm 95%"
+    ]
+   },
+   "F3": {
+    "duKien": [
+     "1.622 căn; cơ cấu theo thiết kế: Studio 6,0% · 1PN+ 52,5% · 2PN+ 6,2% · 3PN 10,4% · Penthouse 0,9%."
+    ],
+    "lienKet": [
+     {
+      "nhan": "Bảng tính thanh toán Nam Mekong Grand Plaza",
+      "url": "/assets/tools/nam-mekong-bang-tinh/"
+     }
+    ]
+   },
+   "B4": {
+    "duKien": [
+     "Theo hồ sơ dự án, tại khối đế và liền kề: trung tâm thương mại 6 tầng, nhà ga metro trung tâm, trung tâm hội nghị triển lãm, quảng trường đi bộ.",
+     "Trong khu vực: Aeon Mall, Hikari, công viên 70 ha, Trung tâm Khoa học – Công nghệ, trường quốc tế. Khoảng cách và thời gian di chuyển: chưa có số liệu."
+    ]
+   },
+   "B7": {
+    "duKien": [
+     "Theo hồ sơ dự án: nhà ga metro trung tâm nằm cạnh dự án; tuyến metro dự kiến khởi công cuối 2026.",
+     "Mốc hoàn thiện hạ tầng vùng theo kế hoạch: năm 2031."
+    ],
+    "lienKet": [
+     {
+      "nhan": "Bài phân tích Thành phố mới Bình Dương",
+      "url": "/cam-nang/thanh-pho-moi-binh-duong/"
+     }
+    ]
+   }
+  }
+ }
+}
