@@ -407,6 +407,9 @@ const dgDuAn = Object.fromEntries(Object.entries(dgDuAnRaw).filter(([k]) => k !=
     if (!handbookArticles.has(slug)) bad(`dự án "${slug}" không có bài trong Cẩm nang`);
     for (const [k, v] of Object.entries(p.the || {})) { if (!ids.has(k)) bad(`${slug}: thẻ "${k}" không tồn tại`); if (v.luaChon && !dgKhung.the.find((c) => c.id === k).thienKien.theoDuAn) bad(`${slug}: thẻ ${k} không lấy lựa chọn theo dự án`); }
     for (const l of Object.values(p.the || {}).flatMap((t) => t.lienKet || [])) if (!/^\/(cam-nang|assets\/tools|ban-tinh-tai-chinh|tim-nha)\b/.test(l.url)) bad(`${slug}: liên kết ngoài site "${l.url}"`);
+    // Dữ kiện chỉ là thông tin: chặn lời khuyên, đánh giá, ngôn ngữ điều hướng (Tú yêu cầu 20/11/2026)
+    const DIEU_HUONG = ['nên ', 'tốt', 'uy tín', 'hấp dẫn', 'tiềm năng', 'đáng ', 'lợi thế', 'nổi bật', 'tuyệt', 'hiếm', 'độc bản', 'đẳng cấp', 'đắc địa', 'vượt trội', 'chỉ có', 'cơ hội', 'sinh lời', 'lõi '];
+    for (const [k, v] of Object.entries(p.the || {})) for (const f of v.duKien || []) { const lo = f.toLowerCase(); const w = DIEU_HUONG.find((x) => lo.includes(x)); if (w) bad(`${slug} thẻ ${k}: dữ kiện có từ mang tính điều hướng "${w.trim()}" — chỉ ghi thông tin, số liệu: ${f}`); }
     const cg = p.chuyenGia; if (cg) for (const [k, e] of Object.entries(cg.the || {})) { if (!ids.has(k)) bad(`${slug}: chuyên gia chấm thẻ "${k}" không tồn tại`); if (!(e.s >= 1 && e.s <= 5)) bad(`${slug}: điểm chuyên gia thẻ ${k} phải từ 1 đến 5`); }
   }
 }

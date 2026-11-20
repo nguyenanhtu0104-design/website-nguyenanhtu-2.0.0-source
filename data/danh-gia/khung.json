@@ -1,5 +1,5 @@
 {
-  "phienBan": "2.3",
+  "phienBan": "2.4",
   "ngay": "2026-11-20",
   "ghiChu": "Khung tự đánh giá 29 thẻ · 6 chủ đề · 5 cấu phần — theo tài liệu duyệt Tú đã sửa ngày 20/11/2026. Sửa câu hỏi, lựa chọn thiên kiến, trọng số gợi ý (w) và lý do (lyDo) tại đây. thienKien.theoDuAn=true: lựa chọn lấy từ dữ kiện của từng dự án (du-an.json → the.<mã>.luaChon) nếu có. Đổi nội dung thẻ thì tăng phienBan.",
   "chuDe": [
@@ -994,7 +994,7 @@
         "luaChon": []
       },
       "duKien": [
-        "Động lực tăng giá: hạ tầng, dân cư, việc làm, nguồn cung cạnh tranh."
+        "Hạ tầng, dân cư, việc làm và nguồn cung cạnh tranh trong khu vực."
       ],
       "goc": "E · câu 2",
       "w": {
@@ -1024,7 +1024,7 @@
         ]
       },
       "duKien": [
-        "Tính độc bản của quỹ đất, vị trí; số lượng sản phẩm tương tự trong khu vực."
+        "Đặc điểm quỹ đất, vị trí; số lượng sản phẩm tương tự trong khu vực."
       ],
       "goc": "E · câu 4",
       "w": {
@@ -1277,5 +1277,6 @@
       "id": "tich-san",
       "ten": "Mục tiêu tích sản"
     }
-  ]
+  ],
+  "ghiChuDuKien": "Dữ kiện chỉ gồm thông tin, số liệu và tài liệu, không gồm nhận định. Bạn có thể ẩn dữ kiện để tự đánh giá."
 }

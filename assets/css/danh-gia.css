@@ -184,3 +184,17 @@ details.dg-wt summary{cursor:pointer;color:var(--brand);font-size:14px}
 @media (max-width:640px){.dg-th{grid-template-columns:auto 1fr}.dg-tk{grid-column:1/-1;text-align:left;grid-template-columns:repeat(3,auto auto)}}
 @media print{.dg-tchart{background:#fff!important;break-inside:avoid}.dg-tchart[data-tang=logic]{--m:#1E40AF}.dg-th h3,.dg-tk b{color:#111!important}.dg-opt:not(.on){display:none}.dg-opt button{background:#fff!important;color:#111!important}.dg-skip,.dg-cds,.dg-prog{display:none}details.dg-wt{display:none}}
 .dg-hsn{font-size:20px;margin:22px 0 0;color:var(--brand)!important;font-family:'IBM Plex Sans',sans-serif!important;font-weight:600;letter-spacing:.02em}
+/* 2.4: bật/tắt dữ kiện, tự sang thẻ, thông báo nhanh */
+.dg-opts2{flex-basis:100%;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.dg-sw2{background:none;border:0;color:var(--text-2);font-size:13px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;padding:2px 0}
+.dg-sw2 i{width:30px;height:16px;border-radius:9px;background:rgba(255,255,255,.18);position:relative;transition:background .2s}
+.dg-sw2 i:after{content:'';position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#f4eee2;transition:left .2s}
+.dg-sw2[aria-pressed=true]{color:var(--text)}
+.dg-sw2[aria-pressed=true] i{background:var(--brand)}
+.dg-sw2[aria-pressed=true] i:after{left:16px}
+.dg-facts.dg-off{border-left-style:dashed;background:rgba(255,255,255,.03)}
+.dg-toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#f4eee2;color:#14120f;padding:10px 16px;border-radius:22px;font-size:14px;font-weight:500;box-shadow:0 6px 24px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:60;max-width:92vw;text-align:center}
+.dg-toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.dg-toast,.dg-sw2 i,.dg-sw2 i:after{transition:none}}
+@media print{.dg-opts2,.dg-toast{display:none!important}}
+@media (max-width:760px),(hover:none){.dg-kb{display:none}}

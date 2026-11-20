@@ -23,7 +23,7 @@
   function blank() {
     return { v: K.phienBan, duAn: '', ten: '', khac: false, hs: K.hoSo.map(function (q) { return q.kieu === 'nhieu' ? [] : null; }), muc: '',
       w: THE.map(function () { return 2; }), s: THE.map(function () { return null; }), bq: THE.map(function () { return false; }),
-      tk: THE.map(function () { return { c: [], l: {}, v: '' }; }), mode: 'wiz', i: 0, view: 'chon', xemTu: false, sent: '' };
+      tk: THE.map(function () { return { c: [], l: {}, v: '' }; }), mode: 'wiz', i: 0, view: 'chon', xemTu: false, sent: '', anDk: false, moDk: THE.map(function () { return false; }), tuChuyen: true };
   }
   var st = blank();
   var LS = 'dg-danh-gia-v2';
@@ -103,7 +103,7 @@
   }
   function chonHtml() {
     var list = Object.keys(DS);
-    if (st.view !== 'chon') return '<section class="dg-box dg-setup" style="padding:14px 20px"><p style="margin:0">Đang đánh giá <b>' + esc(st.ten) + '</b> · nhu cầu <b>' + esc(goalOf(st.muc).nhan) + '</b> <button type="button" class="dg-btn ghost" data-view="chon" style="padding:5px 12px;font-size:13px;margin-left:8px">Đổi</button></p></section>';
+    if (st.view !== 'chon') return '<section class="dg-box dg-setup" style="padding:14px 20px"><p style="margin:0">Đang đánh giá <b>' + esc(st.ten) + '</b> · nhu cầu <b>' + esc(goalOf(st.muc).nhan) + '</b> <button type="button" class="dg-btn ghost" data-view="chon" style="padding:5px 12px;font-size:13px;margin-left:8px">Đổi</button> <button type="button" class="dg-btn ghost" data-lamlai style="padding:5px 12px;font-size:13px">Làm lại từ đầu</button></p></section>';
     var opts = '<option value="">— Chọn dự án —</option>' + list.map(function (k) { return '<option value="' + esc(k) + '"' + (st.duAn === k ? ' selected' : '') + '>' + esc(DS[k].ten) + (DS[k].khuVuc ? ' · ' + esc(DS[k].khuVuc) : '') + '</option>'; }).join('') +
       '<option value="_khac"' + (!st.duAn && (st.khac || st.ten) ? ' selected' : '') + '>Dự án khác (tự nhập tên)</option>';
     var p = DS[st.duAn];
@@ -112,6 +112,8 @@
       '<input type="text" id="dgTen" maxlength="80" placeholder="Tên dự án" value="' + esc(st.duAn ? '' : st.ten) + '"' + (st.duAn || !(st.khac || st.ten) ? ' hidden' : '') + ' style="margin-top:8px">' +
       (p ? '<p class="dg-hint" style="margin:6px 0 0">' + (p.coDuKien ? 'Dự án này có sẵn dữ kiện tham khảo cho nhiều câu hỏi.' : 'Dữ kiện riêng cho dự án này đang được chuẩn bị; mỗi thẻ gợi ý những dữ kiện bạn nên tự tìm.') + '</p>' : '') +
       '<label class="dg-l">' + esc(K.hoSo[0].hoi) + ' — quyết định trọng số gợi ý cho từng thẻ và các câu hỏi cá nhân ở cuối</label>' + hsBtns(0) + trongSoTom() +
+      '<label class="dg-l">Dữ kiện tham khảo</label><div class="dg-seg dg-hs" role="group"><button type="button" data-andk-set="0" aria-pressed="' + !st.anDk + '">Hiện dữ kiện ở mỗi thẻ</button><button type="button" data-andk-set="1" aria-pressed="' + st.anDk + '">Ẩn — tôi tự đánh giá trước</button></div>' +
+      '<p class="dg-hint" style="margin:6px 0 0">' + esc(K.ghiChuDuKien || '') + ' Bạn đổi lại được bất cứ lúc nào.</p>' +
       '<p style="margin:18px 0 0"><button type="button" class="dg-btn" data-start' + (ready() ? '' : ' disabled') + '>Bắt đầu chấm ' + N + ' thẻ ›</button> <span class="dg-hint">' + (ready() ? 'Khoảng 20 phút. Thẻ nào chưa đủ dữ kiện, bạn bỏ qua được.' : 'Chọn dự án và nhu cầu để bắt đầu.') + '</span></p></section>';
   }
   // Lựa chọn thiên kiến: thẻ theoDuAn lấy lựa chọn từ dữ kiện của dự án (vd. chính sách bán hàng thực tế)
@@ -156,9 +158,11 @@
       '<article class="dg-card' + (st.mode === 'wiz' && st.i === i ? ' on' : '') + '" id="the-' + c.id + '" data-i="' + i + '" data-tang="' + c.tang + '">' +
       '<div class="dg-strip"></div><header><span>THẺ ' + c.id + ' · ' + esc(CD[c.chuDe]).toUpperCase() + ' · ' + (i + 1) + '/' + N + '</span><h2>' + esc(c.ten) + '</h2></header>' +
       '<section class="dg-step q"><b>1 · Vấn đề đặt ra</b><p>' + esc(c.vanDe) + '</p></section>' +
-      '<section class="dg-step"><b>2 · Dữ kiện tham khảo</b><div class="dg-facts"><ul>' + facts.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' +
+      '<section class="dg-step"><b>2 · Dữ kiện tham khảo</b>' + (st.anDk && !st.moDk[i] ?
+        '<div class="dg-facts dg-off"><p style="margin:0">Dữ kiện đang ẩn để bạn tự đánh giá theo hiểu biết của mình.</p><p style="margin:6px 0 0"><button type="button" class="dg-skip" data-modk="' + i + '">Xem dữ kiện cho thẻ này</button></p></div>' :
+        '<div class="dg-facts"><ul>' + facts.map(function (f) { return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' +
         (links.length ? '<p class="dg-src">' + links.map(function (l) { return '<a href="' + esc(l.url) + '" target="_blank" rel="noopener">' + esc(l.nhan) + ' ↗</a>'; }).join(' · ') + '</p>' : '') +
-        '<p class="dg-src">' + (pc ? 'Nguồn: ' + esc(p.capNhat) + '. Thông tin có thể thay đổi theo công bố chính thức.' : 'Đây là những dữ kiện bạn nên tìm.') + '</p></div></section>' +
+        '<p class="dg-src">' + (pc ? 'Nguồn: ' + esc(p.capNhat) + '. ' : 'Danh mục dữ kiện liên quan — chưa có số liệu riêng cho dự án này. ') + esc(K.ghiChuDuKien || '') + '</p></div>') + '</section>' +
       '<section class="dg-step"><b>3 · Mức độ quan trọng với tôi</b>' + seg('', K.trongSo.map(function (t) { return { v: t.w, h: '<b>x' + t.w + '</b>' + esc(t.nhan) }; }), st.w[i], 'data-w="' + i + '" data-v') + note + '</section>' +
       '<section class="dg-step"><b>4 · Nhận định của tôi</b>' + thienKienHtml(c, i) + '</section>' +
       '<section class="dg-step"><b>5 · Mức độ hài lòng với dự án</b>' + seg('', K.diem.map(function (t) { return { v: t.s, h: '<b>' + t.s + '</b>' + esc(t.nhan) }; }), st.s[i], 'data-s="' + i + '" data-v') +
@@ -179,7 +183,28 @@
       '<button type="button" data-mode="list" aria-pressed="' + (st.view === 'the' && st.mode === 'list') + '">Toàn bộ</button>' +
       '<button type="button" data-view="hs" aria-pressed="' + (st.view === 'hs') + '">Hồ sơ</button>' +
       '<button type="button" data-view="kq" aria-pressed="' + (st.view === 'kq') + '">Tổng kết</button></div>' +
+      '<div class="dg-opts2"><button type="button" class="dg-sw2" data-andk aria-pressed="' + !st.anDk + '"><i></i>Dữ kiện tham khảo</button>' +
+      (st.mode === 'wiz' ? '<button type="button" class="dg-sw2" data-tuchuyen aria-pressed="' + st.tuChuyen + '"><i></i>Tự sang thẻ sau khi chấm</button>' : '') +
+      '<span class="dg-hint">' + conLai() + '</span>' + (st.mode === 'wiz' ? '<span class="dg-hint dg-kb">Phím 1–5 để chấm · ← → chuyển thẻ</span>' : '') + '</div>' +
       '<div class="dg-prog"><i style="width:' + (soDaCham() / N * 100) + '%"></i></div></div>';
+  }
+  function confirmLamLai() { return soDaCham() === 0 || window.confirm('Xóa điểm đã chấm và làm lại từ đầu?'); }
+  function conLai() {
+    var left = THE.filter(function (c, i) { return st.s[i] == null && !st.bq[i]; }).length;
+    return left ? 'Còn ' + left + ' thẻ · khoảng ' + Math.max(1, Math.round(left * 0.6)) + ' phút' : 'Đã chấm xong ' + N + ' thẻ';
+  }
+  function toast(msg) {
+    var el = document.getElementById('dgToast');
+    if (!el) { el = document.createElement('div'); el.id = 'dgToast'; el.className = 'dg-toast'; el.setAttribute('role', 'status'); document.body.appendChild(el); }
+    el.textContent = msg; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(function () { el.classList.remove('on'); }, 2600);
+  }
+  function xongChuDe(i) {
+    var cd = THE[i].chuDe, idx = THE.map(function (c, j) { return c.chuDe === cd ? j : -1; }).filter(function (j) { return j >= 0; });
+    return idx.every(function (j) { return st.s[j] != null || st.bq[j]; });
+  }
+  function sauKhiCham(i, cdTruoc) {
+    if (!cdTruoc && xongChuDe(i)) toast('Xong chủ đề ' + THE[i].chuDe + ' · ' + CD[THE[i].chuDe] + '. ' + conLai() + '.');
+    if (st.mode === 'wiz' && st.tuChuyen && st.view === 'the' && st.i === i) setTimeout(function () { if (st.i !== i || st.view !== 'the') return; if (i < N - 1) go(i + 1); else { st.view = 'hs'; save(); render(); scrollTo('dgHs'); } }, 450);
   }
   function meter(lbl, v, sub) { return '<div class="dg-meter"><div><span>' + lbl + '</span><b>' + fmt(v) + '%</b></div><i><em style="width:' + (v || 0) + '%"></em></i>' + (sub ? '<span class="dg-hint">' + sub + '</span>' : '') + '</div>'; }
   // Một biểu đồ cho mỗi màu: thanh điểm hài lòng từng thẻ; thanh mảnh màu kem là điểm của Tú khi đã mở
@@ -285,8 +310,13 @@
     }
     if (d.xemtu != null) { st.xemTu = true; save(); softUpdate(); var tu = app.querySelector('.dg-tu'); if (tu) tu.scrollIntoView({ behavior: 'smooth', block: 'start' }); return; }
     if (d.w != null && t.closest('.dg-seg')) { st.w[+d.w] = +d.v; save(); redrawCard(+d.w); softUpdate(); return; }
-    if (d.s != null && t.closest('.dg-seg')) { var si = +d.s; st.s[si] = +d.v; st.bq[si] = false; save(); redrawCard(si); softUpdate(); return; }
-    if (d.bq != null) { var bi = +d.bq; st.bq[bi] = !st.bq[bi]; if (st.bq[bi]) st.s[bi] = null; save(); redrawCard(bi); softUpdate(); return; }
+    if (d.s != null && t.closest('.dg-seg')) { var si = +d.s, xt = xongChuDe(si), moi = st.s[si] == null; st.s[si] = +d.v; st.bq[si] = false; save(); redrawCard(si); softUpdate(); if (moi) sauKhiCham(si, xt); return; }
+    if (d.bq != null) { var bi = +d.bq, xb = xongChuDe(bi); st.bq[bi] = !st.bq[bi]; if (st.bq[bi]) st.s[bi] = null; save(); redrawCard(bi); softUpdate(); if (st.bq[bi]) sauKhiCham(bi, xb); return; }
+    if (d.andkSet != null) { st.anDk = d.andkSet === '1'; save(); var yy = window.scrollY; render(); window.scrollTo(0, yy); return; }
+    if (d.lamlai != null) { if (confirmLamLai()) { var du = st.duAn, te = st.ten; st = blank(); st.duAn = du; st.ten = te; save(); render(); scrollTo('dg'); } return; }
+    if (d.andk != null) { st.anDk = !st.anDk; save(); var y = window.scrollY; render(); window.scrollTo(0, y); toast(st.anDk ? 'Đã ẩn dữ kiện tham khảo — bạn tự đánh giá.' : 'Đã hiện dữ kiện tham khảo.'); return; }
+    if (d.tuchuyen != null) { st.tuChuyen = !st.tuChuyen; save(); softUpdate(); return; }
+    if (d.modk != null) { st.moDk[+d.modk] = true; save(); redrawCard(+d.modk); return; }
     if (d.tk != null) {
       var ti = +d.tk, li = +d.v, tk = st.tk[ti], multi = THE[ti].thienKien.kieu === 'nhieu', at = tk.c.indexOf(li);
       if (at !== -1) tk.c.splice(at, 1); else if (multi) tk.c.push(li); else tk.c = [li];
@@ -327,7 +357,7 @@
     btn.disabled = true; msg.className = 'dg-msg'; msg.textContent = 'Đang gửi…';
     fetch('/api/danh-gia', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({
       name: name, phone: phone, email: email, channel: ch, consent: true, website: f.website.value, t: Date.now() - shownAt,
-      duAn: st.duAn, tenDuAn: st.ten, hoSo: st.hs, w: st.w, s: st.s, boQua: st.bq, thienKien: st.tk, xemTu: !!st.xemTu, phienBan: K.phienBan, ma: encodeState(), page: location.pathname + location.search, utm: utm
+      duAn: st.duAn, tenDuAn: st.ten, hoSo: st.hs, w: st.w, s: st.s, boQua: st.bq, thienKien: st.tk, xemTu: !!st.xemTu, anDk: !!st.anDk, moDk: st.moDk, phienBan: K.phienBan, ma: encodeState(), page: location.pathname + location.search, utm: utm
     }) }).then(function (r) { return r.json().catch(function () { return { ok: false }; }); }).then(function (j) {
       if (!j.ok) throw new Error(j.error || 'loi');
       st.sent = ch; save(); var fm = document.getElementById('dgForm'); fm.classList.add('dg-unlocked');
@@ -338,6 +368,16 @@
   window.addEventListener('beforeprint', function () { ['dgCards', 'dgHsW', 'dgRes'].forEach(function (id) { var el = document.getElementById(id); if (el) { el.dataset.h = el.hidden ? '1' : ''; el.hidden = false; } }); });
   window.addEventListener('afterprint', function () { ['dgCards', 'dgHsW', 'dgRes'].forEach(function (id) { var el = document.getElementById(id); if (el && el.dataset.h === '1') el.hidden = true; }); });
 
+  // Phím tắt khi chấm từng thẻ: 1–5 chấm điểm, ←/→ chuyển thẻ
+  document.addEventListener('keydown', function (e) {
+    if (st.view !== 'the' || st.mode !== 'wiz' || e.ctrlKey || e.metaKey || e.altKey) return;
+    var tg = e.target.tagName; if (tg === 'INPUT' || tg === 'TEXTAREA' || tg === 'SELECT') return;
+    if (e.key >= '1' && e.key <= '5') { var b = document.querySelector('.dg-card.on [data-s="' + st.i + '"][data-v="' + e.key + '"]'); if (b) { e.preventDefault(); b.click(); } }
+    else if (e.key === 'ArrowRight' && st.i < N - 1) { e.preventDefault(); go(st.i + 1); }
+    else if (e.key === 'ArrowLeft' && st.i > 0) { e.preventDefault(); go(st.i - 1); }
+  });
   load(); render();
+  // Quay lại khi đang đánh giá dở: báo tiến độ
+  (function () { var dc = soDaCham(); if (st.view === 'the' && dc > 0 && dc < N) toast('Tiếp tục bản đánh giá ' + st.ten + ': đã chấm ' + dc + '/' + N + ' thẻ.'); })();
   if (st.view === 'kq') { var k = document.getElementById('ketQua'); if (k) k.scrollIntoView(); }
 })();

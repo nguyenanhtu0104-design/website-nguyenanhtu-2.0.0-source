@@ -119,6 +119,7 @@ function insight(K, input, r, ctx) {
   if (r.boQua.length) plan.push(`Khách bỏ qua vì chưa đủ dữ kiện: ${r.boQua.map((i) => K.the[i].id).join(', ')} — gửi dữ kiện cho các thẻ này.`);
   if (lac.length) plan.push(`Khách lạc quan hơn Tú ở ${lac.join('; ')}: đưa dữ kiện cân bằng.`);
   if (than.length) plan.push(`Khách thận trọng hơn Tú ở ${than.join('; ')}: đưa bằng chứng cụ thể.`);
+  if (ctx.cheDoDk && ctx.cheDoDk !== 'Hiện dữ kiện') plan.push(`Khách chấm khi ${ctx.cheDoDk.toLowerCase()}: điểm phản ánh hiểu biết sẵn có của khách — gửi bộ dữ kiện dự án để khách đối chiếu.`);
   if (ctx.channel === 'email') plan.push('Ngày 3: hệ thống tự gửi email tài liệu kiểm chứng thêm.');
   plan.push('Ngày 7: hệ thống nhắc Tú gọi lại.');
   if (ctx.related.length) plan.push(`Ngày 14: giới thiệu dự án tương tự: ${ctx.related.map((x) => x.p.name).join(', ')}.`);
@@ -230,6 +231,7 @@ function notifyEmail(K, input, r, ctx, ins, custOk) {
     ['Nhu cầu theo điểm', ins.nhuCau || '–'],
     ...(r.tu ? [['So với Tú (cùng thẻ)', `Khách ${pct(r.ban.tong.pct)} · Tú ${pct(r.tu.tong.pct)}`], ['Lệch Tú', [ins.lac.length ? 'Lạc quan hơn: ' + ins.lac.join('; ') : '', ins.than.length ? 'Thận trọng hơn: ' + ins.than.join('; ') : ''].filter(Boolean).join(' | ') || 'khớp']] : []),
     ['Đã mở bản của Tú', ctx.xemTu ? 'Có' : 'Chưa'],
+    ['Dữ kiện tham khảo', ctx.cheDoDk],
   ];
   const zaloMsg = `Chào ${ctx.name}, mình là Tú (ERA Vietnam). Mình gửi bạn bản tự đánh giá ${ctx.ten}: ${ctx.reopen}`;
   const action = ctx.channel === 'email' ? (custOk ? 'Bản đánh giá đã tự gửi email cho khách.' : 'EMAIL TỰ ĐỘNG LỖI — gửi qua Zalo.') : 'Khách chọn Zalo — gửi link qua Zalo.';
@@ -315,6 +317,8 @@ export async function onRequestPost({ request, env }) {
   const hsTxt = K.hoSo.map((q, i) => (apQ(q) ? hsOne(q, input.hs[i]) : ''));
   const hsBy = (id) => hsTxt[K.hoSo.findIndex((q) => q.id === id)] || '';
   const ctx = { id, name, phone, email, channel, ten, duAn, mucTieu: goal ? goal.nhan : '', budget: hsBy('ngan-sach'), score, temp, reopen, reopenOwner, siteUrl, zalo: (lead.settings && lead.settings.zaloPhone) || '0978618149', leadProject, related, xemTu: b.xemTu === true, pd: pd0, gid };
+  const moDk = Array.isArray(b.moDk) ? K.the.map((c, i) => (b.moDk[i] === true ? c.id : '')).filter(Boolean) : [];
+  ctx.cheDoDk = b.anDk === true ? `Ẩn dữ kiện${moDk.length ? ` (mở lại ${moDk.length} thẻ: ${moDk.join(', ')})` : ' (không mở thẻ nào)'}` : 'Hiện dữ kiện';
   const ins = insight(K, input, r, ctx);
   const utm = b.utm && typeof b.utm === 'object' ? b.utm : {};
 
@@ -332,7 +336,7 @@ export async function onRequestPost({ request, env }) {
     hsChiTiet: K.hoSo.map((q, i) => (hsTxt[i] && !['muc-dich', 'ngan-sach', 'tu-chi-tra'].includes(q.id) ? `${q.nhan}: ${hsTxt[i]}` : '')).filter(Boolean).join('\n'), tong: r0(r.tong.pct), o: r0(r.o.pct), dt: r0(r.dt.pct), muc: r.muc, daCham: r.tong.done, boQua: r.boQua.map((i) => K.the[i].id).join(', '),
     tang: TANG.map((t) => r0(r.tang[t].pct)), wtb: TANG.map((t) => Math.round(r.tang[t].wtb * 10) / 10),
     troi: r.troi.map((t) => K.tang[t].ten).join(', ') || 'Cân bằng', mu: r.mu.map((t) => K.tang[t].ten).join(', '),
-    chan: r.chan.map((i) => K.the[i].id).join(', '), xemTu: b.xemTu === true ? 'Có' : 'Chưa',
+    chan: r.chan.map((i) => K.the[i].id).join(', '), cheDoDk: ctx.cheDoDk, xemTu: b.xemTu === true ? 'Có' : 'Chưa',
     tuTong: r.tu ? r0(r.tu.tong.pct) : '', banTong: r.ban ? r0(r.ban.tong.pct) : '',
     lechCG: [ins.lac.length ? '▲ ' + ins.lac.join('; ') : '', ins.than.length ? '▼ ' + ins.than.join('; ') : ''].filter(Boolean).join(' | '),
     nhuCau: ins.nhuCau, uuTien: ins.uuTien.join(', '),

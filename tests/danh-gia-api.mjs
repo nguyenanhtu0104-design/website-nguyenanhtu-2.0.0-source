@@ -7,7 +7,7 @@ const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const { onRequestPost } = await import(path.join(ROOT, 'functions/api/danh-gia.js'));
 const D = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist/danh-gia-du-an/khung.json'), 'utf8'));
 // Bản chi tiết của Tú giả lập (dữ liệu thật do Tú chấm sau) để kiểm phần so sánh
-D.duAn['nam-mekong-grand-plaza'].chuyenGia = { duyet: false, the: { A1: { s: 4, nx: 'a' }, A2: { s: 4, nx: 'b' }, B5: { s: 5, nx: 'c' }, D3: { s: 3, nx: 'd' }, E4: { s: 4.5, nx: 'e' } } };
+D.duAn['nam-mekong-grand-plaza'].chuyenGia = { duyet: true, the: { A1: { s: 4, nx: 'a' }, A2: { s: 4, nx: 'b' }, B5: { s: 5, nx: 'c' }, D3: { s: 3, nx: 'd' }, E4: { s: 4.5, nx: 'e' } } };
 const K = D.khung, ids = K.the.map((c) => c.id);
 const sent = [];
 globalThis.fetch = async (u, o = {}) => {
@@ -24,7 +24,7 @@ const s = K.the.map((c) => (c.id === 'A2' ? 2 : c.id === 'C1' || c.id === 'F6' ?
 const boQua = K.the.map((c) => c.id === 'C1' || c.id === 'F6');
 const tk = K.the.map((c) => (c.id === 'C4' ? { c: [1], l: { 1: 'Metro chưa khởi công' }, v: '' } : c.id === 'D6' ? { c: [], l: {}, v: 'Mật độ cao' } : c.id === 'F2' ? { c: [3], l: {}, v: '' } : { c: [], l: {}, v: '' }));
 const body = { name: 'Nguyễn Văn A', phone: '0901234567', email: 'a@x.vn', channel: 'email', consent: true, t: 9000, duAn: 'nam-mekong-grand-plaza', hoSo: K.hoSo.map((q) => (q.id === 'muc-dich' ? 1 : q.id === 'ngan-sach' ? 2 : q.kieu === 'nhieu' ? [0, 1] : 0)),
-  w, s, boQua, thienKien: tk, xemTu: true, phienBan: K.phienBan, ma: 'eyJkIjoibmFtLW1la29uZyJ9', page: '/danh-gia-du-an/' };
+  w, s, boQua, thienKien: tk, xemTu: true, anDk: true, moDk: K.the.map((c) => c.id === 'A2' || c.id === 'F1'), phienBan: K.phienBan, ma: 'eyJkIjoibmFtLW1la29uZyJ9', page: '/danh-gia-du-an/' };
 const req = new Request('https://nguyenanhtu.vn/api/danh-gia', { method: 'POST', headers: { origin: 'https://nguyenanhtu.vn', 'content-type': 'application/json' }, body: JSON.stringify(body) });
 const j = await (await onRequestPost({ request: req, env })).json();
 let fail = 0; const ok = (c, m) => { console.log((c ? '  ✓ ' : '  ✗ ') + m); if (!c) fail++; };
@@ -50,6 +50,7 @@ ok(kh.includes('Mở lại bản đánh giá') && /Logic/.test(kh) && kh.include
 ok(!/Điểm chặn|điểm chặn|Coi trọng nhất|Nội bộ|Có điểm chặn/.test(kh), 'email khách KHÔNG có kết luận hay insight nội bộ');
 const tu = mails.find((m) => m.body.to[0] === 'tu@b.vn' && !m.body.scheduled_at).body.html;
 ok(/Kế hoạch chăm sóc/.test(tu) && /điểm chặn/.test(tu) && /Cách khai thác/.test(tu) && !/Số người ở/.test(tu), 'email báo Tú có hồ sơ, insight, kế hoạch chăm sóc');
+ok(sheet.cheDoDk === 'Ẩn dữ kiện (mở lại 2 thẻ: A2, F1)', 'ghi chế độ ẩn dữ kiện và các thẻ khách mở lại');
 ok(sent.some((x) => x.u.includes('callmebot')), 'báo WhatsApp');
 const few = await onRequestPost({ request: new Request(req.url, { method: 'POST', headers: { origin: 'https://nguyenanhtu.vn' }, body: JSON.stringify({ ...body, s: s.map((x, i) => (i < 10 ? x : null)) }) }), env });
 ok(few.status === 400, `chấm dưới ${K.nguong.moTu} thẻ → 400`);
