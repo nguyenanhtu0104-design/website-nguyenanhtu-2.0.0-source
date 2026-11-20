@@ -207,7 +207,7 @@ const fanHome = au.fanpage ? `\n        <a class="author-cr" href="${esc(au.fanp
         </a>` : '';
 const fanFoot = au.fanpage ? `\n      <a class="pf-btn pf-btn-fb" href="${esc(au.fanpage)}" target="_blank" rel="noopener">Fanpage</a>` : '';
 const navTpl = rd('templates/partials/global-nav.html');
-const NAV_KEYS = ['nav_camnang', 'nav_timnha', ...(cfg.publications || []).map((p) => p.navKey)];
+const NAV_KEYS = ['nav_camnang', 'nav_timnha', 'nav_danhgia', ...(cfg.publications || []).map((p) => p.navKey)];
 // 2.21.1: menu mục ấn phẩm mở thẳng kỳ mới nhất đã công bố (bản đọc nếu chỉ có HTML); chưa có kỳ nào thì về thư viện
 const pubOpenHref = (navKey) => {
   const sec = pubSections.find((s) => s.navKey === navKey);
@@ -220,7 +220,10 @@ const pubOpenHref = (navKey) => {
 // Trang vẫn được tạo để xem thử qua link trực tiếp (cùng cách làm với kỳ ấn phẩm `nhap`, §6C).
 const TIMNHA_CONGBO = cfg.timNha ? cfg.timNha.congBo !== false : true;
 const goTimNhaKhoiNav = (html) => TIMNHA_CONGBO ? html : html.replace(/\s*<a class="rei-global-nav__link\{\{nav_timnha\}\}"[^>]*>.*?<\/a>/s, '');
-const navTplDung = goTimNhaKhoiNav(navTpl);
+// Đánh giá dự án (§18): cfg.danhGia.congBo === false → không có trong menu, không có nút ở bài dự án, trang gắn noindex.
+const DANHGIA_CONGBO = cfg.danhGia ? cfg.danhGia.congBo === true : false;
+const goDanhGiaKhoiNav = (html) => DANHGIA_CONGBO ? html : html.replace(/\s*<a class="rei-global-nav__link\{\{nav_danhgia\}\}"[^>]*>.*?<\/a>/s, '');
+const navTplDung = goDanhGiaKhoiNav(goTimNhaKhoiNav(navTpl));
 // Khi chưa công bố, gỡ mọi liên kết tới sa bàn nằm trong nội dung bài.
 // 1) đoạn <p> chỉ chứa đúng một nút p-cta → bỏ cả đoạn
 // 2) thẻ <a> đứng riêng một mình → bỏ cả thẻ
@@ -379,6 +382,59 @@ write('tim-nha/index.html', fill(rd('templates/tim-nha.html'), { ...common, nav:
   robots: TIMNHA_CONGBO ? '' : '<meta name="robots" content="noindex, nofollow">',
   banner: TIMNHA_CONGBO ? '' : '<p class="tn-nhap" role="status"><b>Trang đang hoàn thiện, chưa công bố.</b> Mục Tìm nhà không có trong menu và không được lập chỉ mục. Nội dung, số liệu và giỏ hàng còn đang dựng.</p>' }));
 
+// ── Tự đánh giá dự án (PROJECT_RULES §18): khung tiêu chí + dữ kiện từng dự án nằm trong data/danh-gia/
+const dgKhung = JSON.parse(rd('data/danh-gia/khung.json'));
+const dgDuAnRaw = JSON.parse(rd('data/danh-gia/du-an.json'));
+const dgDuAn = Object.fromEntries(Object.entries(dgDuAnRaw).filter(([k]) => k !== 'ghiChu'));
+{
+  const TG = Object.keys(dgKhung.tang), CDS = dgKhung.chuDe.map((c) => c.id), GS = dgKhung.mucTieu.map((g) => g.id);
+  const bad = (m) => { throw new Error('data/danh-gia: ' + m); };
+  const ids = new Set();
+  dgKhung.the.forEach((c) => {
+    if (!c.id || ids.has(c.id)) bad(`thẻ "${c.id}" thiếu mã hoặc trùng mã`); ids.add(c.id);
+    if (!TG.includes(c.tang)) bad(`thẻ ${c.id}: tầng "${c.tang}" không có`);
+    if (!CDS.includes(c.chuDe)) bad(`thẻ ${c.id}: chủ đề "${c.chuDe}" không có`);
+    if (!['live', 'invest', 'both'].includes(c.role)) bad(`thẻ ${c.id}: role sai`);
+    if (!c.vanDe || !c.ten || !(c.duKien || []).length) bad(`thẻ ${c.id}: thiếu vanDe/ten/duKien`);
+    if (!c.thienKien || !['mot', 'nhieu', 'viet'].includes(c.thienKien.kieu)) bad(`thẻ ${c.id}: thienKien.kieu phải là mot/nhieu/viet`);
+    for (const g of GS) { if (![1, 2, 3].includes((c.w || {})[g])) bad(`thẻ ${c.id}: trọng số "${g}" phải là 1–3`); if (!(c.lyDo || {})[g]) bad(`thẻ ${c.id}: thiếu lyDo cho nhu cầu ${g}`); }
+  });
+  const NH = (dgKhung.nhomHoSo || []).map((n) => n.id);
+  dgKhung.hoSo.forEach((q) => { if (!q.id || !q.hoi || !(q.luaChon || []).length) bad(`hồ sơ "${q.id}" thiếu id/hoi/luaChon`); if (!['mot', 'nhieu'].includes(q.kieu)) bad(`hồ sơ ${q.id}: kieu phải là mot/nhieu`); if (!q.dau && !NH.includes(q.nhom)) bad(`hồ sơ ${q.id}: nhóm "${q.nhom}" không có`); if (!q.dau && !(q.apDung || []).every((g) => GS.includes(g))) bad(`hồ sơ ${q.id}: apDung sai`); });
+  const h1 = dgKhung.hoSo[0]; if (!h1 || !h1.dau || !h1.nhuCau || h1.nhuCau.some((g) => !GS.includes(g))) bad('hoSo[0].nhuCau phải trỏ tới mucTieu');
+  if (!(dgKhung.nguong.moTu >= 1 && dgKhung.nguong.moTu <= dgKhung.the.length)) bad('nguong.moTu sai');
+  for (const [slug, p] of Object.entries(dgDuAn)) {
+    if (!handbookArticles.has(slug)) bad(`dự án "${slug}" không có bài trong Cẩm nang`);
+    for (const [k, v] of Object.entries(p.the || {})) { if (!ids.has(k)) bad(`${slug}: thẻ "${k}" không tồn tại`); if (v.luaChon && !dgKhung.the.find((c) => c.id === k).thienKien.theoDuAn) bad(`${slug}: thẻ ${k} không lấy lựa chọn theo dự án`); }
+    for (const l of Object.values(p.the || {}).flatMap((t) => t.lienKet || [])) if (!/^\/(cam-nang|assets\/tools|ban-tinh-tai-chinh|tim-nha)\b/.test(l.url)) bad(`${slug}: liên kết ngoài site "${l.url}"`);
+    const cg = p.chuyenGia; if (cg) for (const [k, e] of Object.entries(cg.the || {})) { if (!ids.has(k)) bad(`${slug}: chuyên gia chấm thẻ "${k}" không tồn tại`); if (!(e.s >= 1 && e.s <= 5)) bad(`${slug}: điểm chuyên gia thẻ ${k} phải từ 1 đến 5`); }
+  }
+}
+// Dự án đang bán (assets/lead/lead-data.json, ready:true) cũng chọn được để đánh giá, kể cả khi chưa có dữ kiện riêng
+const dgLead = JSON.parse(rd('assets/lead/lead-data.json'));
+const dgDuAnBan = Object.fromEntries(Object.entries(dgLead.projects || {}).filter(([k, p]) => p.ready && handbookArticles.has(k)).map(([k, p]) => [k, { ten: p.name, khuVuc: (p.areaArticle && p.areaArticle.title) || '', url: p.url }]));
+// Mọi bài dự án có "Thang Điểm Đánh Giá 1–5" (nhận định tổng quan của Tú) đều chọn được để đánh giá chi tiết
+for (const art of articles) {
+  if (dgDuAnBan[art.slug] || art.status !== 'published' || !/Thang Điểm Đánh Giá 1–5/.test(contents.get(art.slug) || '')) continue;
+  dgDuAnBan[art.slug] = { ten: art.title.replace(/\s*[—–:|].*$/, ''), khuVuc: '', url: `/cam-nang/${art.slug}/` };
+}
+const dgData = { congBo: DANHGIA_CONGBO, khung: dgKhung, duAn: dgDuAn, duAnBan: dgDuAnBan };
+write('danh-gia-du-an/khung.json', JSON.stringify(dgData));
+write('danh-gia-du-an/index.html', fill(rd('templates/danh-gia.html'), { ...common, nav: navHtml('nav_danhgia'), canonical: abs('danh-gia-du-an/'), ogImage: abs('assets/images/og/trang-chu.jpg'),
+  phienBan: esc(dgKhung.phienBan), congBo: DANHGIA_CONGBO ? '1' : '0',
+  data: JSON.stringify(dgData).replace(/</g, '\\u003c'),
+  robots: DANHGIA_CONGBO ? '' : '<meta name="robots" content="noindex, nofollow">\n',
+  banner: DANHGIA_CONGBO ? '' : '<p class="dg-nhap" role="status"><b>Bản xem thử, chưa công bố.</b> Trang không có trong menu và không được lập chỉ mục. Điểm chuyên gia đang là bản nháp chờ duyệt.</p>' }));
+const danhGiaCta = () => '';
+// Nút sang bộ tiêu chí chi tiết, đặt ngay sau "Thang Điểm Đánh Giá 1–5" (thang điểm tổng quan của Tú giữ nguyên, không liên quan đến bộ chi tiết)
+const chenNutDanhGia = (slug, html) => {
+  if (!DANHGIA_CONGBO || !(dgDuAn[slug] || dgDuAnBan[slug])) return html;
+  const m = /Thang Điểm Đánh Giá 1–5<\/(p|h[23])>/.exec(html); if (!m) return html; const i = m.index;
+  const nut = `<div class="p-cta-box"><p class="p-cta-t">Thang điểm trên là nhận định tổng quan của Tú</p><p class="p-cta-d">Muốn tự chấm dự án theo đúng hoàn cảnh của bạn — 6 chủ đề, từng câu hỏi kèm dữ kiện — rồi so với bản đánh giá chi tiết của Tú?</p><p><a class="p-cta" href="${BASE}danh-gia-du-an/?du-an=${slug}">Tự đánh giá chi tiết dự án này ›</a></p></div>\n`;
+  const n = /<(h2|h3)\b|<p class="p-h2">/.exec(html.slice(i + m[0].length)); const j = n ? i + m[0].length + n.index : -1;
+  return j < 0 ? html + nut : html.slice(0, j) + nut + html.slice(j);
+};
+
 // ── Trang bài
 const tplArticle = rd('templates/article.html');
 for (const a of articles) {
@@ -403,7 +459,7 @@ for (const a of articles) {
     ...common, introHead, introBody, slug: a.slug, secNav: dec.secNav, aside: dec.aside, htmlClass: (dec.aside ? ' has-aside' : '') + themeCls(a), ctaBar: withCta ? ctaHtml : '', leadBlock: a.lead ? leadSnippet(a.slug) : '', bodyClass: (withCta ? ' has-cta' : '') + themeCls(a), pageTitle: esc(withSuffix(title)), nav: navHtml('nav_camnang'), ogTitle: esc(title), titleAttr: esc(a.title),
     description: esc(desc), canonical, ogImage: ogUrl(a), publishedDate: a.publishedDate, updatedDate: a.updatedDate,
     robots: a.status === 'published' ? '' : '<meta name="robots" content="noindex, follow">\n',
-    accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: goLinkSaBan(renderContent(dec.html)), directoryLink: (TIMNHA_CONGBO && directory[a.slug]) ? `<p><a class="p-cta" href="${BASE}tim-nha/#${a.slug}">Xem giỏ hàng · Ký gửi căn</a></p>` : '', hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,
+    accent: esc(a.accent), section: esc(a.section), breadcrumb: crumbHtml(a), content: chenNutDanhGia(a.slug, goLinkSaBan(renderContent(dec.html))), directoryLink: ((TIMNHA_CONGBO && directory[a.slug]) ? `<p><a class="p-cta" href="${BASE}tim-nha/#${a.slug}">Xem giỏ hàng · Ký gửi căn</a></p>` : '') + danhGiaCta(a.slug), hubline: hubOf.has(a.slug) ? `\n<p class="p-hubline">Thuộc chủ đề: <a href="${BASE}${hubOf.get(a.slug).path}/">${esc(hubOf.get(a.slug).h1)}</a> — xem tất cả phân tích liên quan.</p>\n` : '', footer,
     jsonld: JSON.stringify(ld).replace(/</g, '\\u003c'),
   }));
 }
@@ -589,7 +645,7 @@ for (const sec of pubSections) {
 // ── SEO: sitemap, robots; hosting: _headers (Cloudflare Pages / Netlify)
 const pub = articles.filter((a) => a.status === 'published');
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-  [`  <url><loc>${abs('')}</loc></url>`, ...pageUrls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod></url>`), ...pubUrls.map((u) => `  <url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}</url>`), ...pub.map((a) => `  <url><loc>${abs(`${SECTION}/${a.slug}/`)}</loc><lastmod>${a.updatedDate}</lastmod></url>`)].join('\n') + '\n</urlset>\n');
+  [`  <url><loc>${abs('')}</loc></url>`, ...pageUrls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod></url>`), ...pubUrls.map((u) => `  <url><loc>${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}</url>`), ...(DANHGIA_CONGBO ? [`  <url><loc>${abs('danh-gia-du-an/')}</loc><lastmod>${dgKhung.ngay}</lastmod></url>`] : []), ...pub.map((a) => `  <url><loc>${abs(`${SECTION}/${a.slug}/`)}</loc><lastmod>${a.updatedDate}</lastmod></url>`)].join('\n') + '\n</urlset>\n');
 write('robots.txt', `User-agent: *\nAllow: /\n\nSitemap: ${abs('sitemap.xml')}\n`);
 write('_headers', `/assets/css/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/js/*\n  Cache-Control: public, max-age=31536000, immutable\n/assets/images/*\n  Cache-Control: public, max-age=2592000\n/data/*\n  Cache-Control: public, max-age=300\n/assets/lead/*\n  Cache-Control: public, max-age=0, must-revalidate\n/assets/vendor/*\n  Cache-Control: public, max-age=2592000\n/*.html\n  Cache-Control: public, max-age=0, must-revalidate\n/cam-nang/*\n  Cache-Control: public, max-age=0, must-revalidate\n`);
 

@@ -2,30 +2,43 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
-## 2.43.0 · 20/11/2026 — Sa bàn Blanca: khối tháp đúng toà con và số tầng, mặt cắt có layout và mã từng căn, Beachtro bóc tầng
-- **Sửa hình khối và chiều cao tháp** (lỗi ở 2.42.0): mỗi phần thân tháp nay thuộc đúng toà con theo căn trên mặt bằng tầng, cao đúng số tầng: Beacon E5 36, E3 39, E2 40, E1 39; Beachtro E9 36, E8 40, E7 38, E6 34. Đỉnh mỗi toà có mái khung trắng như phối cảnh. Beachtro cũng dựng theo mặt bằng tầng điển hình.
-- **Mặt cắt có layout và mã từng căn**: mặt bằng tầng dán trên khối 3D kèm viền và mã đầy đủ của từng căn theo tầng đang xem (ví dụ E512A06), tô trạng thái nhẹ hơn để đọc được phòng bên trong.
-- **Beachtro bóc tầng được**: số hoá 53 căn mặt bằng tầng điển hình (tầng 4–19, 21–34). Chưa có bảng hàng nên thẻ căn có loại, diện tích, layout, chưa có giá.
-- **Ô đèn căn trống**: căn còn trống trong quỹ đại lý sáng lên trên mặt đứng tháp đúng tầng, đúng vị trí; chạm vào là bóc đúng tầng đó và mở thẻ căn.
-- PROJECT_RULES §16.3 thêm quy tắc toà con, số tầng, mặt cắt có mã căn, ô đèn. Chụp lại ảnh đại diện giỏ hàng.
+## 2.46.0 · 20/11/2026 — Tự đánh giá: hồ sơ cá nhân chuyển về cuối, hỏi theo nhu cầu
+- Bước đầu chỉ còn chọn dự án và nhu cầu mua (Mua ở · Đầu tư · Tích sản).
+- Hồ sơ cá nhân chuyển về cuối, sau 29 thẻ, trước tổng kết; câu hỏi thay theo nhu cầu (`apDung`): Mua ở hỏi kỹ hoàn cảnh sống và mong muốn; Đầu tư hỏi cách khai thác, lợi nhuận kỳ vọng, khách thuê, kinh nghiệm; Tích sản hỏi mục tiêu dài hạn và cách dùng trong lúc giữ. Phải trả lời câu bắt buộc mới mở tổng kết.
+- CRM tab "Đánh giá dự án": nhóm hồ sơ gọn thành Mục đích · Ngân sách · Tự chi trả · Hồ sơ cá nhân (các câu còn lại, mỗi câu một dòng).
 
-## 2.42.0 · 20/11/2026 — Sa bàn Blanca: bóc tầng chọn căn trên mặt bằng, điều khiển kiểu Google Maps, nền nhìn xa
-- **Bóc tầng Beacon, chọn căn ngay trên mặt bằng.** Mặt bằng tầng điển hình (tầng 4–19, 21–35) của chủ đầu tư được số hoá 63 căn và dán thẳng lên mặt cắt khối 3D. Căn còn trống trong quỹ đại lý tô xanh, đã cọc tô xám. Thanh "Mặt cắt 3D · Tầng …" có − + và "Hiện đủ"; dải tầng bên phải chọn nhanh tầng. Mở từ hồ sơ Beacon, chạm lần hai vào khối Beacon, hoặc nút "Mặt bằng" ở từng dòng bảng quỹ căn.
-- **Thẻ căn**: mã căn, loại, diện tích, giá, tình trạng, layout tách từ mặt bằng, tiến độ thanh toán từng đợt theo CSBH02 Beacon (10/07/2026) cho hai phương án không vay và vay hỗ trợ lãi suất; phương án vay chuyển thẳng sang Bản tính tài chính; nút thêm giỏ và ký gửi điền sẵn mã căn.
-- **Khối tháp Beacon dựng theo đúng thân toà trên mặt bằng tầng**, không còn theo nét tổng mặt bằng.
-- **Điều khiển giống Google Maps**: kéo trái trượt bản đồ, điểm dưới con trỏ bám tay; chuột phải hoặc Ctrl + kéo để xoay, nghiêng; lăn chuột phóng về phía con trỏ; nhấp đúp phóng to tại chỗ. Cảm ứng hai ngón: chụm thu phóng, xoay để xoay, vuốt dọc để nghiêng.
-- **Nền bản đồ nhìn xa**: thêm vành ảnh vệ tinh z15 quanh dự án và vành z13 rộng khoảng 38 km (cả Vũng Tàu, núi, cửa sông); kéo xa tới khoảng 12 km độ cao, nhãn phân khu tự ẩn khi nhìn xa.
-- Công cụ chuẩn mới `scripts/so-hoa-mat-bang.py`; PROJECT_RULES §16.3, §17.4 cập nhật. Chụp lại ảnh đại diện giỏ hàng.
+## 2.45.0 · 20/11/2026 — Tự đánh giá: bộ 29 thẻ theo bản Tú đã duyệt
+- Bộ thẻ cập nhật đúng theo tài liệu duyệt Tú đã sửa: 29 thẻ, 6 chủ đề (15 xanh dương · 9 vàng · 5 xanh lá); thêm B6 di chuyển khi quy hoạch được thực hiện, B7 kết nối hạ tầng giao thông, C3 tác động của quy hoạch; phần D theo nội dung Tú gửi lại; bỏ A3, F4.
+- Thẻ F2 (chính sách bán hàng): lựa chọn lấy theo dữ kiện thực tế của từng dự án (`thienKien.theoDuAn` + `luaChon` trong du-an.json); Nam Mekong dùng 5 phương thức thanh toán của dự án.
+- Dữ kiện Nam Mekong chuyển sang mã thẻ mới.
 
-## 2.41.0 · 19/11/2026 — Sa bàn Blanca: tách từng khối, đặt theo ghim thực địa
-- **Không còn dán cả tổng mặt bằng lên bản đồ.** 939 căn thấp tầng tách thành 41 khối (song lập, đơn lập, Grand Villa, nhà phố) và 8 khối tháp (Beachtro, Beacon, B1–B3, B5–B7). Mỗi khối có một ghim thật (vĩ độ, kinh độ tâm khối) và hệ số giãn, đo trên ảnh vệ tinh Esri ngày 19/11/2026, ghi trong `georef.json > khoi`.
-- **Kết quả với ghim của Tú:** bốn căn ĐL-001, ĐL-136, GV-081, GV-068 nay rơi đúng lô cùng mã, lệch 1,8–7,9 m (trước 38–118 m). Hố móng Beacon và Beachtro đo trên ảnh trùng ghim tâm Tú đặt, lệch 6,6 m và 2,8 m. Dãy nhà mô hình nằm trên dãy nhà thật ở cả 32 khối đã xây; độ phủ trung bình tăng từ 0,54 lên 0,81.
-- **Nền Tổng mặt bằng giữ khối theo bản vẽ; nền bản đồ và Chồng lớp đặt khối theo ghim.** Đổi nền thì khối trượt sang vị trí mới, nhãn phân khu đi theo.
-- Khối chưa xây (K06, K14, K15, K32, tháp B2, B3, B5–B7) đặt theo bước khối bên cạnh và ghim căn, ghi rõ là suy. Năm khối song lập phía Tây xa còn là bãi san lấp, giữ theo phép chiếu chung.
-- **Công cụ chuẩn thêm tầng 4** (`scripts/khop-sa-ban.py tach / do / dat / nghiemthu`): tách khối tự động, gợi ý tinh chỉnh từng khối, ghi ghim, ảnh chồng nghiệm thu và đo khoảng cách tới ghim căn. Trang sa bàn tự đọc dữ liệu này, dự án sau không phải sửa mã.
-- Trang, công cụ đo và công cụ giải mốc dùng chung một công thức mét trên độ, nên ảnh nghiệm thu khớp đúng cái khách thấy.
-- **Chụp lại ảnh đại diện giỏ hàng** từ khối 3D đã đặt đúng chỗ. Chế độ chụp nay luôn đặt nắng lúc 14:00 giờ Việt Nam (`--gio` để đổi), không còn ra ảnh tối khi chạy script vào buổi tối.
-- **PROJECT_RULES §17**: định vị bốn tầng; đầu vào thêm "ghim căn theo mã"; tiêu chí nghiệm thu tầng 4. Nhật ký §14 ghi nguyên tắc mới.
+## 2.44.0 · 20/11/2026 — Tự đánh giá: hồ sơ hoàn cảnh sống, nút từ bài dự án
+- **Thang Điểm Đánh Giá 1–5 trong bài dự án giữ nguyên** là nhận định tổng quan của Tú. Bỏ bản điểm nháp quy đổi từ thang điểm này; bản chi tiết của Tú sẽ chấm riêng theo từng thẻ.
+- **Nút "Tự đánh giá chi tiết dự án này"** chèn ngay sau thang điểm ở 7 bài dự án có thang điểm (hiện khi công bố). Các dự án này đều chọn được trên trang đánh giá.
+- **Hồ sơ nhu cầu 11 câu, 3 nhóm:** thêm chỗ ở hiện tại, số người ở, ở cùng ai, loại căn, điều cần dự án giải quyết (tối đa 3), mức sống mong muốn. Thẻ F3 đổi thành "Loại căn đúng nhu cầu". CRM thêm 6 cột hồ sơ.
+
+## 2.43.0 · 20/11/2026 — Tự đánh giá dự án: khung 2.0 (27 thẻ · 6 chủ đề)
+- **Bộ thẻ mới theo bộ vấn đề Tú soạn**, đã phản biện và gộp: 27 thẻ ở 6 chủ đề (Pháp lý · Vị trí & kết nối · Quy hoạch · Bản chất dự án · Tiềm năng đầu tư · Tài chính & mức phù hợp); mỗi thẻ tô màu theo tầng. Tú sẽ lược lại sau — sửa trong `data/danh-gia/khung.json`.
+- **Hồ sơ nhu cầu 5 câu ở bước đầu** (mục đích, ngân sách, phần tự chi trả, tỷ trọng danh mục, thời gian giữ): không chấm, không có trong bản của Tú, câu 1 đặt trọng số gợi ý; vào CRM.
+- **Thẻ 5 phần:** nhận định bằng ô chọn sẵn (một/nhiều) có dòng "vì sao", hoặc viết tự do; nút "Chưa đủ dữ kiện — bỏ qua".
+- **Tổng kết:** điểm tổng, Ở thực / Đầu tư, **3 biểu đồ riêng cho 3 màu** (hài lòng có trọng số + quan trọng trung bình mỗi thẻ), giải nghĩa ba màu tại đây. Bản của Tú mở khi chấm ≥ 18 thẻ, tính bằng trọng số của khách.
+- Nam Mekong: dữ kiện chuyển sang mã thẻ mới (19/27 thẻ); điểm nháp của Tú ở 12/27 thẻ có chỉ số tương ứng trong bài.
+- CRM tab "Đánh giá dự án" làm lại cột (hồ sơ, ba tầng, bỏ qua, so với Tú, nhận định của khách).
+
+## 2.42.0 · 20/11/2026 — Tự đánh giá dự án: khách tự chấm, so với bản của Tú
+- **Bỏ mọi nhận định tự động phía khách** (kết luận, điểm chặn, phong cách, điểm mù, trực giác) trên trang, email và PDF. **Không ghi tên tầng ở đâu khách thấy**, chỉ dùng màu. Insight ba tầng vẫn đủ trong email báo Tú và CRM.
+- **Bước đầu:** chọn dự án (5 dự án đang bán, Nam Mekong có sẵn dữ kiện) và nhu cầu; bảng trọng số ghi rõ câu nào được nâng/hạ và vì sao, mỗi thẻ nhắc lại ở Bước 4.
+- **Kết quả cá nhân:** điểm, Ở thực / Đầu tư, biểu đồ điểm từng thẻ theo màu, dải màu phân bổ mức quan trọng.
+- **Nút "Xem đánh giá của Tú"** (mở khi chấm đủ 9 thẻ): điểm của Tú theo cùng nhu cầu, thanh điểm của Tú chồng lên biểu đồ, nhận xét từng thẻ. **Dự án tương tự** (cùng khu vực, có bản của Tú lên trước) để tự đánh giá tiếp.
+- Bỏ ba nút nguồn nhận định ở Bước 3 và câu hỏi "nếu 3 năm nữa hối hận" (Tú chốt): khách chỉ ghi chú và chấm điểm. CRM bỏ các cột tương ứng.
+- Khung 1.2: thêm `lyDo` (lý do trọng số theo nhu cầu) cho 9 thẻ. Tab CRM "Đánh giá dự án": cột "Đã mở bản của Tú", "Điểm của Tú %".
+
+## 2.41.0 · 20/11/2026 — Tự đánh giá dự án (9 thẻ · 5 bước · 3 tầng), bản xem thử
+- **Trang mới `/danh-gia-du-an/`**: 9 thẻ theo phễu tâm lý, chấm từng thẻ hoặc xem toàn bộ, nút mục tiêu Mua ở / Đầu tư / Tích sản gợi ý trọng số, tự lưu trên máy người dùng. Màn "lật bài": mức tương thích, Ở thực / Đầu tư, biểu đồ ba tầng (kèm vạch trọng số khuyến nghị), phong cách chủ đạo, cảnh báo điểm mù.
+- **Khung 1.1 bổ sung:** điểm chặn không bù trừ; nguồn nhận định và chỉ số tự kiểm chứng; ghi trực giác trước để so sau; điểm chuyên gia chỉ hiện sau khi chấm; phép thử hối tiếc; bốn mức kết luận. Chi tiết và danh sách chờ duyệt: `docs/DANH_GIA_DU_AN.md`.
+- **Dữ liệu dự án mẫu Nam Mekong Grand Plaza**: dữ kiện Bước 2 lấy từ bài dự án (hồ sơ 9/2026); điểm chuyên gia là bản nháp quy đổi từ thang điểm trong bài, chờ Tú duyệt.
+- **`/api/danh-gia`**: tính lại điểm phía máy chủ; email báo cáo cho khách; email + WhatsApp báo Tú kèm insight và kế hoạch chăm sóc; hẹn email bổ trợ điểm mù ngày 3 và nhắc gọi lại ngày 7; ghi Google Sheet (tab "Tất cả lead" như cũ + tab mới "Đánh giá dự án" khi cập nhật Code.gs). Sau khi gửi form mới mở nút tải PDF.
+- Menu "Đánh giá" và nút ở bài dự án chỉ hiện khi `danhGia.congBo: true` (hiện `false`). Kiểm thử mới: `tests/danh-gia-api.mjs`.
 
 ## 2026-11-19 — Nội dung: đổi tên vùng "Thành Phố Đông Nam" → "Thành Phố Phía Nam", thêm The Peak Garden
 - Đổi tên vùng (slug giữ nguyên `truc-nguyen-huu-tho-thuong-cang-hiep-phuoc`, không đổi URL) trong tiêu đề vùng, dòng phụ, `seoTitle`, từ khoá tìm kiếm và chữ phụ đề của các bài dự án thuộc vùng; đồng bộ cả nhãn vùng trên bản đồ dự án (`du-an-cam-nang.json`).

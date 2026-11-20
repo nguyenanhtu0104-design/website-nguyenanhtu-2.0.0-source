@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi" data-base="{{base}}" data-ver="{{version}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="{{themeColor}}">
+<title>Tự đánh giá dự án bất động sản | Nguyễn Anh Tú</title>
+<meta name="description" content="Bộ thẻ tự đánh giá dự án bất động sản theo 6 chủ đề: tự chấm theo hoàn cảnh của bạn, rồi so với bản đánh giá của chuyên gia trước khi xuống tiền.">
+<link rel="canonical" href="{{canonical}}">
+{{robots}}<meta property="og:type" content="website">
+<meta property="og:site_name" content="{{siteName}}">
+<meta property="og:locale" content="{{locale}}">
+<meta property="og:title" content="Tự đánh giá dự án bất động sản">
+<meta property="og:description" content="Tự chấm dự án theo hoàn cảnh của bạn, rồi so với bản đánh giá của Tú.">
+<meta property="og:url" content="{{canonical}}">
+<meta property="og:image" content="{{ogImage}}">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="{{base}}assets/images/site/nat-logo-96-v2.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{{fontsLink}}
+<link rel="stylesheet" href="{{base}}assets/css/main.css?v={{version}}">
+<link rel="stylesheet" href="{{base}}assets/css/danh-gia.css?v={{version}}">
+</head>
+<body>
+{{nav}}
+<main class="dg" id="dg" data-cong-bo="{{congBo}}">
+  <p class="dg-kick">Công cụ ra quyết định · Khung {{phienBan}}</p>
+  <h1>Tự đánh giá dự án</h1>
+  <p class="dg-lead">Mỗi người mua nhà đều có thiên kiến riêng, và điều đó không sai. Sai là khi ta không biết mình đang nghiêng về đâu. Bộ thẻ dưới đây giúp bạn đặt dữ kiện cạnh nhận định của mình và tự chấm điểm dự án theo đúng hoàn cảnh của bạn. Chấm xong, bạn mở bản đánh giá của Tú để so từng câu.</p>
+  {{banner}}
+  <noscript><p class="dg-nhap">Công cụ cần JavaScript để tính điểm. Hãy bật JavaScript hoặc liên hệ Zalo 0978 618 149 để nhận bộ thẻ bản giấy.</p></noscript>
+  <div id="dgApp"></div>
+</main>
+<script type="application/json" id="dgData">{{data}}</script>
+<script src="{{base}}assets/js/danh-gia.js?v={{version}}" defer></script>
+</body>
+</html>

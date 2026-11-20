@@ -1,0 +1,178 @@
+{
+  "ghiChu": "Dữ kiện tham khảo (bước 2 của thẻ) và bản đánh giá chi tiết của Tú theo từng dự án. Khoá = slug bài dự án; trong \"the\" và \"chuyenGia.the\", khoá là mã thẻ (A1…F6). Bản đánh giá chi tiết là riêng, KHÔNG lấy từ \"Thang điểm đánh giá 1–5\" trong bài (đó là nhận định tổng quan, giữ nguyên). Mẫu: \"chuyenGia\": {\"duyet\": false, \"ngay\": \"2026-..\", \"the\": {\"A1\": {\"s\": 4, \"nx\": \"nhận xét\"}, ...}}. duyet=false chỉ hiện khi trang chưa công bố.",
+  "nam-mekong-grand-plaza": {
+    "ten": "Nam Mekong Grand Plaza",
+    "khuVuc": "Thành phố mới Bình Dương",
+    "capNhat": "Hồ sơ dự án cập nhật 9/2026",
+    "the": {
+      "A1": {
+        "duKien": [
+          "Chủ đầu tư: Công ty CP Tập đoàn Nam Mê Kông (mã VC3, niêm yết HNX), thành lập 05/05/1993; lĩnh vực bất động sản, năng lượng tái tạo, cảng biển – logistics.",
+          "Tư vấn thiết kế: CDC và DK LAUD Việt Nam. Đơn vị vận hành: CBRE. Tổng thầu: đang cập nhật.",
+          "Hợp đồng mua bán ký trực tiếp với Công ty CP Tập đoàn Nam Mê Kông."
+        ]
+      },
+      "A2": {
+        "duKien": [
+          "Đủ điều kiện bán hàng theo hồ sơ cập nhật 9/2026.",
+          "Vietinbank bảo lãnh nghĩa vụ tài chính của chủ đầu tư với người mua.",
+          "Căn hộ sở hữu lâu dài; người nước ngoài sở hữu 50 năm.",
+          "Tình trạng thế chấp, giải chấp: chưa có trong hồ sơ công khai — hỏi trực tiếp và xem văn bản gốc trước khi đặt cọc."
+        ]
+      },
+      "B1": {
+        "duKien": [
+          "Thành phố mới Bình Dương là một trong 3 vùng lõi chức năng của TP.HCM (theo bài phân tích vùng).",
+          "Lô A4, vòng xoay WTC Gateway (vòng xoay A1), lõi Thành phố mới Bình Dương."
+        ],
+        "lienKet": [
+          {
+            "nhan": "Bài phân tích Thành phố mới Bình Dương",
+            "url": "/cam-nang/thanh-pho-moi-binh-duong/"
+          }
+        ]
+      },
+      "B3": {
+        "duKien": [
+          "Ngay dưới sảnh theo hồ sơ dự án: trung tâm thương mại 6 tầng, nhà ga metro trung tâm, trung tâm hội nghị triển lãm, quảng trường đi bộ.",
+          "Xa hơn một chút: Aeon Mall, Hikari, công viên 70 ha, Trung tâm Khoa học – Công nghệ, trường quốc tế. Thời gian di chuyển thực tế: đang cập nhật — nên tự đo."
+        ]
+      },
+      "B5": {
+        "duKien": [
+          "Lô A4, vòng xoay WTC Gateway (vòng xoay A1), lõi Thành phố mới Bình Dương.",
+          "Thời gian di chuyển thực tế giờ cao điểm: đang cập nhật — nên tự đo."
+        ]
+      },
+      "B6": {
+        "duKien": [
+          "Thành phố mới Bình Dương là một trong 3 vùng lõi chức năng của TP.HCM (theo bài phân tích vùng).",
+          "Nhà ga metro trung tâm nằm cạnh dự án theo hồ sơ; tuyến metro dự kiến khởi công cuối 2026.",
+          "Mốc hoàn thiện hạ tầng vùng hướng tới 2031 — giá trị vòng xoay A1 gắn với tiến độ này."
+        ],
+        "lienKet": [
+          {
+            "nhan": "Bài phân tích Thành phố mới Bình Dương",
+            "url": "/cam-nang/thanh-pho-moi-binh-duong/"
+          }
+        ]
+      },
+      "B8": {
+        "duKien": [
+          "Cạnh quần thể WTC, trung tâm hội nghị triển lãm và Trung tâm Khoa học – Công nghệ."
+        ]
+      },
+      "D1": {
+        "duKien": [
+          "Giá tham chiếu trung bình 55 triệu/m² thông thủy.",
+          "54 tiện ích nội khu; đơn vị vận hành CBRE."
+        ]
+      },
+      "D2": {
+        "duKien": [
+          "1.622 căn; cơ cấu theo thiết kế: Studio 6,0% · 1PN+ 52,5% · 2PN+ 6,2% · 3PN 10,4% · Penthouse 0,9%."
+        ]
+      },
+      "D3": {
+        "duKien": [
+          "Kiến trúc lấy cảm hứng gốm đất nung Bình Dương, mái giật cấp phủ mảng xanh.",
+          "Mật độ xây dựng 57,26%."
+        ]
+      },
+      "D4": {
+        "duKien": [
+          "Chủ đầu tư: Công ty CP Tập đoàn Nam Mê Kông (mã VC3, niêm yết HNX), thành lập 05/05/1993; lĩnh vực bất động sản, năng lượng tái tạo, cảng biển – logistics.",
+          "Tư vấn thiết kế: CDC và DK LAUD Việt Nam. Đơn vị vận hành: CBRE.",
+          "Tiến độ bàn giao và thời gian ra sổ của các dự án trước: chưa có trong hồ sơ — nên tự tìm."
+        ]
+      },
+      "D5": {
+        "duKien": [
+          "Khu đất 13.095 m²; hệ số sử dụng đất 11,91; mật độ xây dựng 57,26%.",
+          "1.622 căn trong 2 tháp: G1 905 căn (36 căn/sàn tầng 3–23), G2 717 căn (29 căn/sàn tầng 3–23); tối đa 30 tầng.",
+          "12 thang máy chính + 2 thang hàng; chiều cao tầng 3,3 m; hành lang 1,8 m; 50 căn sân vườn tầng 3–4; các tầng 12, 19, 27, 29, 30 cao 6,6 m.",
+          "Số chỗ đậu ô tô và danh mục vật liệu bàn giao: đang cập nhật.",
+          "54 tiện ích nội khu chia 5 nhóm: sống hằng ngày, sức khỏe, gia đình, làm việc, thư giãn."
+        ]
+      },
+      "D6": {
+        "duKien": [
+          "Hệ số sử dụng đất 11,91: 1.622 căn trên khu đất 13.095 m².",
+          "12 thang máy chính + 2 thang hàng cho 2 tháp; số chỗ đậu ô tô đang cập nhật."
+        ]
+      },
+      "E1": {
+        "duKien": [
+          "Mở bán giai đoạn 1 tháng 10/2026; bàn giao dự kiến quý 4/2028.",
+          "Mốc hoàn thiện hạ tầng vùng hướng tới 2031."
+        ]
+      },
+      "E4": {
+        "duKien": [
+          "Cạnh quần thể WTC, trung tâm hội nghị triển lãm và Trung tâm Khoa học – Công nghệ.",
+          "Chỉ có 6 quỹ đất ở quanh vòng xoay A1; đây là dự án đầu tiên ra hàng.",
+          "Tỷ lệ lấp đầy và giá thuê thực tế của dự án lân cận: chưa có số liệu công bố — nên tự khảo sát."
+        ]
+      },
+      "F1": {
+        "duKien": [
+          "Giá tham chiếu trung bình 55 triệu/m² thông thủy.",
+          "Chiết khấu tối đa 9,5%; hỗ trợ lãi vay 24 tháng."
+        ]
+      },
+      "F2": {
+        "duKien": [
+          "5 phương thức thanh toán: chuẩn · vay 30% · vay 20% · thanh toán sớm 70% · thanh toán sớm 95%.",
+          "7 ngân hàng hỗ trợ vay: Vietcombank, MBBank, BIDV, VPBank, VietinBank, ACB, HDBank."
+        ],
+        "lienKet": [
+          {
+            "nhan": "Bảng tính thanh toán Nam Mekong Grand Plaza",
+            "url": "/assets/tools/nam-mekong-bang-tinh/"
+          },
+          {
+            "nhan": "Bản tính tài chính · vay ngân hàng",
+            "url": "/ban-tinh-tai-chinh/"
+          }
+        ],
+        "luaChon": [
+          "Thanh toán chuẩn",
+          "Vay 30%",
+          "Vay 20%",
+          "Thanh toán sớm 70%",
+          "Thanh toán sớm 95%"
+        ]
+      },
+      "F3": {
+        "duKien": [
+          "1.622 căn; cơ cấu theo thiết kế: Studio 6,0% · 1PN+ 52,5% · 2PN+ 6,2% · 3PN 10,4% · Penthouse 0,9%."
+        ],
+        "lienKet": [
+          {
+            "nhan": "Bảng tính thanh toán Nam Mekong Grand Plaza",
+            "url": "/assets/tools/nam-mekong-bang-tinh/"
+          }
+        ]
+      },
+      "B4": {
+        "duKien": [
+          "Ngay dưới sảnh theo hồ sơ dự án: trung tâm thương mại 6 tầng, nhà ga metro trung tâm, trung tâm hội nghị triển lãm, quảng trường đi bộ.",
+          "Xa hơn một chút: Aeon Mall, Hikari, công viên 70 ha, Trung tâm Khoa học – Công nghệ, trường quốc tế. Thời gian di chuyển thực tế: đang cập nhật — nên tự đo."
+        ]
+      },
+      "B7": {
+        "duKien": [
+          "Thành phố mới Bình Dương là một trong 3 vùng lõi chức năng của TP.HCM (theo bài phân tích vùng).",
+          "Nhà ga metro trung tâm nằm cạnh dự án theo hồ sơ; tuyến metro dự kiến khởi công cuối 2026.",
+          "Mốc hoàn thiện hạ tầng vùng hướng tới 2031 — giá trị vòng xoay A1 gắn với tiến độ này."
+        ],
+        "lienKet": [
+          {
+            "nhan": "Bài phân tích Thành phố mới Bình Dương",
+            "url": "/cam-nang/thanh-pho-moi-binh-duong/"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -44,12 +44,58 @@ function doPost(e) {
       } catch (err2) { row[row.length - 1] = 'Lỗi lưu PDF: ' + err2; }
     }
     getSheet(ss, ALL).appendRow(row);
+    if (d.loai === 'danh-gia') ghiDanhGia(ss, d);
     getSheet(ss, String(d.project || 'Khác').slice(0, 90)).appendRow(row);
     ensureOverview(ss);
     return out({ ok: true, pdfUrl: pdfUrl });
   } catch (err) {
     return out({ ok: false, error: String(err) });
   }
+}
+
+// ── Tab "Đánh giá dự án" (CRM insight từ bộ 9 thẻ, PROJECT_RULES §18) ──
+const DG = 'Đánh giá dự án';
+const DG_GROUPS = [
+  ['MÃ', '#37474f', ['Thời gian', 'Mã', 'Khung']],
+  ['KHÁCH', '#0b5d56', ['Họ tên', 'SĐT/Zalo', 'Email', 'Kênh']],
+  ['HỒ SƠ NHU CẦU', '#1a5276', ['Mục đích mua', 'Ngân sách', 'Tự chi trả', 'Hồ sơ cá nhân']],
+  ['DỰ ÁN', '#21618c', ['Dự án', 'Khu vực', 'Nhu cầu theo điểm']],
+  ['KẾT QUẢ', '#7d6608', ['Tổng %', 'Ở thực %', 'Đầu tư %', 'Thẻ đã chấm', 'Thẻ bỏ qua', 'Điểm chặn']],
+  ['BA TẦNG', '#5b2c6f', ['Logic %', 'Niềm tin %', 'Phù hợp %', 'Logic · quan trọng TB', 'Niềm tin · quan trọng TB', 'Phù hợp · quan trọng TB', 'Coi trọng nhất', 'Coi nhẹ nhất']],
+  ['SO VỚI TÚ', '#922b21', ['Đã mở bản của Tú', 'Khách % (cùng thẻ)', 'Tú % (cùng thẻ)', 'Lệch Tú', 'Thẻ x3', 'Nhận định của khách']],
+  ['DỮ LIỆU THÔ', '#566573', ['Trọng số', 'Hài lòng']],
+  ['CHĂM SÓC', '#b8894a', ['Điểm', 'Mức độ', 'Kế hoạch chăm sóc', 'Dự án gợi ý', 'Trạng thái', 'Ghi chú Tú', 'Link đánh giá']],
+];
+function ghiDanhGia(ss, d) {
+  let sh = ss.getSheetByName(DG);
+  if (!sh) {
+    sh = ss.insertSheet(DG);
+    let c = 1;
+    DG_GROUPS.forEach(function (g) {
+      const w = g[2].length;
+      sh.getRange(1, c, 1, w).merge().setValue(g[0]).setBackground(g[1]).setFontColor('#ffffff').setFontWeight('bold').setHorizontalAlignment('center');
+      sh.getRange(2, c, 1, w).setValues([g[2]]).setBackground(g[1]).setFontColor('#ffffff').setFontWeight('bold').setWrap(true);
+      c += w;
+    });
+    sh.setFrozenRows(2); sh.setFrozenColumns(4);
+    const head = DG_GROUPS.reduce(function (a, g) { return a.concat(g[2]); }, []);
+    sh.getRange(3, head.indexOf('Trạng thái') + 1, 998, 1).setDataValidation(
+      SpreadsheetApp.newDataValidation().requireValueInList(['Mới', 'Đã gửi báo cáo', 'Đã gọi', 'Hẹn xem', 'Đang tư vấn', 'Đã cọc', 'Không phù hợp'], true).build());
+    sh.setColumnWidths(1, head.length, 110);
+    ['Hồ sơ cá nhân', 'Kế hoạch chăm sóc', 'Nhận định của khách', 'Lệch Tú', 'Trọng số', 'Hài lòng'].forEach(function (h) { sh.setColumnWidth(head.indexOf(h) + 1, 300); });
+  }
+  const hs = d.hs || [], tg = d.tang || [], wt = d.wtb || [];
+  sh.appendRow([
+    d.time, d.id, d.phienBan,
+    d.name, "'" + d.phone, d.email, d.channel,
+    d.hsMucDich || '', d.hsNganSach || '', d.hsTuChiTra || '', d.hsChiTiet || '',
+    d.project, d.area, d.nhuCau,
+    d.tong, d.o, d.dt, d.daCham, d.boQua, d.chan,
+    tg[0], tg[1], tg[2], wt[0], wt[1], wt[2], d.troi, d.mu,
+    d.xemTu, d.banTong, d.tuTong, d.lechCG, d.uuTien, d.ghiChu,
+    d.w, d.s,
+    d.score, d.temp, d.keHoach, d.goiY, 'Mới', '', d.link,
+  ]);
 }
 
 function getSheet(ss, name) {
