@@ -2,11 +2,14 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
-## 2026-11-20 — Nội dung: Nam Mekong Grand Plaza cập nhật chính sách bán hàng (họp đại lý 20/11/2026)
-- **Bảng tính** `assets/tools/nam-mekong-bang-tinh/`: thay 5 phương thức cũ bằng 4 phương thức mới — tiến độ chuẩn điều chỉnh (23 đợt, cất nóc 01/2028, bàn giao 12/2028), vay NH hỗ trợ lãi suất 50% trong 24 tháng (tự có 20%, NH giải ngân 50%, vay tối đa 80%), thanh toán sớm 70% (CK 4%) và 95% (CK 8%). Bỏ CK mở bán 1,5%; thêm CK mua sỉ 0,5%/1%, CK 1% cư trú P. Bình Dương, CK 1% từ chối bảo lãnh.
-- **Chọn căn theo giá min – max**: bảng giá theo trục căn (chưa VAT), giá max = đơn giá min + 20% × diện tích lớn nhất; lọc theo loại căn và ngân sách, bấm dòng ra danh sách căn, bấm căn tự điền bảng tính với đơn giá min. Chọn căn thủ công cũng hiện khoảng đơn giá kèm nút giá min / giá max.
-- **Bài dự án**: mục Giá Bán & Chính Sách viết lại theo chính sách mới, đơn giá từ 50,5 triệu/m²; cập nhật `seoDescription`, từ khoá, `updatedDate`.
-- Không đổi giao diện, CSS/JS dùng chung hay version.
+## 2.44.0 · 20/11/2026 — Sa bàn Blanca: một luồng xem căn → giá cuối theo phương thức → phiếu tính giá → chat Zalo
+- **Layout chính thức thay cho layout cắt từ mặt bằng.** 17 layout lấy từ hồ sơ tư vấn 7/8/2026 (Beacon 6, Beachtro 7, B1–B3 4). Căn trùng trục in trên bản vẽ hiện "Layout chính thức trục …"; căn khác hiện layout cùng loại có diện tích gần nhất, ghi rõ là điển hình. Kèm sơ đồ nhỏ vị trí căn trên tầng.
+- **Giá cuối theo từng phương thức thanh toán ngay trên thẻ căn**, ví dụ E512A06: Không vay 5,55 tỷ, Vay hỗ trợ lãi suất 5,84 tỷ. Chạm vào phương thức thì mở phiếu tính giá trình bày như bản tính dự án (thông tin giá và chính sách, tiến độ từng đợt có ngày, tổng) và cân đối tài chính (vốn tự có, 12 tháng đầu, đến khi nhận nhà, số tháng chủ đầu tư trả lãi, trả hằng tháng sau đó, thu nhập nên có, dòng tiền theo năm). Đổi được ngày ký, tỷ lệ vay, lãi suất và thời hạn vay; in hoặc lưu PDF được.
+- **Chính sách bán hàng thành dữ liệu** (`chinh-sach.json`): Beacon CSBH02, Beachtro CSBH02.2, B1–B3 CSBH05. Bộ tính dùng chung `ban-tinh.js` theo đúng công thức phiếu tính giá của chủ đầu tư; tổng tiến độ khớp từng đồng với tổng giá trị phải thanh toán ở cả 80 căn trong quỹ. Ưu đãi thanh toán sớm đã qua hạn (25/07, 25/08, 25/10/2026) tự ẩn và ghi rõ đã hết hạn.
+- **Khung bên gọn lại thành ba bước**: Chọn căn (phân khu, rổ giá có giá niêm yết và giá cuối, nhập mã căn) · Căn · Tham vấn. Bỏ các nút "quan tâm" cả phân khu và form yêu cầu riêng; Nắng, hạ tầng mở từ thanh trái. Trên điện thoại chọn căn xong khung tự cuộn tới thẻ căn.
+- **Chat Zalo chỉ mở khi khách đã chọn căn.** Bấm chat: mở Zalo của Tú, sao chép sẵn bản tóm tắt để khách dán; đồng thời gửi bản tóm tắt và link phiếu về email, Google Sheet của Tú. Link phiếu mở đúng các căn, phương thức và bản tính khách đã xem. Không thu số điện thoại khi chat.
+- PROJECT_RULES §16.4 (chuẩn chính sách và bộ tính), §16.8 (luồng mới).
+- **Khoá khung sa bàn cho các dự án tiếp theo** (Tú chốt 20/11/2026, bắt đầu từ Nam Mekong Grand Plaza): PROJECT_RULES §17.6 ghi rõ phần khoá, phần dữ liệu riêng từng dự án, việc tách cấu hình trước khi dựng dự án thứ hai; §17.1 thêm đầu vào phiếu tính giá và trang layout căn. Thêm kiểm thử `tests/sa_ban_luong.py` cho luồng chọn căn → bản tính → chat.
 
 ## 2.43.0 · 20/11/2026 — Sa bàn Blanca: khối tháp đúng toà con và số tầng, mặt cắt có layout và mã từng căn, Beachtro bóc tầng
 - **Sửa hình khối và chiều cao tháp** (lỗi ở 2.42.0): mỗi phần thân tháp nay thuộc đúng toà con theo căn trên mặt bằng tầng, cao đúng số tầng: Beacon E5 36, E3 39, E2 40, E1 39; Beachtro E9 36, E8 40, E7 38, E6 34. Đỉnh mỗi toà có mái khung trắng như phối cảnh. Beachtro cũng dựng theo mặt bằng tầng điển hình.

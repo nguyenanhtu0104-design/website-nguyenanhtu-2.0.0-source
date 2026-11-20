@@ -1,0 +1,29 @@
+{
+  "nguon": "Hồ sơ tư vấn Blanca City 7/8/2026 (bản Tú gửi), trang layout căn hộ của chủ đầu tư.",
+  "ghiChu": "Mỗi layout ghi đúng các trục căn in trên bản vẽ. Căn có trục nằm trong danh sách dùng layout chính thức của trục đó; căn khác dùng layout cùng loại có diện tích tim tường gần nhất và ghi rõ là layout điển hình.",
+  "khu": {
+    "beacon": [
+      { "id": "beacon-studio", "loai": "STU", "ten": "Studio", "truc": ["E5-16", "E1-16"], "thongThuy": 30.8, "timTuong": 35.6, "caoTang": 3.6, "anh": "layout/beacon-studio.webp", "w": 913, "h": 1316, "trang": 74 },
+      { "id": "beacon-1pn-plus", "loai": "1BR+", "ten": "1PN+", "truc": ["E5-17", "E1-15"], "thongThuy": 51.2, "timTuong": 57.2, "caoTang": 3.6, "anh": "layout/beacon-1pn-plus.webp", "w": 971, "h": 1400, "trang": 75 },
+      { "id": "beacon-2pn", "loai": "2BR", "ten": "2PN", "truc": ["E5-05", "E5-06", "E1-06"], "thongThuy": 73.8, "timTuong": 79.8, "caoTang": 3.6, "anh": "layout/beacon-2pn.webp", "w": 972, "h": 1400, "trang": 76 },
+      { "id": "beacon-2pn-plus", "loai": "2BR+", "ten": "2PN+", "truc": ["E5-18", "E1-12B"], "thongThuy": 74.7, "timTuong": 81, "caoTang": 3.6, "anh": "layout/beacon-2pn-plus.webp", "w": 959, "h": 1381, "trang": 77 },
+      { "id": "beacon-3pn", "loai": "3BR", "ten": "3PN", "truc": ["E5-19", "E1-12A"], "thongThuy": 94.3, "timTuong": 101.1, "caoTang": 3.6, "anh": "layout/beacon-3pn.webp", "w": 976, "h": 1400, "trang": 78 },
+      { "id": "beacon-3pn-view-kep", "loai": "3BR", "ten": "3PN view kép", "truc": ["E5-12B", "E1-18"], "thongThuy": 104.7, "timTuong": 113.8, "caoTang": 3.6, "anh": "layout/beacon-3pn-view-kep.webp", "w": 984, "h": 1400, "trang": 79 }
+    ],
+    "beachtro": [
+      { "id": "beachtro-studio", "loai": "STU", "ten": "Studio", "truc": ["E6-12", "E6-16", "E7-06", "E7-08", "E8-06"], "thongThuy": 31.9, "timTuong": 36.3, "caoTang": 3.5, "anh": "layout/beachtro-studio.webp", "w": 976, "h": 1400, "trang": 103 },
+      { "id": "beachtro-1pn-plus", "loai": "1BR+", "ten": "1PN+", "truc": ["E6-03", "E6-15", "E7-05", "E7-09", "E8-02", "E8-07", "E8-03A", "E9-01"], "thongThuy": 50.8, "timTuong": 56.1, "caoTang": 3.5, "anh": "layout/beachtro-1pn-plus.webp", "w": 976, "h": 1400, "trang": 104 },
+      { "id": "beachtro-2pn", "loai": "2BR", "ten": "2PN", "truc": ["E6-03A"], "thongThuy": 68.8, "timTuong": 74.5, "caoTang": 3.5, "anh": "layout/beachtro-2pn.webp", "w": 976, "h": 1400, "trang": 105 },
+      { "id": "beachtro-2pn-plus", "loai": "2BR+", "ten": "2PN+", "truc": ["E6-06", "E6-07", "E6-11", "E7-07", "E7-10", "E8-01", "E8-05", "E8-08", "E9-12B"], "thongThuy": 74.8, "timTuong": 81, "caoTang": 3.5, "anh": "layout/beachtro-2pn-plus.webp", "w": 907, "h": 1400, "trang": 106 },
+      { "id": "beachtro-3pn", "loai": "3BR", "ten": "3PN", "truc": ["E6-10", "E9-15"], "thongThuy": 94.4, "timTuong": 102, "caoTang": 3.5, "anh": "layout/beachtro-3pn.webp", "w": 946, "h": 1400, "trang": 107 },
+      { "id": "beachtro-3pn-view-kep", "loai": "3BR", "ten": "3PN view kép", "truc": ["E6-12B", "E9-10"], "thongThuy": 103.7, "timTuong": 112, "caoTang": 3.5, "anh": "layout/beachtro-3pn-view-kep.webp", "w": 988, "h": 1400, "trang": 108 },
+      { "id": "beachtro-3pn-plus", "loai": "3BR+", "ten": "3PN+", "truc": ["E7-03"], "thongThuy": 118.3, "timTuong": 126.8, "caoTang": 3.5, "anh": "layout/beachtro-3pn-plus.webp", "w": 975, "h": 1400, "trang": 109 }
+    ],
+    "b123": [
+      { "id": "b123-studio-c1", "loai": "STU", "ten": "Studio (mẫu C1)", "truc": [], "thongThuy": 30.54, "anh": "layout/b123-studio-c1.webp", "w": 339, "h": 729, "trang": 54 },
+      { "id": "b123-1pn-a1", "loai": "1BR", "ten": "1PN (mẫu A1)", "truc": [], "thongThuy": 45.29, "anh": "layout/b123-1pn-a1.webp", "w": 615, "h": 742, "trang": 54 },
+      { "id": "b123-2pn-a", "loai": "2BR", "ten": "2PN (mẫu A)", "truc": [], "thongThuy": 68.6, "anh": "layout/b123-2pn-a.webp", "w": 675, "h": 650, "trang": 54 },
+      { "id": "b123-2pn-goc-b4", "loai": "2BR", "ten": "2PN góc (mẫu B4)", "truc": [], "thongThuy": 61.6, "anh": "layout/b123-2pn-goc-b4.webp", "w": 499, "h": 651, "trang": 54 }
+    ]
+  }
+}

@@ -33,6 +33,8 @@ const donVi = (met) => met / (GEO && GEO.tyLe ? GEO.tyLe.metTrenDonVi : 2.1958);
 let CHAN = null;
 let CAN = null;   // quỹ căn hộ chủ đầu tư chia cho đại lý, nạp từ can-ho.json
 let MB = null;    // mặt bằng tầng đã số hoá (mat-bang.json, scripts/so-hoa-mat-bang.py)
+let CS = null;    // chính sách bán hàng từng phân khu (chinh-sach.json), tính bằng ban-tinh.js
+let LAYOUT = null; // layout căn chính thức trong hồ sơ tư vấn (layout.json)
 const KHOI = [
   { zone: 'beachtro', col: [.42, .56, .66], ten: 'Beachtro',
     thap: [['E9', 36], ['E8', 40], ['E7', 38], ['E6', 34]] },
@@ -152,9 +154,11 @@ const rgb = c => '#' + c.map(v => Math.round(v * 255).toString(16).padStart(2, '
 /* ---------- dữ liệu ---------- */
 const U = [];            // căn Casa Villa mô phỏng
 let inv = { updatedAt: null, source: null, units: {} };
-const state = { zone: 'all', type: -1, sel: -1, hover: -1, tab: 'explore', mode: 'type', cart: [], q: '', sheet: 0, base: 'osm', sunT: null, osm: 'chua', night: false, hideLabels: false, blocks: true, cut: 0, market: 'all', rail: null, ranh: true, canToa: '', canTT: '', canLoai: '', qcan: '' };
+const state = { zone: 'all', type: -1, sel: -1, hover: -1, tab: 'chon', mode: 'type', cart: [], q: '', sheet: 0, base: 'osm', sunT: null, osm: 'chua', night: false, hideLabels: false, blocks: true, cut: 0, market: 'all', rail: null, ranh: true, canToa: '', canTT: '', canLoai: '', canKhu: '', qcan: '',
+  canMa: null, pttt: null, bt: { ngayKy: null, tyLeVay: .7, laiSau: 10.5, namVay: 25 }, phieu: null, daChat: null, tvTen: '', tvNhan: '' };
 let GEO = null, SUN = null;
-try { state.cart = JSON.parse(localStorage.getItem('blanca.cart.v1') || '[]').filter(x => x && x.k && x.label).slice(0, 20); } catch {}
+// Danh sách căn tham vấn: chỉ giữ căn cụ thể (căn hộ theo mã, căn Casa trên sa bàn); bỏ mục "quan tâm phân khu" của bản cũ.
+try { state.cart = JSON.parse(localStorage.getItem('blanca.cart.v1') || '[]').filter(x => x && x.k && x.label && /^(can|u):/.test(x.k)).slice(0, 12); } catch {}
 const saveCart = () => { try { localStorage.setItem('blanca.cart.v1', JSON.stringify(state.cart)); } catch {} };
 
 function buildUnits(geo) {
@@ -828,7 +832,7 @@ const TANG_BEACON = (() => { const t = []; for (let i = 1; i <= 40; i++) t.push(
 const tangNhan = (t) => String(t).replace(/^0+(?=\d)/, '');                 // '07' -> '7'
 const tangSo = (t) => TANG_BEACON.indexOf(tangNhan(t)) + 1;                   // tầng vật lý
 const tangMa = (t) => /^\d$/.test(t) ? '0' + t : t;                           // nhãn tầng trong mã căn: '7' -> '07'
-const LOAI_TEN = { 'STU': 'Studio', '1BR+': '1PN+', '2BR': '2PN', '2BR+': '2PN+', '3BR': '3PN', '3BR+': '3PN+' };
+const LOAI_TEN = { '1BR': '1PN', DUPLEX: 'Duplex', 'STU': 'Studio', '1BR+': '1PN+', '2BR': '2PN', '2BR+': '2PN+', '3BR': '3PN', '3BR+': '3PN+' };
 const tenLoai = (l) => LOAI_TEN[l] || l;
 const mbDung = () => (state.mb && MB && MB[state.mb.khu] && MB[state.mb.khu].tangDung.includes(state.mb.tang)) ? MB[state.mb.khu] : null;
 const maDayDu = (c, tang) => c.toa + tangMa(tang) + c.so;
@@ -955,9 +959,9 @@ function moMatBang(tang, maMB, khu) {
   tang = tangNhan(tang);
   const moi = !state.mb || state.mb.khu !== khu;
   state.mb = { khu, tang, sel: -1, hover: -1 };
-  state.zone = khu; state.sel = -1; state.tab = 'unit'; state.consignMa = null;
+  state.zone = khu; state.sel = -1; state.tab = 'can'; state.consignMa = null; state.canMa = null;
   const d = mbDung();
-  if (d) { if (mbTex.khu !== d.anh) { mbTex.anh = mbTex.img = null; } napAnhMB(d); veNhanMB(); if (maMB) state.mb.sel = d.can.findIndex(c => c.toa + c.so === maMB); }
+  if (d) { if (mbTex.khu !== d.anh) { mbTex.anh = mbTex.img = null; } napAnhMB(d); veNhanMB(); if (maMB) { state.mb.sel = d.can.findIndex(c => c.toa + c.so === maMB); if (state.mb.sel >= 0) state.cuon = 'theCan'; } }
   const b = hopDeBeacon(), h = caoTang(tang);
   if (b && (moi || maMB)) fly({ tx: b.x, ty: W(b.y) - 18, tz: h, dist: innerWidth < 860 ? 270 : 175, pitch: 1.12, yaw: T.yaw });
   else if (b) fly({ ...T, tz: h });
@@ -971,7 +975,7 @@ function buocTang(d) {
 }
 function chonCanMB(k) {
   if (!state.mb) return;
-  state.mb.sel = k; state.tab = 'unit'; state.keepScroll = false; capNhatTrangThaiMB(); render();
+  state.mb.sel = k; state.tab = 'can'; state.keepScroll = false; state.cuon = k >= 0 ? 'theCan' : null; capNhatTrangThaiMB(); render(); syncHash();
   if (innerWidth < 860) { const p = $('#panel'); if (p) p.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
 }
 function veThanhMB() {
@@ -984,38 +988,193 @@ function veThanhMB() {
     <button type="button" data-mbbuoc="-1" aria-label="Xuống một tầng">−</button><button type="button" data-mbbuoc="1" aria-label="Lên một tầng">+</button>
     <button type="button" class="dong" data-mbdong="1">Hiện đủ ✕</button>`;
 }
-// Tiến độ thanh toán Beacon theo CSBH02/B-BC/SPG/07-2026 (áp dụng từ 10/07/2026), Tú gửi trong thư mục CSBH 19/11/2026.
-// Giá trong quỹ đã gồm VAT 10% và KPBT 2% tính trên giá chưa VAT, nên giá chưa VAT = giá quỹ / 1,12.
-const CSBH_BEACON = { ma: 'CSBH02/B-BC/SPG/07-2026', tu: '10/07/2026', ckKhongVay: .05, htlsThang: 30, htlsDen: '2029-01-31', nhanNha: '31/05/2028', banGiao: '31/05/2030' };
-function tienDoBeacon(c, cach) {
-  const gia = c.gia, P0 = gia / 1.12, G = P0 * 1.1, KPBT = gia - G, coc = /^3BR/.test(c.loai) ? 150e6 : 100e6;
-  const r = [['Ký HĐTHNV (đặt cọc)', coc, 'Khi ký'], ['Thanh toán lần 2, đủ 15% giá trị căn hộ', .15 * G - coc, 'Ngày thứ 10']];
-  if (cach === 'vay') {
-    r.push(['Ký HĐMB · ngân hàng giải ngân tối đa 70%', .7 * G, 'Trong 15 ngày sau ký HĐMB (khoảng ngày 55)', 1]);
-    r.push(['Thanh toán lần 4', .1 * G, 'Ngày thứ 100']);
-    r.push(['Bàn giao: 100% KPBT và VAT của 5% cuối', KPBT + .005 * P0, `Dự kiến ${CSBH_BEACON.nhanNha}`]);
-  } else {
-    [100, 220, 340, 460, 580].forEach((n, i) => r.push([`Thanh toán lần ${i + 3}`, .1 * G, `Ngày thứ ${n}`]));
-    r.push(['Thanh toán lần 8 · đủ 70%, được nhận nhà để ở', .05 * G, 'Ngày thứ 670']);
-    [820, 970, 1120, 1270, 1420].forEach((n, i) => r.push([`Thanh toán lần ${i + 9}`, .05 * G, `Ngày thứ ${n}`]));
-    r.push(['Bàn giao chính thức: 100% KPBT và VAT của 5% cuối', KPBT + .005 * P0, `Dự kiến ${CSBH_BEACON.banGiao}`]);
-  }
-  r.push(['Ký quỹ cấp sổ 5% (chưa VAT), chủ đầu tư trả lãi 8%/năm', .05 * P0, 'Cùng đợt bàn giao, khấu trừ khi nhận sổ']);
-  return { r, gia, P0, G, KPBT, vay: cach === 'vay' ? .7 * G : 0, ck: cach === 'vay' ? 0 : CSBH_BEACON.ckKhongVay * P0 };
+/* ---------- thẻ căn: layout chính thức, giá cuối theo phương thức thanh toán, phiếu tính giá, cân đối tài chính ---------- */
+// Chính sách bán hàng (chinh-sach.json) và bộ tính (ban-tinh.js) dùng chung cho mọi phân khu có quỹ căn.
+// Layout căn lấy từ trang layout chính thức trong hồ sơ tư vấn (layout.json), không cắt từ mặt bằng tầng.
+const BT = window.BanTinh;
+const ngayVN = (s) => s ? s.slice(8, 10) + '/' + s.slice(5, 7) + '/' + s.slice(0, 4) : '—';
+const thangVN = (s) => s ? s.slice(5, 7) + '/' + s.slice(0, 4) : '—';
+const trieu = (n) => (n / 1e6).toLocaleString('vi-VN', { maximumFractionDigits: 1 }) + ' triệu';
+const ptVN = (x, d = 1) => (x * 100).toLocaleString('vi-VN', { maximumFractionDigits: d }) + '%';
+const m2 = (x) => x == null ? '—' : String(x).replace('.', ',') + ' m²';
+const ty = (n) => n ? (n / 1e9).toFixed(2).replace('.', ',') : '—';
+const TEN_KHU_DU = { beacon: 'Beacon Tower', beachtro: 'Beachtro Tower', b123: 'Blanca B1 · B2 · B3', b567: 'Blanca B5 · B6 · B7', casa: 'Casa Villa' };
+const chinhSach = (khu) => (CS && CS.khu && CS.khu[khu]) || null;
+function canQuyMa(ma) { return CAN && CAN.can.find(x => x.ma === ma); }
+function canTuQuy(k) {
+  return { ma: k.ma, khu: k.phanKhu, toa: k.toa, tang: tangNhan(k.tang), so: k.can, loai: k.loai, thongThuy: k.thongThuy, timTuong: k.timTuong, k, mbIdx: mbViTri(k.phanKhu, k.toa, k.can) };
 }
-function goiBanTinh(c, t) {
-  const hom = new Date(), ngay = (n) => { const x = new Date(hom.getTime() + n * 864e5); return x.toISOString().slice(0, 10); };
-  const bd = ngay(55), den = new Date(CSBH_BEACON.htlsDen + 'T00:00:00');
-  const thang = Math.max(0, Math.min(CSBH_BEACON.htlsThang, Math.floor((den - new Date(bd + 'T00:00:00')) / (30.44 * 864e5))));
-  const p = { v: 1, src: { project: 'Blanca City · Beacon Tower', unit: c.ma, method: 'Vay hỗ trợ lãi suất · ' + CSBH_BEACON.ma },
-    f: { limit: Math.round(t.vay), start: bd, months: 300, method: 'emi', promo: 7, promoMonths: 12, floating: 10.5, grace: thang, basis: 'monthly', due: 'anniv', repay: 'recast', rateMode: 'period', price: Math.round(t.gia), htls: thang, htlsPct: 100 },
-    tranches: [{ date: bd, amount: Math.round(t.vay) }] };
+function mbViTri(khu, toa, so) { const d = MB && MB[khu]; return d ? d.can.findIndex(c => c.toa === toa && c.so === so) : -1; }
+function canTuMB(khu, i, tang) {
+  const c = MB[khu].can[i], ma = maDayDu(c, tang), k = canQuyMa(ma);
+  return { ma, khu, toa: c.toa, tang, so: c.so, loai: k ? k.loai : c.loai, thongThuy: k ? k.thongThuy : c.thongThuy, timTuong: k ? k.timTuong : c.timTuong, k, mbIdx: i, theoMB: !k };
+}
+// Tìm căn theo mã: trước tiên trong quỹ đại lý, sau đó trên mặt bằng đã số hoá (mã = toà + tầng + số căn).
+function timCan(ma) {
+  ma = String(ma || '').trim().toUpperCase().replace(/[\s.\-]/g, '');
+  if (!ma) return null;
+  const k = canQuyMa(ma); if (k) return canTuQuy(k);
+  for (const khu of Object.keys(MB || {})) {
+    const d = MB[khu];
+    for (let i = 0; i < d.can.length; i++) {
+      const c = d.can[i];
+      if (!ma.startsWith(c.toa) || !ma.endsWith(c.so)) continue;
+      const t = tangNhan(ma.slice(c.toa.length, ma.length - c.so.length));
+      if (t && TANG_BEACON.includes(t) && tangSo(t) >= 3) return canTuMB(khu, i, t);
+    }
+  }
+  return null;
+}
+// Layout: đúng trục in trên bản vẽ thì dùng layout chính thức của trục đó; không thì layout cùng loại có diện tích gần nhất.
+function layoutCua(o) {
+  const ds = LAYOUT && LAYOUT.khu && LAYOUT.khu[o.khu]; if (!ds) return null;
+  const dung = ds.find(l => l.truc.includes(o.toa + '-' + o.so));
+  if (dung) return { l: dung, dung: true };
+  const nl = BT.nhomLoai(o.loai), cung = ds.filter(l => BT.nhomLoai(l.loai) === nl);
+  if (!cung.length) return null;
+  const f = o.timTuong && cung.every(l => l.timTuong) ? 'timTuong' : 'thongThuy';
+  return { l: cung.slice().sort((a, b) => Math.abs(a[f] - (o[f] || 0)) - Math.abs(b[f] - (o[f] || 0)))[0], dung: false };
+}
+function soDoViTri(khu, idx) {
+  const d = MB && MB[khu]; if (!d || idx < 0) return '';
+  const toa = {};
+  d.can.forEach(c => { const xs = c.poly.map(p => p[0]), ys = c.poly.map(p => p[1]); const t = toa[c.toa] || (toa[c.toa] = { x: 0, y: 0, n: 0 }); t.x += (Math.min(...xs) + Math.max(...xs)) / 2; t.y += (Math.min(...ys) + Math.max(...ys)) / 2; t.n++; });
+  const fs = Math.round(d.rong / 26);
+  return `<svg class="keyplan" viewBox="0 0 ${d.rong} ${d.cao}" role="img" aria-label="Vị trí căn trên mặt bằng tầng điển hình">
+    ${d.can.map((c, i) => `<polygon points="${c.poly.map(p => p[0] + ',' + p[1]).join(' ')}"${i === idx ? ' class="on"' : ''}/>`).join('')}
+    ${Object.entries(toa).map(([t, v]) => `<text x="${v.x / v.n}" y="${v.y / v.n}" font-size="${fs}">${t}</text>`).join('')}
+    <text x="${d.rong - fs}" y="${fs * 1.4}" font-size="${fs}" class="bac">B↑</text></svg>`;
+}
+const btOpt = () => ({ ngayKy: state.bt.ngayKy || BT.homNay(), tyLeVay: state.bt.tyLeVay, laiSau: state.bt.laiSau, namVay: state.bt.namVay });
+function phieuCan(o, p, opt = btOpt()) {
+  const pol = chinhSach(o.khu); if (!pol || !o.k || !o.k.gia || !p) return null;
+  return BT.phieu(o.k.gia, o.loai, pol, p, opt);
+}
+// Giá cuối mọi phương thức còn hiệu lực của một căn (dùng ở thẻ căn, rổ giá, phiếu tham vấn)
+function giaCuoi(o, opt = btOpt()) {
+  const pol = chinhSach(o.khu); if (!pol || !o.k || !o.k.gia) return [];
+  return BT.ptttHieuLuc(pol, opt.ngayKy).map(p => ({ p, ph: BT.phieu(o.k.gia, o.loai, pol, p, opt) }));
+}
+function goiBanTinh(o, ph) {
+  const v = ph.canDoi.vay; if (!v) return '';
+  const pol = chinhSach(o.khu);
+  const p = { v: 1, src: { project: 'Blanca City · ' + (TEN_KHU_DU[o.khu] || o.khu), unit: o.ma, method: 'Vay hỗ trợ lãi suất · ' + pol.ma },
+    f: { limit: v.L, start: v.ngayGiaiNgan, months: Math.round(v.namVay * 12), method: 'emi', promo: 7, promoMonths: 12, floating: v.laiNam, grace: v.htlsThang, basis: 'monthly', due: 'anniv', repay: 'recast', rateMode: 'period', price: ph.gia.T, htls: v.htlsThang, htlsPct: 100 },
+    tranches: [{ date: v.ngayGiaiNgan, amount: v.L }] };
   return '/ban-tinh-tai-chinh/#nhan=' + btoa(unescape(encodeURIComponent(JSON.stringify(p)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
-function layoutSvg(d, c) {
-  const [x0, y0] = d.khung, xs = c.poly.map(p => p[0] + x0), ys = c.poly.map(p => p[1] + y0), pad = 46;
-  const bx = Math.min(...xs) - pad, by = Math.min(...ys) - pad, bw = Math.max(...xs) - Math.min(...xs) + pad * 2, bh = Math.max(...ys) - Math.min(...ys) + pad * 2;
-  return `<svg class="mblayout" viewBox="${bx} ${by} ${bw} ${bh}" role="img" aria-label="Layout căn ${esc(c.ma)} trên mặt bằng tầng"><image href="${esc(d.nguon)}" width="1728" height="972"/><polygon points="${c.poly.map(p => (p[0] + x0) + ',' + (p[1] + y0)).join(' ')}" fill="#e8743b22" stroke="#e8743b" stroke-width="3"/></svg>`;
+function ttBadge(o) {
+  return o.k ? (o.k.tinhTrang === 'trong' ? '<span class="tt trong">Còn trống</span>' : '<span class="tt coc">Đã cọc</span>') : '<span class="badge">Chưa có trong quỹ đại lý</span>';
+}
+function canCard(o) {
+  const lay = layoutCua(o), pol = chinhSach(o.khu), chon = inCart('can:' + o.ma);
+  let h = `<div class="card cancard" id="theCan"><p class="mute small">${esc(TEN_KHU_DU[o.khu] || o.khu)} · toà ${esc(o.toa)} · tầng ${esc(o.tang)} · căn ${esc(o.so)}</p>
+    <h3>${esc(o.ma)} · ${esc(tenLoai(BT.nhomLoai(o.loai)))}</h3><p>${ttBadge(o)}</p>`;
+  if (lay) {
+    const l = lay.l;
+    h += `<figure class="lay"><img src="${esc(l.anh)}" width="${l.w}" height="${l.h}" alt="Layout ${esc(l.ten)} ${lay.dung ? 'trục ' + esc(o.toa + '-' + o.so) : 'điển hình'}, bản vẽ chủ đầu tư" data-zoom="${esc(l.anh)}" loading="lazy">
+      ${o.mbIdx >= 0 ? `<div class="vitri"><b>Vị trí trên tầng</b>${soDoViTri(o.khu, o.mbIdx)}</div>` : ''}
+      <figcaption>${lay.dung
+        ? `<b>Layout chính thức trục ${esc(o.toa + '-' + o.so)}</b>`
+        : `<b>Layout điển hình ${esc(l.ten)}</b> (${l.truc.length ? 'trục ' + esc(l.truc.join(', ')) : 'mẫu căn chủ đầu tư'}${l.timTuong ? ', tim tường ' + m2(l.timTuong) : ', ' + m2(l.thongThuy)}). Căn ${esc(o.ma)} cùng loại, bố trí có thể lệch đôi chút.`}
+        <span class="mute">Bản vẽ trong hồ sơ tư vấn 7/8/2026, trang ${l.trang}. Chạm để phóng to.</span></figcaption></figure>`;
+  } else h += `<div class="note small">Chưa có layout chính thức cho loại căn này trong hồ sơ.</div>`;
+  h += `<table class="kv"><tbody>
+      <tr><td>Thông thủy</td><td class="r">${m2(o.thongThuy)}${o.theoMB ? ' <span class="mute small">(theo mặt bằng)</span>' : ''}</td></tr>
+      <tr><td>Tim tường</td><td class="r">${m2(o.timTuong)}${o.theoMB ? ' <span class="mute small">(theo mặt bằng)</span>' : ''}</td></tr>
+      ${lay && lay.l.caoTang ? `<tr><td>Chiều cao tầng</td><td class="r">${String(lay.l.caoTang).replace('.', ',')} m</td></tr>` : ''}
+      <tr><td>Giá niêm yết (gồm VAT, KPBT)</td><td class="r"><b>${o.k && o.k.gia ? soVN(o.k.gia) : 'Liên hệ'}</b></td></tr>
+    </tbody></table>`;
+  h += ptttHtml(o, pol);
+  h += `<div class="row"><button class="btn ${chon ? '' : 'primary'}" data-chon="${esc(o.ma)}">${chon ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Chọn căn này để tham vấn'}</button></div>
+    <p class="mute small">Chủ căn này muốn bán hoặc cho thuê? <button class="lk" data-mbky="${esc(o.ma)}">Ký gửi căn</button></p></div>`;
+  return h;
+}
+function ptttHtml(o, pol) {
+  if (!o.k || !o.k.gia) return `<h4 class="pt-h">Giá cuối theo phương thức thanh toán</h4><div class="note small">Căn ${esc(o.ma)} chưa có trong quỹ đại lý nên chưa có giá. Chọn căn để tham vấn, tư vấn sẽ báo giá và gửi bản tính đúng căn này.</div>`;
+  if (!pol) return `<div class="note small">Chưa có chính sách bán hàng của phân khu này để tính giá cuối.</div>`;
+  const opt = btOpt(), ds = giaCuoi(o, opt), het = BT.ptttHetHan(pol, opt.ngayKy);
+  const kv = ds.find(x => x.p.id === 'khong-vay'), vay = ds.find(x => x.p.id === 'vay');
+  let h = `<h4 class="pt-h">Giá cuối theo phương thức thanh toán</h4><p class="mute small">Chạm một phương thức để mở phiếu tính giá và cân đối tài chính của căn này.</p><div class="pttts">`;
+  for (const { p, ph } of ds) {
+    const mo = state.pttt === p.id, cd = ph.canDoi, g = ph.gia;
+    let y = '';
+    if (p.id === 'vay' && cd.vay) y = `Vốn tự có ${tien(cd.tuCo)} · ngân hàng ${tien(cd.vay.L)} · lãi do chủ đầu tư trả đến ${thangVN(cd.vay.htlsDen)}, sau đó khoảng ${trieu(cd.vay.traThang)}/tháng`;
+    else if (p.id === 'khong-vay') y = `Chiết khấu ${ptVN(g.tongCk / g.P0)} · 12 tháng đầu đóng ${tien(cd.trong12Thang)} · giãn đến ${thangVN(ph.tienDo.banGiao)}`;
+    else y = `Chiết khấu ${ptVN(g.tongCk / g.P0)} · đóng đủ ${ptVN(p.mucSom, 0)} trước ${ngayVN(p.han)}`;
+    const ss = p.id === 'khong-vay' && vay ? `<span class="tk">Rẻ hơn vay ${tien(vay.ph.gia.T - g.T)}</span>` : '';
+    h += `<button type="button" class="pt" data-pttt="${esc(p.id)}" aria-expanded="${mo}"><span class="pt-t"><b>${esc(p.ten)}</b><span>${esc(p.phu || '')}</span></span><span class="pt-g"><b>${tien(g.T)}</b>${ss}</span><span class="pt-y">${y}</span></button>`;
+    if (mo) h += phieuHtml(o, pol, p, ph);
+  }
+  h += '</div>';
+  if (het.length) h += `<p class="mute small">${het.map(p => esc(p.ten)).join(', ')} theo chính sách này đã hết hạn ${[...new Set(het.map(p => ngayVN(p.han)))].join(', ')}. Khi chủ đầu tư ban hành đợt mới, giá cuối tự cập nhật.</p>`;
+  if (!state.pttt && kv) h += `<p class="small">Giá niêm yết ${tien(o.k.gia)} là giá trước chiết khấu. Không vay được giảm còn <b>${tien(kv.ph.gia.T)}</b>.</p>`;
+  return h;
+}
+function phieuHtml(o, pol, p, ph) {
+  const g = ph.gia, td = ph.tienDo, cd = ph.canDoi, opt = btOpt();
+  // Bảng 3 cột cho vừa khung hẹp: thời điểm áp dụng và mức chiết khấu ghi dòng nhỏ dưới nội dung.
+  const dong = (stt, ten, phu, c, cls = '') => `<tr${cls ? ` class="${cls}"` : ''}><td class="c">${stt}</td><td>${ten}${phu ? `<small>${phu}</small>` : ''}</td><td class="r">${c}</td></tr>`;
+  let ck = '';
+  g.ck.forEach(c => { ck += dong('', esc(c.ten), `áp dụng tại ${esc(c.luc)} · mức ${ptVN(c.tyLe)}`, '−' + soVN(c.so), 'ck'); });
+  if (!g.ck.length) ck = dong('', 'Chiết khấu', 'phương thức này không có chiết khấu', '0', 'ck');
+  const nnRow = td.rows.find(r => r.moc === 'nhanNha');
+  const thieu = nnRow ? Math.max(0, Math.round(.7 * (g.P + g.V) - nnRow.luyKe)) : 0;
+  const ten = `BLANCA CITY · ${(TEN_KHU_DU[o.khu] || o.khu).toUpperCase()}`;
+  let h = `<div class="phieu" id="phieu">
+    <div class="ph-dau"><b>${esc(ten)}</b><span>PHIẾU TÍNH GIÁ (tạm tính)</span><em>${esc(pol.ma)} · ${esc(p.ten)}${p.phu ? ' · ' + esc(p.phu) : ''}</em></div>
+    <h5>THÔNG TIN GIÁ &amp; CHÍNH SÁCH</h5>
+    <table class="ph-t"><colgroup><col class="stt"><col><col class="so"></colgroup><thead><tr><th class="c">STT</th><th>Nội dung</th><th class="r">Giá trị (đ)</th></tr></thead><tbody>
+      ${dong(1, 'Toà', '', esc(o.toa))}${dong(2, 'Tầng', '', esc(o.tang))}${dong(3, 'Căn', '', esc(o.so))}${dong(4, 'Mã căn hộ', '', '<b>' + esc(o.ma) + '</b>')}
+      ${dong(5, 'Loại hình căn hộ', '', esc(tenLoai(BT.nhomLoai(o.loai))))}${dong(6, 'Diện tích thông thủy', '', m2(o.thongThuy))}
+      ${dong(7, 'Tổng giá bán (đã gồm VAT &amp; KPBT) trước chiết khấu', 'giá niêm yết', soVN(g.niemYet))}
+      ${dong(8, 'Tổng giá bán (chưa gồm VAT &amp; KPBT) trước chiết khấu', 'giá niêm yết / 1,12', soVN(g.P0))}
+      ${ck}
+      ${dong(9, 'Tổng giá bán (chưa gồm VAT &amp; KPBT) sau chiết khấu', '', soVN(g.P), 'b')}
+      ${dong('', 'Thuế VAT (tạm tính)', '10% giá sau chiết khấu', soVN(g.V))}${dong('', 'Kinh phí bảo trì (tạm tính)', '2% giá sau chiết khấu', soVN(g.K))}
+      ${dong(10, 'Tổng giá trị khách hàng phải thanh toán', 'giá sau chiết khấu, đã gồm VAT &amp; KPBT', soVN(g.T), 'tong')}
+    </tbody></table>
+    <h5>TIẾN ĐỘ THANH TOÁN</h5>
+    <div class="ph-in">
+      <label>Ngày ký HĐTHNV<input type="date" data-bt="ngayKy" value="${esc(opt.ngayKy)}" min="2026-01-01" max="2030-12-31"></label>
+      ${p.tienDo === 'vay' ? `<label>Tỷ lệ vay<select data-bt="tyLeVay">${[.7, .6, .5, .4, .3].map(v => `<option value="${v}"${Math.abs(v - (opt.tyLeVay ?? .7)) < 1e-6 ? ' selected' : ''}>${v * 100}% giá trị gồm VAT</option>`).join('')}</select></label>` : ''}
+    </div>
+    <p class="ph-moc">HĐMB dự kiến <b>${ngayVN(td.hdmb)}</b> · nhận nhà sử dụng dự kiến <b>${ngayVN(td.nhanNha)}</b> · bàn giao dự kiến <b>${ngayVN(pol.banGiao)}</b></p>
+    <table class="ph-t td"><colgroup><col class="stt"><col><col class="pt"><col class="so"></colgroup><thead><tr><th class="c">STT</th><th>Tiến độ thanh toán · ngày</th><th class="c">%</th><th class="r">Số tiền (đ)</th></tr></thead><tbody>
+      ${td.rows.map(r => r.moc
+        ? `<tr class="moc"><td class="c">◆</td><td>${esc(r.ten)}<span class="ng">${ngayVN(r.ngay)}</span><small>${esc(r.ghi || '')}${r.moc === 'nhanNha' ? ` · đến mốc này đã đóng ${ptVN(Math.min(1, r.luyKePt), 0)}` : ''}</small></td><td></td><td></td></tr>`
+        : `<tr${r.nguon === 'nh' ? ' class="nh"' : r.kyQuy ? ' class="kq"' : ''}><td class="c">${r.lan ?? ''}</td><td>${esc(r.ten)}<span class="ng">${ngayVN(r.ngay)}</span>${r.ghi || r.phan ? `<small>${esc([r.phan, r.ghi].filter(Boolean).join(' · '))}</small>` : ''}</td><td class="c">${r.pt != null ? ptVN(r.pt, 1) : ''}</td><td class="r">${soVN(r.so)}</td></tr>`).join('')}
+      <tr class="tong"><td></td><td>TỔNG GIÁ TRỊ THANH TOÁN</td><td></td><td class="r">${soVN(td.tong)}</td></tr>
+    </tbody></table>
+    ${thieu > 0 && p.tienDo !== 'vay' ? `<p class="ph-luu">Ký ngày ${ngayVN(opt.ngayKy)} thì đến ${ngayVN(td.nhanNha)} mới đóng ${ptVN(nnRow.luyKePt, 0)}. Muốn nhận nhà đúng mốc, đóng trước thêm khoảng <b>${soVN(Math.ceil(thieu / 1e6) * 1e6)}</b>; khoản đóng trước hạn được chủ đầu tư trả lãi 8%/năm.</p>` : ''}
+    <h5>CÂN ĐỐI TÀI CHÍNH</h5>
+    <table class="ph-t kv2"><tbody>
+      <tr><td>Vốn tự có cần chuẩn bị</td><td class="r"><b>${soVN(cd.tuCo)}</b></td></tr>
+      ${cd.vay ? `<tr><td>Ngân hàng cho vay (giải ngân ${ngayVN(cd.vay.ngayGiaiNgan)})</td><td class="r">${soVN(cd.vay.L)}</td></tr>` : ''}
+      <tr><td>Phải đóng trong 12 tháng đầu</td><td class="r">${soVN(cd.trong12Thang)}</td></tr>
+      <tr><td>Đóng đến khi nhận nhà (${ngayVN(td.nhanNha)})</td><td class="r">${soVN(cd.tuCoNhanNha)}</td></tr>
+    </tbody></table>`;
+  if (cd.vay) {
+    const v = cd.vay;
+    h += `<div class="ph-in">
+      <label>Lãi suất sau hỗ trợ (%/năm)<input type="number" data-bt="laiSau" value="${v.laiNam}" min="0" max="25" step="0.1" inputmode="decimal"></label>
+      <label>Thời hạn vay<select data-bt="namVay">${[10, 15, 20, 25, 30, 35].map(n => `<option value="${n}"${n === v.namVay ? ' selected' : ''}>${n} năm</option>`).join('')}</select></label></div>
+    <ul class="ph-vay">
+      <li><b>${v.htlsThang} tháng đầu</b> (đến ${thangVN(v.htlsDen)}): chủ đầu tư trả lãi, ân hạn nợ gốc, khách trả <b>0 đ/tháng</b>. Trả nợ trước hạn trong thời gian này miễn phí.</li>
+      <li><b>Từ ${thangVN(v.traTu)}</b>: trả đều khoảng <b>${soVN(v.traThang)}/tháng</b> trong ${v.soKy} tháng (lãi giả định ${String(v.laiNam).replace('.', ',')}%/năm, vay ${v.namVay} năm tính từ lần giải ngân).</li>
+      <li>Thu nhập nên từ khoảng <b>${trieu(v.thuNhapGoiY)}/tháng</b> để khoản trả không vượt một nửa thu nhập.</li>
+      <li>Tổng lãi nếu trả đủ kỳ: ${soVN(v.tongLai)}. Tổng chi phí sở hữu (giá cuối + lãi): <b>${soVN(g.T + v.tongLai)}</b>.</li></ul>`;
+  }
+  const nam = cd.theoNam, cat = cd.vay ? nam.findIndex(y => y.nam > +cd.vay.traTu.slice(0, 4)) : -1;
+  const hien = cat > 0 ? nam.slice(0, cat + 1) : nam;
+  h += `<p class="ph-cap">Dòng tiền theo năm (tỷ đồng)</p><table class="ph-t nam"><thead><tr><th>Năm</th><th class="r">Đóng CĐT</th>${cd.vay ? '<th class="r">NH giải ngân</th><th class="r">Trả NH</th>' : ''}<th class="r">Khách chi</th></tr></thead><tbody>
+      ${hien.map(y => `<tr><td>${y.nam}</td><td class="r">${ty(y.kh)}</td>${cd.vay ? `<td class="r">${y.nh ? ty(y.nh) : '—'}</td><td class="r">${y.tra ? ty(y.tra) : '—'}</td>` : ''}<td class="r"><b>${ty(y.chi)}</b></td></tr>`).join('')}
+      ${cat > 0 && cat < nam.length - 1 ? `<tr><td colspan="${cd.vay ? 5 : 3}" class="mute">Các năm sau: trả ngân hàng khoảng ${tien(cd.vay.traThang * 12)}/năm đến ${thangVN(cd.vay.ketThuc)}.</td></tr>` : ''}
+    </tbody></table>
+    <p class="ph-ghi">Theo chính sách ${esc(pol.ma)}, áp dụng từ ${ngayVN(pol.tu)}; công thức theo phiếu tính giá tạm tính của chủ đầu tư. Giá niêm yết lấy từ quỹ đại lý cập nhật ${esc(CAN.capNhat)}. ${esc(pol.uuDai.slice(0, 2).join(' '))} Chủ đầu tư có thể đổi chính sách mà không báo trước; số chính xác theo phiếu tính giá chính thức tại thời điểm ký. Lãi suất ngân hàng sau hỗ trợ là giả định. Bản này là minh hoạ dòng tiền, không phải báo giá.</p>
+    <div class="row noprint"><button class="btn" data-inphieu="1">In hoặc lưu PDF</button>${cd.vay ? `<a class="btn" href="${goiBanTinh(o, ph)}" target="_top">Bản tính tài chính đầy đủ →</a>` : ''}</div>
+  </div>`;
+  return h;
 }
 function mbHtml() {
   const m = state.mb, d = mbDung();
@@ -1027,42 +1186,13 @@ function mbHtml() {
   const coQuy = CAN && CAN.can.some(x => x.phanKhu === m.khu);
   const trong = q.filter(x => x.k && x.k.tinhTrang === 'trong'), coc = q.filter(x => x.k && x.k.tinhTrang === 'coc');
   h += `<p class="mbchu small"><span class="o trong"></span>Còn trống trong quỹ đại lý <span class="o coc"></span>Đã cọc <span class="o"></span>Chưa có trong quỹ đại lý</p>`;
-  if (m.sel >= 0 && d.can[m.sel]) h += mbCard(d, d.can[m.sel], m.tang);
-  else h += `<div class="note">Chạm vào một căn trên mặt bằng tầng ${esc(m.tang)} để xem ${coQuy ? 'giá, layout và tiến độ thanh toán' : 'loại căn, diện tích và layout'}. Dùng − + ở thanh trên hoặc dải tầng bên phải để đổi tầng.</div>`;
+  if (m.sel >= 0 && d.can[m.sel]) h += canCard(canTuMB(m.khu, m.sel, m.tang));
+  else h += `<div class="note">Chạm vào một căn trên mặt bằng tầng ${esc(m.tang)} để xem layout chính thức${coQuy ? ', giá cuối theo từng phương thức thanh toán và phiếu tính giá' : ', loại căn và diện tích'}. Dùng − + ở thanh trên hoặc dải tầng bên phải để đổi tầng.</div>`;
   h += `<h3>Căn trong quỹ đại lý ở tầng ${esc(m.tang)}</h3>` + (trong.length + coc.length
-    ? `<div class="mbds">${[...trong, ...coc].map(x => `<button class="chip" data-mbcan="${x.i}" aria-pressed="${m.sel === x.i}">${esc(x.k.ma)} · ${esc(tenLoai(x.c.loai))} · ${x.k.tinhTrang === 'trong' ? tien(x.k.gia) : 'đã cọc'}</button>`).join('')}</div>`
+    ? `<div class="mbds">${[...trong, ...coc].map(x => `<button class="chip" data-mbcan="${x.i}" aria-pressed="${m.sel === x.i}">${esc(x.k.ma)} · ${esc(tenLoai(BT.nhomLoai(x.c.loai)))} · ${x.k.tinhTrang === 'trong' ? tien(x.k.gia) : 'đã cọc'}</button>`).join('')}</div>`
     : !coQuy ? `<p class="mute small">Quỹ đại lý chưa có căn ${ten}. Mã, loại và diện tích lấy từ mặt bằng của chủ đầu tư; giá cập nhật khi có bảng hàng.</p>`
     : `<p class="mute small">Quỹ đại lý chưa có căn nào ở tầng này. Các tầng có căn: ${[...new Set(CAN.can.filter(x => x.phanKhu === m.khu).map(x => tangNhan(x.tang)))].sort((a, b) => tangSo(a) - tangSo(b)).map(t => `<button class="chip" style="padding:1px 8px" data-mbtang="${t}">${t}</button>`).join(' ')}</p>`);
   h += `<p class="mute small">Mặt bằng: ${esc(d.ghiChu)} Mã căn, loại và diện tích trên mặt bằng đọc từ ô nhãn của bản vẽ; giá và tình trạng chỉ có ở căn nằm trong quỹ đại lý (${esc(CAN.capNhat)}).</p>`;
-  return h;
-}
-function mbCard(d, c, tang) {
-  const ma = maDayDu(c, tang), k = canQuy(ma), cach = state.pttt || 'khong-vay';
-  const tt = k ? (k.tinhTrang === 'trong' ? '<span class="tt trong">Còn trống</span>' : '<span class="tt coc">Đã cọc</span>') : '<span class="badge">Chưa có trong quỹ đại lý</span>';
-  const kk = 'can:' + ma;
-  let h = `<div class="card mbcard"><p class="mute small">${TEN_KHU[khuMB()]} · toà ${esc(c.toa)} · tầng ${esc(tang)} · căn ${esc(c.so)}</p>
-    <h3>${esc(ma)} · ${esc(tenLoai(k ? k.loai : c.loai))}</h3><p>${tt}</p>
-    <table class="kv"><tbody>
-      <tr><td>Thông thủy</td><td class="r">${k && k.thongThuy ? k.thongThuy : c.thongThuy} m²${k ? '' : ' <span class="mute small">(theo mặt bằng)</span>'}</td></tr>
-      <tr><td>Tim tường</td><td class="r">${k && k.timTuong ? k.timTuong : c.timTuong} m²${k ? '' : ' <span class="mute small">(theo mặt bằng)</span>'}</td></tr>
-      <tr><td>Giá đã gồm VAT và KPBT</td><td class="r"><b>${k && k.gia ? tien(k.gia) : 'Liên hệ'}</b></td></tr>
-    </tbody></table>
-    ${layoutSvg(d, c)}
-    <p class="mute small">Layout tách từ mặt bằng tầng điển hình của chủ đầu tư. <button class="chip" style="padding:1px 8px" data-zoom="${esc(d.nguon)}">Phóng to mặt bằng tầng</button></p>
-    <div class="row"><button class="btn primary" data-mbhoi="${esc(ma)}">${inCart(kk) ? '✓ Đã thêm, xem giỏ' : 'Thêm vào giỏ · hỏi căn này'}</button><button class="btn" data-mbky="${esc(ma)}">Ký gửi căn này</button></div></div>`;
-  if (k && k.gia) {
-    const t = tienDoBeacon(k, cach), tong = t.r.reduce((s, x) => s + x[1], 0);
-    h += `<h3>Tiến độ thanh toán</h3>
-    <p class="seg" role="group" aria-label="Phương thức"><button type="button" data-pttt="khong-vay" aria-pressed="${cach !== 'vay'}">Không vay · giãn 48 tháng</button><button type="button" data-pttt="vay" aria-pressed="${cach === 'vay'}">Vay hỗ trợ lãi suất</button></p>
-    <table class="tdo"><thead><tr><th>Đợt</th><th class="r">Số tiền</th></tr></thead><tbody>
-    ${t.r.map(([ten, so, han, nh]) => `<tr${nh ? ' class="nh"' : ''}><td>${esc(ten)}<br><span class="mute small">${esc(han)}</span></td><td class="r">${soVN(Math.round(so))}</td></tr>`).join('')}
-    <tr class="tong"><td>Tổng</td><td class="r">${soVN(Math.round(tong))}</td></tr></tbody></table>
-    ${cach === 'vay'
-      ? `<p class="small">Vốn tự có <b>${soVN(Math.round(t.gia - t.vay))}</b> · ngân hàng cho vay tối đa <b>${soVN(Math.round(t.vay))}</b> (70% giá trị căn hộ gồm VAT). Chủ đầu tư hỗ trợ lãi suất tối đa ${CSBH_BEACON.htlsThang} tháng từ lần giải ngân đầu, không quá 31/01/2029; sau đó lãi suất theo ngân hàng.</p>
-         <p><a class="btn block" href="${goiBanTinh(k, t)}" target="_top">Tính khoản vay chi tiết ở Bản tính tài chính →</a></p>`
-      : `<p class="small">Khách không vay được chiết khấu ${CSBH_BEACON.ckKhongVay * 100}% trên giá chưa VAT và KPBT, khoảng <b>${soVN(Math.round(t.ck))}</b>, trừ thẳng vào giá trị căn hộ. Bảng trên tính trên giá trong quỹ, <b>chưa trừ</b> chiết khấu này.</p>`}
-    <p class="mute small">Theo chính sách bán hàng ${esc(CSBH_BEACON.ma)}, áp dụng từ ${esc(CSBH_BEACON.tu)}. Chủ đầu tư có thể đổi chính sách mà không báo trước; số chính xác theo phiếu tính giá chính thức. Đây là minh hoạ dòng tiền, không phải báo giá.</p>`;
-  }
   return h;
 }
 
@@ -1332,32 +1462,75 @@ canvas.addEventListener('keydown', e => {
 function selectZone(key, o = {}) {
   if (!ZONES.some(z => z.key === key)) key = 'all';
   if (state.mb && key !== state.mb.khu) { state.mb = null; state.consignMa = null; }
-  state.zone = key; state.type = o.type ?? -1; state.sel = -1; state.sheet = state.sheet || 0;
+  state.zone = key; state.type = o.type ?? -1; state.sel = -1; state.canMa = null; state.sheet = state.sheet || 0;
   if (!(key === 'casa')) state.q = '';
   fly(zoneView(key, state.type));
-  state.tab = key === 'all' ? 'explore' : 'unit';
+  state.tab = 'chon';
   syncHash(); refreshStates(); render();
 }
 function selectType(t) { state.type = t; fly(zoneView('casa', t)); refreshStates(); render(); }
 function selectUnit(i, o = {}) {
-  if (i < 0) { state.sel = -1; refreshStates(); if (state.tab === 'unit') render(); return; }
-  const u = U[i]; state.mb = null; state.consignMa = null; state.zone = 'casa'; state.sel = i; state.tab = 'unit';
+  if (i < 0) { state.sel = -1; refreshStates(); if (state.tab === 'can') render(); return; }
+  const u = U[i]; state.mb = null; state.consignMa = null; state.canMa = null; state.zone = 'casa'; state.sel = i; state.tab = 'can';
   if (o.fly !== false) fly({ tx: u.x, ty: W(u.y), tz: 7, dist: 118, pitch: .88, yaw: T.yaw });
   syncHash(); refreshStates(); render();
 }
-function syncHash() { try { history.replaceState(null, '', state.sel >= 0 ? '#unit=' + U[state.sel].code : '#' + state.zone); } catch {} }
+// Mở thẻ căn theo mã: căn trên tầng đã số hoá thì bóc đúng tầng đó, căn khác mở thẻ ở tab Căn.
+function moCan(ma, o = {}) {
+  const c = timCan(ma); if (!c) return false;
+  if (o.pttt !== undefined) state.pttt = o.pttt;
+  if (MB && MB[c.khu] && MB[c.khu].tangDung.includes(c.tang) && c.mbIdx >= 0) { moMatBang(c.tang, c.toa + c.so, c.khu); syncHash(); }
+  else {
+    if (state.mb) { state.mb = null; dirty = true; }
+    state.sel = -1; state.canMa = c.ma; state.zone = c.khu; state.tab = 'can'; state.keepScroll = false; state.cuon = 'theCan';
+    if (o.fly !== false) fly(zoneView(c.khu));
+    refreshStates(); render(); syncHash();
+  }
+  if (innerWidth < 860) { const p = $('#panel'); if (p) p.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+  return true;
+}
+function canDangXem() {
+  if (state.mb && state.mb.sel >= 0 && mbDung()) return canTuMB(state.mb.khu, state.mb.sel, state.mb.tang);
+  if (state.canMa) return timCan(state.canMa);
+  return null;
+}
+function syncHash() {
+  if (state.phieu) return;
+  const c = canDangXem();
+  try { history.replaceState(null, '', c ? '#can=' + c.ma : state.sel >= 0 ? '#unit=' + U[state.sel].code : '#' + state.zone); } catch {}
+}
 function openHash() {
   const h = location.hash.slice(1);
+  if (h.startsWith('phieu=')) { moPhieu(h.slice(6)); return; }
+  if (h.startsWith('can=')) { if (moCan(decodeURIComponent(h.slice(4)))) return; }
   if (h.startsWith('unit=')) { const i = U.findIndex(u => u.code === h.slice(5)); if (i >= 0) { selectUnit(i); return; } }
   if (ZONES.some(z => z.key === h)) selectZone(h);
 }
 
-/* ---------- giỏ ---------- */
-function toggleCart(k, label, sub) {
+/* ---------- danh sách căn tham vấn ---------- */
+const TOI_DA_THAM_VAN = 12;
+function toggleCart(k, label, sub, them = {}) {
   const i = state.cart.findIndex(c => c.k === k);
-  if (i >= 0) state.cart.splice(i, 1); else { if (state.cart.length >= 20) { alert('Giỏ tối đa 20 mục.'); return; } state.cart.push({ k, label, sub }); }
+  if (i >= 0) state.cart.splice(i, 1);
+  else {
+    if (state.cart.length >= TOI_DA_THAM_VAN) { thongBao(`Tối đa ${TOI_DA_THAM_VAN} căn mỗi lần tham vấn. Bỏ bớt căn trong tab Tham vấn.`); return; }
+    state.cart.push({ k, label, sub, ...them });
+  }
   saveCart(); refreshStates(); render();
   const n = $('#tabs .n'); if (n) { n.classList.add('pop'); setTimeout(() => n.classList.remove('pop'), 250); }
+}
+function chonCanThamVan(ma) {
+  const c = timCan(ma); if (!c) return;
+  const k = 'can:' + c.ma;
+  const sub = [tenLoai(BT.nhomLoai(c.loai)), m2(c.thongThuy), c.k && c.k.gia ? tien(c.k.gia) : 'chưa có giá'].join(' · ');
+  toggleCart(k, c.ma + ' · ' + (TEN_KHU_DU[c.khu] || c.khu), sub, { ma: c.ma, khu: c.khu, pttt: state.pttt || null });
+  if (inCart(k)) thongBao(`Đã chọn ${c.ma}. Bấm "Chat Zalo với tư vấn" ở cuối khung khi sẵn sàng.`);
+}
+let hetThongBao = 0;
+function thongBao(t) {
+  const el = $('#flowMsg'); if (!el) return;
+  el.textContent = t; el.hidden = false; clearTimeout(hetThongBao);
+  hetThongBao = setTimeout(() => { el.hidden = true; }, 4200);
 }
 
 function baseSeg() {
@@ -1389,9 +1562,10 @@ function envHtml() {
 }
 
 /* ---------- panel ---------- */
-const tabsDef = [['explore', 'Khám phá'], ['unit', 'Hồ sơ'], ['env', 'Nắng'], ['cart', 'Giỏ'], ['consult', 'Tư vấn']];
+const tabsDef = [['chon', 'Chọn căn'], ['can', 'Căn'], ['thamvan', 'Tham vấn']];
 function renderTabs() {
-  $('#tabs').innerHTML = tabsDef.map(([k, n]) => `<button class="tab" role="tab" id="tab-${k}" data-tab="${k}" aria-selected="${state.tab === k}">${n}${k === 'cart' && state.cart.length ? `<span class="n">${state.cart.length}</span>` : ''}</button>`).join('');
+  const ds = state.tab === 'env' ? [...tabsDef, ['env', 'Nắng']] : tabsDef;
+  $('#tabs').innerHTML = ds.map(([k, n]) => `<button class="tab" role="tab" id="tab-${k}" data-tab="${k}" aria-selected="${state.tab === k}">${n}${k === 'thamvan' && state.cart.length ? `<span class="n">${state.cart.length}</span>` : ''}</button>`).join('');
 }
 function chipsHtml() {
   return ZONES.map(z => {
@@ -1409,7 +1583,7 @@ function renderChrome() {
   const br = $('#bRanh'); if (br) { br.disabled = !RANH; br.title = RANH ? `Ranh ${RANH.ten} · ${RANH.dienTichHa} ha · ${RANH.nguon}` : 'Chưa có ranh'; }
   const bn = $('#baseName'); if (bn) bn.textContent = { osm: 'Bản đồ', plan: 'Mặt bằng', blend: 'Chồng lớp' }[state.base];
   const bb = $('#bBase'); if (bb) { bb.disabled = state.osm === 'dang'; bb.title = state.osm === 'loi' ? 'Chưa tải được ô bản đồ' : 'Đổi nền: bản đồ thật · tổng mặt bằng · chồng lớp'; }
-  const rc = $('#railCart'); if (rc) { rc.textContent = state.cart.length; rc.className = state.cart.length ? 'on' : ''; }
+  const rc = $('#railCart'); if (rc) { const n = CAN ? CAN.can.filter(c => c.tinhTrang === 'trong').length : 0; rc.textContent = n; rc.className = n ? 'on' : ''; rc.title = n + ' căn còn trống trong quỹ đại lý'; }
   for (const b of document.querySelectorAll('.rb')) b.setAttribute('aria-pressed', String(b.dataset.rail === 'blocks' ? !state.blocks : state.rail === b.dataset.rail));
   const fr = $('#floorRail');
   if (fr) {
@@ -1436,7 +1610,7 @@ function capNhatDongHo() {
     r.value = Math.round((hh * 60 + mm) / 10);
   }
 }
-function legendHtml() {  // dùng trong tab Khí hậu
+function legendHtml() {  // dùng trong tab Nắng
   let items;
   if (state.mode === 'status' && hasInv()) items = Object.values(STATUS).map(s => `<span><i style="background:${rgb(s[1])}"></i>${s[0]}</span>`).join('');
   else items = TYPES.map(t => `<span><i style="background:${rgb(t.col)}"></i>${t.short}</span>`).join('') + '<span><i style="background:#4bb07a"></i>Beacon</span><span><i style="background:#8d62c0"></i>B1–B3</span><span><i style="background:#c04fa6"></i>B5–B7</span>';
@@ -1448,30 +1622,48 @@ function render() {
   renderTabs(); $('#zoneChips').innerHTML = chipsHtml(); renderChrome();
   const pane = $('#pane'); pane.setAttribute('aria-labelledby', 'tab-' + state.tab);
   const scroll = pane.scrollTop;
-  pane.innerHTML = ({ explore: exploreHtml, unit: unitHtml, env: envHtml, cart: cartHtml, consult: consultHtml })[state.tab]();
+  pane.innerHTML = ({ chon: chonHtml, can: canHtml, env: envHtml, thamvan: thamVanHtml })[state.tab]();
   pane.scrollTop = state.keepScroll ? scroll : 0; state.keepScroll = false; formOpened = performance.now();
+  // Trên điện thoại khung dưới thấp: chọn căn xong thì cuộn thẳng tới thẻ căn.
+  if (state.cuon) { const el = $('#' + state.cuon); if (el && innerWidth < 860) pane.scrollTop = el.getBoundingClientRect().top - pane.getBoundingClientRect().top + pane.scrollTop - 8; state.cuon = null; }
+  renderFlow();
 }
-function exploreHtml() {
-  return `<h2>Chọn phân khu</h2><p class="mute small">Chạm khối trên sa bàn hoặc chọn tại đây, cả hai mở cùng một hồ sơ.</p>
-  <div class="zones">${ZONES.map(z => `<button class="zone" type="button" data-zone="${z.key}" aria-pressed="${state.zone === z.key}"><span class="dot" style="background:${z.col}"></span><b>${esc(z.name)}</b><span>${esc(z.sub)}</span><em>›</em></button>`).join('')}</div>
-  <div class="note"><b>Về dữ liệu:</b> hình khối từng căn Casa Villa là <b>mô phỏng</b> theo tổng mặt bằng; ranh lô, khoảng lùi, mái và chiều cao là ước tính. Trên nền bản đồ, mỗi khối nhà được tách riêng và đặt theo ghim thực địa đo trên ảnh vệ tinh 19/11/2026 (khối chưa xây đặt theo bước khối bên cạnh); trên nền Tổng mặt bằng, khối nằm đúng theo bản vẽ. Khối tháp dựng theo số tầng công bố trong hồ sơ tư vấn 7/8/2026 (2 tầng khối đế cao 5 m, tầng căn hộ cao 3,6 m); chân tháp Beacon và Beachtro cắt theo đường bao công trình trên tổng mặt bằng, đối chiếu layout tầng điển hình; cụm B dựng khối hộp theo đúng hình trên tổng mặt bằng. Số căn đang bán chỉ hiện khi có bảng hàng chính thức.</div>
-  <div class="row"><button class="btn primary" data-go="cart">Giỏ quan tâm${state.cart.length ? ' (' + state.cart.length + ')' : ''}</button><button class="btn" data-go="consult">Nói chuyện với tư vấn</button></div>
-  ${state.rail === 'infra' ? infraHtml() : ''}`;
+
+/* Thanh luồng ở đáy khung: số căn đã chọn và nút chat Zalo. Chưa chọn căn thì chưa chat được. */
+function renderFlow() {
+  const el = $('#flow'); if (!el) return;
+  const n = state.cart.length;
+  el.innerHTML = `<div class="flow-in"><span class="flow-n"><span>${n ? `<b>${n}</b> căn đã chọn` : 'Chưa chọn căn'}</span><small>${n ? (state.tab === 'thamvan' ? 'Bấm chat để gửi bản tóm tắt cho tư vấn' : '<button class="lk" data-tab="thamvan">Xem danh sách</button>') : 'Chọn căn trên sa bàn hoặc rổ giá'}</small></span>
+    <button type="button" class="btn primary zalo" data-chat="1" aria-disabled="${!n}">Chat Zalo với tư vấn</button></div><p id="flowMsg" class="flow-msg" role="status" hidden></p>`;
+}
+
+function timNhanh() {
+  return `<form class="timcan" data-timcan="1" role="search"><label class="sr" for="maTim">Nhập mã căn</label><input id="maTim" name="ma" placeholder="Mã căn, ví dụ E512A06" autocomplete="off" inputmode="latin" maxlength="12"><button class="btn" type="submit">Mở căn</button></form>`;
+}
+function chonHtml() {
+  if (state.zone === 'casa') return listHtml();
+  if (state.zone === 'beacon') return beaconHtml();
+  if (state.zone === 'beachtro') return beachtroHtml();
+  if (state.zone === 'b123' || state.zone === 'b567') return clusterHtml();
+  return `<h2>Chọn căn</h2><ol class="buoc"><li><b>Xem</b> căn trên sa bàn, mặt bằng tầng hoặc rổ giá</li><li><b>Chọn</b> căn, xem layout và giá cuối theo phương thức thanh toán</li><li><b>Chat Zalo</b> với tư vấn, gửi kèm bản tóm tắt</li></ol>
+  ${timNhanh()}
+  <div class="zones">${ZONES.filter(z => z.key !== 'all').map(z => `<button class="zone" type="button" data-zone="${z.key}" aria-pressed="${state.zone === z.key}"><span class="dot" style="background:${z.col}"></span><b>${esc(z.name)}</b><span>${esc(z.sub)}${canPK(z.key).length ? ` · <small class="co">${canPK(z.key).filter(c => c.tinhTrang === 'trong').length} căn trống trong quỹ</small>` : ''}</span><em>›</em></button>`).join('')}</div>
+  ${canHoHtml(null)}
+  ${state.rail === 'infra' ? infraHtml() : ''}
+  <details class="small"><summary>Về dữ liệu sa bàn</summary><p class="mute small">Hình khối từng căn Casa Villa là <b>mô phỏng</b> theo tổng mặt bằng; ranh lô, khoảng lùi, mái và chiều cao là ước tính. Trên nền bản đồ, mỗi khối nhà được tách riêng và đặt theo ghim thực địa đo trên ảnh vệ tinh 19/11/2026; trên nền Tổng mặt bằng, khối nằm đúng theo bản vẽ. Khối tháp dựng theo số tầng công bố trong hồ sơ tư vấn 7/8/2026 (2 tầng khối đế cao 5 m, tầng căn hộ cao 3,6 m). Giá và tình trạng chỉ có ở căn trong quỹ đại lý.</p></details>`;
 }
 function infraHtml() {
   return `<h3 id="infra">Hạ tầng quanh dự án</h3>
   <p class="small mute">Những mốc dưới đây lấy từ hồ sơ dự án trong Cẩm nang. <b>Chưa có tọa độ nên chưa ghim được lên bản đồ</b> — trừ điểm neo Sun World Vũng Tàu đang dùng làm mốc đối chiếu của sa bàn.</p>
   <dl class="kv"><dt>Mặt tiền</dt><dd>Trục đường 3/2, Bãi Sau</dd><dt>Bờ biển</dt><dd>khoảng 1 km</dd><dt>Sân bay Long Thành</dt><dd>khoảng 43 km</dd><dt>Cao tốc Biên Hòa – Vũng Tàu</dt><dd>đã thông xe giai đoạn 1</dd><dt>Sun World Vũng Tàu</dt><dd>trong dự án · đã vận hành</dd></dl>
-  <div class="note">Anh/chị gửi tọa độ các mốc muốn ghim (nút giao, trường, bệnh viện, bến xe…) thì sa bàn sẽ hiện đúng vị trí và đo được khoảng cách thật trên bản đồ.</div>
   <p><a class="btn block" href="/cam-nang/blanca-city/" target="_top">Đọc phân tích vị trí →</a></p>`;
 }
-function unitHtml() {
+function canHtml() {
   if (state.mb) return mbHtml();
+  if (state.canMa) { const c = timCan(state.canMa); if (c) return `<p><button class="chip" data-tab="chon">← Rổ giá ${esc(TEN_KHU_DU[c.khu] || '')}</button></p>` + canCard(c); }
   if (state.sel >= 0) return dossierHtml(U[state.sel]);
-  if (state.zone === 'beacon') return beaconHtml();
-  if (state.zone === 'beachtro') return beachtroHtml();
-  if (state.zone === 'b123' || state.zone === 'b567') return clusterHtml();
-  return listHtml();
+  return `<h2>Căn</h2><p class="mute">Chưa chọn căn. Chạm vào ô đèn trên khối tháp, chạm căn trên mặt bằng tầng, chọn một dòng trong rổ giá, hoặc nhập mã căn.</p>${timNhanh()}
+  <div class="row"><button class="btn primary" data-tab="chon">Mở rổ giá</button>${MB && MB.beacon ? `<button class="btn" data-mbtang="${tangMacDinh()}" data-mbkhu="beacon">Bóc tầng Beacon</button>` : ''}</div>`;
 }
 function listHtml() {
   const q = state.q.trim().toLowerCase();
@@ -1479,54 +1671,56 @@ function listHtml() {
   if (q) list = list.filter(u => (lab(u) + ' ' + u.code).toLowerCase().includes(q));
   const shown = list.slice(0, 60);
   const typeChips = `<div class="chips" style="margin:8px 0;padding:0"><button class="chip" data-type="-1" aria-pressed="${state.type < 0}">Tất cả (${U.length})</button>${TYPES.map((t, i) => `<button class="chip" data-type="${i}" aria-pressed="${state.type === i}">${t.short} (${U.filter(u => u.t === i).length})</button>`).join('')}</div>`;
-  return `<h2>Casa Villa · 939 căn</h2><p class="mute small">Chọn loại hình, tìm theo dãy hoặc mã sa bàn (ví dụ TH-012), hoặc chạm trực tiếp lên khối 3D.</p>${typeChips}
+  return `<p><button class="chip" data-zone="all">← Tất cả phân khu</button></p><h2>Casa Villa · 939 căn</h2><p class="mute small">Chọn loại hình, tìm theo dãy hoặc mã sa bàn (ví dụ TH-012), hoặc chạm trực tiếp lên khối 3D. Casa Villa chưa có quỹ căn đại lý nên chưa có giá; chọn căn để tham vấn, tư vấn sẽ báo giá.</p>${typeChips}
   <input class="search" id="q" type="search" placeholder="Tìm: dãy 5, SL-020, đơn lập…" value="${esc(state.q)}" aria-label="Tìm căn">
-  <div class="list">${shown.map(u => `<button class="item" data-unit="${u.id}"><i style="background:${rgb(TYPES[u.t].col)}"></i><div><b>${esc(lab(u))}</b><span>${u.code} · lô ≈ ${u.front} × ${u.depth} m</span></div></button>`).join('') || '<p class="mute">Không có căn phù hợp.</p>'}</div>
-  ${list.length > shown.length ? `<p class="mute small">Hiện ${shown.length}/${list.length} căn. Gõ thêm vào ô tìm để thu hẹp.</p>` : ''}`;
+  <div class="list">${shown.map(u => `<button class="item" data-unit="${u.id}"><i style="background:${rgb(TYPES[u.t].col)}"></i><div><b>${esc(lab(u))}</b><span>${u.code} · lô ≈ ${u.front} × ${u.depth} m</span></div>${inCart('u:' + u.id) ? '<em class="da">✓</em>' : ''}</button>`).join('') || '<p class="mute">Không có căn phù hợp.</p>'}</div>
+  ${list.length > shown.length ? `<p class="mute small">Hiện ${shown.length}/${list.length} căn. Gõ thêm vào ô tìm để thu hẹp.</p>` : ''}
+  <p><a class="btn block" href="/cam-nang/blanca-casa-villa/" target="_top">Đọc hồ sơ Casa Villa →</a></p>`;
 }
 function dossierHtml(u) {
   const ty = TYPES[u.t], i = unitInv(u), st = i && STATUS[i.status];
   const k = 'u:' + u.id, on = inCart(k);
-  return `<p class="small"><button class="btn" style="padding:4px 10px" data-unit="-1">← Danh sách</button></p>
+  return `<p class="small"><button class="chip" data-unit="-1">← Danh sách Casa Villa</button></p>
   <h2>${esc(lab(u))}</h2><p><span class="badge">${u.code}</span> <span class="badge ${st ? st[2] : ''}">${st ? st[0] : 'Chưa có dữ liệu giỏ hàng'}</span></p>
   <dl class="kv"><dt>Loại hình</dt><dd>${esc(ty.name)}</dd><dt>Lô tham chiếu</dt><dd>${u.front} × ${u.depth} m${u.exact ? '' : ' (điển hình)'}</dd><dt>Diện tích đất ≈</dt><dd>${land(u)} m²</dd><dt>Số tầng</dt><dd>${ty.floors} tầng nổi + 1 hầm</dd><dt>Vị trí trong dãy</dt><dd>căn ${u.n}/${u.rowN}</dd>${i && i.code ? `<dt>Mã căn chính thức</dt><dd>${esc(i.code)}</dd>` : ''}${i && i.priceVnd ? `<dt>Giá chào</dt><dd>${(i.priceVnd / 1e9).toLocaleString('vi-VN', { maximumFractionDigits: 2 })} tỷ</dd>` : '<dt>Giá chào</dt><dd>Liên hệ tư vấn</dd>'}</dl>
-  <div class="note">Mã <b>${u.code}</b> là mã sa bàn mô phỏng, chưa phải mã căn chính thức. Vị trí căn trên sa bàn cần đối chiếu với tổng mặt bằng bán hàng trước khi chốt.</div>
-  <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="${k}" data-label="${esc(lab(u))}" data-sub="${u.code} · ≈${land(u)} m²">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Thêm vào giỏ quan tâm'}</button><button class="btn" data-ask="${u.id}">Hỏi căn này</button></div>
+  <div class="note">Mã <b>${u.code}</b> là mã sa bàn mô phỏng, chưa phải mã căn chính thức. Vị trí căn trên sa bàn cần đối chiếu với tổng mặt bằng bán hàng trước khi chốt. Casa Villa chưa có quỹ căn đại lý nên chưa tính được giá cuối; chọn căn để tham vấn, tư vấn sẽ gửi bảng giá và phiếu tính giá.</div>
+  <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="${k}" data-label="${esc(lab(u))}" data-sub="${u.code} · ≈${land(u)} m²">${on ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Chọn căn này để tham vấn'}</button></div>
   <h3>Hồ sơ bản vẽ ${esc(ty.short)}</h3><div class="docs">${ty.pages.map(p => `<img src="p${p}.webp" alt="Hồ sơ Casa Villa, trang ${p}" loading="lazy" data-zoom="p${p}.webp">`).join('')}</div>
   <p class="mute small">Kích thước lô điển hình theo hồ sơ: ${ty.size}. Chạm vào ảnh để xem lớn.</p>
   <p><a class="btn block" href="/cam-nang/blanca-casa-villa/" target="_top">Đọc hồ sơ Casa Villa →</a></p>`;
 }
 function beaconHtml() {
-  const sheet = 8 + state.sheet, on = inCart('z:beacon');
-  return `<h2>Beacon Tower</h2><p><span class="badge">2.211 căn hộ</span> <span class="badge">3 tầng hầm</span> <span class="badge">E1 · E2 · E3 · E5</span></p>
-  ${MB && MB.beacon ? `<div class="card mbmo"><b>Bóc tầng, chọn căn trên mặt bằng</b><span class="mute small">Mặt bằng tầng ${esc(MB.beacon.tenTang)} dán thẳng lên khối 3D. Chạm vào căn để xem giá, layout và tiến độ thanh toán.</span><button class="btn primary" data-mbtang="${tangMacDinh()}" data-mbkhu="beacon">Mở mặt bằng tầng ${tangMacDinh()} →</button></div>` : ''}
-  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E2</b>; bên trong gồm bốn toà con E1, E2, E3 và E5. Sơ đồ đứng ghi 2 tầng khối đế, tầng 3–38 căn hộ, tầng 39–40 duplex. Khối 3D dựng theo đúng thân toà trên mặt bằng tầng điển hình, mỗi toà con đúng số tầng, mái khung trắng như phối cảnh. Nguồn: Beacon.pdf trang 6–7; hồ sơ tư vấn 7/8/2026 trang 80.</p>
-  <table><caption class="small mute" style="text-align:left;margin-bottom:4px">Cơ cấu căn hộ Beacon</caption><thead><tr><th>Loại</th><th>Thông thủy (m²)</th><th class="r">Số căn</th><th></th></tr></thead><tbody>${BEACON_MIX.map(r => { const k = 'b:' + r[0]; return `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${nf.format(r[2])}</td><td class="r"><button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="Beacon · ${esc(r[0])}" data-sub="${esc(r[1])} m²" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}</tbody></table>
-  <h3>Mặt bằng Beacon 1 và căn mẫu</h3>
+  const sheet = 8 + state.sheet;
+  return `<p><button class="chip" data-zone="all">← Tất cả phân khu</button></p><h2>Beacon Tower</h2><p><span class="badge">2.211 căn hộ</span> <span class="badge">3 tầng hầm</span> <span class="badge">E1 · E2 · E3 · E5</span></p>
+  ${MB && MB.beacon ? `<div class="card mbmo"><b>Bóc tầng, chọn căn trên mặt bằng</b><span class="mute small">Mặt bằng tầng ${esc(MB.beacon.tenTang)} dán thẳng lên khối 3D. Chạm vào căn để xem layout chính thức, giá cuối theo từng phương thức thanh toán và phiếu tính giá.</span><button class="btn primary" data-mbtang="${tangMacDinh()}" data-mbkhu="beacon">Mở mặt bằng tầng ${tangMacDinh()} →</button></div>` : ''}
+  ${canHoHtml('beacon')}
+  <h3>Cơ cấu căn hộ</h3>
+  <table><thead><tr><th>Loại</th><th>Thông thủy (m²)</th><th class="r">Số căn</th></tr></thead><tbody>${BEACON_MIX.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${nf.format(r[2])}</td></tr>`).join('')}</tbody></table>
+  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E2</b>; bên trong gồm bốn toà con E1, E2, E3 và E5. Sơ đồ đứng ghi 2 tầng khối đế, tầng 3–38 căn hộ, tầng 39–40 duplex. Nguồn: Beacon.pdf trang 6–7; hồ sơ tư vấn 7/8/2026 trang 80.</p>
+  <details><summary>Bản vẽ mặt bằng Beacon</summary>
   <label>Chọn bản vẽ<select id="sheet">${BEACON_SHEETS.map((n, i) => `<option value="${i}" ${i === state.sheet ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
   <p><img src="beacon-${sheet}.webp" alt="Mặt bằng Beacon: ${esc(BEACON_SHEETS[state.sheet])}" style="width:100%;border-radius:8px;border:1px solid var(--line);cursor:zoom-in" data-zoom="beacon-${sheet}.webp"></p>
-  <p class="mute small">Mặt đứng ghi E2, mặt bằng ghi Beacon 1: giữ đúng phạm vi từng bản vẽ.</p>
-  ${canHoHtml('beacon')}
-  <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="z:beacon" data-label="Beacon Tower (chung)" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Quan tâm Beacon'}</button><a class="btn" href="/cam-nang/blanca-beacon-tower/" target="_top">Hồ sơ phân khu →</a></div>`;
+  <p class="mute small">Mặt đứng ghi E2, mặt bằng ghi Beacon 1: giữ đúng phạm vi từng bản vẽ.</p></details>
+  <p><a class="btn block" href="/cam-nang/blanca-beacon-tower/" target="_top">Hồ sơ phân khu Beacon →</a></p>`;
 }
 const BEACHTRO_MIX = [['Studio', 24], ['1PN+', 28], ['2PN', 4], ['2PN+', 34], ['3PN', 4], ['3PN view kép', 4], ['3PN+', 2]];
 function beachtroHtml() {
-  const on = inCart('z:beachtro');
-  return `<h2>Beachtro Tower</h2>
+  return `<p><button class="chip" data-zone="all">← Tất cả phân khu</button></p><h2>Beachtro Tower</h2>
   <p><span class="badge">1.785 căn hộ</span> <span class="badge">E6 · E7 · E8 · E9</span></p>
-  ${MB && MB.beachtro ? `<div class="card mbmo"><b>Bóc tầng, xem layout từng căn trên mặt bằng</b><span class="mute small">Mặt bằng tầng điển hình ${esc(MB.beachtro.tenTang)} dán thẳng lên khối 3D. Chạm vào căn để xem loại căn, diện tích và layout. Chưa có bảng hàng nên chưa có giá.</span><button class="btn primary" data-mbtang="15" data-mbkhu="beachtro">Mở mặt bằng tầng 15 →</button></div>` : ''}
-  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E1</b>, nằm sát đường 3/2 cạnh Beacon; bên trong gồm bốn toà con E6, E7, E8 và E9. Khối 3D dựng theo đúng thân toà trên mặt bằng tầng điển hình, mỗi toà con đúng số tầng, mái khung trắng như phối cảnh. Nguồn: hồ sơ tư vấn Blanca City 7/8/2026, trang 14 và 98.</p>
-  <table><caption class="small mute" style="text-align:left;margin-bottom:4px">Tỷ trọng loại căn</caption><thead><tr><th>Loại</th><th class="r">Tỷ trọng</th><th></th></tr></thead><tbody>${BEACHTRO_MIX.map(([t, p]) => { const k = 'bt:' + t; return `<tr><td>${t}</td><td class="r">${p}%</td><td class="r"><button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="Beachtro · ${esc(t)}" data-sub="${p}% rổ hàng" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}</tbody></table>
-  <div class="note">Chưa có bảng hàng chính thức nên chưa hiện diện tích và giá từng căn.</div>
-  <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="z:beachtro" data-label="Beachtro Tower (chung)" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Quan tâm Beachtro'}</button><a class="btn" href="/cam-nang/blanca-beachtro-tower/" target="_top">Hồ sơ phân khu →</a></div>`;
+  ${MB && MB.beachtro ? `<div class="card mbmo"><b>Bóc tầng, xem layout từng căn trên mặt bằng</b><span class="mute small">Mặt bằng tầng điển hình ${esc(MB.beachtro.tenTang)} dán thẳng lên khối 3D. Chạm vào căn để xem layout chính thức và diện tích. Chưa có bảng hàng nên chưa có giá; chọn căn để tham vấn, tư vấn sẽ báo giá.</span><button class="btn primary" data-mbtang="15" data-mbkhu="beachtro">Mở mặt bằng tầng 15 →</button></div>` : ''}
+  <h3>Tỷ trọng loại căn</h3>
+  <table><thead><tr><th>Loại</th><th class="r">Tỷ trọng</th></tr></thead><tbody>${BEACHTRO_MIX.map(([t, p]) => `<tr><td>${t}</td><td class="r">${p}%</td></tr>`).join('')}</tbody></table>
+  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E1</b>, nằm sát đường 3/2 cạnh Beacon; bên trong gồm bốn toà con E6, E7, E8 và E9. Nguồn: hồ sơ tư vấn Blanca City 7/8/2026, trang 14 và 98–109.</p>
+  <p><a class="btn block" href="/cam-nang/blanca-beachtro-tower/" target="_top">Hồ sơ phân khu Beachtro →</a></p>`;
 }
 
-/* ---------- quỹ căn hộ chia cho đại lý ---------- */
+/* ---------- rổ giá: quỹ căn hộ chia cho đại lý ---------- */
 const tien = (n) => n == null ? '—' : (n / 1e9).toFixed(2).replace('.', ',') + ' tỷ';
-const canPK = (pk) => (CAN && CAN.can ? CAN.can.filter(c => c.phanKhu === pk) : []);
+const canPK = (pk) => (CAN && CAN.can ? CAN.can.filter(c => !pk || c.phanKhu === pk) : []);
 function canLoc(ds) {
   const q = state.qcan.trim().toLowerCase().replace(/\s+/g, '');
   return ds.filter(c =>
+    (!state.canKhu || c.phanKhu === state.canKhu) &&
     (!state.canToa || c.toa === state.canToa) &&
     (!state.canTT || c.tinhTrang === state.canTT) &&
     (!state.canLoai || c.loai === state.canLoai) &&
@@ -1535,43 +1729,156 @@ function canLoc(ds) {
 function canHoHtml(pk) {
   const ds = canPK(pk);
   if (!CAN) return '';
-  if (!ds.length) return `<div class="note">Chưa nhận được quỹ căn hộ của phân khu này. Anh/chị gửi yêu cầu để được báo khi có.</div>`;
-  const loc = canLoc(ds), trong = ds.filter(c => c.tinhTrang === 'trong').length;
+  if (!ds.length) return pk ? `<div class="note">Chưa nhận được quỹ căn hộ của phân khu này. Chọn căn trên mặt bằng hoặc hồ sơ để tham vấn, tư vấn sẽ báo khi có hàng.</div>` : '';
+  const loc = canLoc(ds).sort((a, b) => (a.tinhTrang === 'trong' ? 0 : 1) - (b.tinhTrang === 'trong' ? 0 : 1) || a.gia - b.gia), trong = ds.filter(c => c.tinhTrang === 'trong').length;
   const uniq = (f) => [...new Set(ds.map(f))].sort();
-  const sel = (ten, khoa, gt, nhan) => `<label class="small">${nhan}
-    <select data-canloc="${khoa}"><option value="">Tất cả</option>${gt.map(v => `<option value="${esc(v)}"${state[khoa] === v ? ' selected' : ''}>${esc(v)}</option>`).join('')}</select></label>`;
-  return `<h3>Quỹ căn hộ đại lý</h3>
-  <p class="mute small">${ds.length} căn trong quỹ chung chủ đầu tư chia cho đại lý, ${trong} căn còn trống. Đây <b>không phải</b> toàn bộ giỏ hàng phân khu. Giá đã gồm VAT và kinh phí bảo trì. Cập nhật ${esc(CAN.capNhat)}.</p>
+  const sel = (khoa, gt, nhan, ten = v => v) => `<label class="small">${nhan}
+    <select data-canloc="${khoa}"><option value="">Tất cả</option>${gt.map(v => `<option value="${esc(v)}"${state[khoa] === v ? ' selected' : ''}>${esc(ten(v))}</option>`).join('')}</select></label>`;
+  const opt = btOpt();
+  return `<h3 id="roGia">Rổ giá${pk ? ' ' + esc(TEN_KHU_DU[pk]) : ''} · quỹ căn đại lý</h3>
+  <p class="mute small">${ds.length} căn trong quỹ chung chủ đầu tư chia cho đại lý, ${trong} căn còn trống. Đây <b>không phải</b> toàn bộ giỏ hàng. Giá niêm yết đã gồm VAT và KPBT; <b>giá cuối</b> là tổng phải trả khi không vay, đã trừ chiết khấu theo chính sách đang áp dụng. Chạm một căn để xem layout, giá theo từng phương thức và phiếu tính giá. Cập nhật ${esc(CAN.capNhat)}.</p>
   <div class="canloc">
     <label class="small">Mã căn <input id="qcan" type="search" inputmode="latin" placeholder="ví dụ ${esc(ds[0].ma)}" value="${esc(state.qcan)}"></label>
-    ${sel('toa', 'canToa', uniq(c => c.toa), 'Toà')}
-    ${sel('loai', 'canLoai', uniq(c => c.loai), 'Loại căn')}
+    ${pk ? '' : sel('canKhu', uniq(c => c.phanKhu), 'Phân khu', v => TEN_KHU_DU[v] || v)}
+    ${sel('canToa', uniq(c => c.toa), 'Toà')}
+    ${sel('canLoai', uniq(c => c.loai), 'Loại căn', v => tenLoai(BT.nhomLoai(v)))}
     <label class="small">Tình trạng <select data-canloc="canTT"><option value="">Tất cả</option><option value="trong"${state.canTT === 'trong' ? ' selected' : ''}>Còn trống</option><option value="coc"${state.canTT === 'coc' ? ' selected' : ''}>Đã cọc</option></select></label>
   </div>
-  ${loc.length ? `<table><thead><tr><th>Mã căn</th><th>Loại</th><th class="r">Thông thủy</th><th class="r">Giá</th><th>Tình trạng</th><th></th></tr></thead><tbody>
-  ${loc.map(c => { const k = 'can:' + c.ma; return `<tr><td><b>${esc(c.ma)}</b><br><span class="mute small">Toà ${esc(c.toa)} · tầng ${esc(c.tang)}</span></td>
-    <td>${esc(c.loai)}</td><td class="r">${c.thongThuy ?? '—'} m²</td><td class="r">${tien(c.gia)}</td>
-    <td><span class="tt ${c.tinhTrang}">${c.tinhTrang === 'trong' ? 'Còn trống' : 'Đã cọc'}</span></td>
-    <td class="r">${mbCoTang(c) ? `<button class="chip" style="padding:2px 9px" data-mbto="${esc(c.ma)}" title="Xem căn trên mặt bằng tầng">Mặt bằng</button> ` : ''}<button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="${esc(c.ma)} · ${esc(c.loai)}" data-sub="${c.thongThuy ?? '—'} m² · ${tien(c.gia)}" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}
+  ${loc.length ? `<table class="rogia"><thead><tr><th>Căn</th><th class="r">Niêm yết</th><th class="r">Giá cuối</th><th></th></tr></thead><tbody>
+  ${loc.map(c => { const k = 'can:' + c.ma, o = canTuQuy(c), kv = giaCuoi(o, opt).find(x => x.p.id === 'khong-vay');
+    return `<tr class="${c.tinhTrang}" data-canmo="${esc(c.ma)}" tabindex="0"><td><b>${esc(c.ma)}</b><span class="mute small">${esc(tenLoai(BT.nhomLoai(c.loai)))} · ${m2(c.thongThuy)} · <span class="tt ${c.tinhTrang}">${c.tinhTrang === 'trong' ? 'Còn trống' : 'Đã cọc'}</span></span></td>
+    <td class="r">${tien(c.gia)}</td><td class="r"><b>${kv ? tien(kv.ph.gia.T) : '—'}</b></td>
+    <td class="r">${inCart(k) ? '<span class="da" title="Đã chọn để tham vấn">✓</span>' : '<span class="mo">›</span>'}</td></tr>`; }).join('')}
   </tbody></table>` : '<div class="note">Không có căn nào khớp bộ lọc.</div>'}
   <p class="mute small">Nguồn: ${esc(CAN.nguon)}</p>`;
 }
 function clusterHtml() {
-  const z = ZONES.find(o => o.key === state.zone), k = 'z:' + z.key, on = inCart(k);
-  return `<h2>${esc(z.name)}</h2><p class="mute">${z.noGeo ? 'Chưa xác định vị trí trên tổng mặt bằng nên chưa có khối nhấp trên sa bàn. Hồ sơ phân khu vẫn đọc được bên dưới.' : `Khối đế 2 tầng dựng dạng hộp, ba toà căn hộ theo số tầng: ${esc(z.sub.split(' · ')[0])} · ${esc(z.sub.split(' · ')[1])}. Hình gấp khúc của mặt bằng tầng điển hình sẽ bổ sung khi có bản vẽ.`}</p>
-  <div class="note">Số căn, diện tích và giá của phân khu này chưa có bảng hàng chính thức. Anh/chị gửi yêu cầu để được báo thông tin mới nhất.</div>
-  <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="${k}" data-label="${esc(z.name)}" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Thêm vào giỏ quan tâm'}</button><a class="btn" href="/cam-nang/blanca-${z.profile}/" target="_top">Hồ sơ phân khu →</a></div>
-  ${canHoHtml(z.key)}`;
+  const z = ZONES.find(o => o.key === state.zone);
+  return `<p><button class="chip" data-zone="all">← Tất cả phân khu</button></p><h2>${esc(z.name)}</h2><p class="mute small">${z.noGeo ? 'Chưa xác định vị trí trên tổng mặt bằng nên chưa có khối nhấp trên sa bàn.' : `Khối đế 2 tầng dựng dạng hộp, ba toà căn hộ theo số tầng: ${esc(z.sub.split(' · ')[0])} · ${esc(z.sub.split(' · ')[1])}. Hình gấp khúc của mặt bằng tầng điển hình sẽ bổ sung khi có bản vẽ.`}</p>
+  ${canHoHtml(z.key)}
+  <p><a class="btn block" href="/cam-nang/blanca-${z.profile}/" target="_top">Hồ sơ phân khu →</a></p>`;
 }
-function cartHtml() {
-  if (!state.cart.length) return `<h2>Giỏ quan tâm</h2><p class="mute">Giỏ đang trống. Chạm vào căn trên sa bàn hoặc chọn trong danh sách, rồi bấm "Thêm vào giỏ quan tâm". Anh/chị có thể gửi cả giỏ để được tư vấn một lần.</p><div class="row"><button class="btn primary" data-go="explore">Khám phá sa bàn</button></div>${consultMini()}`;
-  const units = state.cart.filter(c => c.k.startsWith('u:')).map(c => U[+c.k.slice(2)]);
-  const cmp = units.length >= 2 ? `<h3>So sánh nhanh</h3><div style="overflow:auto"><table><thead><tr><th>Căn</th><th>Loại</th><th class="r">Đất ≈ m²</th><th class="r">Tầng</th></tr></thead><tbody>${units.map(u => `<tr><td>${u.code}</td><td>${TYPES[u.t].short}</td><td class="r">${land(u)}</td><td class="r">${TYPES[u.t].floors}</td></tr>`).join('')}</tbody></table></div>` : '';
-  return `<h2>Giỏ quan tâm <span class="mute" style="font-size:15px">(${state.cart.length})</span></h2>
-  <div class="list">${state.cart.map(c => `<div class="item"><i style="background:var(--gold)"></i><div><b>${esc(c.label)}</b><span>${esc(c.sub || '')}</span></div>${c.k.startsWith('u:') ? `<button class="chip" data-unit="${c.k.slice(2)}" style="margin-left:auto">Xem</button>` : ''}<button class="x" data-cart="${esc(c.k)}" aria-label="Bỏ ${esc(c.label)}">×</button></div>`).join('')}</div>${cmp}
-  <h3>Gửi yêu cầu tư vấn cho cả giỏ</h3>${formHtml('request')}`;
+
+/* ---------- tham vấn: danh sách căn đã chọn, chat Zalo kèm bản tóm tắt, phiếu cho tư vấn ---------- */
+const NGUOI_TU_VAN = `<div class="card contact"><div class="avatar">AT</div><div><b>Nguyễn Anh Tú</b><br><span class="mute small">Project Director · ERA Vietnam · tư vấn Blanca City</span></div></div>`;
+function canCuaMuc(c) { return c.k.startsWith('can:') ? timCan(c.ma || c.k.slice(4)) : null; }
+function ptttCuaMuc(c, o) {
+  const pol = o && chinhSach(o.khu); if (!pol || !o.k || !o.k.gia) return null;
+  const ds = BT.ptttHieuLuc(pol, btOpt().ngayKy);
+  return ds.find(p => p.id === c.pttt) || ds[0] || null;
 }
-function consultMini() { return `<div class="card contact"><div class="avatar">AT</div><div><b>Nguyễn Anh Tú</b><br><span class="mute small">Project Director · ERA Vietnam</span></div></div><div class="row"><a class="btn primary" href="tel:${ZALO}">Gọi ${ZALO_TXT}</a><a class="btn" href="https://zalo.me/${ZALO}" target="_blank" rel="noopener">Nhắn Zalo</a></div>`; }
+// Một dòng tóm tắt cho mỗi căn: dùng chung cho tin nhắn Zalo, thư báo tư vấn và phiếu.
+function dongTomTat(c, opt = btOpt()) {
+  const o = canCuaMuc(c);
+  if (!o) return `${c.label}${c.sub ? ' · ' + c.sub : ''} · chưa có giá, nhờ tư vấn báo giá`;
+  const dau = `${o.ma} · ${TEN_KHU_DU[o.khu] || o.khu} · ${tenLoai(BT.nhomLoai(o.loai))} · ${m2(o.thongThuy)}`;
+  const p = ptttCuaMuc(c, o);
+  if (!p) return `${dau} · chưa có giá, nhờ tư vấn báo giá`;
+  const ph = phieuCan(o, p, opt), cd = ph.canDoi;
+  let s = `${dau} · niêm yết ${tien(o.k.gia)}\n   Phương thức: ${p.ten} · giá cuối ${tien(ph.gia.T)}`;
+  if (cd.vay) s += ` · vốn tự có ${tien(cd.tuCo)} · vay ${tien(cd.vay.L)} · 0 đ/tháng đến ${thangVN(cd.vay.htlsDen)}, sau đó khoảng ${trieu(cd.vay.traThang)}/tháng`;
+  else s += ` · 12 tháng đầu đóng ${tien(cd.trong12Thang)}`;
+  return s;
+}
+const b64url = (s) => btoa(unescape(encodeURIComponent(s))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const tuB64url = (s) => decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/'))));
+function linkPhieu(ma) {
+  const o = btOpt();
+  // Gọn để liên kết ngắn: căn hộ chỉ cần mã, phương thức và giá lúc chọn (phần còn lại tính lại khi mở); căn Casa giữ nhãn.
+  const p = { v: 1, id: ma, luc: new Date(Date.now() + 7 * 3600e3).toISOString().slice(0, 16), ky: o.ngayKy, bt: { tyLeVay: o.tyLeVay, laiSau: o.laiSau, namVay: o.namVay },
+    ds: state.cart.map(c => { const x = canCuaMuc(c); return c.k.startsWith('can:') ? { k: c.k, pttt: c.pttt || '', gia: x && x.k ? x.k.gia : 0 } : { k: c.k, label: c.label, sub: c.sub || '' }; }) };
+  return location.origin + location.pathname + '#phieu=' + b64url(JSON.stringify(p));
+}
+function tomTatTxt(ma, link) {
+  const dong = state.cart.map((c, i) => `${i + 1}. ${dongTomTat(c)}`);
+  return [`Chào anh Tú, em cần tư vấn ${PROJECT} (mã phiếu ${ma}):`, ...dong,
+    state.tvTen.trim() ? 'Tên: ' + state.tvTen.trim() : '', state.tvNhan.trim() ? 'Lời nhắn: ' + state.tvNhan.trim() : '',
+    `Ngày ký giả định ${ngayVN(btOpt().ngayKy)}. Bản tính chi tiết: ${link}`].filter(Boolean).join('\n');
+}
+function saoChep(txt) {
+  let ok = false;
+  try {
+    const ta = document.createElement('textarea'); ta.value = txt; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.append(ta); ta.select(); ta.setSelectionRange(0, txt.length); ok = document.execCommand('copy'); ta.remove();
+  } catch {}
+  if (!ok && navigator.clipboard) navigator.clipboard.writeText(txt).then(() => {}, () => {});
+  return ok;
+}
+// Bấm chat: mở Zalo của tư vấn ngay trong cú chạm (không bị chặn cửa sổ), sao chép bản tóm tắt để khách dán vào khung chat,
+// đồng thời gửi bản tóm tắt về hộp thư và Google Sheet của tư vấn qua /api/tim-nha (kind thamvan).
+function chatZalo() {
+  if (!state.cart.length) { thongBao('Chưa chọn căn. Mở một căn trên sa bàn hoặc rổ giá, bấm "Chọn căn này để tham vấn", rồi chat.'); return; }
+  const ma = 'TV' + Date.now().toString(36).toUpperCase().slice(-6), link = linkPhieu(ma), txt = tomTatTxt(ma, link);
+  const daChep = saoChep(txt);
+  const w = window.open('https://zalo.me/' + ZALO, '_blank'); if (w) try { w.opener = null; } catch {}
+  state.daChat = { ma, txt, link, daChep, luu: null };
+  const body = { kind: 'thamvan', project: PROJECT, zone: '', maPhieu: ma, units: state.cart.map(c => dongTomTat(c).replace(/\n\s*/g, ' · ')),
+    name: state.tvTen.trim(), note: state.tvNhan.trim(), link, website: '', t: Math.round(performance.now()), page: location.pathname };
+  try {
+    fetch('/api/tim-nha', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body), keepalive: true })
+      .then(r => r.json()).then(j => { if (state.daChat && state.daChat.ma === ma) { state.daChat.luu = !!(j && j.stored); if (state.tab === 'thamvan') { state.keepScroll = true; render(); } } })
+      .catch(() => { if (state.daChat && state.daChat.ma === ma) { state.daChat.luu = false; if (state.tab === 'thamvan') { state.keepScroll = true; render(); } } });
+  } catch {}
+  state.tab = 'thamvan'; state.keepScroll = false; render();
+}
+function daChatHtml() {
+  const d = state.daChat; if (!d) return '';
+  return `<div class="done chat" role="status"><b>Đã mở Zalo của tư vấn</b>
+    <p>${d.daChep ? 'Bản tóm tắt <b>đã được sao chép</b>.' : 'Sao chép bản tóm tắt bên dưới.'} Trong khung chat Zalo với Nguyễn Anh Tú, chạm giữ ô nhập tin, chọn <b>Dán</b> rồi gửi. Mã phiếu <b>${esc(d.ma)}</b>.</p>
+    <textarea readonly class="tomtat" aria-label="Bản tóm tắt gửi tư vấn">${esc(d.txt)}</textarea>
+    <div class="row"><button class="btn" data-chepl="1">Sao chép lại</button><a class="btn primary" href="https://zalo.me/${ZALO}" target="_blank" rel="noopener">Mở lại Zalo</a></div>
+    <p class="mute small">${d.luu === true ? 'Tư vấn cũng đã nhận bản tóm tắt này qua hệ thống.' : d.luu === false ? 'Hệ thống chưa chuyển được bản tóm tắt cho tư vấn; anh/chị gửi qua Zalo giúp em.' : 'Đang chuyển bản tóm tắt cho tư vấn…'}</p></div>`;
+}
+function thamVanHtml() {
+  let h = `<h2>Tham vấn</h2>`;
+  if (state.phieu) h += phieuVaoHtml();
+  h += daChatHtml();
+  if (!state.cart.length) {
+    h += `<p class="mute">Chưa có căn nào được chọn. Chọn căn trước rồi mới chat với tư vấn, để tư vấn trả lời đúng căn, đúng phương thức anh/chị quan tâm.</p>
+    <ol class="buoc"><li>Chạm căn trên sa bàn, mặt bằng tầng hoặc một dòng trong <button class="lk" data-tab="chon">rổ giá</button></li><li>Xem layout chính thức, giá cuối theo phương thức thanh toán, mở phiếu tính giá</li><li>Bấm <b>Chọn căn này để tham vấn</b></li><li>Bấm <b>Chat Zalo với tư vấn</b>: trang mở Zalo và sao chép sẵn bản tóm tắt</li></ol>`;
+  } else {
+    const opt = btOpt();
+    h += `<p class="mute small">${state.cart.length} căn đã chọn. Đổi phương thức thanh toán của từng căn nếu cần, rồi bấm chat.</p><div class="tvds">`;
+    h += state.cart.map(c => {
+      const o = canCuaMuc(c), pol = o && chinhSach(o.khu), coGia = o && o.k && o.k.gia && pol;
+      const p = coGia ? ptttCuaMuc(c, o) : null, ph = p ? phieuCan(o, p, opt) : null;
+      return `<div class="tv"><div class="tv-d"><b>${esc(c.label)}</b><span class="mute small">${esc(c.sub || '')}</span></div>
+        ${coGia ? `<label class="small">Phương thức<select data-tvpttt="${esc(c.k)}">${BT.ptttHieuLuc(pol, opt.ngayKy).map(x => `<option value="${esc(x.id)}"${p && p.id === x.id ? ' selected' : ''}>${esc(x.ten)} · ${tien(phieuCan(o, x, opt).gia.T)}</option>`).join('')}</select></label>
+        <p class="tv-g">Giá cuối <b>${tien(ph.gia.T)}</b>${ph.canDoi.vay ? ` · vốn tự có ${tien(ph.canDoi.tuCo)}` : ''}</p>` : '<p class="mute small">Chưa có giá: tư vấn sẽ báo giá và gửi phiếu tính giá.</p>'}
+        <div class="tv-n">${o ? `<button class="chip" data-tvxem="${esc(c.k)}">Xem căn${p ? ' và bản tính' : ''}</button>` : c.k.startsWith('u:') ? `<button class="chip" data-unit="${c.k.slice(2)}">Xem căn</button>` : ''}<button class="x" data-cart="${esc(c.k)}" aria-label="Bỏ ${esc(c.label)}">×</button></div></div>`;
+    }).join('') + '</div>';
+    h += `<label>Tên anh/chị (không bắt buộc)<input id="tvTen" maxlength="60" autocomplete="name" value="${esc(state.tvTen)}"></label>
+      <label>Lời nhắn (không bắt buộc)<textarea id="tvNhan" maxlength="300" placeholder="Ví dụ: muốn xem nhà mẫu cuối tuần, cần căn hướng biển…">${esc(state.tvNhan)}</textarea></label>
+      <p class="mute small">Bấm <b>Chat Zalo với tư vấn</b> ở cuối khung: trang mở Zalo của tư vấn và sao chép sẵn bản tóm tắt các căn, phương thức và giá cuối anh/chị đã chọn. Tư vấn cũng nhận bản tóm tắt này để chuẩn bị trước. Không gửi số điện thoại hay giấy tờ nào.</p>
+      <details><summary>Xem nội dung sẽ gửi</summary><pre class="tomtat">${esc(tomTatTxt('(tạo khi bấm chat)', '(liên kết tạo khi bấm chat)'))}</pre></details>
+      <details><summary>Không dùng Zalo? Để lại số, tư vấn gọi lại</summary>${formHtml('callback')}</details>`;
+  }
+  const u = state.consignMa ? { code: state.consignMa } : null;
+  h += NGUOI_TU_VAN + `<details id="consignBox"${state.openConsign ? ' open' : ''}><summary>Chủ nhà ký gửi căn (bán hoặc cho thuê)</summary>${consignHtml(u)}</details>`;
+  return h;
+}
+// Phiếu khách gửi qua Zalo (#phieu=…): tư vấn mở link, thấy đúng căn, phương thức và bản tính khách đã xem.
+function moPhieu(ma) {
+  try { const p = JSON.parse(tuB64url(ma)); if (!p || !Array.isArray(p.ds)) throw 0; state.phieu = p; }
+  catch { state.phieu = { loi: true }; }
+  state.tab = 'thamvan'; render();
+}
+function phieuVaoHtml() {
+  const p = state.phieu;
+  if (p.loi) return `<div class="note">Liên kết phiếu tham vấn không đọc được. <button class="lk" data-dongphieu="1">Đóng</button></div>`;
+  const opt = { ngayKy: p.ky || BT.homNay(), tyLeVay: p.bt && p.bt.tyLeVay, laiSau: p.bt && p.bt.laiSau, namVay: p.bt && p.bt.namVay };
+  return `<div class="card phieuvao"><p class="mute small">Phiếu tham vấn khách gửi qua Zalo</p><h3>${esc(p.id || '')}</h3>
+    <p class="mute small">Khách chọn lúc ${esc((p.luc || '').slice(11, 16))} ngày ${ngayVN((p.luc || '').slice(0, 10))} (giờ Việt Nam), ngày ký giả định ${ngayVN(opt.ngayKy)}.</p>
+    <ol class="pv">${p.ds.map(c => {
+      c = { ...c, ma: c.ma || (c.k.startsWith('can:') ? c.k.slice(4) : ''), label: c.label || c.k.slice(4) };
+      const o = c.k.startsWith('can:') ? timCan(c.ma) : null;
+      const txt = dongTomTat(c, opt).split('\n').map(esc).join('<br>');
+      const doi = o && o.k && c.gia && o.k.gia !== c.gia ? `<br><span class="warn">Giá niêm yết đã đổi: lúc khách chọn ${tien(c.gia)}, nay ${tien(o.k.gia)}.</span>` : o && !o.k && c.gia ? '<br><span class="warn">Căn không còn trong quỹ đại lý hiện tại.</span>' : '';
+      return `<li>${txt}${doi}${o ? `<br><button class="chip" data-pvmo="${esc(o.ma)}" data-pvpt="${esc(c.pttt || '')}">Mở bản tính căn này</button>` : ''}</li>`;
+    }).join('')}</ol>
+    <p class="mute small">Giá cuối tính lại theo quỹ đại lý và chính sách hiện hành (${esc(CAN ? CAN.capNhat : '')}), cùng tham số vay khách đã chọn.</p>
+    <button class="chip" data-dongphieu="1">Đóng phiếu</button></div>`;
+}
 
 /* ---------- phiếu ký gửi thứ cấp (PROJECT_RULES §16.5–16.7) ---------- */
 const VAT_KPBT = 1.12;          // VAT 10% + kinh phí bảo trì 2%, chỉ dùng khi chủ nhà không điền giá gốc
@@ -1651,20 +1958,12 @@ function capNhatHoaHong(form) {
     sp.textContent = nen ? soVN(Math.round(nen * p / 100)) : '—';
   }
 }
-function consultHtml() {
-  const u = state.consignMa ? { code: state.consignMa } : state.sel >= 0 ? U[state.sel] : null;
-  return `<h2>Tư vấn trực tiếp</h2>${consultMini()}
-  <p class="mute small">Tư vấn viên giải đáp về pháp lý, tiến độ, so sánh phân khu và cách tính dòng tiền. Thông tin mang tính tham khảo, không phải cam kết về giá hay chính sách bán hàng.</p>
-  <h3>Đặt lịch gọi lại</h3>${formHtml('callback')}
-  <details id="consignBox"${state.openConsign ? ' open' : ''}><summary>Ký gửi căn (bán hoặc cho thuê)</summary>${consignHtml(u)}</details>`;
-}
 let formOpened = performance.now();
 function formHtml(kind, u) {
   const consent = `<label class="check"><input type="checkbox" name="consent" required> <span>Tôi đồng ý để Nguyễn Anh Tú lưu và dùng thông tin này để liên hệ tư vấn. Xem <a href="/chinh-sach-bao-mat/" target="_top">chính sách bảo mật</a>.</span></label>`;
   const base = `<input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true"><label>Họ tên<input name="name" required minlength="2" maxlength="80" autocomplete="name"></label><label>Số điện thoại / Zalo<input name="phone" required inputmode="tel" pattern="[0-9+ .\\-]{9,16}" autocomplete="tel" placeholder="09xx xxx xxx"></label>`;
   const send = t => `<button class="btn primary block" type="submit">${t}</button><div class="status" role="status" aria-live="polite"></div>`;
-  if (kind === 'request') return `<form data-kind="request" novalidate>${base}<label>Mục đích<select name="intent"><option>Mua để ở</option><option>Đầu tư / cho thuê</option><option>Đang so sánh</option></select></label><label>Ngân sách dự kiến (không bắt buộc)<input name="budget" maxlength="60" placeholder="Ví dụ: 8–10 tỷ"></label><label>Ghi chú<textarea name="note" maxlength="400" placeholder="Hướng, tầng, thời gian xem nhà…"></textarea></label>${consent}${send('Gửi yêu cầu · ' + state.cart.length + ' mục')}</form>`;
-  if (kind === 'callback') return `<form data-kind="callback" novalidate>${base}<label>Thời điểm tiện gọi<select name="when"><option>Sớm nhất có thể</option><option>Buổi sáng</option><option>Buổi chiều</option><option>Buổi tối</option></select></label><label>Anh/chị muốn hỏi gì?<textarea name="note" maxlength="400"></textarea></label>${consent}${send('Đặt lịch gọi lại')}</form>`;
+  if (kind === 'callback') return `<form data-kind="callback" novalidate>${base}<label>Thời điểm tiện gọi<select name="when"><option>Sớm nhất có thể</option><option>Buổi sáng</option><option>Buổi chiều</option><option>Buổi tối</option></select></label><label>Mục đích<select name="intent"><option>Mua để ở</option><option>Đầu tư / cho thuê</option><option>Đang so sánh</option></select></label>${consent}${send('Đặt lịch gọi lại · ' + state.cart.length + ' căn')}</form>`;
   return `<form data-kind="consign" novalidate>${base}<label>Nhu cầu<select name="purpose"><option>Bán</option><option>Cho thuê</option></select></label><label>Mã căn hoặc vị trí<input name="unit" required maxlength="160" value="${u ? esc(PROJECT + ' · ' + lab(u) + ' (' + u.code + ')') : ''}" placeholder="Phân khu, mã căn, dãy…"></label><label>Giá mong muốn<input name="price" maxlength="100" placeholder="Hoặc để trống để trao đổi"></label>${consent}${send('Gửi phiếu ký gửi')}</form>`;
 }
 async function submitForm(form) {
@@ -1685,8 +1984,8 @@ async function submitForm(form) {
   }
   const body = {
     kind, project: PROJECT, zone: ZONES.find(z => z.key === state.zone)?.name || '', name: get('name'), phone, consent: true,
-    units: kind === 'request' ? state.cart.map(c => c.label + (c.sub ? ' (' + c.sub + ')' : '')) : [],
-    intent: get('intent'), budget: get('budget'), note: get('note'), when: get('when'), purpose: get('purpose'), unit: get('unit'), price: get('price'),
+    units: kind === 'callback' ? state.cart.map(c => dongTomTat(c).replace(/\n\s*/g, ' · ')) : [],
+    intent: get('intent'), budget: get('budget'), note: kind === 'callback' ? state.tvNhan.trim() : get('note'), when: get('when'), purpose: get('purpose'), unit: get('unit'), price: get('price'),
     website: get('website'), t: Math.round(performance.now() - formOpened), page: location.pathname + location.hash,
   };
   if (kind === 'consign') {
@@ -1707,7 +2006,7 @@ async function submitForm(form) {
     const j = await r.json().catch(() => ({}));
     if (!r.ok || !j.ok || !j.stored) throw Error(j.error || r.status);
     form.outerHTML = `<div class="done" role="status"><b>Đã nhận phiếu ${esc(j.id)}</b><p>${kind === 'consign' ? 'Phiếu ký gửi' : kind === 'callback' ? 'Lịch gọi lại' : 'Yêu cầu của anh/chị'} đã được lưu. Tư vấn viên sẽ liên hệ qua số ${esc(phone)} sớm nhất. Cần gấp, nhắn Zalo ${ZALO_TXT}.</p>${kind === 'consign' ? `${j.auto && j.auto.camOn ? `<p>Thư xác nhận đã gửi tới <b>${esc(body.email)}</b>. Sau ${15} ngày em sẽ hỏi lại anh/chị tình trạng căn qua email.</p>` : ''}<p><b>Còn một bước:</b> gửi các ảnh hợp đồng và giấy tờ chính chủ qua Zalo ${ZALO_TXT}, nhắn kèm mã phiếu <b>${esc(j.id)}</b>. Chưa có ảnh thì chưa đăng căn lên giỏ hàng được.</p><a class="btn block" href="https://zalo.me/${ZALO}" target="_blank" rel="noopener">Mở Zalo gửi ảnh kèm mã ${esc(j.id)}</a>` : ''}</div>`;
-    if (kind === 'request') { state.cart = []; saveCart(); refreshStates(); renderTabs(); }
+    if (kind === 'callback') renderFlow();
   } catch (err) {
     btn.disabled = false; btn.textContent = old;
     const msg = ['Yêu cầu', 'Dự án: ' + PROJECT, body.units.length ? 'Căn: ' + body.units.join('; ') : '', kind === 'consign' ? 'Ký gửi: ' + body.unit + ' · ' + body.purpose + (body.price ? ' · giá ' + body.price : '') : '', 'Tên: ' + body.name, 'SĐT: ' + phone, body.note ? 'Ghi chú: ' + body.note : ''].filter(Boolean).join('\n');
@@ -1727,15 +2026,14 @@ document.addEventListener('change', e => {
   state[k] = e.target.value; state.keepScroll = true; render();
 });
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-tab],[data-zone],[data-go],[data-type],[data-unit],[data-cart],[data-ask],[data-mode],[data-zoom],[data-base],[data-sun]'); if (!el) return;
+  const el = e.target.closest('[data-tab],[data-zone],[data-go],[data-type],[data-unit],[data-cart],[data-mode],[data-zoom],[data-base],[data-sun]'); if (!el) return;
   const d = el.dataset;
   if (d.tab) { state.tab = d.tab; render(); }
   else if (d.go) { state.tab = d.go; render(); }
   else if (d.zone) selectZone(d.zone);
   else if (d.type !== undefined) selectType(+d.type);
-  else if (d.unit !== undefined) { const i = +d.unit; if (i < 0) { selectUnit(-1); fly(zoneView('casa', state.type)); } else selectUnit(i); }
-  else if (d.cart) { state.keepScroll = true; toggleCart(d.cart, d.label || (state.cart.find(c => c.k === d.cart) || {}).label, d.sub); }
-  else if (d.ask) { selectUnit(+d.ask, { fly: false }); if (!inCart('u:' + d.ask)) toggleCart('u:' + d.ask, lab(U[+d.ask]), U[+d.ask].code + ' · ≈' + land(U[+d.ask]) + ' m²'); state.tab = 'cart'; render(); }
+  else if (d.unit !== undefined) { const i = +d.unit; if (i < 0) { selectUnit(-1); state.tab = 'chon'; fly(zoneView('casa', state.type)); render(); } else selectUnit(i); }
+  else if (d.cart) { state.keepScroll = true; const c = state.cart.find(x => x.k === d.cart); toggleCart(d.cart, d.label || (c || {}).label, d.sub || (c || {}).sub); }
   else if (d.mode) { if (d.mode === 'status' && !hasInv()) return; state.mode = d.mode; uploadStatic(); render(); }
   else if (d.zoom) { $('#lbImg').src = d.zoom; $('#lightbox').hidden = false; $('#lbClose').focus(); }
   else if (d.base) { state.base = d.base; state.keepScroll = true; if (d.base !== 'plan' && state.osm === 'chua') loadOsm(); dirty = true; render(); }
@@ -1752,12 +2050,30 @@ document.addEventListener('input', e => {
   }
   const fc = e.target.closest && e.target.closest('form[data-kind=consign]');
   if (fc) { capNhatHoaHong(fc); return; }
+  if (e.target.id === 'tvTen') { state.tvTen = e.target.value; return; }
+  if (e.target.id === 'tvNhan') { state.tvNhan = e.target.value; return; }
   if (e.target.id === 'qcan') { state.qcan = e.target.value; const pos = e.target.selectionStart; state.keepScroll = true; render(); const q = $('#qcan'); if (q) { q.focus(); q.setSelectionRange(pos, pos); } return; }
   if (e.target.id === 'q') { state.q = e.target.value; const pos = e.target.selectionStart; state.keepScroll = true; render(); const q = $('#q'); q.focus(); q.setSelectionRange(pos, pos); } });
 document.addEventListener('change', e => {
   if (e.target.id === 'sunh') { state.keepScroll = true; render(); return; }
-  if (e.target.id === 'sheet') { state.sheet = +e.target.value; state.keepScroll = true; render(); } });
-document.addEventListener('submit', e => { const f = e.target.closest('form[data-kind]'); if (f) { e.preventDefault(); submitForm(f); } });
+  if (e.target.id === 'sheet') { state.sheet = +e.target.value; state.keepScroll = true; render(); return; }
+  const bt = e.target.dataset && e.target.dataset.bt;
+  if (bt) {
+    const v = e.target.value;
+    if (bt === 'ngayKy') state.bt.ngayKy = /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+    else if (bt === 'tyLeVay') state.bt.tyLeVay = Math.max(0, Math.min(.7, +v || 0));
+    else if (bt === 'laiSau') state.bt.laiSau = Math.max(0, Math.min(25, +String(v).replace(',', '.') || 0));
+    else if (bt === 'namVay') state.bt.namVay = +v || 25;
+    state.keepScroll = true; render(); return;
+  }
+  const tv = e.target.dataset && e.target.dataset.tvpttt;
+  if (tv) { const c = state.cart.find(x => x.k === tv); if (c) { c.pttt = e.target.value; saveCart(); state.keepScroll = true; render(); } }
+});
+document.addEventListener('submit', e => {
+  const t = e.target.closest('form[data-timcan]');
+  if (t) { e.preventDefault(); const v = t.elements.ma.value; if (!moCan(v)) { const s = t.querySelector('input'); s.setCustomValidity('Không tìm thấy mã căn này trong quỹ đại lý hay mặt bằng đã số hoá'); s.reportValidity(); setTimeout(() => s.setCustomValidity(''), 2500); } return; }
+  const f = e.target.closest('form[data-kind]'); if (f) { e.preventDefault(); submitForm(f); }
+});
 document.addEventListener('toggle', e => { if (e.target.id === 'consignBox') state.openConsign = e.target.open; }, true);
 $('#lbClose').onclick = () => { $('#lightbox').hidden = true; };
 $('#lightbox').onclick = e => { if (e.target.id === 'lightbox') $('#lightbox').hidden = true; };
@@ -1781,33 +2097,45 @@ document.addEventListener('click', e => {
   const k = r.dataset.rail;
   if (k === 'blocks') { state.blocks = !state.blocks; dirty = true; render(); return; }
   state.rail = state.rail === k ? null : k;
-  if (state.rail === 'cart') state.tab = 'cart';
+  if (state.rail === 'cart') { state.tab = 'chon'; if (state.zone !== 'all' && !canPK(state.zone).length) selectZone('all'); }
   else if (state.rail === 'env') state.tab = 'env';
-  else if (state.rail === 'infra') state.tab = 'explore';
+  else if (state.rail === 'infra') state.tab = 'chon';
+  else if (!state.rail && state.tab === 'env') state.tab = 'chon';
   if (state.rail !== 'floors') { state.cut = 0; dirty = true; }
   render();
+  if (state.rail === 'cart') { const g = $('#roGia'); if (g) g.scrollIntoView({ block: 'start' }); }
 });
 document.addEventListener('click', e => {
   const f = e.target.closest('[data-cut]'); if (!f) return;
   state.cut = Number(f.dataset.cut); dirty = true; render();
 });
 document.addEventListener('click', e => {
-  const b = e.target.closest('[data-mbtang],[data-mbdong],[data-mbbuoc],[data-mbto],[data-mbcan],[data-pttt],[data-mbky],[data-mbhoi]'); if (!b) return;
+  const b = e.target.closest('[data-mbtang],[data-mbdong],[data-mbbuoc],[data-mbcan],[data-pttt],[data-mbky],[data-chon],[data-canmo],[data-chat],[data-chepl],[data-tvxem],[data-pvmo],[data-dongphieu],[data-inphieu]'); if (!b) return;
   const d = b.dataset; state.keepScroll = true;
   if (d.mbdong) dongMatBang();
   else if (d.mbtang) moMatBang(d.mbtang, null, d.mbkhu);
   else if (d.mbbuoc) buocTang(+d.mbbuoc);
-  else if (d.mbto) { const c = CAN && CAN.can.find(x => x.ma === d.mbto); if (c) { const t = tangNhan(c.tang); moMatBang(t, c.toa + c.can, c.phanKhu); } }
   else if (d.mbcan !== undefined) chonCanMB(+d.mbcan);
-  else if (d.pttt) { state.pttt = d.pttt; render(); }
-  else if (d.mbky) { state.consignMa = d.mbky; state.openConsign = true; state.tab = 'consult'; state.keepScroll = false; render(); }
-  else if (d.mbhoi) { const ma = d.mbhoi, c = CAN && CAN.can.find(x => x.ma === ma); const k = 'can:' + ma; if (!inCart(k)) toggleCart(k, ma + ' · ' + TEN_KHU[khuMB()], c ? `${c.thongThuy} m² · ${tien(c.gia)}` : 'Căn trên mặt bằng tầng'); state.tab = 'cart'; state.keepScroll = false; render(); }
+  else if (d.pttt) { state.pttt = state.pttt === d.pttt ? null : d.pttt; const c = canDangXem(); if (c && inCart('can:' + c.ma) && state.pttt) { const it = state.cart.find(x => x.k === 'can:' + c.ma); it.pttt = state.pttt; saveCart(); } render(); if (state.pttt) { const p = $('#phieu'); if (p) p.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }); } }
+  else if (d.mbky) { state.consignMa = d.mbky; state.openConsign = true; state.tab = 'thamvan'; state.keepScroll = false; render(); const c = $('#consignBox'); if (c) c.scrollIntoView({ block: 'start' }); }
+  else if (d.chon) chonCanThamVan(d.chon);
+  else if (d.canmo) moCan(d.canmo);
+  else if (d.chat) chatZalo();
+  else if (d.chepl) { const ok = saoChep(state.daChat ? state.daChat.txt : ''); thongBao(ok ? 'Đã sao chép bản tóm tắt.' : 'Chạm giữ vào khung chữ để sao chép.'); }
+  else if (d.tvxem) { const c = state.cart.find(x => x.k === d.tvxem); if (c) moCan(c.ma || c.k.slice(4), { pttt: c.pttt || null }); }
+  else if (d.pvmo) { const p = state.phieu; if (p && p.bt) Object.assign(state.bt, { ngayKy: p.ky || null, tyLeVay: p.bt.tyLeVay ?? .7, laiSau: p.bt.laiSau ?? 10.5, namVay: p.bt.namVay ?? 25 }); moCan(d.pvmo, { pttt: d.pvpt || null }); }
+  else if (d.dongphieu) { state.phieu = null; try { history.replaceState(null, '', '#' + state.zone); } catch {} render(); }
+  else if (d.inphieu) { document.documentElement.classList.add('in-phieu'); setTimeout(() => print(), 30); }
+});
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.canmo) { e.preventDefault(); moCan(e.target.dataset.canmo); }
 });
 document.addEventListener('change', e => { if (e.target.id === 'mbTangSel') moMatBang(e.target.value); });
 document.addEventListener('click', e => {
   const m = e.target.closest('[data-market]'); if (!m || m.disabled) return;
   state.market = m.dataset.market; uploadStatic(); render();
 });
+addEventListener('afterprint', () => document.documentElement.classList.remove('in-phieu'));
 addEventListener('hashchange', openHash);
 new ResizeObserver(() => { dirty = pickDirty = true; }).observe(canvas);
 
@@ -1816,7 +2144,7 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
 /* ---------- khởi động ---------- */
 (async () => {
   render(); buildLabels();
-  const [geoRaw, invData, plan, gref, chan, canHo, ranh, matBang] = await Promise.all([
+  const [geoRaw, invData, plan, gref, chan, canHo, ranh, matBang, chinhSachDL, layoutDL] = await Promise.all([
     fetch('geometry.json').then(r => r.json()),
     fetch('inventory.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = 'plan.webp'; }),
@@ -1825,11 +2153,13 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     fetch('can-ho.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('ranh-du-an.json').then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('mat-bang.json').then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('chinh-sach.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('layout.json').then(r => r.ok ? r.json() : null).catch(() => null),
   ]);
   if (invData && invData.units) inv = invData;
   if (gref) { GEO = gref; geo.init(gref); }
   else geo.init({ tyLe: { metTrenDonVi: geo.mpu }, huong: { bacSoVoiTrucDocAnh: geo.north }, neo: { lat: geo.lat0, lon: geo.lon0, planX: 488, planY: 268 } });
-  RANH = ranh; CHAN = chan; CAN = canHo; MB = matBang;
+  RANH = ranh; CHAN = chan; CAN = canHo; MB = matBang; CS = chinhSachDL; LAYOUT = layoutDL;
   await hoiNen();
   TOWERS = dungThap();
   if (CHUP) {
@@ -1846,6 +2176,6 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     catch (err) { console.error(err); $('#nogl').hidden = false; }
   } else $('#nogl').hidden = false;
   render(); openHash();
-  window.__blanca = { fly, CAN: () => CAN, MB: () => MB, moMatBang, dongMatBang, mbHit, gocDoCao, doCaoMet, state, U, C, T, osmXa, osmGiua, tiaMatDat, phongTai, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS, VT };
+  window.__blanca = { fly, CAN: () => CAN, MB: () => MB, CS: () => CS, LAYOUT: () => LAYOUT, moMatBang, dongMatBang, mbHit, moCan, timCan, layoutCua, chatZalo, linkPhieu, tomTatTxt, dongTomTat, gocDoCao, doCaoMet, state, U, C, T, osmXa, osmGiua, tiaMatDat, phongTai, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS, VT };
 })().catch(err => { console.error(err); $('#pane').innerHTML = '<h2>Chưa tải được dữ liệu sa bàn</h2><p class="mute">Vui lòng tải lại trang hoặc nhắn Zalo ' + ZALO_TXT + '.</p>'; });
 })();

@@ -1,0 +1,174 @@
+{
+  "capNhat": "2026-11-20",
+  "nguon": "Thư mục \"9. CSBH - PTG\" Tú gửi 19/11/2026: chính sách bán hàng (PDF bản đại lý) và phiếu tính giá tạm tính (xlsx) của từng phân khu.",
+  "ghiChu": "Giá trong quỹ đại lý là giá niêm yết đã gồm VAT 10% và KPBT 2% tính trên giá chưa VAT, nên giá chưa VAT và KPBT = giá niêm yết / 1,12. Chiết khấu trừ lần lượt trên phần còn lại của giá chưa VAT và KPBT, đúng công thức phiếu tính giá của chủ đầu tư. Các đợt tính theo % của (giá sau chiết khấu + VAT); đợt bàn giao gồm 100% KPBT và VAT của 5% cuối; 5% cuối chưa VAT vào tài khoản ký quỹ cấp sổ. Phương thức có hạn (thanh toán sớm) tự ẩn khi qua hạn.",
+  "khu": {
+    "beacon": {
+      "ten": "Beacon Tower",
+      "ma": "CSBH02/B-BC/SPG/07-2026",
+      "tu": "2026-07-10",
+      "nguon": "Beacon · CSBH02 (PDF đại lý, áp dụng từ 10/07/2026); mẫu phiếu tính giá CSBH01.1",
+      "vatKpbt": 1.12, "vat": 0.1, "kpbt": 0.02,
+      "coc": { "3BR": 150000000, "3BR+": 150000000, "*": 100000000 },
+      "hdmbSau": 30,
+      "nhanNha": "2028-05-31",
+      "banGiao": "2030-05-31",
+      "htls": { "tyLeVay": 0.7, "thang": 30, "den": "2029-01-31" },
+      "uuDai": [
+        "Sun Early Key: đóng đủ 70% giá trị căn hộ (gồm VAT) được nhận nhà để sử dụng, dự kiến 31/05/2028.",
+        "Miễn phí dịch vụ quản lý 01 năm từ ngày nhận bàn giao.",
+        "Thanh toán trước hạn bằng vốn tự có (ít nhất 10 ngày trước hạn) được chủ đầu tư trả lãi 8%/năm trên số tiền và số ngày trả trước.",
+        "Ký quỹ cấp sổ 5% được chủ đầu tư trả lãi 8%/năm đến khi nhận sổ."
+      ],
+      "pttt": [
+        { "id": "khong-vay", "ten": "Không vay", "phu": "Tiến độ chuẩn: 70% trước nhận nhà, phần còn lại đến bàn giao", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }], "tienDo": "chuan" },
+        { "id": "vay", "ten": "Vay hỗ trợ lãi suất", "phu": "Ngân hàng cho vay tối đa 70%, chủ đầu tư trả lãi tối đa 30 tháng", "ck": [], "tienDo": "vay" },
+        { "id": "tts95", "ten": "Thanh toán sớm 95%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }, { "ten": "Ưu đãi thanh toán sớm 95%", "tyLe": 0.13 }], "tienDo": "chuan", "mucSom": 0.95, "han": "2026-07-25" },
+        { "id": "tts70", "ten": "Thanh toán sớm 70%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }, { "ten": "Ưu đãi thanh toán sớm 70%", "tyLe": 0.05 }], "tienDo": "chuan", "mucSom": 0.7, "han": "2026-07-25" },
+        { "id": "tts50", "ten": "Thanh toán sớm 50%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }, { "ten": "Ưu đãi thanh toán sớm 50%", "tyLe": 0.02 }], "tienDo": "chuan", "mucSom": 0.5, "han": "2026-07-25" }
+      ],
+      "tienDo": {
+        "chuan": [
+          { "loai": "coc" },
+          { "loai": "dot", "pt": 0.15, "ngay": 10, "truCoc": true },
+          { "loai": "hdmb" },
+          { "loai": "dot", "pt": 0.10, "ngay": 100 },
+          { "loai": "dot", "pt": 0.10, "ngay": 220 },
+          { "loai": "dot", "pt": 0.10, "ngay": 340 },
+          { "loai": "dot", "pt": 0.10, "ngay": 460 },
+          { "loai": "dot", "pt": 0.10, "ngay": 580 },
+          { "loai": "dot", "pt": 0.05, "ngay": 670 },
+          { "loai": "nhanNha" },
+          { "loai": "dot", "pt": 0.05, "ngay": 820 },
+          { "loai": "dot", "pt": 0.05, "ngay": 970 },
+          { "loai": "dot", "pt": 0.05, "ngay": 1120 },
+          { "loai": "dot", "pt": 0.05, "ngay": 1270 },
+          { "loai": "dot", "pt": 0.05, "ngay": 1420 },
+          { "loai": "banGiao" },
+          { "loai": "kyQuy" }
+        ],
+        "vay": [
+          { "loai": "coc" },
+          { "loai": "dot", "pt": 0.15, "ngay": 10, "truCoc": true },
+          { "loai": "hdmb" },
+          { "loai": "nganHang", "pt": 0.7, "sauHdmb": 15 },
+          { "loai": "dot", "pt": 0.10, "ngay": 100 },
+          { "loai": "banGiao", "theo": "nhanNha" },
+          { "loai": "kyQuy" }
+        ]
+      }
+    },
+    "beachtro": {
+      "ten": "Beachtro Tower",
+      "ma": "CSBH02.2/B-BC/SPG/09-2026",
+      "tu": "2026-09-28",
+      "nguon": "Beachtro · CSBH02_1.2 (PDF đại lý, áp dụng từ 28/09/2026); phiếu tính giá CSBH02.2",
+      "vatKpbt": 1.12, "vat": 0.1, "kpbt": 0.02,
+      "coc": { "3BR": 150000000, "3BR+": 150000000, "*": 100000000 },
+      "hdmbSau": 30,
+      "nhanNha": "2028-08-31",
+      "banGiao": "2030-08-31",
+      "htls": { "tyLeVay": 0.7, "thang": 30, "den": "2029-08-31" },
+      "uuDai": [
+        "Sun Early Key: đóng đủ 70% giá trị căn hộ (gồm VAT) được nhận nhà để sử dụng, dự kiến 31/08/2028.",
+        "Miễn phí dịch vụ quản lý 02 năm từ ngày nhận bàn giao.",
+        "Thanh toán trước hạn bằng vốn tự có (ít nhất 10 ngày trước hạn) được chủ đầu tư trả lãi 8%/năm trên số tiền và số ngày trả trước.",
+        "Ký quỹ cấp sổ 5% được chủ đầu tư trả lãi 8%/năm đến khi nhận sổ."
+      ],
+      "pttt": [
+        { "id": "khong-vay", "ten": "Không vay", "phu": "Tiến độ chuẩn: 70% trước nhận nhà, phần còn lại đến bàn giao", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }], "tienDo": "chuan" },
+        { "id": "vay", "ten": "Vay hỗ trợ lãi suất", "phu": "Ngân hàng cho vay tối đa 70%, chủ đầu tư trả lãi tối đa 30 tháng", "ck": [], "tienDo": "vay" },
+        { "id": "tts95", "ten": "Thanh toán sớm 95%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }, { "ten": "Ưu đãi thanh toán sớm 95%", "tyLe": 0.135 }], "tienDo": "chuan", "mucSom": 0.95, "han": "2026-10-25" },
+        { "id": "tts70", "ten": "Thanh toán sớm 70%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }, { "ten": "Ưu đãi thanh toán sớm 70%", "tyLe": 0.06 }], "tienDo": "chuan", "mucSom": 0.7, "han": "2026-10-25" },
+        { "id": "tts50", "ten": "Thanh toán sớm 50%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.05 }, { "ten": "Ưu đãi thanh toán sớm 50%", "tyLe": 0.03 }], "tienDo": "chuan", "mucSom": 0.5, "han": "2026-10-25" }
+      ],
+      "tienDo": {
+        "chuan": [
+          { "loai": "coc" },
+          { "loai": "dot", "pt": 0.15, "ngay": 10, "truCoc": true },
+          { "loai": "hdmb" },
+          { "loai": "dot", "pt": 0.10, "ngay": 100 },
+          { "loai": "dot", "pt": 0.10, "ngay": 220 },
+          { "loai": "dot", "pt": 0.10, "ngay": 340 },
+          { "loai": "dot", "pt": 0.10, "ngay": 460 },
+          { "loai": "dot", "pt": 0.15, "ngay": 610 },
+          { "loai": "nhanNha" },
+          { "loai": "dot", "pt": 0.05, "ngay": 760 },
+          { "loai": "dot", "pt": 0.05, "ngay": 910 },
+          { "loai": "dot", "pt": 0.05, "ngay": 1060 },
+          { "loai": "dot", "pt": 0.05, "ngay": 1210 },
+          { "loai": "dot", "pt": 0.05, "ngay": 1360 },
+          { "loai": "banGiao" },
+          { "loai": "kyQuy" }
+        ],
+        "vay": [
+          { "loai": "coc" },
+          { "loai": "dot", "pt": 0.15, "ngay": 10, "truCoc": true },
+          { "loai": "hdmb" },
+          { "loai": "nganHang", "pt": 0.7, "sauHdmb": 15 },
+          { "loai": "dot", "pt": 0.10, "ngay": 100 },
+          { "loai": "banGiao", "theo": "nhanNha" },
+          { "loai": "kyQuy" }
+        ]
+      }
+    },
+    "b123": {
+      "ten": "Blanca B1 · B2 · B3",
+      "ma": "CSBH 05/BC/SPG/07-2026",
+      "tu": "2026-07-10",
+      "nguon": "Blanca B123 · CSBH05 (PDF đại lý, áp dụng từ 10/07/2026); mẫu phiếu tính giá CSBH04",
+      "vatKpbt": 1.12, "vat": 0.1, "kpbt": 0.02,
+      "coc": { "STU": 100000000, "1BR": 100000000, "2BR": 200000000, "DUPLEX": 300000000, "*": 100000000 },
+      "hdmbSau": 7,
+      "nhanNha": "2027-12-31",
+      "banGiao": "2029-12-31",
+      "htls": { "tyLeVay": 0.7, "thang": 30, "den": "2029-03-31" },
+      "uuDai": [
+        "Sun Early Key: đóng đủ 70% giá trị căn hộ (gồm VAT) được nhận nhà để sử dụng, dự kiến 31/12/2027.",
+        "Miễn phí dịch vụ quản lý 01 năm từ ngày nhận bàn giao chính thức.",
+        "Thanh toán trước hạn bằng vốn tự có (ít nhất 10 ngày trước hạn) được chủ đầu tư trả lãi 8%/năm trên số tiền và số ngày trả trước.",
+        "Ký quỹ cấp sổ 5% được chủ đầu tư trả lãi 8%/năm đến khi nhận sổ."
+      ],
+      "pttt": [
+        { "id": "khong-vay", "ten": "Không vay", "phu": "Tiến độ chuẩn: 70% trước nhận nhà, phần còn lại đến bàn giao", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.06 }], "tienDo": "chuan" },
+        { "id": "vay", "ten": "Vay hỗ trợ lãi suất", "phu": "Ngân hàng cho vay tối đa 70%, chủ đầu tư trả lãi tối đa 30 tháng", "ck": [], "tienDo": "vay" },
+        { "id": "tts95", "ten": "Thanh toán sớm 95%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.06 }, { "ten": "Ưu đãi thanh toán sớm 95%", "tyLe": 0.085 }], "tienDo": "chuan", "mucSom": 0.95, "han": "2026-08-25" },
+        { "id": "tts70", "ten": "Thanh toán sớm 70%", "ck": [{ "ten": "Chiết khấu không vay", "tyLe": 0.06 }, { "ten": "Ưu đãi thanh toán sớm 70%", "tyLe": 0.025 }], "tienDo": "chuan", "mucSom": 0.7, "han": "2026-08-25" }
+      ],
+      "tienDo": {
+        "chuan": [
+          { "loai": "coc" },
+          { "loai": "dot", "pt": 0.15, "ngay": 10, "truCoc": true },
+          { "loai": "hdmb" },
+          { "loai": "dot", "pt": 0.10, "ngay": 100 },
+          { "loai": "dot", "pt": 0.05, "ngay": 145 },
+          { "loai": "dot", "pt": 0.05, "ngay": 190 },
+          { "loai": "dot", "pt": 0.05, "ngay": 235 },
+          { "loai": "dot", "pt": 0.05, "ngay": 280 },
+          { "loai": "dot", "pt": 0.05, "ngay": 325 },
+          { "loai": "dot", "pt": 0.05, "ngay": 370 },
+          { "loai": "dot", "pt": 0.05, "ngay": 415 },
+          { "loai": "dot", "pt": 0.05, "ngay": 460 },
+          { "loai": "dot", "pt": 0.05, "ngay": 505 },
+          { "loai": "nhanNha" },
+          { "loai": "dot", "pt": 0.05, "ngay": 625 },
+          { "loai": "dot", "pt": 0.05, "ngay": 745 },
+          { "loai": "dot", "pt": 0.05, "ngay": 865 },
+          { "loai": "dot", "pt": 0.05, "ngay": 985 },
+          { "loai": "dot", "pt": 0.05, "ngay": 1105 },
+          { "loai": "banGiao" },
+          { "loai": "kyQuy" }
+        ],
+        "vay": [
+          { "loai": "coc" },
+          { "loai": "dot", "pt": 0.15, "ngay": 10, "truCoc": true },
+          { "loai": "hdmb" },
+          { "loai": "nganHang", "pt": 0.7, "sauHdmb": 15, "buVaoDotSau": true },
+          { "loai": "dot", "pt": 0.10, "ngay": 100 },
+          { "loai": "banGiao", "theo": "nhanNha" },
+          { "loai": "kyQuy" }
+        ]
+      }
+    }
+  }
+}

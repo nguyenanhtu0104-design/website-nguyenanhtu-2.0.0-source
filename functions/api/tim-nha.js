@@ -7,6 +7,7 @@ const KINDS = {
   request: 'Yêu cầu căn',
   consign: 'Ký gửi căn',
   callback: 'Đặt lịch tư vấn',
+  thamvan: 'Tham vấn qua Zalo',
 };
 
 const json = (obj, status = 200) =>
@@ -110,14 +111,21 @@ export async function onRequestPost({ request, env }) {
 
   const kind = KINDS[b.kind] ? b.kind : null;
   if (!kind) return json({ ok: false, error: 'kind' }, 400);
-  const name = clip(b.name, 80);
-  const phone = normPhone(b.phone);
+  // Tham vấn qua Zalo: khách bấm chat sau khi đã chọn căn. Trang mở Zalo cho khách ngay, phiếu này chỉ chuyển
+  // bản tóm tắt (căn, phương thức, giá cuối, liên kết phiếu) cho tư vấn. Không bắt buộc tên, không nhận số điện thoại.
+  const thamVan = kind === 'thamvan';
+  const name = clip(b.name, 80) || (thamVan ? 'Khách chat Zalo' : '');
+  const phone = thamVan ? '' : normPhone(b.phone);
   if (name.length < 2) return json({ ok: false, error: 'name' }, 400);
-  if (!/^0\d{9}$/.test(phone)) return json({ ok: false, error: 'phone' }, 400);
-  if (b.consent !== true) return json({ ok: false, error: 'consent' }, 400);
+  if (!thamVan && !/^0\d{9}$/.test(phone)) return json({ ok: false, error: 'phone' }, 400);
+  if (!thamVan && b.consent !== true) return json({ ok: false, error: 'consent' }, 400);
 
   const project = clip(b.project, 80) || 'Blanca City';
-  const units = (Array.isArray(b.units) ? b.units : []).slice(0, 20).map((u) => clip(u, 80)).filter(Boolean);
+  const units = (Array.isArray(b.units) ? b.units : []).slice(0, 20).map((u) => clip(u, thamVan ? 320 : 80)).filter(Boolean);
+  if (thamVan && !units.length) return json({ ok: false, error: 'units' }, 400);
+  const maPhieu = thamVan ? clip(b.maPhieu, 16).replace(/[^A-Z0-9]/gi, '') : '';
+  let link = '';
+  if (thamVan) { try { const u = new URL(clip(b.link, 4000)); if (u.protocol === 'https:' || u.hostname === 'localhost' || u.hostname === '127.0.0.1') link = u.href; } catch { link = ''; } }
   if (kind === 'request' && !units.length && !clip(b.note, 400)) return json({ ok: false, error: 'units' }, 400);
   if (kind === 'consign' && !clip(b.unit, 160)) return json({ ok: false, error: 'unit' }, 400);
 
@@ -151,7 +159,7 @@ export async function onRequestPost({ request, env }) {
     b.note ? 'Ghi chú: ' + clip(b.note, 400) : '',
   ].filter(Boolean).join(' | ');
 
-  const id = 'T' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 5).toUpperCase();
+  const id = maPhieu || 'T' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).slice(2, 5).toUpperCase();
   const row = {
     time: new Date().toISOString(),
     id, name, phone,
@@ -162,12 +170,12 @@ export async function onRequestPost({ request, env }) {
     doc: KINDS[kind],
     purpose: kind === 'consign' ? clip(b.purpose, 20) : clip(b.intent, 40),
     budget: giaBan ? vnd(giaBan) : clip(b.budget || b.price, 60),
-    calc: detail,
-    score: kind === 'request' ? 70 : kind === 'callback' ? 60 : 50,
+    calc: detail + (link ? ' | Phiếu: ' + link : ''),
+    score: thamVan ? 80 : kind === 'request' ? 70 : kind === 'callback' ? 60 : 50,
     temp: 'Nóng',
     visits: 0, interactions: 0, projectsViewed: 0,
     source: 'tim-nha', medium: 'showroom-3d', campaign: project, page: clip(b.page, 120),
-    consent: 'Đồng ý ' + new Date().toISOString().slice(0, 10),
+    consent: thamVan ? 'Không thu số điện thoại' : 'Đồng ý ' + new Date().toISOString().slice(0, 10),
   };
 
   const sheet = await appendSheet(env, row);
@@ -176,14 +184,25 @@ export async function onRequestPost({ request, env }) {
   // Báo cho Tú (không bắt buộc; lỗi mail không làm mất phiếu đã lưu)
   let notified = false;
   try {
-    const lines = [['Loại', KINDS[kind]], ['Mã phiếu', id], ['Dự án', project], ['Tên', name], ['Zalo/SĐT', phone], ['Chi tiết', detail || '-']];
-    const zalo = `https://zalo.me/${phone}`;
-    const m = await sendMail(env, {
+    const m = thamVan ? await sendMail(env, {
       to: env.NOTIFY_TO,
-      subject: `🔔 ${KINDS[kind]}: ${name} – ${project}`,
-      html: `<div style="font-family:Arial,sans-serif;font-size:15px"><table cellpadding="6">${lines.map(([k, v]) => `<tr><td style="color:#5b6770;vertical-align:top">${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`).join('')}</table><p><a href="${esc(zalo)}">Mở Zalo của khách</a></p></div>`,
-      text: lines.map(([k, v]) => `${k}: ${v}`).join('\n') + `\nZalo: ${zalo}`,
-    });
+      subject: `💬 Khách vừa mở Zalo tham vấn ${units.length} căn – ${project} (${id})`,
+      html: khung(`<p><b>${esc(name)}</b> vừa bấm "Chat Zalo với tư vấn" trên sa bàn ${esc(project)}. Khách đã được sao chép sẵn bản tóm tắt dưới đây để dán vào Zalo; nếu khách chưa dán, đây là những gì khách đã chọn.</p>
+        <ol>${units.map((u) => `<li style="margin:6px 0">${esc(u)}</li>`).join('')}</ol>
+        ${clip(b.note, 400) ? `<p>Lời nhắn: <b>${esc(clip(b.note, 400))}</b></p>` : ''}
+        ${link ? `<p><a href="${esc(link)}" style="display:inline-block;background:#c99a42;color:#221a08;padding:10px 16px;border-radius:8px;text-decoration:none;font-weight:700">Mở phiếu ${esc(id)}: căn, phương thức và bản tính khách đã xem</a></p>` : ''}
+        <p style="color:#666;font-size:13px">Giá trong phiếu tính lại theo quỹ đại lý và chính sách hiện hành khi anh mở link.</p>`),
+      text: `Khách ${name} mở Zalo tham vấn (${id}):\n` + units.map((u, i) => `${i + 1}. ${u}`).join('\n') + (clip(b.note, 400) ? `\nLời nhắn: ${clip(b.note, 400)}` : '') + (link ? `\nPhiếu: ${link}` : ''),
+    }) : await (async () => {
+      const lines = [['Loại', KINDS[kind]], ['Mã phiếu', id], ['Dự án', project], ['Tên', name], ['Zalo/SĐT', phone], ['Chi tiết', detail || '-']];
+      const zalo = `https://zalo.me/${phone}`;
+      return sendMail(env, {
+        to: env.NOTIFY_TO,
+        subject: `🔔 ${KINDS[kind]}: ${name} – ${project}`,
+        html: `<div style="font-family:Arial,sans-serif;font-size:15px"><table cellpadding="6">${lines.map(([k, v]) => `<tr><td style="color:#5b6770;vertical-align:top">${esc(k)}</td><td><b>${esc(v)}</b></td></tr>`).join('')}</table><p><a href="${esc(zalo)}">Mở Zalo của khách</a></p></div>`,
+        text: lines.map(([k, v]) => `${k}: ${v}`).join('\n') + `\nZalo: ${zalo}`,
+      });
+    })();
     notified = m.ok;
   } catch {
     notified = false;

@@ -263,12 +263,11 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 
 ## 14. Nhật ký thay đổi nguyên tắc
 
-- 2026-11-20 — **2.46.0** (Tú chốt): bước đầu chỉ chọn dự án + nhu cầu; hồ sơ cá nhân ở cuối, câu hỏi theo nhu cầu (`apDung`).
-- 2026-11-20 — **2.45.0**: bộ 29 thẻ theo tài liệu duyệt Tú đã sửa; lựa chọn thiên kiến có thể lấy theo dữ kiện từng dự án (`theoDuAn`).
-- 2026-11-20 — **2.44.0** (Tú chốt): thang điểm tổng quan trong bài giữ nguyên, tách khỏi bộ chi tiết; nút sang bộ chi tiết đặt sau thang điểm; hồ sơ nhu cầu 11 câu (§18).
-- 2026-11-20 — **2.43.0** (Tú chốt): khung 2.0 — 27 thẻ theo 6 chủ đề, hồ sơ nhu cầu tách riêng, 3 biểu đồ theo màu, giải nghĩa màu ở tổng kết, Tú chấm theo trọng số của khách (§18 viết lại).
-- 2026-11-20 — **2.42.0** (Tú chốt): khách chỉ tự chấm, không nhận định tự động, không ghi tên tầng; thêm bước chọn dự án + nhu cầu có ghi chú trọng số, nút "Xem đánh giá của Tú", dự án tương tự (§18).
-- 2026-11-20 — **2.41.0** (Tú yêu cầu "phát triển bộ tiêu chí đánh giá và tích hợp vào web"): thêm trang Tự đánh giá dự án `/danh-gia-du-an/` theo §18 (ngoại lệ có chủ đích của §9: `danh-gia.css` và `danh-gia.js` chỉ nạp ở trang này, không thư viện ngoài, không tăng trang chủ). Cờ `danhGia.congBo` mặc định `false` (bản xem thử, noindex, không có trong menu).
+- **20/11/2026 — Khối tháp theo toà con, mặt cắt có mã từng căn (§16.3).** Tú báo hình khối và chiều cao bản 2.42.0 sai so với bản đầu: lỗi do chia toà con đều theo bề ngang. Từ nay toà con lấy theo căn trên mặt bằng, số tầng khai báo từng toà, so ảnh sa bàn với phối cảnh trước khi giao.
+
+- **20/11/2026 — Bóc tầng, chọn căn trên mặt bằng; điều khiển kiểu Google Maps; nền ba vành (§16.3, §17.4).** Theo trang mẫu Tú gửi: mặt cắt tầng dán mặt bằng thật của chủ đầu tư, chạm vào căn ra thẻ căn có giá, layout, tiến độ thanh toán theo chính sách bán hàng. Mặt bằng số hoá bằng công cụ chuẩn, mã căn và diện tích đọc từ bản vẽ, không đoán. Kéo chuột trái nay là trượt bản đồ như Google Maps, xoay bằng chuột phải.
+
+- **19/11/2026 — Không dán cả tổng mặt bằng lên bản đồ: tách từng khối, đặt theo ghim (§17, tầng 4).** Tổng mặt bằng tiếp thị nén chiều dọc và lệch theo cụm. Một phép chiếu chung khớp được khu giữa thì khu rìa vẫn lệch hàng chục mét, có dãy nằm đè lên đường (Blanca: ghim căn GV-068 lệch 118 m). Từ nay mỗi dự án tách lô thành từng khối nhà (tháp căn hộ, song lập, đơn lập, Grand Villa, nhà phố), đo vị trí thật của từng khối trên ảnh vệ tinh đã đưa về khung bản vẽ, rồi ghi ghim và hệ số giãn của từng khối vào `georef.json > khoi`. Ghim căn theo mã do Tú đặt dùng để nghiệm thu: lô cùng mã phải là lô gần ghim nhất. Dò tự động chỉ là gợi ý, khối nào cũng phải soát bằng mắt (dãy nhà đều nhau và đường nhựa tối làm máy bắt nhầm). Nền Tổng mặt bằng vẫn đặt khối theo bản vẽ.
 
 - **19/11/2026 — Chuẩn hoá quy trình dựng sa bàn dự án mới (§17).** Mọi dự án sau làm theo đúng §17: đầu vào xin trước, ba tầng định vị, tiêu chí nghiệm thu, ảnh đại diện chụp từ khối 3D, tự động hoá ký gửi bằng email.
 
@@ -359,10 +358,20 @@ Lớp gần lấy z18 trong ranh dự án (§17.4). Có khoá rồi thì vào Cl
 ### 16.3 Mặt bằng tầng
 - Mặt cắt tầng phải dán layout thật vào, chọn được căn ngay trên mặt bằng đó.
 - Nhập mã căn cũng ra đúng căn đó.
+- Cách làm chuẩn (từ 2.42.0): số hoá mặt bằng tầng bằng `scripts/so-hoa-mat-bang.py`. Người số hoá đọc bản vẽ, viết file khai báo: mã căn, loại, diện tích thông thủy và tim tường lấy từ ô nhãn; một điểm hạt nằm trong mỗi căn; điểm lấy mẫu màu từng loại căn ở ô chú thích. Công cụ tách vùng từng căn theo màu, cắt nền trắng và nhãn ra khỏi ảnh, ghi `mat-bang.json`. Công cụ tự dừng khi hai căn chồng lên nhau (điểm hạt sai) hoặc vùng quá nhỏ. Xem ảnh kiểm (`--anh-kiem`) trước khi nhận.
+- Chân tháp lấy đúng thân toà trên mặt bằng đã số hoá (`mat-bang.json > lat`), cùng khung với khối đế, nên mặt cắt được ảnh mặt bằng phủ kín.
+- **Hình khối và chiều cao (từ 2.43.0):** mỗi lát chân tháp mang toà con của căn gần nhất trên mặt bằng; khai báo `toa` ghi số tầng từng toà con (theo phối cảnh, hồ sơ hoặc Tú cho), không chia đều theo bề ngang. Đỉnh mỗi toà có mái khung trắng như phối cảnh. Dựng xong phải chụp sa bàn cùng góc với phối cảnh chủ đầu tư và so: thứ tự cao thấp các toà, khoảng hở giữa hai cụm, khối đế hai tầng.
+- **Mặt cắt có layout từng căn:** ảnh mặt bằng dán lên mặt cắt kèm viền và mã đầy đủ từng căn theo tầng đang xem (ví dụ E512A06). Tô trạng thái nhẹ để vẫn đọc được phòng bên trong căn.
+- **Ô đèn căn trống:** mỗi căn còn trống trong quỹ đại lý là một ô sáng trên mặt đứng tháp, đúng tầng và đúng vị trí căn trên mặt bằng; chạm vào ô đèn là bóc đúng tầng đó và mở thẻ căn (§16.2).
+- Mặt bằng chỉ dán cho tầng ghi trên bản vẽ (`tangDung`). Tầng có mặt bằng riêng chưa số hoá thì báo "chưa số hoá", không dán mặt bằng tầng khác lên.
+- Tô màu trên mặt bằng: xanh là căn còn trống trong quỹ đại lý, xám là đã cọc, không tô là chưa có trong quỹ. Giá và tình trạng chỉ lấy từ bảng hàng; mã, loại, diện tích lấy từ bản vẽ thì ghi "theo mặt bằng".
+- Thẻ căn: xem §16.8 (từ 2.44.0).
 
 ### 16.4 Bản tính
 - Chọn hoặc nhập căn thì chạy ra bản tính cụ thể của căn, dùng lại bản tính đã có trên web (`assets/tools/shared/` và các `*-bang-tinh`).
 - Mở rộng tiếp sang phần vay và phương án tài chính.
+- **Chuẩn từ 2.44.0:** chính sách bán hàng từng phân khu ghi trong `chinh-sach.json` (mã chính sách, ngày áp dụng, tiền cọc theo loại căn, mốc HĐMB, nhận nhà, bàn giao, hỗ trợ lãi suất, danh sách phương thức thanh toán có chiết khấu và hạn, mẫu tiến độ từng đợt theo "ngày thứ n"). Bộ tính `ban-tinh.js` đọc file này, không chứa số của dự án. Công thức theo phiếu tính giá tạm tính của chủ đầu tư: giá chưa VAT và KPBT = niêm yết / 1,12; chiết khấu trừ lần lượt; VAT 10%, KPBT 2% trên giá sau chiết khấu; mỗi đợt = % × (giá sau CK + VAT), lần 2 trừ cọc; đợt bàn giao = KPBT + VAT của 5% cuối; ký quỹ 5% chưa VAT; ngày thứ n = ngày ký + n − 1; đợt có hạn sau bàn giao gộp vào ngày bàn giao. **Tổng tiến độ phải bằng đúng tổng giá trị phải thanh toán** (kiểm thử chạy hết mọi căn × mọi phương thức).
+- Phương thức có hạn (thanh toán sớm) tự ẩn khi qua hạn và ghi "đã hết hạn ngày …". Khi Tú gửi chính sách đợt mới: chỉ sửa `chinh-sach.json`, không sửa mã.
 
 ### 16.5 Form ký gửi
 Ưu tiên xác minh người gửi. Trường bắt buộc:
@@ -384,40 +393,62 @@ Hệ thống lấy giá cuối trên hợp đồng cộng mức chênh mong mu�
 - Gửi email và Zalo xác nhận đã đăng ký ký gửi, cảm ơn, kèm lời chúc sớm thanh khoản.
 - Sau ngày đăng ký 15 ngày: tự nhắc chăm sóc, hỏi lại căn đã bán chưa để cập nhật hệ thống.
 
+### 16.8 Luồng xem căn → chọn căn → tham vấn (Tú giao 20/11/2026, từ 2.44.0)
+Xem căn, chọn căn, bản tính và tư vấn là **một luồng**, không tách thành các menu rời. Khung bên chỉ có ba tab: **Chọn căn** (phân khu, rổ giá, nhập mã căn) · **Căn** (thẻ căn) · **Tham vấn** (căn đã chọn, chat, ký gửi). Nắng và hạ tầng mở từ thanh công cụ bên trái.
+- **Layout căn lấy từ trang layout chính thức trong hồ sơ của chủ đầu tư** (`layout.json`, ảnh trong `layout/`), không cắt từ mặt bằng tầng. Căn có trục in trên bản vẽ dùng đúng layout trục đó, ghi "Layout chính thức trục …"; căn khác dùng layout cùng loại, diện tích gần nhất, ghi rõ "Layout điển hình". Kèm sơ đồ nhỏ vị trí căn trên tầng.
+- Thẻ căn có: mã, toà, tầng, tình trạng, layout, thông thủy, tim tường, giá niêm yết, và **"Giá cuối theo phương thức thanh toán"**: mỗi phương thức còn hiệu lực một ô có tổng phải trả. Chạm vào ô nào thì mở ngay phiếu tính giá của căn đó trình bày như bản tính dự án (THÔNG TIN GIÁ & CHÍNH SÁCH · TIẾN ĐỘ THANH TOÁN có ngày · TỔNG) và **cân đối tài chính** (vốn tự có, 12 tháng đầu, đến khi nhận nhà, vay: số tháng hỗ trợ lãi, trả hằng tháng sau đó, thu nhập nên có, dòng tiền theo năm). Khách đổi được ngày ký, tỷ lệ vay, lãi suất sau hỗ trợ, thời hạn vay. Có nút in hoặc lưu PDF và nút sang Bản tính tài chính đầy đủ.
+- Rổ giá liệt kê cả giá niêm yết và giá cuối không vay; chạm dòng nào mở thẻ căn đó.
+- **Nút "Chat Zalo với tư vấn" khoá cho tới khi khách chọn ít nhất một căn** ("Chọn căn này để tham vấn", mỗi căn giữ phương thức đang xem). Bấm chat: mở ngay Zalo của Tú, sao chép sẵn bản tóm tắt (mã phiếu, từng căn, phương thức, giá cuối, vốn tự có hoặc tiền 12 tháng đầu, lời nhắn, link phiếu) để khách dán vào khung chat; đồng thời gửi bản tóm tắt về email và Google Sheet của Tú (`/api/tim-nha`, kind `thamvan`, không thu số điện thoại).
+- **Link phiếu** `blanca.html#phieu=…` mở cho tư vấn đúng các căn, phương thức và tham số khách đã chọn, giá tính lại theo quỹ và chính sách hiện hành, báo nếu giá niêm yết đã đổi. `#can=<mã>` mở thẳng thẻ căn.
+- Form "để lại số, tư vấn gọi lại" cũng chỉ hiện khi đã chọn căn và gửi kèm danh sách căn. Ký gửi (chủ nhà) không cần chọn căn.
+
 ## 17. Quy trình dựng sa bàn cho dự án mới (chuẩn từ Blanca City, 19/11/2026)
 
-Blanca City là bản mẫu. Dự án sau sao chép khung `assets/tools/casa-blanca/` rồi thay dữ liệu, không viết lại mã.
+Blanca City là bản mẫu. Từ 2.44.0 khung đã khoá (§17.6): dự án sau dùng đúng khung, chỉ thay dữ liệu, không viết lại mã, không đổi giao diện.
 
 ### 17.1 Đầu vào Tú gửi — xin theo thứ tự này
 1. **Bản đồ quy hoạch tổng mặt bằng 1/500 có bảng toạ độ VN-2000**, ghi rõ kinh tuyến trục (Bà Rịa – Vũng Tàu: 107°45′, EPSG:5899). Có bản này là định vị chính xác đến mét, bỏ qua bước ghim. Xin chủ đầu tư hoặc ban quản lý dự án.
 2. **Ranh dự án** vẽ trên Google My Maps theo bản đồ thật, tải KMZ về đính kèm.
 3. **Tổng mặt bằng** (ảnh) và **hồ sơ tư vấn PDF** có mặt bằng tầng điển hình, số tầng, số căn từng toà.
-4. **Ít nhất hai ghim** trên My Maps đặt tại công trình **đã thi công**, nhìn rõ trên ảnh vệ tinh: nút giao, vòng xoay, góc toà nhà đã xây. Cách nhau càng xa càng tốt. Ghim thứ ba trở đi dùng để đo sai số. Không ghim vào công trình chưa xây. Không ghim theo mã căn khi chưa có bảng hàng.
-5. **Bảng hàng .xlsx** (Mã căn, Toà, Tầng, Căn, Loại căn, diện tích thông thuỷ và tim tường, giá đã gồm VAT và KPBT, tình trạng). Tải về rồi đính kèm — môi trường làm việc của Claude không mở được link Google.
-6. **Chính sách bán hàng** và nói rõ **đợt nào đang áp dụng** cho quỹ đó.
+4. **Ít nhất hai ghim** trên My Maps đặt tại công trình **đã thi công**, nhìn rõ trên ảnh vệ tinh: nút giao, vòng xoay, góc toà nhà đã xây. Cách nhau càng xa càng tốt. Ghim thứ ba trở đi dùng để đo sai số. Không ghim vào công trình chưa xây. Không dùng ghim căn để giải khung.
+5. **Ghim căn theo mã** (đặt tên ghim đúng mã căn, ví dụ "ĐL-001", "GV-068"): vài căn mỗi phân khu, ưu tiên căn đầu dãy và căn ở khu chưa xây. Dùng để nghiệm thu tầng 4 và để đặt những khối chưa có móng trên ảnh vệ tinh.
+6. **Bảng hàng .xlsx** (Mã căn, Toà, Tầng, Căn, Loại căn, diện tích thông thuỷ và tim tường, giá đã gồm VAT và KPBT, tình trạng). Tải về rồi đính kèm — môi trường làm việc của Claude không mở được link Google.
+7. **Chính sách bán hàng** (PDF bản đại lý) và nói rõ **đợt nào đang áp dụng** cho quỹ đó, kèm **phiếu tính giá .xlsx** của chủ đầu tư cho đợt đó (để đối chiếu công thức từng đồng).
+8. **Hồ sơ tư vấn có trang layout căn**: mỗi loại căn một trang, có ghi trục căn, thông thủy, tim tường. Đây là layout hiện trên thẻ căn (§16.8), không cắt từ mặt bằng tầng.
 
 ### 17.2 Các bước Claude làm
 1. **Khung thư mục** `assets/tools/<du-an>/`: `plan.webp`, `geometry.json`, `georef.json`, `ranh-du-an.json`, `diem-moc.json`, `chan-thap.json`, `can-ho.json`, `inventory.json`.
-2. **Định vị — ba tầng, tầng sau chỉ làm khi tầng trước xong:**
+2. **Định vị — bốn tầng, tầng sau chỉ làm khi tầng trước xong:**
    - Tầng 1, khung. Có toạ độ VN-2000: `python3 scripts/khop-sa-ban.py vn2000 moc.csv --ktt 107-45 > moc.kml`, rồi `node scripts/dinh-vi-sa-ban.mjs <thu-muc> moc.kml --ghi`. Không có: giải từ các ghim đã thi công.
    - Tầng 2, tịnh tiến. `khop-sa-ban.py anh <thu-muc>` rồi `khop-sa-ban.py dich <thu-muc>`. Công cụ tự từ chối khi kết quả không tin được. Nhận thì thêm `--ghi`.
    - Tầng 3, nghiệm thu. `khop-sa-ban.py soi <thu-muc>` ra bảng ảnh từng khối có lưới đo. Ghi kết quả vào `georef.json` mục `nghiemThu`: khối khớp, khối lệch bao nhiêu, khối chưa kiểm được.
-3. **Khối 3D.** Căn thấp tầng theo tổng mặt bằng. Tháp: chân tháp cắt từ đường bao công trình trên tổng mặt bằng, số tầng theo hồ sơ, đối chiếu thứ tự toà con với mã căn trên mặt bằng tầng điển hình.
+   - Tầng 4, từng khối — **bắt buộc**, vì tổng mặt bằng tiếp thị không vẽ đúng tỷ lệ bên trong:
+     1. `khop-sa-ban.py tach <thu-muc> --ghi` tách lô thành khối (cùng loại, cùng hướng, hai dãy quay lưng gộp một khối), ghi khung chọn lô vào `georef.json > khoi > ds`. Công cụ tự kiểm mỗi lô thuộc đúng một khối. Tháp căn hộ là khối riêng.
+     2. Đọc vị trí thật của từng khối trên ảnh có lưới (lệnh `soi`): tâm hai dãy nhà (`hang`), dời ngang (`dx`), giãn (`sx`, `sy`) cho khối dải; tháp theo hố móng hoặc khung đang dựng. Ghi vào một bảng số đo `bang.json` (mẫu trong đầu file công cụ). Khối chưa xây thì suy theo bước khối bên cạnh và ghim căn của Tú, ghi `tt: chua`; không có dấu vết gì thì `tt: giu`.
+     3. `khop-sa-ban.py do <thu-muc> bang.json` gợi ý tinh chỉnh từng khối. **Chỉ là gợi ý**: áp thử, xem ảnh trước và sau, khối nào khớp hơn thấy rõ mới nhận.
+     4. `khop-sa-ban.py dat <thu-muc> bang.json --ghi` đổi số đo thành ghim (vĩ độ, kinh độ tâm khối) và hệ số giãn, ghi vào `georef.json`.
+     5. `khop-sa-ban.py nghiemthu <thu-muc> ghim-can.kml` ra ảnh chồng toàn khu, độ phủ trước và sau của từng khối, khoảng cách từ ghim căn tới lô cùng mã. Ghi kết quả vào `georef.json > khoi > nghiemThu`.
+   - Trang sa bàn tự đọc `khoi`: nền bản đồ và Chồng lớp đặt khối theo ghim, nền Tổng mặt bằng đặt theo bản vẽ, đổi nền thì khối trượt sang vị trí mới. Không phải sửa mã cho dự án mới.
+3. **Khối 3D.** Căn thấp tầng theo tổng mặt bằng. Tháp: chân tháp cắt từ đường bao công trình trên tổng mặt bằng, số tầng theo hồ sơ, đối chiếu thứ tự toà con với mã căn trên mặt bằng tầng điển hình. Có mặt bằng tầng thì số hoá theo §16.3; chân tháp tự lấy theo mặt bằng.
 4. **Giỏ hàng.** Chuyển xlsx sang `can-ho.json`, ghi rõ `phamVi` (quỹ đại lý hay toàn bộ giỏ hàng). Thẻ dự án ở Tìm nhà dùng nhãn "Quỹ đại lý" khi không phải toàn bộ.
 5. **Góc nhìn.** Đặt `PHUONG_BIEN` = phương vị hướng view chính (pháp tuyến bờ biển, sông, công viên) đo trên ảnh vệ tinh. Kiểm hai nút 500 m và 1 km nhìn đúng hướng đó.
-6. **Ảnh đại diện.** Sau khi deploy: `python3 scripts/chup-anh-sa-ban.py https://nguyenanhtu.vn/assets/tools/<du-an>/<trang>.html assets/tools/<du-an>`, rồi thêm `"saBan": "<du-an>"` cho dự án trong `data/project-inventory.json`. Thẻ dự án và ảnh chia sẻ tự lấy ảnh này.
+6. **Ảnh đại diện.** Sau khi deploy: `python3 scripts/chup-anh-sa-ban.py https://nguyenanhtu.vn/assets/tools/<du-an>/<trang>.html assets/tools/<du-an>`, rồi thêm `"saBan": "<du-an>"` cho dự án trong `data/project-inventory.json`. Thẻ dự án và ảnh chia sẻ tự lấy ảnh này. Ảnh luôn chụp với nắng lúc 14:00 giờ Việt Nam bất kể giờ chạy (`--gio` để đổi); đặt lại vị trí khối thì chụp lại.
 7. Kiểm thử, đóng gói như §13.
 
 ### 17.3 Tiêu chí nghiệm thu
 - Tầng 2 hội tụ: lệch tịnh tiến còn dưới 1,5 m. Bảng soi từng khối đã xem và ghi kết quả. Khu nào lệch thì ghi rõ trong `georef.json`, không giấu.
+- Tầng 4: mọi lô thuộc đúng một khối; mỗi khối đã xây có dãy mô hình nằm trên dãy nhà thật, không dãy nào đè lên đường (soát bằng ảnh chồng); mọi ghim căn của Tú có lô gần nhất đúng mã và lệch không quá 10 m; khối chưa xây ghi rõ là suy, đo lại khi có móng.
+- Ảnh chồng của công cụ dùng cùng công thức mét/độ với trang (`showroom.js`, `dinh-vi-sa-ban.mjs`, `khop-sa-ban.py` phải giữ giống nhau), nên ảnh nghiệm thu là đúng cái khách thấy.
 - Không công bố số đo khoảng cách, diện tích lấy từ phép chiếu (§14).
 - Ảnh nền lớp gần đạt z18 trong ranh dự án trên máy tính; điện thoại yếu được phép giữ z17.
 - Giỏ hàng ghi rõ phạm vi. Căn đã bán hoặc chưa mở bán để trống trên khối 3D (§16.2).
 - Ảnh đại diện chụp ở z18, không lộ nút hay chữ của giao diện.
+- `python3 tests/sa_ban_luong.py <đường dẫn trang sa bàn>` đạt hết (§17.6).
 
 ### 17.4 Ảnh nền và độ cao
-- Lớp gần: z18 (0,6 m mỗi điểm ảnh) trong ranh dự án nới 15%, nạp z17 trước cho nhanh rồi thay bằng z18. Lớp xa: z14, rộng gấp bốn khu đất.
-- Độ cao camera hiện bằng mét ở thanh dưới. Kéo xa nhất 7,9 km.
+- Ba vành ảnh: lớp gần z18 (0,6 m mỗi điểm ảnh) trong ranh dự án nới 15%, nạp z17 trước cho nhanh rồi thay bằng z18; vành giữa z15 rộng gấp 4,5 khu đất (phố, biển quanh dự án); vành xa z13 rộng khoảng 28–38 km (cả thành phố, núi, cửa sông). Mép mỗi vành mờ dần vào vành ngoài.
+- Độ cao camera hiện bằng mét ở thanh dưới. Kéo xa nhất khoảng 12 km độ cao; xa hơn 4–5 km thì ẩn nhãn phân khu cho khỏi chồng chữ.
+- Điều khiển giống Google Maps: kéo trái để trượt (điểm dưới con trỏ bám theo tay); chuột phải, chuột giữa hoặc Ctrl/Shift + kéo để xoay và nghiêng; lăn chuột thu phóng về phía con trỏ; nhấp đúp vào nền để phóng to tại chỗ; phím mũi tên trượt, Shift + mũi tên xoay. Cảm ứng: một ngón trượt, hai ngón chụm/mở thu phóng, xoay hai ngón để xoay, hai ngón vuốt dọc để nghiêng.
 - Tông nước biển chuẩn hoá trong shader (lấy tông vùng rộng qua mipmap) để giấu các mảng ghép ảnh nhiều ngày của Esri. Mép lớp gần mờ dần vào lớp xa.
 
 ### 17.5 Tự động hoá ký gửi không cần Zalo OA
@@ -428,18 +459,29 @@ Blanca City là bản mẫu. Dự án sau sao chép khung `assets/tools/casa-bla
 - Ảnh giấy tờ: chủ nhà gửi qua Zalo của Tú kèm mã phiếu, nút mở Zalo có sẵn sau khi gửi.
 - Lỗi gửi thư không làm mất phiếu đã lưu; API trả về cờ `auto` cho biết thư nào đã đi.
 
-## 18. Tự đánh giá dự án (Tú giao 20/11/2026, khung 2.0)
+### 17.6 Khung sa bàn đã khoá (Tú chốt 20/11/2026, theo bản 2.44.0)
+Mọi dự án sau Blanca City (đầu tiên: Nam Mekong Grand Plaza) dùng đúng khung này. **Không đổi giao diện, luồng, công thức, cách điều khiển** khi Tú chưa yêu cầu. Muốn đổi thì đổi ở khung chung và chạy lại kiểm thử cho mọi dự án đã có.
 
-**Mục tiêu:** bộ tiêu chí chuẩn giúp người mua tự thẩm định dự án theo hoàn cảnh của chính họ, rồi so với bản đánh giá của Tú; tăng tương tác; mọi lần xuất bản đánh giá đi qua form và vào CRM. Tài liệu duyệt bộ thẻ: "Bộ vấn đề đặt ra — phản biện và bản đề xuất". Phương pháp: `docs/DANH_GIA_DU_AN.md`.
+**Phần khoá, giống nhau ở mọi dự án**
+- Luồng ba tab Chọn căn · Căn · Tham vấn, thanh chat ở đáy khung (§16.8).
+- Thẻ căn: layout chính thức từ hồ sơ, sơ đồ vị trí căn trên tầng, giá cuối theo từng phương thức thanh toán, phiếu tính giá trình bày như bản tính dự án, cân đối tài chính, in PDF, chuyển sang Bản tính tài chính.
+- Chat Zalo chỉ mở khi đã chọn căn; tóm tắt sao chép sẵn; phiếu `thamvan` về email và Sheet; link `#phieu=` và `#can=`.
+- Bộ tính `ban-tinh.js` và công thức phiếu tính giá (§16.4).
+- Bóc tầng, ô đèn căn trống, mặt cắt có mã căn (§16.3); nền ba vành, điều khiển kiểu Google Maps (§17.4); định vị bốn tầng (§17.2).
+- Ký gửi, hoa hồng, tự động hoá (§16.5–16.7, §17.5).
 
-- **Nội dung tách khỏi mã:** `data/danh-gia/khung.json` chứa hồ sơ nhu cầu (`hoSo`), 6 chủ đề (`chuDe`), các thẻ (`the`: mã A1…F6, chủ đề, tầng, câu hỏi, dữ kiện gợi ý, kiểu thiên kiến `mot`/`nhieu`/`viet` + lựa chọn, trọng số gợi ý `w` và lý do `lyDo` theo từng nhu cầu). `data/danh-gia/du-an.json` chứa dữ kiện và điểm của Tú theo mã thẻ. Đổi bộ thẻ thì tăng `phienBan` (link mở lại của phiên bản cũ sẽ không mở nữa).
-- **Bước đầu chỉ gồm chọn dự án và nhu cầu mua** (Mua ở · Đầu tư · Tích sản; dự án: dự án đang bán trong `assets/lead/lead-data.json` + mọi bài dự án có "Thang Điểm Đánh Giá 1–5"). Nhu cầu đặt trọng số gợi ý và quyết định bộ câu **hồ sơ cá nhân ở cuối** (sau các thẻ, trước tổng kết): mỗi câu có `apDung` theo nhu cầu — Mua ở hỏi hoàn cảnh sống, mong muốn; Đầu tư hỏi cách khai thác; Tích sản hỏi mục tiêu dài hạn. Hồ sơ không chấm điểm, không có trong bản của Tú, vào CRM.
-- **Thang Điểm Đánh Giá 1–5 trong bài dự án là nhận định tổng quan của Tú, giữ nguyên, không liên quan và không được dùng làm điểm cho bộ chi tiết.** Khi công bố, build tự chèn nút "Tự đánh giá chi tiết dự án này" ngay sau thang điểm đó.
-- **Mỗi thẻ đủ 5 phần theo thứ tự:** vấn đề · dữ kiện · mức quan trọng (x1–x3, có ghi chú nâng/hạ theo nhu cầu) · nhận định (ô chọn sẵn, mỗi ô mở dòng "vì sao", hoặc viết tự do) · mức hài lòng 1–5, kèm nút "Chưa đủ dữ kiện — bỏ qua" (không tính điểm).
-- **Màu:** mỗi thẻ tô theo câu hỏi "khách dựa vào đâu để trả lời" — xanh dương Logic (kiểm chứng được hôm nay), vàng Niềm tin (lời hứa, tương lai), xanh lá Phù hợp (cuộc sống của chính khách). Khi chấm chỉ hiện màu; **ý nghĩa ba màu chỉ giải thích ở màn tổng kết**.
-- **Tổng kết không kết luận:** điểm tổng + Ở thực / Đầu tư + 3 biểu đồ riêng cho 3 màu (mỗi biểu đồ: mức hài lòng có trọng số và mức quan trọng **trung bình mỗi thẻ**, không cộng dồn). Không "điểm mù", không "phong cách", không "nên/không nên mua" ở bất kỳ chỗ nào khách thấy; các insight đó chỉ trong email báo Tú và CRM.
-- **Bản của Tú:** mở khi khách chấm ≥ `nguong.moTu` thẻ. Điểm hài lòng của Tú × trọng số của khách (đặt Tú vào trường hợp của khách), so trên các thẻ cả hai cùng chấm. `chuyenGia.duyet: false` là bản nháp, chỉ hiện khi trang chưa công bố; không AI nào tự đặt `duyet: true`.
-- **Dữ kiện theo §8.1:** chỉ số đã có trong bài dự án hoặc hồ sơ chủ đầu tư; chưa có thì ghi rõ. Liên kết chỉ trỏ trong site (build kiểm).
-- **Công thức chung cho trang và máy chủ:** `assets/js/danh-gia.js` và `functions/api/danh-gia.js`; sửa một bên thì sửa bên kia và chạy `node tests/danh-gia-api.mjs`.
-- **Xuất bản đánh giá phải qua form** `/api/danh-gia`; máy chủ tính lại điểm. Email khách tự động; Zalo do Tú gửi tay (§17.5); nhắc ngày 3 (khách) và ngày 7 (Tú). Nhận định viết tay của khách không đi vào link mở lại.
-- **Công bố:** `danhGia.congBo: true` → hiện mục "Đánh giá" trên menu, nút ở bài dự án đang bán, vào sitemap, bỏ noindex.
+**Phần riêng từng dự án, chỉ là dữ liệu**
+- Định vị và khối: `plan.webp`, `geometry.json`, `georef.json`, `ranh-du-an.json`, `chan-thap.json` (§17.2).
+- Mặt bằng tầng: `mat-bang.json` và ảnh mặt bằng, số hoá bằng `scripts/so-hoa-mat-bang.py` (§16.3).
+- Layout căn: `layout.json` và `layout/*.webp`, cắt từ trang layout trong hồ sơ. Mỗi mục ghi loại, các trục in trên bản vẽ, thông thủy, tim tường, chiều cao tầng nếu có, trang nguồn.
+- Chính sách: `chinh-sach.json`, mỗi phân khu một mục (§16.4), lấy từ PDF chính sách và phiếu tính giá của đợt đang áp dụng. Phương thức có hạn ghi `han`.
+- Quỹ căn: `can-ho.json`, ghi rõ `phamVi`.
+- Ảnh đại diện và ảnh chia sẻ: chụp sau khi deploy (§17.2 bước 6).
+
+**Việc đầu tiên khi dựng dự án thứ hai (2.44.0 chưa làm)**
+`showroom.js` hiện còn hằng số riêng của Blanca: tên dự án, danh sách phân khu và màu, loại hình Casa Villa, cơ cấu căn Beacon và Beachtro, danh sách tầng có 12A/12B, nhóm cắt tầng, hướng view biển, nội dung hồ sơ từng phân khu. Trước khi thêm dự án mới:
+1. Chuyển các hằng số đó ra `du-an.json` trong thư mục dự án. Mã khung chuyển sang `assets/tools/sa-ban/` (`showroom.js`, `showroom.css`, `ban-tinh.js`); trang mỗi dự án chỉ nạp khung chung và dữ liệu của mình. Link cũ của Blanca phải giữ chạy.
+2. Chạy lại toàn bộ kiểm thử Blanca: giao diện và số liệu phải y như trước.
+3. Rồi mới thêm thư mục dự án mới. **Không sao chép `showroom.js` thành bản thứ hai.**
+
+**Nghiệm thu bắt buộc mỗi dự án:** `python3 tests/sa_ban_luong.py <đường dẫn trang sa bàn>` (tự dựng máy chủ thử trên `dist/`) đạt hết: mọi căn trong quỹ × mọi phương thức có tổng tiến độ bằng tổng giá trị phải thanh toán, không đợt âm; mọi căn trong quỹ có layout; nút chat khoá khi chưa chọn căn; chọn căn rồi chat thì mở Zalo, sao chép tóm tắt, gửi phiếu `thamvan` không kèm số điện thoại; link phiếu mở đúng căn và phương thức; phiếu vừa khung điện thoại.
