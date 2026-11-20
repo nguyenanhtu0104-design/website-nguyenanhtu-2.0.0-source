@@ -16,8 +16,22 @@
 <div class="hdr">
   <div class="hdr-badge">Nam Mekong Grand Plaza · Bảng Tính Thanh Toán</div>
   <h1>Bảng Tính Phương Thức Thanh Toán</h1>
-  <div class="hdr-sub">Căn hộ · 5 phương thức: Chuẩn · Vay NH 30% · Vay NH 20% · Thanh toán sớm 70% · Thanh toán sớm 95%<br>Thành phố mới Bình Dương · Tòa G1 &amp; G2</div>
+  <div class="hdr-sub">Căn hộ · 4 phương thức: Chuẩn điều chỉnh · Vay NH hỗ trợ lãi suất 50% · Thanh toán sớm 70% · Thanh toán sớm 95%<br>Thành phố mới Bình Dương · Tòa G1 &amp; G2 · Chính sách bán hàng họp đại lý 20/11/2026</div>
   <div class="div-gold"></div>
+</div>
+
+<!-- CHỌN THEO GIÁ (bảng giá theo trục căn 20/11/2026) -->
+<div class="card">
+  <div class="card-title">💰 Chọn Căn Theo Giá (Min – Max)</div>
+  <div class="inp-note" style="margin-bottom:12px;font-size:12px">Bảng giá theo trục căn, <b>chưa gồm VAT</b>, áp dụng theo phương án hỗ trợ lãi suất 50% trong 24 tháng (chính sách 20/11/2026). <b>Giá min</b> theo bảng của chủ đầu tư; <b>giá max</b> tạm tính: đơn giá min + 20%, nhân diện tích lớn nhất của khoảng. Diện tích là thông thủy.</div>
+  <div class="radio-group horizontal" id="bg-type" style="margin-bottom:12px"></div>
+  <div class="prop-grid" style="margin-bottom:12px">
+    <div class="input-group"><label for="bgMin">Ngân sách từ (tỷ, chưa VAT)</label><input class="price-inp" id="bgMin" type="text" inputmode="decimal" placeholder="VD: 2,5" autocomplete="off" style="font-size:16px"></div>
+    <div class="input-group"><label for="bgMax">Ngân sách đến (tỷ, chưa VAT)</label><input class="price-inp" id="bgMax" type="text" inputmode="decimal" placeholder="VD: 4" autocomplete="off" style="font-size:16px"></div>
+  </div>
+  <div class="cmp-wrap" id="bg-tbl"></div>
+  <div id="bg-units" style="margin-top:12px"></div>
+  <div class="sec-note">Bấm một dòng để xem các căn có diện tích trong khoảng đó, rồi bấm mã căn để điền vào bảng tính kèm đơn giá min. Các khoảng diện tích của một số loại căn chồng lên nhau; loại căn chính xác xác nhận theo mặt bằng.</div>
 </div>
 
 <!-- SECTION 1: THÔNG TIN CĂN -->
@@ -36,6 +50,7 @@
       <div class="input-group"><label class="lbl" for="sU">Mã căn hộ</label>
         <select id="sU" data-lead-input="unit" data-lead-label="Mã căn hộ" class="lay-sel" onchange="oUC()"><option value="">— Chọn tầng trước —</option></select></div>
       <div class="lay-info" id="unit-info">Chọn tòa, tầng và mã căn để tự điền diện tích. Sau đó chỉ cần nhập đơn giá/m².</div>
+      <div id="unit-band" style="display:none;margin-top:10px"></div>
     </div>
   </div>
   <div class="lay-img" id="lyW" style="display:none;margin-bottom:18px;flex-direction:column"><div id="lyT" class="lay-info" style="margin:0 0 8px;text-align:center"></div><img id="lyI" src="" alt="Mặt bằng căn hộ"></div>
@@ -60,19 +75,23 @@
   <div class="prop-grid">
     <div class="input-group"><label for="vatInp">VAT (%)</label><input class="price-inp" id="vatInp" type="text" inputmode="decimal" value="10" style="font-size:16px"></div>
     <div class="input-group"><label for="kpbtInp">Phí bảo trì — KPBT (%)</label><input class="price-inp" id="kpbtInp" type="text" inputmode="decimal" value="2" style="font-size:16px"></div>
-    <div class="input-group"><label for="bkInp">Tiền booking sang đặt cọc (VND)</label><input class="price-inp" id="bkInp" type="text" inputmode="numeric" value="50.000.000" style="font-size:16px"></div>
+    <div class="input-group"><label for="bkInp">Tiền đặt cọc khi ký TTĐC (VND)</label><input class="price-inp" id="bkInp" type="text" inputmode="numeric" value="50.000.000" style="font-size:16px"></div>
   </div>
-  <div class="terms" style="margin-top:14px"><b>Cách tính:</b> giá gốc = đơn giá × diện tích thông thủy; trừ chiết khấu để ra giá bán (A); VAT và phí bảo trì tính trên A. Tiền booking đã nộp được trừ vào đợt 1 (Ký TTĐC), không cộng thêm vào tổng giá.</div>
+  <div class="terms" style="margin-top:14px"><b>Cách tính:</b> giá gốc = đơn giá × diện tích thông thủy; trừ chiết khấu để ra giá bán (A); VAT và phí bảo trì tính trên A. Tiền đặt cọc 50 triệu khi ký TTĐC đã nằm trong đợt 10% đầu tiên, không cộng thêm vào tổng giá.</div>
 </div>
 
 <!-- SECTION 2: CHIẾT KHẤU -->
 <div class="card">
   <div class="card-title">🎯 Giá Theo Phương Thức &amp; Chiết Khấu</div>
-  <div class="inp-note" style="margin-bottom:14px;font-size:12px">Nhập <strong>mức chiết khấu (%)</strong> trên giá gốc. Theo chính sách: ưu đãi mở bán 1,5% áp dụng cho cả 5 phương thức; thanh toán sớm 70% thêm 4%, thanh toán sớm 95% thêm 8%.</div>
+  <div class="inp-note" style="margin-bottom:14px;font-size:12px">Chiết khấu tính trên <strong>giá chưa VAT</strong>, theo chính sách 20/11/2026: thanh toán sớm 70% được 4%, thanh toán sớm 95% được 8%; mua sỉ 0,5% (2–3 căn) hoặc 1% (từ 4 căn, tính từ căn đầu tiên); thêm 1% cho mỗi ưu đãi khác bên dưới. Bảng tính tạm cộng dồn các mức; mức cộng dồn thực tế theo xác nhận của chủ đầu tư.</div>
   <div class="ck-grid" id="ck-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
-    <div><label for="ckU">CK ưu đãi mở bán (cả 5 PT)</label><input id="ckU" class="mini-inp right" type="text" inputmode="decimal" value="1,5"></div>
-    <div><label for="ck70">CK thêm · TT sớm 70%</label><input id="ck70" class="mini-inp right" type="text" inputmode="decimal" value="4"></div>
-    <div><label for="ck95">CK thêm · TT sớm 95%</label><input id="ck95" class="mini-inp right" type="text" inputmode="decimal" value="8"></div>
+    <div><label for="ck70">CK · TT sớm 70%</label><input id="ck70" class="mini-inp right" type="text" inputmode="decimal" value="4"></div>
+    <div><label for="ck95">CK · TT sớm 95%</label><input id="ck95" class="mini-inp right" type="text" inputmode="decimal" value="8"></div>
+    <div><label for="ckSi">Mua sỉ (cả 4 PT)</label><select id="ckSi" class="mini-inp"><option value="0">1 căn · 0%</option><option value="0.5">2–3 căn · 0,5%</option><option value="1">Từ 4 căn · 1%</option></select></div>
+  </div>
+  <div style="margin-top:12px;display:grid;gap:8px;font-size:13px">
+    <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" id="ckBD" style="margin-top:3px"><span><b>CK 1%</b> · Khách Việt Nam/nước ngoài đang sinh sống, cư trú, làm việc tại P. Bình Dương hoặc đã mua BĐS tại TP Mới Bình Dương</span></label>
+    <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer"><input type="checkbox" id="ckBL" style="margin-top:3px"><span><b>CK 1%</b> · Khách từ chối nhận bảo lãnh nhà ở hình thành trong tương lai</span></label>
   </div>
   <div style="margin-top:16px"><span class="lbl">Xem bảng tính theo phương thức</span>
     <div class="radio-group horizontal" id="grp-pt"></div></div>
@@ -103,10 +122,10 @@
 </div>
 
 <!-- SO SÁNH -->
-<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">So Sánh 5 Phương Thức</div><div class="sec-div-line"></div></div>
+<div class="sec-div"><div class="sec-div-line"></div><div class="sec-div-text">So Sánh 4 Phương Thức</div><div class="sec-div-line"></div></div>
 <div class="card">
   <div class="cmp-wrap" id="cmp-wrap"></div>
-  <div class="sec-note">Bấm vào một dòng để xem lịch thanh toán chi tiết. “Tự có trước bàn giao” là tiền khách tự bỏ ra đến khi nhận nhà; thời hạn dòng tiền tính từ ký TTĐC (T0), mốc bàn giao tạm tính ~T19 theo lịch 30 ngày/đợt; vay NH: giải ngân khoảng T2.</div>
+  <div class="sec-note">Bấm vào một dòng để xem lịch thanh toán chi tiết. “Tự có trước bàn giao” là tiền khách tự bỏ ra đến khi nhận nhà; thời hạn dòng tiền tính từ ký TTĐC/HĐMB (T0, giả định 12/2026); cất nóc dự kiến 01/2028 (~T13), bàn giao dự kiến 12/2028 (~T24); vay NH: giải ngân trong 30 ngày từ ký HĐMB (~T1).</div>
 </div>
 
 <!-- LỊCH THANH TOÁN -->
@@ -122,9 +141,10 @@
 <div class="terms">
   <b>(*) Điều kiện &amp; điều khoản:</b> giá bán và các phương thức thanh toán chỉ mang tính chất tham khảo, không phải cam kết chính thức; mọi thông tin có thể thay đổi theo quyết định cuối cùng của Chủ đầu tư. Tiến độ chính thức nêu cụ thể tại hợp đồng.<br>
   <b>(**)</b> VAT và phí bảo trì có thể điều chỉnh theo quy định pháp luật tại thời điểm ký hợp đồng.<br>
-  <b>Vay ngân hàng:</b> chủ đầu tư hỗ trợ lãi suất tối đa 70% giá trị căn hộ trong 24 tháng, vay tối đa 35 năm. Khả năng được duyệt và hạn mức do ngân hàng quyết định theo chính sách tín dụng; lãi suất trong bảng là giả định minh họa.
+  <b>Vay ngân hàng:</b> vay tối đa 80% giá trị căn hộ theo HĐMB (tối đa 35 năm); chủ đầu tư hỗ trợ lãi suất tối đa 50% giá trị căn hộ trong 24 tháng từ ngày giải ngân đầu tiên hoặc đến khi nhận nhà, tùy thời điểm nào đến trước. Ân hạn nợ gốc và phí trả trước hạn theo quy định của ngân hàng. Khả năng được duyệt và hạn mức do ngân hàng quyết định; lãi suất trong bảng là giả định minh họa.<br>
+  <b>Chính sách:</b> tài liệu họp đại lý ngày 20/11/2026. Minh hoạ, không phải báo giá.
 </div>
-<div class="footer-note">Nam Mekong Grand Plaza · Bảng tính phương thức thanh toán · Số liệu theo bảng chính sách 5 phương thức do chủ đầu tư công bố</div>
+<div class="footer-note">Nam Mekong Grand Plaza · Bảng tính phương thức thanh toán · Số liệu theo chính sách bán hàng họp đại lý 20/11/2026</div>
 </div>
 
 <script src="/assets/tools/shared/zalo-qr.js?v=2.16.0"></script>
@@ -176,65 +196,73 @@ const parseNum=s=>parseInt(String(s).replace(/\D/g,''))||0;
 const parseDec=s=>{const v=parseFloat(String(s).replace(',','.'));return isFinite(v)?v:0;};
 const PH_COL={k1:'var(--ph1)',k2:'var(--ph2)',k3:'var(--ph3)',k4:'var(--ph4)'};
 
-/* ── 5 PHƯƠNG THỨC (theo bảng chính sách) ── */
-const CMP_HO=19, NH_M=2;
+/* ── 4 PHƯƠNG THỨC (chính sách họp đại lý 20/11/2026) ── */
+const CMP_HO=24, NH_M=1;   /* T0 = ký TTĐC/HĐMB (giả định 12/2026) · cất nóc ~T13 (01/2028) · bàn giao ~T24 (12/2028) */
 const SC=[
- {id:'chuan',no:'01',short:'Chuẩn',name:'Thanh toán chuẩn',full:'PT 01 · Thanh toán chuẩn (30 ngày/đợt)',m:CMP_HO},
- {id:'vay30',no:'02',short:'Vay NH 30%',name:'Vay ngân hàng · tự có 30%',full:'PT 02 · Vay ngân hàng, tự có 30% (NH giải ngân 65%)',m:NH_M,bank:true},
- {id:'vay20',no:'03',short:'Vay NH 20%',name:'Vay ngân hàng · tự có 20%',full:'PT 03 · Vay ngân hàng, tự có 20% (NH giải ngân 50%)',m:CMP_HO,bank:true},
- {id:'som70',no:'04',short:'TT sớm 70%',name:'Thanh toán sớm 70%',full:'PT 04 · Thanh toán sớm 70%',m:CMP_HO},
- {id:'som95',no:'05',short:'TT sớm 95%',name:'Thanh toán sớm 95%',full:'PT 05 · Thanh toán sớm 95%',m:1}
+ {id:'chuan',no:'01',short:'Chuẩn',name:'Thanh toán chuẩn điều chỉnh',full:'PT 01 · Tiến độ thanh toán chuẩn điều chỉnh (23 đợt, 30 ngày/đợt)',m:CMP_HO},
+ {id:'htls',no:'02',short:'HTLS 50%',name:'Vay NH · hỗ trợ lãi suất 50%',full:'PT 02 · Vay ngân hàng, CĐT hỗ trợ lãi suất 50% giá trị căn trong 24 tháng (tự có 20% trước giải ngân)',m:CMP_HO,bank:true},
+ {id:'som70',no:'03',short:'TT sớm 70%',name:'Thanh toán sớm 70%',full:'PT 03 · Thanh toán sớm 70% (CK 4%)',m:CMP_HO},
+ {id:'som95',no:'04',short:'TT sớm 95%',name:'Thanh toán sớm 95%',full:'PT 04 · Thanh toán sớm 95% (CK 8%)',m:1}
 ];
-const st={tw:'',fl:'',key:'',ppm:0,vat:.10,kpbt:.02,bk:50000000,ckU:.015,ck70:.04,ck95:.08,pt:0};
+const st={tw:'',fl:'',key:'',ppm:0,vat:.10,kpbt:.02,bk:50000000,ckSi:0,ckBD:0,ckBL:0,ck70:.04,ck95:.08,pt:0};
 
-function ckPT(i){const id=SC[i].id;return st.ckU+(id==='som70'?st.ck70:id==='som95'?st.ck95:0);}
+function ckPT(i){const id=SC[i].id;return st.ckSi+st.ckBD+st.ckBL+(id==='som70'?st.ck70:id==='som95'?st.ck95:0);}
 
 function compute(i){
-  const u=U[st.key];
+  const u=U[st.key],id=SC[i].id;
   const b=u.t*st.ppm,ck=ckPT(i),k=b*ck,A=b-k,V=A*st.vat,B=A*st.kpbt;
-  return {b,ck,k,A,V,B,h:A+V,D:A+V+B,list:b*(1+st.vat+st.kpbt),steps:[
-    {label:`CK ưu đãi mở bán (${pc(st.ckU)})`,pct:st.ckU,amt:b*st.ckU},
-    ...(SC[i].id==='som70'?[{label:`CK thanh toán sớm 70% (${pc(st.ck70)})`,pct:st.ck70,amt:b*st.ck70}]:[]),
-    ...(SC[i].id==='som95'?[{label:`CK thanh toán sớm 95% (${pc(st.ck95)})`,pct:st.ck95,amt:b*st.ck95}]:[])]};
+  const steps=[];
+  if(id==='som70')steps.push({label:`CK thanh toán sớm 70% (${pc(st.ck70)})`,pct:st.ck70,amt:b*st.ck70});
+  if(id==='som95')steps.push({label:`CK thanh toán sớm 95% (${pc(st.ck95)})`,pct:st.ck95,amt:b*st.ck95});
+  if(st.ckSi)steps.push({label:`CK mua sỉ (${pc(st.ckSi)})`,pct:st.ckSi,amt:b*st.ckSi});
+  if(st.ckBD)steps.push({label:`CK cư trú/làm việc P. Bình Dương hoặc đã mua BĐS TPM Bình Dương (${pc(st.ckBD)})`,pct:st.ckBD,amt:b*st.ckBD});
+  if(st.ckBL)steps.push({label:`CK từ chối nhận bảo lãnh nhà ở hình thành trong tương lai (${pc(st.ckBL)})`,pct:st.ckBL,amt:b*st.ckBL});
+  return {b,ck,k,A,V,B,h:A+V,D:A+V+B,list:b*(1+st.vat+st.kpbt),steps};
 }
 
-/* Các đợt của từng phương thức (tỷ lệ trên giá sau CK + VAT, chưa gồm KPBT) */
+/* Các đợt của từng phương thức (tỷ lệ trên giá sau CK + VAT, chưa gồm KPBT).
+   dep: đợt đã gồm tiền cọc TTĐC · k1: nhóm ký kết · hand: bàn giao · gcn: sổ hồng · nh: ngân hàng giải ngân */
 function gS(id){
   const D=(d,s,p,o)=>({d,s,p,...o});
-  const bk=D('Booking','Booking sang đặt cọc',null,{fx:1,m:0});
+  const bk=D('Cọc','Ký thỏa thuận đặt cọc (TTĐC)',null,{fx:1,m:0});
+  const d1=s=>D('Đợt 1',s,.10,{m:0,dep:1,k1:1,tag:'✍ Ký TTĐC & HĐMB'});
+  const ho=D('Đợt','Thông báo bàn giao nhà (dự kiến 12/2028)',.25,{m:CMP_HO,hand:1});
+  const kp=D('KPBT','Phí bảo trì (cùng đợt bàn giao)',null,{kpbt:1,m:CMP_HO});
   if(id==='chuan'){
-    const a=[bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB (30 ngày từ TTĐC)',.10,{m:1}),D('Đợt 3','30 ngày từ hạn đợt 2',.10,{m:2})];
-    for(let n=4;n<=13;n++)a.push(D('Đợt '+n,`30 ngày từ hạn đợt ${n-1}`,.025,{m:n-1}));
-    a.push(D('Đợt 14','30 ngày từ hạn đợt 13',.05,{m:13}));
-    for(let n=15;n<=19;n++)a.push(D('Đợt '+n,`30 ngày từ hạn đợt ${n-1}`,.03,{m:n-1}));
-    a.push(D('Đợt 20','Bàn giao nhà',.25,{m:CMP_HO,hand:1}),D('KPBT','Phí bảo trì (cùng đợt bàn giao)',null,{kpbt:1,m:CMP_HO}),D('Đợt 21','Cấp GCN QSH',.05,{gcn:1}));
+    const a=[bk,d1('Trong 07 ngày từ ký TTĐC · ký HĐMB (gồm 50 triệu cọc)'),
+      D('Đợt 2','30 ngày từ đợt 1',.05,{m:1}),D('Đợt 3','30 ngày từ đợt 2',.10,{m:2}),D('Đợt 4','30 ngày từ đợt 3',.05,{m:3})];
+    for(let n=5;n<=13;n++)a.push(D('Đợt '+n,`30 ngày từ đợt ${n-1}`,n===9?.05:.015,{m:n-1}));
+    a.push(D('Đợt 14','Cất nóc · trong 30 ngày từ đợt 13 (dự kiến 01/2028)',.06,{m:13,tag:'🏗 Cất nóc'}));
+    for(let n=15;n<=21;n++)a.push(D('Đợt '+n,`30 ngày từ đợt ${n-1}`,n===19?.05:.02,{m:n-1}));
+    a.push({...ho,d:'Đợt 22'},kp,D('Đợt 23','Thông báo cấp GCN QSH-CH',.05,{gcn:1}));
     return a;
   }
-  if(id==='vay30')return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB (30 ngày từ TTĐC)',.10,{m:1}),D('Đợt 3','20 ngày làm việc từ ký HĐMB',.15,{m:NH_M,nh:.65}),D('KPBT','Phí bảo trì',null,{kpbt:1,m:CMP_HO}),D('Đợt 4','Cấp GCN QSH',.05,{gcn:1})];
-  if(id==='vay20')return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB (30 ngày từ TTĐC)',.10,{m:1}),D('Đợt 3','20 ngày làm việc từ ký HĐMB',.05,{m:NH_M,nh:.50}),D('Đợt 4','Bàn giao nhà',.25,{m:CMP_HO,hand:1}),D('KPBT','Phí bảo trì (cùng đợt bàn giao)',null,{kpbt:1,m:CMP_HO}),D('Đợt 5','Cấp GCN QSH',.05,{gcn:1})];
-  if(id==='som70')return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB – thanh toán 65%',.65,{m:1}),D('Đợt 3','Bàn giao nhà',.25,{m:CMP_HO,hand:1}),D('KPBT','Phí bảo trì (cùng đợt bàn giao)',null,{kpbt:1,m:CMP_HO}),D('Đợt 4','Cấp GCN QSH',.05,{gcn:1})];
-  return [bk,D('Đợt 1','Ký TTĐC (đã gồm tiền booking)',.05,{m:0}),D('Đợt 2','Ký HĐMB – thanh toán 90%',.90,{m:1}),D('KPBT','Phí bảo trì',null,{kpbt:1,m:CMP_HO}),D('Đợt 3','Cấp GCN QSH',.05,{gcn:1})];
+  if(id==='htls')return [bk,d1('Trong 07 ngày từ ký TTĐC · ký HĐMB (gồm 50 triệu cọc)'),
+    D('Đợt 2','Trong 30 ngày từ ký HĐMB · KH 10% + NH giải ngân 50%',.10,{m:NH_M,nh:.50}),{...ho,d:'Đợt 3'},kp,D('Đợt 4','Thông báo cấp GCN QSH-CH',.05,{gcn:1})];
+  if(id==='som70')return [bk,d1('Trong 07 ngày từ ký TTĐC · ký HĐMB (gồm 50 triệu cọc)'),
+    D('Đợt 2','Trong 30 ngày từ ký HĐMB – thanh toán 60%',.60,{m:1,k1:1,tag:'💳 Thanh toán sớm'}),{...ho,d:'Đợt 3'},kp,D('Đợt 4','Thông báo cấp GCN QSH-CH',.05,{gcn:1})];
+  return [bk,d1('Trong 07 ngày từ ký TTĐC · ký HĐMB (gồm 50 triệu cọc)'),
+    D('Đợt 2','Trong 30 ngày từ ký HĐMB – thanh toán 85%',.85,{m:1,k1:1,tag:'💳 Thanh toán sớm'}),{...kp,s:'Đợt 3 · thông báo bàn giao: chỉ nộp phí bảo trì'},D('Đợt 4','Thông báo cấp GCN QSH-CH',.05,{gcn:1})];
 }
 
 function schedule(i,R){
-  const id=SC[i].id,rows=[];let first=true;
+  const id=SC[i].id,rows=[];
   gS(id).forEach(x=>{
-    let k,tot,pre,vat,bank=0,pct=x.p||0,tag='',w='',nn=x.d.replace('Đợt ','');
-    if(x.fx){k='k1';tot=st.bk;pre=null;vat=null;pct=null;nn='★';tag='💰 Đã nộp';w='Khi booking';}
+    let k,tot,pre,vat,bank=0,pct=x.p||0,tag=x.tag||'',w='',nn=x.d.replace('Đợt ','');
+    if(x.fx){k='k1';tot=st.bk;pre=null;vat=null;pct=null;nn='★';tag='💰 Đặt cọc';w='Khi ký TTĐC';}
     else if(x.kpbt){k='k3';tot=R.B;pre=R.B;vat=0;pct=st.kpbt;nn='+';w='T'+x.m;}
     else{
-      k=x.gcn?'k4':x.hand?'k3':(/^Đợt [12]$/.test(x.d)?'k1':'k2');
+      k=x.gcn?'k4':x.hand?'k3':(x.k1?'k1':'k2');
       const tp=(x.p||0)+(x.nh||0);pct=tp;
       tot=tp*R.h;
-      if(/^Đợt 1$/.test(x.d)){tot=Math.max(0,tot-st.bk);tag='✍ Ký TTĐC';}
-      if(/^Đợt 2$/.test(x.d)&&x.p>=.5)tag='📝 Ký HĐMB';
+      if(x.dep)tot=Math.max(0,tot-st.bk);
       if(x.hand)tag='🏠 Bàn giao';
       if(x.gcn)tag='📄 Sổ hồng';
       if(x.nh){bank=x.nh*R.h;tag='🏦 NH giải ngân '+pc(x.nh);}
       vat=tot*st.vat/(1+st.vat);pre=tot-vat;
       w=x.gcn?'Sau bàn giao':'T'+x.m;
     }
-    rows.push({n:nn,w,g:x.s,d:x.d==='Booking'?'Booking':x.d,pct,pre,vat,tot,bank,own:tot-bank,k,tag});
+    rows.push({n:nn,w,g:x.s,d:x.d,pct,pre,vat,tot,bank,own:tot-bank,k,tag});
   });
   const sum=(f,fl)=>rows.filter(fl||(()=>true)).reduce((s,x)=>s+f(x),0);
   return {rows,total:sum(x=>x.tot),ownTotal:sum(x=>x.own),bankTotal:sum(x=>x.bank),
@@ -298,7 +326,7 @@ function renderPanel(i){
   const cum={v:0};
   const k2rows=S.rows.filter(x=>x.k==='k2');
   const phases=[
-    {k:'ph1',t:'Booking, Đặt Cọc & Ký HĐMB',s:'T0 → T1',ks:['k1']},
+    {k:'ph1',t:'Đặt Cọc & Ký HĐMB',s:'T0 → T1',ks:['k1']},
     {k:'ph2',t:bank?'Ngân Hàng Giải Ngân':'Thanh Toán Theo Tiến Độ',s:k2rows.length?`${k2rows[0].w} → ${k2rows[k2rows.length-1].w} · ${k2rows.length} đợt`:'',ks:['k2']},
     {k:'ph3',t:'Bàn Giao & Sổ Hồng',s:`Dự kiến ~T${CMP_HO} → sau bàn giao`,ks:['k3','k4']}
   ];
@@ -309,7 +337,7 @@ function renderPanel(i){
     <div class="tbl-wrap"><table class="sched"><colgroup><col style="width:44px"><col style="width:150px"><col><col style="width:64px"><col style="width:116px"><col style="width:112px"><col style="width:120px"><col style="width:124px"></colgroup><thead><tr>${head}</tr></thead><tbody>${rs.map(x=>rowHTML(x,bank,cum)).join('')}</tbody></table></div></div>`;
   }).join('');
   const tot=S.total||1;
-  const groups=[{k:'k1',t:'Booking & HĐMB'},{k:'k2',t:bank?'NH giải ngân':'Theo tiến độ'},{k:'k3',t:'Bàn giao'},{k:'k4',t:'Sổ hồng'}]
+  const groups=[{k:'k1',t:'Cọc & HĐMB'},{k:'k2',t:bank?'NH giải ngân':'Theo tiến độ'},{k:'k3',t:'Bàn giao'},{k:'k4',t:'Sổ hồng'}]
     .map(g=>({...g,v:S.rows.filter(x=>x.k===g.k).reduce((s,x)=>s+x.tot,0)})).filter(g=>g.v>0);
   $(`pt${i}-prog`).innerHTML=groups.map(g=>`<div style="background:${PH_COL[g.k]};flex:${g.v/tot*100}"></div>`).join('');
   $(`pt${i}-proglbl`).innerHTML=groups.map(g=>`<div class="prog-lbl"><div class="prog-dot" style="background:${PH_COL[g.k]}"></div>${g.t} — ${(g.v/tot*100).toFixed(0)}%</div>`).join('');
@@ -398,7 +426,7 @@ function showPlan(){
 function clr(){
   st.key='';
   ['xTT','xTG','xLP'].forEach(i=>$(i).value='');
-  $('lyW').style.display='none';
+  $('lyW').style.display='none';showBand('');
   $('unit-info').textContent='Chọn tòa, tầng và mã căn để tự điền diện tích. Sau đó chỉ cần nhập đơn giá/m².';
   recalc();
 }
@@ -427,7 +455,7 @@ function oUC(){
   const u=U[c],ch=c.split('.')[2];
   $('xTT').value=u.t+' m²';$('xTG').value=u.g+' m²';
   $('unit-info').innerHTML=`<b>${st.tw==='G1'?'Tòa G1':'Tòa G2'} · Tầng ${st.fl} · ${ch}</b><br>Thông thủy ${u.t} m² · Tim tường ${u.g} m²`;
-  sM(ch);showLayout(c);recalc();
+  sM(ch);showLayout(c);recalc();showBand(c);
 }
 
 /* ── Ô NHẬP ── */
@@ -435,7 +463,10 @@ function bindNum(id,fn){$(id).addEventListener('input',function(){const raw=this
 bindNum('xUP',v=>{st.ppm=v;recalc();});
 bindNum('bkInp',v=>{st.bk=v;recalc();});
 const bindPct=(id,key,max)=>$(id).addEventListener('input',function(){st[key]=Math.min(Math.max(parseDec(this.value),0),max)/100;recalc();});
-bindPct('vatInp','vat',50);bindPct('kpbtInp','kpbt',20);bindPct('ckU','ckU',50);bindPct('ck70','ck70',50);bindPct('ck95','ck95',50);
+bindPct('vatInp','vat',50);bindPct('kpbtInp','kpbt',20);bindPct('ck70','ck70',50);bindPct('ck95','ck95',50);
+$('ckSi').addEventListener('change',function(){st.ckSi=parseDec(this.value)/100;recalc();});
+$('ckBD').addEventListener('change',function(){st.ckBD=this.checked?.01:0;recalc();});
+$('ckBL').addEventListener('change',function(){st.ckBL=this.checked?.01:0;recalc();});
 $('xCp').addEventListener('input',function(){const v=this.value.replace(/[^0-9+\s.\-]/g,'');if(v!==this.value)this.value=v;});
 
 /* ── VAY NGÂN HÀNG + PDF (module dùng chung) ── */
@@ -448,8 +479,8 @@ function loanCtx(){
     const iv=tr.length>0;
     return {id:sc.id,name:sc.short,f:R.D,h:R.h,tr,
       ho:bg?{m:CMP_HO,amt:bg.tot}:null,hand:CMP_HO,
-      htls:iv?{m:24,pct:100}:null,maxPct:iv?0.7:null,
-      note:iv?'Chủ đầu tư hỗ trợ lãi suất tối đa 70% giá trị căn hộ trong 24 tháng, vay tối đa 35 năm. Bảng tính giả định chủ đầu tư chịu toàn bộ lãi trong thời gian này (sửa ở ô “CĐT hỗ trợ lãi”)':''};
+      htls:iv?{m:Math.min(24,CMP_HO-NH_M),pct:100}:null,maxPct:iv?0.8:null,
+      note:iv?'Vay tối đa 80% giá trị căn hộ theo HĐMB (tối đa 35 năm). CĐT hỗ trợ lãi suất tối đa 50% giá trị căn hộ trong 24 tháng từ lần giải ngân đầu tiên hoặc đến khi nhận nhà, tùy mốc nào đến trước (bảng tính lấy ~'+Math.min(24,CMP_HO-NH_M)+' tháng vì bàn giao dự kiến 12/2028). Phần vay vượt 50% giá trị căn không được hỗ trợ lãi; sửa ở ô “CĐT hỗ trợ lãi” nếu vay thêm. Ân hạn nợ gốc và phí trả trước hạn theo ngân hàng':''};
   });
   const ch=st.key.split('.').slice(1).join('.');
   return {sel:SC[st.pt].id,methods,brand:{project:'NAM MEKONG GRAND PLAZA',unit:(st.tw==='G1'?'Tòa G1':'Tòa G2')+' · Căn '+ch,footer:'Bảng tính tham khảo · nguyenanhtu.vn'}};
@@ -486,9 +517,74 @@ function pdfDeck(){
   NATLoan.printPdf(ctx,{pages:[['Báo giá căn hộ',cover],['Lịch thanh toán · '+SC[i].name,lightSchedule(i)],['So sánh các phương thức thanh toán',lightCompare()]],contact});
 }
 
+/* ── CHỌN THEO GIÁ: bảng giá theo trục căn (chưa VAT) · họp đại lý 20/11/2026 ──
+   a0–a1: diện tích thông thủy (m²) · g: giá min (tỷ) · d: đơn giá min (triệu/m²) · max = đơn giá min × 1,2 */
+const BG=[
+ {l:'STU',a0:35.85,a1:36.34,g:1.93,d:53.58},
+ {l:'1PN',a0:39.32,a1:40.29,g:2.17,d:55.1},
+ {l:'1PN+',a0:52.56,a1:54.3,g:2.88,d:54.7},
+ {l:'1PN+',a0:65.07,a1:68.26,g:3.46,d:53.1},
+ {l:'1PN+',a0:84.08,a1:86.58,g:4.35,d:50.5},
+ {l:'2PN',a0:65.35,a1:66.37,g:3.36,d:51.5},
+ {l:'2PN+',a0:84.3,a1:85.33,g:4.61,d:54.7},
+ {l:'2PN+',a0:101.49,a1:101.49,g:5.4,d:52.7},
+ {l:'3PN',a0:77.31,a1:108.65,g:4.24,d:51.7},
+ {l:'3PN',a0:119.79,a1:124.27,g:6.37,d:52.9}
+];
+const BG_UP=1.2, BG_TOL=0.05;
+BG.forEach(x=>{x.dMax=Math.round(x.d*BG_UP*100)/100;x.gMax=Math.round(x.a1*x.d*BG_UP/10)/100;});
+const bgPpm=d=>Math.round(d*1000)*1000;           /* triệu/m² → đ/m², làm tròn nghìn */
+const t2=n=>n.toLocaleString('vi-VN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const aRng=x=>x.a0===x.a1?t2(x.a0):`${t2(x.a0)} – ${t2(x.a1)}`;
+const bgF={l:'',b0:0,b1:0,sel:-1};
+function bgRows(){return BG.map((x,i)=>({...x,i})).filter(x=>(!bgF.l||x.l===bgF.l)&&(!bgF.b0||x.gMax>=bgF.b0)&&(!bgF.b1||x.g<=bgF.b1));}
+function bgUnits(x){return Object.keys(U).filter(k=>U[k].t>=x.a0-BG_TOL&&U[k].t<=x.a1+BG_TOL)
+  .sort((a,b)=>{const A=a.split('.'),B=b.split('.');return A[0]<B[0]?-1:A[0]>B[0]?1:(parseFloat(A[1])-parseFloat(B[1]))||(parseInt(A[2].slice(2))-parseInt(B[2].slice(2)));});}
+function bgRender(){
+  const types=['',...new Set(BG.map(x=>x.l))];
+  $('bg-type').innerHTML=types.map(t=>`<button class="opt-btn${bgF.l===t?' active-ck':''}" onclick="bgType('${t}')">${t||'Tất cả'}</button>`).join('');
+  const rs=bgRows();
+  $('bg-tbl').innerHTML=rs.length?`<table class="cmp-table" style="min-width:0"><thead><tr><th>Loại · diện tích (m²)</th><th>Giá min → max (tỷ)</th><th>Đơn giá (tr/m²)</th></tr></thead><tbody>`+
+    rs.map(x=>`<tr class="${x.i===bgF.sel?'sel':''}" onclick="bgPick(${x.i})"><td><b>${x.l}</b><span class="cmp-sub">${aRng(x)}</span></td><td style="padding:11px 6px">${t2(x.g)} → ${t2(x.gMax)}</td><td style="padding:11px 6px">${t2(x.d)} → ${t2(x.dMax)}</td></tr>`).join('')+
+    `</tbody></table>`:'<div class="lay-info" style="text-align:center">Không có dòng nào trong khoảng ngân sách này.</div>';
+  if(bgF.sel>=0&&!rs.some(x=>x.i===bgF.sel)){bgF.sel=-1;$('bg-units').innerHTML='';}
+}
+function bgType(t){bgF.l=t;bgRender();}
+function bgPick(i){
+  bgF.sel=i;bgRender();
+  const x=BG[i],ks=bgUnits(x);
+  const chips=ks.map(k=>{const p=k.split('.');return `<button class="opt-btn" style="font-size:11px;padding:6px 9px" onclick="bgUse('${k}',${i})">${p[0]} · T${p[1]} · ${p[2]}<br><span style="font-size:10px">${U[k].t} m²</span></button>`;}).join('');
+  $('bg-units').innerHTML=`<div class="lay-info" style="margin:0 0 8px"><b>${x.l} · ${aRng(x)} m²</b> · đơn giá ${t2(x.d)} → ${t2(x.dMax)} tr/m² · ${ks.length} căn có diện tích trong khoảng</div>`+
+    (ks.length?`<div class="radio-group horizontal" style="max-height:260px;overflow:auto">${chips}</div>`:'');
+}
+function setPPM(v){const e=$('xUP');e.value=v?v.toLocaleString('vi-VN'):'';e.dispatchEvent(new Event('input',{bubbles:true}));}
+function bgUse(k,i){
+  const p=k.split('.');
+  $('sT').value=p[0];oTC();$('sF').value=p[1];oFC();$('sU').value=k;oUC();
+  if(i!=null)setPPM(bgPpm(BG[i].d));
+  $('sT').closest('.card').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function showBand(k){
+  const el=$('unit-band');
+  if(!k||!U[k]){el.style.display='none';el.innerHTML='';return;}
+  const t=U[k].t,ms=BG.filter(x=>t>=x.a0-BG_TOL&&t<=x.a1+BG_TOL);
+  if(!ms.length){el.style.display='block';el.innerHTML='<div class="inp-note">Diện tích căn này nằm ngoài các khoảng của bảng giá theo trục căn; nhập đơn giá theo bảng hàng.</div>';return;}
+  el.style.display='block';
+  el.innerHTML='<div class="inp-note" style="margin-bottom:6px">Khoảng đơn giá theo trục căn (chưa VAT):</div>'+ms.map(x=>{const i=BG.indexOf(x);
+    return `<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:6px"><span style="font-size:12px"><b>${x.l}</b> · ${t2(x.d)} → ${t2(x.dMax)} tr/m²</span>
+      <button class="opt-btn" style="font-size:11px;padding:5px 9px" onclick="setPPM(${bgPpm(x.d)})">Giá min</button><button class="opt-btn" style="font-size:11px;padding:5px 9px" onclick="setPPM(${bgPpm(x.dMax)})">Giá max</button></div>`;}).join('')+
+    (ms.length>1?'<div class="inp-note">Diện tích này thuộc nhiều loại căn; xác nhận loại theo mặt bằng.</div>':'');
+  if(!st.ppm&&ms.length===1)setPPM(bgPpm(ms[0].d));
+}
+function bgInit(){
+  bgRender();
+  const nb=(id,key)=>$(id).addEventListener('input',function(){bgF[key]=parseDec(this.value);bgRender();});
+  nb('bgMin','b0');nb('bgMax','b1');
+}
+
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',()=>{
-  buildUI();
+  buildUI();bgInit();
   if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
   recalc();
 });
