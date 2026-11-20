@@ -221,3 +221,30 @@ html.chup #panel, html.chup .topbar, html.chup .zonebar, html.chup .rail, html.c
 html.chup .caption, html.chup #labels, html.chup #leaders, html.chup #tip, html.chup .compass,
 html.chup #compass, html.chup .legend { display: none !important; }
 html.chup .tools, html.chup .floors, html.chup #floorRail { display: none !important; }
+
+/* ---- bóc tầng: mặt bằng tầng trên mặt cắt 3D ---- */
+.mbbar{position:absolute;left:50%;top:100px;transform:translateX(-50%);z-index:5;display:flex;align-items:center;gap:8px;max-width:calc(100% - 140px);padding:6px 8px 6px 14px;border:1px solid var(--gold2);border-radius:999px;background:#15130fe6;font-size:13px;backdrop-filter:blur(6px);white-space:nowrap}
+.mbbar>span:nth-child(2){overflow:hidden;text-overflow:ellipsis}
+.mbbar .dot{width:9px;height:9px;border-radius:50%;background:#e8743b;flex:none}
+.mbbar button{flex:none;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:#24211b;font-size:16px;line-height:1}
+.mbbar button.dong{width:auto;padding:0 12px;border-radius:999px;background:#e8743b;border-color:#e8743b;color:#fff;font-size:12.5px;font-weight:600}
+.fb.xam{opacity:.45}
+.mbmo{display:grid;gap:6px}
+.mbchu{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;color:var(--mute)}
+.mbchu .o{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--line);margin-right:-4px;vertical-align:-2px}
+.mbchu .o.trong{background:#3fbf6e}.mbchu .o.coc{background:#6b6b6b}
+.mbcard h3{margin:2px 0 4px}
+.mbcard table.kv{width:100%;margin:6px 0}
+.mbcard table.kv td{padding:3px 0;border-bottom:1px solid #ffffff10}
+.mblayout{display:block;width:100%;height:auto;max-height:280px;background:#fff;border-radius:8px;margin:8px 0 4px}
+.mbds{display:flex;flex-wrap:wrap;gap:6px}
+.mbds .chip{white-space:normal;text-align:left}
+p.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:4px 0 8px}
+p.seg button{border:0;background:none;color:var(--mute);padding:7px 12px;font-size:12.5px}
+p.seg button[aria-pressed=true]{background:var(--gold);color:#221a08;font-weight:600}
+table.tdo{width:100%;font-size:13px}
+table.tdo td{padding:5px 0;border-bottom:1px solid #ffffff10;vertical-align:top}
+table.tdo tr.nh td{color:#8fc7ff}
+table.tdo tr.tong td{font-weight:700;border-bottom:0}
+@media (max-width:860px){.mbbar{top:88px;max-width:calc(100% - 20px);font-size:12px}.mbbar .mute,.mbbar .pre{display:none}}
+html.chup .mbbar{display:none!important}

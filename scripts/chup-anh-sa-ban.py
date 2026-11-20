@@ -10,7 +10,7 @@ z18 nạp xong, rồi ghi:
 Cần một máy chủ đang phục vụ bản build có /api/nen (wrangler pages dev, hoặc trang thật).
 Dùng:
   python3 scripts/chup-anh-sa-ban.py https://nguyenanhtu.vn/assets/tools/casa-blanca/blanca.html assets/tools/casa-blanca
-  python3 scripts/chup-anh-sa-ban.py <url> <thu-muc> --docao 500
+  python3 scripts/chup-anh-sa-ban.py <url> <thu-muc> --docao 500 --gio 9
 Cần: playwright (chromium), pillow.
 """
 import argparse, io, pathlib, sys, time
@@ -21,11 +21,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('url'); ap.add_argument('thu_muc')
     ap.add_argument('--docao', type=int, default=1000)
+    ap.add_argument('--gio', type=float, default=14, help='giờ Việt Nam đặt nắng khi chụp (mặc định 14:00)')
     ap.add_argument('--cho', type=int, default=120, help='giây tối đa chờ ảnh nền')
     a = ap.parse_args()
     from playwright.sync_api import sync_playwright
     sep = '&' if '?' in a.url else '?'
-    url = f'{a.url}{sep}chup=1&docao={a.docao}'
+    url = f'{a.url}{sep}chup=1&docao={a.docao}&gio={a.gio:g}'
     out = pathlib.Path(a.thu_muc); out.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as p:
         b = p.chromium.launch(args=['--use-angle=swiftshader', '--enable-unsafe-swiftshader'])

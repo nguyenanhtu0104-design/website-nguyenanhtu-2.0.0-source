@@ -263,6 +263,12 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 
 ## 14. Nhật ký thay đổi nguyên tắc
 
+- **20/11/2026 — Khối tháp theo toà con, mặt cắt có mã từng căn (§16.3).** Tú báo hình khối và chiều cao bản 2.42.0 sai so với bản đầu: lỗi do chia toà con đều theo bề ngang. Từ nay toà con lấy theo căn trên mặt bằng, số tầng khai báo từng toà, so ảnh sa bàn với phối cảnh trước khi giao.
+
+- **20/11/2026 — Bóc tầng, chọn căn trên mặt bằng; điều khiển kiểu Google Maps; nền ba vành (§16.3, §17.4).** Theo trang mẫu Tú gửi: mặt cắt tầng dán mặt bằng thật của chủ đầu tư, chạm vào căn ra thẻ căn có giá, layout, tiến độ thanh toán theo chính sách bán hàng. Mặt bằng số hoá bằng công cụ chuẩn, mã căn và diện tích đọc từ bản vẽ, không đoán. Kéo chuột trái nay là trượt bản đồ như Google Maps, xoay bằng chuột phải.
+
+- **19/11/2026 — Không dán cả tổng mặt bằng lên bản đồ: tách từng khối, đặt theo ghim (§17, tầng 4).** Tổng mặt bằng tiếp thị nén chiều dọc và lệch theo cụm. Một phép chiếu chung khớp được khu giữa thì khu rìa vẫn lệch hàng chục mét, có dãy nằm đè lên đường (Blanca: ghim căn GV-068 lệch 118 m). Từ nay mỗi dự án tách lô thành từng khối nhà (tháp căn hộ, song lập, đơn lập, Grand Villa, nhà phố), đo vị trí thật của từng khối trên ảnh vệ tinh đã đưa về khung bản vẽ, rồi ghi ghim và hệ số giãn của từng khối vào `georef.json > khoi`. Ghim căn theo mã do Tú đặt dùng để nghiệm thu: lô cùng mã phải là lô gần ghim nhất. Dò tự động chỉ là gợi ý, khối nào cũng phải soát bằng mắt (dãy nhà đều nhau và đường nhựa tối làm máy bắt nhầm). Nền Tổng mặt bằng vẫn đặt khối theo bản vẽ.
+
 - **19/11/2026 — Chuẩn hoá quy trình dựng sa bàn dự án mới (§17).** Mọi dự án sau làm theo đúng §17: đầu vào xin trước, ba tầng định vị, tiêu chí nghiệm thu, ảnh đại diện chụp từ khối 3D, tự động hoá ký gửi bằng email.
 
 - **19/11/2026 — Mốc định vị chỉ lấy trên công trình đã thi công.** Ghim đặt ở vị trí công trình chưa xây là ước lượng từ chính tổng mặt bằng, đưa vào phép giải sẽ tự khẳng định cái sai của mình. Chỉ dùng nút giao, vòng xoay, công trình đã có trên ảnh vệ tinh. Mốc càng xa nhau càng chắc.
@@ -352,6 +358,14 @@ Lớp gần lấy z18 trong ranh dự án (§17.4). Có khoá rồi thì vào Cl
 ### 16.3 Mặt bằng tầng
 - Mặt cắt tầng phải dán layout thật vào, chọn được căn ngay trên mặt bằng đó.
 - Nhập mã căn cũng ra đúng căn đó.
+- Cách làm chuẩn (từ 2.42.0): số hoá mặt bằng tầng bằng `scripts/so-hoa-mat-bang.py`. Người số hoá đọc bản vẽ, viết file khai báo: mã căn, loại, diện tích thông thủy và tim tường lấy từ ô nhãn; một điểm hạt nằm trong mỗi căn; điểm lấy mẫu màu từng loại căn ở ô chú thích. Công cụ tách vùng từng căn theo màu, cắt nền trắng và nhãn ra khỏi ảnh, ghi `mat-bang.json`. Công cụ tự dừng khi hai căn chồng lên nhau (điểm hạt sai) hoặc vùng quá nhỏ. Xem ảnh kiểm (`--anh-kiem`) trước khi nhận.
+- Chân tháp lấy đúng thân toà trên mặt bằng đã số hoá (`mat-bang.json > lat`), cùng khung với khối đế, nên mặt cắt được ảnh mặt bằng phủ kín.
+- **Hình khối và chiều cao (từ 2.43.0):** mỗi lát chân tháp mang toà con của căn gần nhất trên mặt bằng; khai báo `toa` ghi số tầng từng toà con (theo phối cảnh, hồ sơ hoặc Tú cho), không chia đều theo bề ngang. Đỉnh mỗi toà có mái khung trắng như phối cảnh. Dựng xong phải chụp sa bàn cùng góc với phối cảnh chủ đầu tư và so: thứ tự cao thấp các toà, khoảng hở giữa hai cụm, khối đế hai tầng.
+- **Mặt cắt có layout từng căn:** ảnh mặt bằng dán lên mặt cắt kèm viền và mã đầy đủ từng căn theo tầng đang xem (ví dụ E512A06). Tô trạng thái nhẹ để vẫn đọc được phòng bên trong căn.
+- **Ô đèn căn trống:** mỗi căn còn trống trong quỹ đại lý là một ô sáng trên mặt đứng tháp, đúng tầng và đúng vị trí căn trên mặt bằng; chạm vào ô đèn là bóc đúng tầng đó và mở thẻ căn (§16.2).
+- Mặt bằng chỉ dán cho tầng ghi trên bản vẽ (`tangDung`). Tầng có mặt bằng riêng chưa số hoá thì báo "chưa số hoá", không dán mặt bằng tầng khác lên.
+- Tô màu trên mặt bằng: xanh là căn còn trống trong quỹ đại lý, xám là đã cọc, không tô là chưa có trong quỹ. Giá và tình trạng chỉ lấy từ bảng hàng; mã, loại, diện tích lấy từ bản vẽ thì ghi "theo mặt bằng".
+- Thẻ căn có: diện tích, giá, layout tách từ mặt bằng, tiến độ thanh toán từng đợt theo chính sách bán hàng đang áp dụng (ghi mã và ngày ban hành chính sách, "minh hoạ, không phải báo giá"), nút chuyển phương án vay sang Bản tính tài chính, nút thêm giỏ và ký gửi.
 
 ### 16.4 Bản tính
 - Chọn hoặc nhập căn thì chạy ra bản tính cụ thể của căn, dùng lại bản tính đã có trên web (`assets/tools/shared/` và các `*-bang-tinh`).
@@ -385,32 +399,43 @@ Blanca City là bản mẫu. Dự án sau sao chép khung `assets/tools/casa-bla
 1. **Bản đồ quy hoạch tổng mặt bằng 1/500 có bảng toạ độ VN-2000**, ghi rõ kinh tuyến trục (Bà Rịa – Vũng Tàu: 107°45′, EPSG:5899). Có bản này là định vị chính xác đến mét, bỏ qua bước ghim. Xin chủ đầu tư hoặc ban quản lý dự án.
 2. **Ranh dự án** vẽ trên Google My Maps theo bản đồ thật, tải KMZ về đính kèm.
 3. **Tổng mặt bằng** (ảnh) và **hồ sơ tư vấn PDF** có mặt bằng tầng điển hình, số tầng, số căn từng toà.
-4. **Ít nhất hai ghim** trên My Maps đặt tại công trình **đã thi công**, nhìn rõ trên ảnh vệ tinh: nút giao, vòng xoay, góc toà nhà đã xây. Cách nhau càng xa càng tốt. Ghim thứ ba trở đi dùng để đo sai số. Không ghim vào công trình chưa xây. Không ghim theo mã căn khi chưa có bảng hàng.
-5. **Bảng hàng .xlsx** (Mã căn, Toà, Tầng, Căn, Loại căn, diện tích thông thuỷ và tim tường, giá đã gồm VAT và KPBT, tình trạng). Tải về rồi đính kèm — môi trường làm việc của Claude không mở được link Google.
-6. **Chính sách bán hàng** và nói rõ **đợt nào đang áp dụng** cho quỹ đó.
+4. **Ít nhất hai ghim** trên My Maps đặt tại công trình **đã thi công**, nhìn rõ trên ảnh vệ tinh: nút giao, vòng xoay, góc toà nhà đã xây. Cách nhau càng xa càng tốt. Ghim thứ ba trở đi dùng để đo sai số. Không ghim vào công trình chưa xây. Không dùng ghim căn để giải khung.
+5. **Ghim căn theo mã** (đặt tên ghim đúng mã căn, ví dụ "ĐL-001", "GV-068"): vài căn mỗi phân khu, ưu tiên căn đầu dãy và căn ở khu chưa xây. Dùng để nghiệm thu tầng 4 và để đặt những khối chưa có móng trên ảnh vệ tinh.
+6. **Bảng hàng .xlsx** (Mã căn, Toà, Tầng, Căn, Loại căn, diện tích thông thuỷ và tim tường, giá đã gồm VAT và KPBT, tình trạng). Tải về rồi đính kèm — môi trường làm việc của Claude không mở được link Google.
+7. **Chính sách bán hàng** và nói rõ **đợt nào đang áp dụng** cho quỹ đó.
 
 ### 17.2 Các bước Claude làm
 1. **Khung thư mục** `assets/tools/<du-an>/`: `plan.webp`, `geometry.json`, `georef.json`, `ranh-du-an.json`, `diem-moc.json`, `chan-thap.json`, `can-ho.json`, `inventory.json`.
-2. **Định vị — ba tầng, tầng sau chỉ làm khi tầng trước xong:**
+2. **Định vị — bốn tầng, tầng sau chỉ làm khi tầng trước xong:**
    - Tầng 1, khung. Có toạ độ VN-2000: `python3 scripts/khop-sa-ban.py vn2000 moc.csv --ktt 107-45 > moc.kml`, rồi `node scripts/dinh-vi-sa-ban.mjs <thu-muc> moc.kml --ghi`. Không có: giải từ các ghim đã thi công.
    - Tầng 2, tịnh tiến. `khop-sa-ban.py anh <thu-muc>` rồi `khop-sa-ban.py dich <thu-muc>`. Công cụ tự từ chối khi kết quả không tin được. Nhận thì thêm `--ghi`.
    - Tầng 3, nghiệm thu. `khop-sa-ban.py soi <thu-muc>` ra bảng ảnh từng khối có lưới đo. Ghi kết quả vào `georef.json` mục `nghiemThu`: khối khớp, khối lệch bao nhiêu, khối chưa kiểm được.
-3. **Khối 3D.** Căn thấp tầng theo tổng mặt bằng. Tháp: chân tháp cắt từ đường bao công trình trên tổng mặt bằng, số tầng theo hồ sơ, đối chiếu thứ tự toà con với mã căn trên mặt bằng tầng điển hình.
+   - Tầng 4, từng khối — **bắt buộc**, vì tổng mặt bằng tiếp thị không vẽ đúng tỷ lệ bên trong:
+     1. `khop-sa-ban.py tach <thu-muc> --ghi` tách lô thành khối (cùng loại, cùng hướng, hai dãy quay lưng gộp một khối), ghi khung chọn lô vào `georef.json > khoi > ds`. Công cụ tự kiểm mỗi lô thuộc đúng một khối. Tháp căn hộ là khối riêng.
+     2. Đọc vị trí thật của từng khối trên ảnh có lưới (lệnh `soi`): tâm hai dãy nhà (`hang`), dời ngang (`dx`), giãn (`sx`, `sy`) cho khối dải; tháp theo hố móng hoặc khung đang dựng. Ghi vào một bảng số đo `bang.json` (mẫu trong đầu file công cụ). Khối chưa xây thì suy theo bước khối bên cạnh và ghim căn của Tú, ghi `tt: chua`; không có dấu vết gì thì `tt: giu`.
+     3. `khop-sa-ban.py do <thu-muc> bang.json` gợi ý tinh chỉnh từng khối. **Chỉ là gợi ý**: áp thử, xem ảnh trước và sau, khối nào khớp hơn thấy rõ mới nhận.
+     4. `khop-sa-ban.py dat <thu-muc> bang.json --ghi` đổi số đo thành ghim (vĩ độ, kinh độ tâm khối) và hệ số giãn, ghi vào `georef.json`.
+     5. `khop-sa-ban.py nghiemthu <thu-muc> ghim-can.kml` ra ảnh chồng toàn khu, độ phủ trước và sau của từng khối, khoảng cách từ ghim căn tới lô cùng mã. Ghi kết quả vào `georef.json > khoi > nghiemThu`.
+   - Trang sa bàn tự đọc `khoi`: nền bản đồ và Chồng lớp đặt khối theo ghim, nền Tổng mặt bằng đặt theo bản vẽ, đổi nền thì khối trượt sang vị trí mới. Không phải sửa mã cho dự án mới.
+3. **Khối 3D.** Căn thấp tầng theo tổng mặt bằng. Tháp: chân tháp cắt từ đường bao công trình trên tổng mặt bằng, số tầng theo hồ sơ, đối chiếu thứ tự toà con với mã căn trên mặt bằng tầng điển hình. Có mặt bằng tầng thì số hoá theo §16.3; chân tháp tự lấy theo mặt bằng.
 4. **Giỏ hàng.** Chuyển xlsx sang `can-ho.json`, ghi rõ `phamVi` (quỹ đại lý hay toàn bộ giỏ hàng). Thẻ dự án ở Tìm nhà dùng nhãn "Quỹ đại lý" khi không phải toàn bộ.
 5. **Góc nhìn.** Đặt `PHUONG_BIEN` = phương vị hướng view chính (pháp tuyến bờ biển, sông, công viên) đo trên ảnh vệ tinh. Kiểm hai nút 500 m và 1 km nhìn đúng hướng đó.
-6. **Ảnh đại diện.** Sau khi deploy: `python3 scripts/chup-anh-sa-ban.py https://nguyenanhtu.vn/assets/tools/<du-an>/<trang>.html assets/tools/<du-an>`, rồi thêm `"saBan": "<du-an>"` cho dự án trong `data/project-inventory.json`. Thẻ dự án và ảnh chia sẻ tự lấy ảnh này.
+6. **Ảnh đại diện.** Sau khi deploy: `python3 scripts/chup-anh-sa-ban.py https://nguyenanhtu.vn/assets/tools/<du-an>/<trang>.html assets/tools/<du-an>`, rồi thêm `"saBan": "<du-an>"` cho dự án trong `data/project-inventory.json`. Thẻ dự án và ảnh chia sẻ tự lấy ảnh này. Ảnh luôn chụp với nắng lúc 14:00 giờ Việt Nam bất kể giờ chạy (`--gio` để đổi); đặt lại vị trí khối thì chụp lại.
 7. Kiểm thử, đóng gói như §13.
 
 ### 17.3 Tiêu chí nghiệm thu
 - Tầng 2 hội tụ: lệch tịnh tiến còn dưới 1,5 m. Bảng soi từng khối đã xem và ghi kết quả. Khu nào lệch thì ghi rõ trong `georef.json`, không giấu.
+- Tầng 4: mọi lô thuộc đúng một khối; mỗi khối đã xây có dãy mô hình nằm trên dãy nhà thật, không dãy nào đè lên đường (soát bằng ảnh chồng); mọi ghim căn của Tú có lô gần nhất đúng mã và lệch không quá 10 m; khối chưa xây ghi rõ là suy, đo lại khi có móng.
+- Ảnh chồng của công cụ dùng cùng công thức mét/độ với trang (`showroom.js`, `dinh-vi-sa-ban.mjs`, `khop-sa-ban.py` phải giữ giống nhau), nên ảnh nghiệm thu là đúng cái khách thấy.
 - Không công bố số đo khoảng cách, diện tích lấy từ phép chiếu (§14).
 - Ảnh nền lớp gần đạt z18 trong ranh dự án trên máy tính; điện thoại yếu được phép giữ z17.
 - Giỏ hàng ghi rõ phạm vi. Căn đã bán hoặc chưa mở bán để trống trên khối 3D (§16.2).
 - Ảnh đại diện chụp ở z18, không lộ nút hay chữ của giao diện.
 
 ### 17.4 Ảnh nền và độ cao
-- Lớp gần: z18 (0,6 m mỗi điểm ảnh) trong ranh dự án nới 15%, nạp z17 trước cho nhanh rồi thay bằng z18. Lớp xa: z14, rộng gấp bốn khu đất.
-- Độ cao camera hiện bằng mét ở thanh dưới. Kéo xa nhất 7,9 km.
+- Ba vành ảnh: lớp gần z18 (0,6 m mỗi điểm ảnh) trong ranh dự án nới 15%, nạp z17 trước cho nhanh rồi thay bằng z18; vành giữa z15 rộng gấp 4,5 khu đất (phố, biển quanh dự án); vành xa z13 rộng khoảng 28–38 km (cả thành phố, núi, cửa sông). Mép mỗi vành mờ dần vào vành ngoài.
+- Độ cao camera hiện bằng mét ở thanh dưới. Kéo xa nhất khoảng 12 km độ cao; xa hơn 4–5 km thì ẩn nhãn phân khu cho khỏi chồng chữ.
+- Điều khiển giống Google Maps: kéo trái để trượt (điểm dưới con trỏ bám theo tay); chuột phải, chuột giữa hoặc Ctrl/Shift + kéo để xoay và nghiêng; lăn chuột thu phóng về phía con trỏ; nhấp đúp vào nền để phóng to tại chỗ; phím mũi tên trượt, Shift + mũi tên xoay. Cảm ứng: một ngón trượt, hai ngón chụm/mở thu phóng, xoay hai ngón để xoay, hai ngón vuốt dọc để nghiêng.
 - Tông nước biển chuẩn hoá trong shader (lấy tông vùng rộng qua mipmap) để giấu các mảng ghép ảnh nhiều ngày của Esri. Mép lớp gần mờ dần vào lớp xa.
 
 ### 17.5 Tự động hoá ký gửi không cần Zalo OA

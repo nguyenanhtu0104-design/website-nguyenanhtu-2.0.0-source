@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Khớp sa bàn dự án lên ảnh vệ tinh — công cụ chuẩn cho mọi dự án (PROJECT_RULES §17).
 
-Tổng mặt bằng là ảnh, không mang toạ độ. Định vị nó lên bản đồ thật qua ba tầng,
+Tổng mặt bằng là ảnh, không mang toạ độ. Định vị nó lên bản đồ thật qua bốn tầng,
 tầng sau chỉ làm khi tầng trước đã xong:
 
   1. KHUNG  hai mốc trên công trình ĐÃ THI CÔNG, cách xa nhau, giải ra hướng Bắc,
@@ -15,6 +15,16 @@ tầng sau chỉ làm khi tầng trước đã xong:
             Bắt buộc, vì tổng mặt bằng tiếp thị không vẽ đúng tỷ lệ bên trong: khớp
             được góc này vẫn có thể lệch góc kia. Ghi rõ khối nào khớp, khối nào không
             kiểm được.
+  4. TỪNG KHỐI  không dán cả tổng mặt bằng: tách lô thành từng khối nhà (song lập, đơn
+            lập, Grand Villa, nhà phố; tháp căn hộ riêng), đo vị trí thật của từng khối
+            trên ảnh đã đưa về khung bản vẽ, rồi ghi cho mỗi khối một ghim (vĩ độ, kinh độ
+            của tâm khối) và hệ số giãn. Trang sa bàn đặt khối theo ghim khi xem trên nền
+            bản đồ; ở nền tổng mặt bằng khối vẫn nằm theo bản vẽ.
+              tach  -> tách khối, ghi khung chọn lô vào georef.json > khoi
+              do    -> gợi ý tinh chỉnh từng khối (dò trong ±5 đơn vị quanh số đọc tay);
+                       CHỈ là gợi ý: phải soát bằng mắt, dãy nhà đều nhau dễ bắt nhầm
+              dat   -> đọc bảng số đo (JSON) và ghi ghim, hệ số giãn của từng khối
+              nghiemthu -> ảnh chồng toàn khu, độ phủ trước/sau, khoảng cách tới ghim căn
 
 Đã thử và loại (đừng làm lại): đọc hướng Bắc từ hoa gió in trên bản vẽ; ghim đặt
 trên công trình chưa xây; dò khớp tự động toàn ảnh, theo vùng, theo từng khối — ảnh
@@ -26,6 +36,21 @@ Dùng (thư mục công cụ chứa plan.webp, geometry.json, georef.json, ranh-
   python3 scripts/khop-sa-ban.py khung assets/tools/casa-blanca            # ảnh nghiệm thu toàn khu
   python3 scripts/khop-sa-ban.py soi   assets/tools/casa-blanca [x,y ...]  # soi từng khối, có lưới
   python3 scripts/khop-sa-ban.py vn2000 diem.csv --ktt 107-45 > moc.kml    # toạ độ VN-2000 -> KML
+  python3 scripts/khop-sa-ban.py tach  assets/tools/casa-blanca [--ghi]    # tách lô thành khối
+  python3 scripts/khop-sa-ban.py do    assets/tools/casa-blanca bang.json  # gợi ý tinh chỉnh từng khối
+  python3 scripts/khop-sa-ban.py dat   assets/tools/casa-blanca bang.json [--ghi]   # ghi ghim từng khối
+  python3 scripts/khop-sa-ban.py nghiemthu assets/tools/casa-blanca [ghim-can.kml]  # nghiệm thu từng khối
+
+Bảng số đo (bang.json) cho lệnh do/dat, toạ độ theo đơn vị bản vẽ trong khung ảnh vệ tinh
+đã đưa về bản vẽ (ảnh của lệnh khung/soi):
+  {"khoi": {"K08": {"hang": [171.75, 182.75], "dx": -1.0, "tt": "xay", "ghi": "..."},
+            "K32": {"cy": 343.0, "sy": 1.2, "dx": -5.5, "tt": "chua", "ghi": "suy theo bước"},
+            "K00": {"tt": "giu"}},
+   "thap": {"beacon": {"that": [493, 81, 592, 110], "tt": "xay"},
+            "B1": {"tam": [653, 281.5], "sy": 1.2, "tt": "xay"}}}
+  hang = tâm hai dãy nhà thật (khối hai dãy quay lưng); cy, sy = tâm và hệ số giãn dọc (khối dải);
+  dx, sx = dời và giãn ngang; tt: xay (đo trên ảnh) / chua (chưa xây, suy theo khối bên) /
+  giu (không có dấu vết, giữ theo phép chiếu chung).
 
 Ảnh vệ tinh lấy theo mẫu đường dẫn ở biến NEN_TILE_URL ({z} {x} {y}), mặc định Esri
 World Imagery. Kết quả trung gian để ở thư mục --ra (mặc định ./.sa-ban), không đưa vào kho.
@@ -60,6 +85,13 @@ class Chieu:
         dy = -(np.asarray(y) - self.py0) * self.mpu
         c, s = math.cos(self.bac), math.sin(self.bac)
         return self.lat0 + (dy * c + dx * s) / self.mLat, self.lon0 + (dx * c - dy * s) / self.mLon
+
+    def xy(self, lat, lon):
+        """Ngược của ll: vĩ độ, kinh độ -> toạ độ khung bản vẽ."""
+        dN = (lat - self.lat0) * self.mLat; dE = (lon - self.lon0) * self.mLon
+        c, s = math.cos(self.bac), math.sin(self.bac)
+        dx = dE * c + dN * s; dy = dN * c - dE * s
+        return self.px0 + dx / self.mpu, self.py0 - dy / self.mpu
 
 
 def doc_thu_muc(d):
@@ -287,11 +319,286 @@ def vn2000(csv_path, ktt):
     print('\n'.join(out))
 
 
+# ---------------------------------------------------------------- tầng 4: từng khối
+LOAI = ['TH', 'SL', 'DL', 'GV']          # trường t trong geometry.json, cùng thứ tự TYPES trong showroom.js
+UNIT = .44                               # đơn vị bản vẽ trên mét khi vẽ thân nhà, khớp showroom.js
+
+
+def than_nha(q):
+    """Kích thước hộp thân nhà (rộng, sâu) đúng như showroom.js vẽ."""
+    v = bool(q.get('vertical'))
+    fw = (q.get('displayDepth') if v else q.get('front')) * UNIT
+    fh = (q.get('front') if v else q.get('displayDepth')) * UNIT
+    bwr = q.get('bodyDepth') if v else q.get('bodyWidth'); bhr = q.get('bodyWidth') if v else q.get('bodyDepth')
+    return (bwr * UNIT if bwr else fw * .7), (bhr * UNIT if bhr else fh * .62)
+
+
+def tach_khoi(geo, hs_khe=1.5, hs_lung=1.45):
+    """Tách lô thành khối: cùng loại, cùng hướng; dãy theo trục chính, cắt ở khe lớn hơn
+    hs_khe lần bước lô; hai đoạn dãy quay lưng nhau (cách nhau không quá hs_lung lần chiều
+    sâu lô, phủ nhau ít nhất nửa chiều dài) gộp thành một khối."""
+    import statistics as st
+    out, nhom = [], {}
+    for i, q in enumerate(geo): nhom.setdefault((q['t'], bool(q.get('vertical'))), []).append(i)
+    for (t, doc), ids in sorted(nhom.items()):
+        a = (lambda q: q['y']) if doc else (lambda q: q['x'])
+        b = (lambda q: q['x']) if doc else (lambda q: q['y'])
+        ids = sorted(ids, key=lambda i: b(geo[i])); day, cur = [], [ids[0]]
+        for i in ids[1:]:
+            if abs(b(geo[i]) - st.mean(b(geo[j]) for j in cur)) <= 1.0: cur.append(i)
+            else: day.append(cur); cur = [i]
+        day.append(cur)
+        doan = []
+        for d in day:
+            d = sorted(d, key=lambda i: a(geo[i])); xs = [a(geo[i]) for i in d]
+            if len(d) == 1: doan.append(d); continue
+            buoc = st.median([xs[k + 1] - xs[k] for k in range(len(xs) - 1)]); s_ = [d[0]]
+            for k in range(1, len(d)):
+                if xs[k] - xs[k - 1] > hs_khe * buoc: doan.append(s_); s_ = []
+                s_.append(d[k])
+            doan.append(s_)
+        def kh(s_): xs = [a(geo[i]) for i in s_]; return min(xs), max(xs), st.mean(b(geo[i]) for i in s_)
+        doan.sort(key=lambda s_: (kh(s_)[2], kh(s_)[0])); dung = [False] * len(doan)
+        sau = st.median([geo[i].get('displayDepth') or 18 for i in ids]) * UNIT
+        for p in range(len(doan)):
+            if dung[p]: continue
+            a0, a1, bp = kh(doan[p]); cap = None
+            for q in range(p + 1, len(doan)):
+                if dung[q]: continue
+                c0, c1, bq = kh(doan[q])
+                if bq - bp > hs_lung * sau + .5: break
+                if bq > bp and min(a1, c1) - max(a0, c0) >= .5 * min(a1 - a0, c1 - c0) - 1e-6: cap = q; break
+            dung[p] = True
+            if cap is not None: dung[cap] = True; out.append({'loai': LOAI[t], 'doc': doc, 'ids': doan[p] + doan[cap]})
+            else: out.append({'loai': LOAI[t], 'doc': doc, 'ids': doan[p]})
+    for k in out:
+        xs = [geo[i]['x'] for i in k['ids']]; ys = [geo[i]['y'] for i in k['ids']]
+        k['tam'] = [(min(xs) + max(xs)) / 2, (min(ys) + max(ys)) / 2]
+        k['khung'] = [round(min(xs) - .6, 2), round(min(ys) - .6, 2), round(max(xs) + .6, 2), round(max(ys) + .6, 2)]
+        k['rows'] = sorted(set(round(geo[i]['x' if k['doc'] else 'y'], 2) for i in k['ids']))
+    # tên theo cột (tâm x chia ô 40 đơn vị) rồi theo y
+    out.sort(key=lambda k: (int(k['tam'][0] // 40), k['tam'][1]))
+    for n, k in enumerate(out): k['ma'] = f'K{n + 1:02d}'
+    return out
+
+
+def lo_trong_khung(geo, d):
+    """Chọn lô theo khung và loại — đúng cách showroom.js chọn."""
+    x0, y0, x1, y1 = d['khung']
+    return [i for i, q in enumerate(geo) if LOAI[q['t']] == d['loai'] and x0 <= q['x'] <= x1 and y0 <= q['y'] <= y1]
+
+
+def kiem_khoi(geo, ds):
+    """Mỗi lô thuộc đúng một khối. Trả về (thiếu, trùng)."""
+    dem = [0] * len(geo)
+    for d in ds:
+        for i in lo_trong_khung(geo, d): dem[i] += 1
+    return [i for i, c in enumerate(dem) if c == 0], [i for i, c in enumerate(dem) if c > 1]
+
+
+def vi_tri_khoi(g, geo, ch):
+    """Toạ độ khung bản vẽ của từng lô sau khi đặt theo ghim khối (lô không thuộc khối có ghim giữ nguyên)."""
+    pos = {i: (q['x'], q['y']) for i, q in enumerate(geo)}
+    for d in (g.get('khoi') or {}).get('ds', []):
+        if not d.get('ghim'): continue
+        X, Y = ch.xy(*d['ghim']); cx, cy = d['tamBanVe']; sx, sy = d.get('tyLe', [1, 1])
+        for i in lo_trong_khung(geo, d):
+            q = geo[i]; pos[i] = (X + (q['x'] - cx) * sx, Y + (q['y'] - cy) * sy)
+    return pos
+
+
+def lenh_tach(d, ghi):
+    g, geo, _ = doc_thu_muc(d)
+    ds = tach_khoi(geo)
+    for k in ds:
+        print(f"{k['ma']}  {k['loai']} {'dọc ' if k['doc'] else 'ngang'} {len(k['ids']):3d} lô  "
+              f"khung {k['khung']}  {len(k['rows'])} dãy")
+    print(f'{len(ds)} khối, {sum(len(k["ids"]) for k in ds)}/{len(geo)} lô')
+    if not ghi: print('(Thêm --ghi để ghi khung khối vào georef.json > khoi; ghim để trống, đo xong dùng lệnh dat)'); return
+    cu = {tuple(x['khung']): x for x in (g.get('khoi') or {}).get('ds', [])}
+    g.setdefault('khoi', {})['ds'] = [{**{'ma': k['ma'], 'loai': k['loai'], 'doc': k['doc'], 'soCan': len(k['ids']), 'khung': k['khung'],
+                                          'tamBanVe': [round(v, 3) for v in k['tam']], 'ghim': None, 'tyLe': [1, 1], 'trangThai': 'giu'},
+                                       **{kk: vv for kk, vv in cu.get(tuple(k['khung']), {}).items() if kk in ('ma', 'ghim', 'tyLe', 'trangThai', 'ghiChu')}}
+                                      for k in ds]
+    (pathlib.Path(d) / 'georef.json').write_text(json.dumps(g, ensure_ascii=False, indent=1), encoding='utf-8')
+    print('Đã ghi khung khối vào georef.json')
+
+
+def _bang(bang):
+    b = json.loads(pathlib.Path(bang).read_text(encoding='utf-8'))
+    return b.get('khoi', {}), b.get('thap', {})
+
+
+def _tham_so(geo, d, m):
+    """Từ số đo một khối -> (tâm thật x, y, sx, sy) trong khung bản vẽ."""
+    cx, cy = d['tamBanVe']
+    if not m or m.get('tt', 'giu') == 'giu': return None
+    sx, dx = m.get('sx', 1.0), m.get('dx', 0.0)
+    if 'hang' in m:                      # khối hai dãy ngang quay lưng: tâm hai dãy thật
+        if d.get('doc'): sys.exit(f"{d['ma']}: khối dọc dùng cy/sy, không dùng hang")
+        ra, rb = m['hang']; ys = [geo[i]['y'] for i in lo_trong_khung(geo, d)]
+        pa, pb = min(ys), max(ys)
+        if pb - pa < 1e-6: sys.exit(f"{d['ma']}: khối một dãy dùng cy, không dùng hang")
+        return cx + dx, (ra + rb) / 2, sx, (rb - ra) / (pb - pa)
+    return cx + dx, m['cy'], sx, m.get('sy', 1.0)
+
+
+def _phu_anh(S, meta, ch, K=4.0):
+    """Mặt nạ 'có công trình' trên ảnh vệ tinh đã đưa về khung bản vẽ (sàn bê tông, mái tối, mái ngói, nhiều chi tiết),
+    đã loại đường nhựa dài. Trả về (mặt nạ, XA, YA, K)."""
+    import numpy as np, cv2
+    XA, XB, YA, YB = 0, 960, 0, 540
+    w = ve_tinh_ve_khung(S, meta, ch, XA, XB, YA, YB, K)
+    hsv = cv2.cvtColor(w, cv2.COLOR_RGB2HSV).astype(np.float32); H, Sa, V = hsv[:, :, 0], hsv[:, :, 1], hsv[:, :, 2]
+    G = cv2.cvtColor(w, cv2.COLOR_RGB2GRAY).astype(np.float32)
+    mu = cv2.blur(G, (7, 7)); tex = np.sqrt(np.maximum(cv2.blur(G * G, (7, 7)) - mu * mu, 0))
+    xay = ((Sa < 45) & (V > 165)) | ((V < 95) & (Sa < 80) & (V > 8)) | (((H < 10) | (H > 170)) & (Sa > 80) & (V > 90)) | (tex > 24)
+    duong = ((V < 110) & (Sa < 60) & (V > 8)).astype(np.uint8); L = int(40 * K)
+    dn = cv2.morphologyEx(duong, cv2.MORPH_OPEN, np.ones((1, L), np.uint8)) | cv2.morphologyEx(duong, cv2.MORPH_OPEN, np.ones((L, 1), np.uint8))
+    xay = xay.astype(np.float32); xay[dn > 0] = 0
+    return xay, XA, YA, K
+
+
+def _do_phu(II, XA, YA, K, hop):
+    import numpy as np
+    b = np.asarray(hop, float); Hh, Ww = II.shape[0] - 1, II.shape[1] - 1
+    x0 = np.clip(np.round((b[:, 0] - b[:, 2] / 2 - XA) * K).astype(int), 0, Ww); x1 = np.clip(np.round((b[:, 0] + b[:, 2] / 2 - XA) * K).astype(int), 0, Ww)
+    y0 = np.clip(np.round((b[:, 1] - b[:, 3] / 2 - YA) * K).astype(int), 0, Hh); y1 = np.clip(np.round((b[:, 1] + b[:, 3] / 2 - YA) * K).astype(int), 0, Hh)
+    on = II[y1, x1] - II[y0, x1] - II[y1, x0] + II[y0, x0]
+    return float(on.sum() / max(1, ((x1 - x0) * (y1 - y0)).sum()))
+
+
+def lenh_do(d, ra, z, bang):
+    """Gợi ý tinh chỉnh: dời từng khối trong ±3,5 đơn vị ngang và ±5 đơn vị dọc quanh số đo hiện có,
+    tìm chỗ thân nhà mô hình phủ nhiều công trình thật nhất. Không tự ghi."""
+    import numpy as np, cv2
+    g, geo, _ = doc_thu_muc(d); ch = Chieu(g); S, meta = nap_anh(ra, z)
+    ds = (g.get('khoi') or {}).get('ds') or tach_khoi(geo)
+    bk, _ = _bang(bang)
+    xay, XA, YA, K = _phu_anh(S, meta, ch); II = cv2.integral(xay).astype(np.float64)
+    print('khối  loại  phủ hiện tại -> tốt nhất | gợi ý dời thêm | độ chắc')
+    for k in ds:
+        m = bk.get(k['ma']); p = _tham_so(geo, k, m)
+        if not p or m.get('tt') != 'xay': continue
+        X, Y, sx, sy = p; cx, cy = k['tamBanVe']; ids = lo_trong_khung(geo, k)
+        rel = np.array([((geo[i]['x'] - cx) * sx, (geo[i]['y'] - cy) * sy) + than_nha(geo[i]) for i in ids])
+        best, luoi = (-1, 0, 0), []
+        for ddx in np.arange(-3.5, 3.51, .25):
+            for ddy in np.arange(-5, 5.01, .25):
+                hop = np.column_stack([X + ddx + rel[:, 0], Y + ddy + rel[:, 1], rel[:, 2], rel[:, 3]])
+                c = _do_phu(II, XA, YA, K, hop); luoi.append((c, ddx, ddy))
+                if c > best[0]: best = (c, ddx, ddy)
+        c0 = [c for c, a, b in luoi if a == 0 and b == 0][0]
+        trai = max(math.hypot(a - best[1], b - best[2]) for c, a, b in luoi if c >= best[0] - .02)
+        bien = abs(best[1]) >= 3.5 or abs(best[2]) >= 5
+        chac = 'CHẠM BIÊN — bỏ' if bien else ('chắc' if trai <= 1.5 else 'mơ hồ — soát kỹ')
+        print(f"{k['ma']:5s} {k['loai']}   {c0:.2f} -> {best[0]:.2f} | dx {best[1]:+5.2f} dy {best[2]:+5.2f} | đỉnh trải {trai:.1f} đv, {chac}")
+    print('Đây chỉ là gợi ý. Áp thử vào bảng số đo, chạy lệnh nghiemthu, nhìn ảnh từng khối rồi mới nhận.')
+
+
+def lenh_dat(d, bang, ghi):
+    g, geo, _ = doc_thu_muc(d); ch = Chieu(g)
+    kh = g.setdefault('khoi', {}); ds = kh.get('ds') or []
+    if not ds: sys.exit('georef.json chưa có khoi.ds — chạy lệnh tach --ghi trước')
+    thieu, trung = kiem_khoi(geo, ds)
+    if thieu or trung: sys.exit(f'Khung khối chưa phủ đúng: {len(thieu)} lô không thuộc khối nào, {len(trung)} lô thuộc hai khối')
+    bk, bt = _bang(bang)
+    for k in ds:
+        m = bk.get(k['ma']); p = _tham_so(geo, k, m)
+        if not p:
+            k.update(ghim=None, tyLe=[1, 1], trangThai='giu')
+        else:
+            X, Y, sx, sy = p; la, lo = ch.ll(X, Y)
+            k.update(ghim=[round(float(la), 7), round(float(lo), 7)], tyLe=[round(sx, 4), round(sy, 4)], trangThai=m.get('tt', 'xay'))
+        if m and m.get('ghi'): k['ghiChu'] = m['ghi']
+        print(f"{k['ma']:5s} {k['loai']} {k['trangThai']:4s} ghim {k['ghim']} giãn {k['tyLe']}")
+    thap = []
+    for ma, m in bt.items():
+        o = {'ma': ma, 'trangThai': m.get('tt', 'xay')}
+        if 'that' in m:
+            ban = m.get('banVe'); 
+            if not ban: sys.exit(f'Tháp {ma}: cần "banVe" [x0,y0,x1,y1] là hộp bao trên bản vẽ (chan-thap.json > bao)')
+            t = m['that']; sx = (t[2] - t[0]) / (ban[2] - ban[0]); sy = (t[3] - t[1]) / (ban[3] - ban[1])
+            la, lo = ch.ll((t[0] + t[2]) / 2, (t[1] + t[3]) / 2)
+            o.update(khungBanVe=ban, tamBanVe=[(ban[0] + ban[2]) / 2, (ban[1] + ban[3]) / 2], tyLe=[round(sx, 4), round(sy, 4)])
+        else:
+            la, lo = ch.ll(*m['tam']); o.update(tamBanVe=m['banVe'], tyLe=[m.get('sx', 1.0), m.get('sy', 1.0)])
+        o['ghim'] = [round(float(la), 7), round(float(lo), 7)]
+        if m.get('ghi'): o['ghiChu'] = m['ghi']
+        thap.append(o); print(f"tháp {ma:9s} {o['trangThai']:4s} ghim {o['ghim']} giãn {o['tyLe']}")
+    if thap: kh['thap'] = thap
+    if ghi:
+        (pathlib.Path(d) / 'georef.json').write_text(json.dumps(g, ensure_ascii=False, indent=1), encoding='utf-8')
+        print('Đã ghi ghim từng khối vào georef.json')
+    else: print('(Thêm --ghi để ghi vào georef.json)')
+
+
+def _doc_ghim_can(kml):
+    import re
+    s = pathlib.Path(kml).read_text(encoding='utf-8'); out = {}
+    for m in re.finditer(r'<Placemark>(.*?)</Placemark>', s, re.S):
+        b = m.group(1); n = re.search(r'<name>(.*?)</name>', b, re.S); c = re.search(r'<coordinates>(.*?)</coordinates>', b, re.S)
+        if not n or not c: continue
+        p = c.group(1).strip().split()
+        if len(p) != 1: continue
+        lo, la = map(float, p[0].split(',')[:2])
+        ma = re.sub(r'\s+', '', n.group(1)).upper().replace('Đ', 'D').replace('CĂN', '').replace('CAN', '')
+        mm = re.search(r'(TH|NP|SL|DL|GV)-?(\d+)', ma)
+        if mm: out[f'{mm.group(1)}-{int(mm.group(2)):03d}'] = (la, lo, n.group(1).strip())
+    return out
+
+
+def lenh_nghiemthu(d, ra, z, kml=None):
+    import numpy as np, cv2
+    from PIL import Image, ImageDraw, ImageFont
+    g, geo, _ = doc_thu_muc(d); ch = Chieu(g); S, meta = nap_anh(ra, z)
+    pos = vi_tri_khoi(g, geo, ch); ds = (g.get('khoi') or {}).get('ds', [])
+    xay, XA, YA, K = _phu_anh(S, meta, ch); II = cv2.integral(xay).astype(np.float64)
+    tong = {'truoc': [], 'sau': []}
+    print('khối  loại trạng thái  phủ trước -> sau')
+    for k in ds:
+        ids = lo_trong_khung(geo, k)
+        h0 = [(geo[i]['x'], geo[i]['y']) + than_nha(geo[i]) for i in ids]; h1 = [pos[i] + than_nha(geo[i]) for i in ids]
+        a, b = _do_phu(II, XA, YA, K, h0), _do_phu(II, XA, YA, K, h1)
+        if k.get('trangThai') == 'xay': tong['truoc'].append(a); tong['sau'].append(b)
+        print(f"{k['ma']:5s} {k['loai']}   {k.get('trangThai', 'giu'):4s}       {a:.2f} -> {b:.2f}")
+    if tong['sau']:
+        print(f"Khối đã xây: {len(tong['sau'])} | độ phủ trung bình {np.mean(tong['truoc']):.2f} -> {np.mean(tong['sau']):.2f}")
+    # khoảng cách tới ghim căn (mã tạm theo thứ tự file, như showroom.js)
+    if kml:
+        ghim = _doc_ghim_can(kml); dem = {}; ma = {}
+        for i, q in enumerate(geo):
+            t = LOAI[q['t']]; dem[t] = dem.get(t, 0) + 1; ma[f'{t}-{dem[t]:03d}'] = i
+        for m, (la, lo, ten) in ghim.items():
+            if m not in ma: print(f'{ten}: không có mã {m} trong geometry.json'); continue
+            i = ma[m]; X, Y = ch.xy(la, lo)
+            gan = min(pos, key=lambda j: (pos[j][0] - X) ** 2 + (pos[j][1] - Y) ** 2)
+            print(f"{ten}: trước {math.hypot(geo[i]['x'] - X, geo[i]['y'] - Y) * ch.mpu:.0f} m -> sau "
+                  f"{math.hypot(pos[i][0] - X, pos[i][1] - Y) * ch.mpu:.1f} m | lô gần ghim nhất {'ĐÚNG mã' if gan == i else 'KHÁC mã'}")
+    # ảnh chồng toàn khu
+    xs = [p[0] for p in pos.values()]; ys = [p[1] for p in pos.values()]
+    X0, X1, Y0, Y1 = min(xs) - 12, max(xs) + 12, min(ys) - 12, max(ys) + 12; KK = 3.0
+    w = ve_tinh_ve_khung(S, meta, ch, X0, X1, Y0, Y1, KK)
+    im = Image.fromarray(w); dr = ImageDraw.Draw(im)
+    mau = {'TH': (255, 150, 60), 'SL': (255, 230, 60), 'DL': (150, 255, 80), 'GV': (60, 230, 255)}
+    for i, q in enumerate(geo):
+        x, y = pos[i]; bw, bh = than_nha(q)
+        dr.rectangle([(x - bw / 2 - X0) * KK, (y - bh / 2 - Y0) * KK, (x + bw / 2 - X0) * KK, (y + bh / 2 - Y0) * KK], outline=mau[LOAI[q['t']]])
+    try: F = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 12)
+    except Exception: F = None
+    for k in ds:
+        if k.get('ghim'): X, Y = ch.xy(*k['ghim'])
+        else: X, Y = k['tamBanVe']
+        dr.text(((X - X0) * KK - 10, (Y - Y0) * KK - 6), k['ma'], fill=(255, 255, 255), font=F)
+    out = ra / 'nghiem-thu-tung-khoi.png'; im.save(out)
+    print(f'Ảnh chồng toàn khu (thân nhà mô hình sau khi đặt theo ghim) -> {out}')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('lenh', choices=['anh', 'dich', 'khung', 'soi', 'vn2000'])
+    ap.add_argument('lenh', choices=['anh', 'dich', 'khung', 'soi', 'vn2000', 'tach', 'do', 'dat', 'nghiemthu'])
     ap.add_argument('dich_den', help='thư mục công cụ dự án, hoặc file CSV với lệnh vn2000')
-    ap.add_argument('diem', nargs='*', help='lệnh soi: tâm khối dạng x,y theo đơn vị bản vẽ')
+    ap.add_argument('diem', nargs='*', help='lệnh soi: tâm khối x,y; lệnh do/dat: bảng số đo .json; lệnh nghiemthu: KML ghim căn')
     ap.add_argument('--z', type=int, default=18)
     ap.add_argument('--ra', default='.sa-ban')
     ap.add_argument('--ban-kinh', type=float, default=25.0, help='lệnh dich: bán kính tìm, mét')
@@ -304,6 +611,10 @@ def main():
     elif a.lenh == 'khung': khung(a.dich_den, ra, a.z)
     elif a.lenh == 'soi': soi(a.dich_den, ra, a.z, [tuple(map(float, s.split(','))) for s in a.diem])
     elif a.lenh == 'vn2000': vn2000(a.dich_den, a.ktt)
+    elif a.lenh == 'tach': lenh_tach(a.dich_den, a.ghi)
+    elif a.lenh == 'do': lenh_do(a.dich_den, ra, a.z, a.diem[0])
+    elif a.lenh == 'dat': lenh_dat(a.dich_den, a.diem[0], a.ghi)
+    elif a.lenh == 'nghiemthu': lenh_nghiemthu(a.dich_den, ra, a.z, a.diem[0] if a.diem else None)
 
 
 if __name__ == '__main__':

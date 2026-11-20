@@ -26,9 +26,12 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const R_LAT = 111320;                       // mét trên 1 độ vĩ
 const deg = (r) => (r * 180) / Math.PI;
 const rad = (d) => (d * Math.PI) / 180;
+// Mét trên một độ vĩ và một độ kinh tại vĩ độ lat — cùng công thức với showroom.js và
+// scripts/khop-sa-ban.py, để cả ba nơi hiểu georef.json như nhau.
+const mLatAt = (lat) => 111132.92 - 559.82 * Math.cos(2 * rad(lat)) + 1.175 * Math.cos(4 * rad(lat));
+const mLonAt = (lat) => 111412.84 * Math.cos(rad(lat)) - 93.5 * Math.cos(3 * rad(lat));
 
 function docKml(duongDan) {
   const s = readFileSync(duongDan, 'utf8');
@@ -48,11 +51,14 @@ function docKml(duongDan) {
 }
 
 // Hệ mét địa phương quanh một gốc: x về đông, y về bắc
-const heMet = (lat0, lon0) => ({
-  lat0, lon0, mLat: R_LAT, mLon: R_LAT * Math.cos(rad(lat0)),
-  ra: (lat, lon) => [(lon - lon0) * R_LAT * Math.cos(rad(lat0)), (lat - lat0) * R_LAT],
-  ve: (x, y) => [lat0 + y / R_LAT, lon0 + x / (R_LAT * Math.cos(rad(lat0)))],
-});
+const heMet = (lat0, lon0) => {
+  const mLat = mLatAt(lat0), mLon = mLonAt(lat0);
+  return {
+    lat0, lon0, mLat, mLon,
+    ra: (lat, lon) => [(lon - lon0) * mLon, (lat - lat0) * mLat],
+    ve: (x, y) => [lat0 + y / mLat, lon0 + x / mLon],
+  };
+};
 
 // Giải phép biến đổi đồng dạng từ HAI cặp điểm. Không có bậc tự do thừa nên không cần tối ưu.
 // Hệ ảnh: X = planX, Y = caoDonVi - planY (trục Y hướng lên).

@@ -2,6 +2,31 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.43.0 · 20/11/2026 — Sa bàn Blanca: khối tháp đúng toà con và số tầng, mặt cắt có layout và mã từng căn, Beachtro bóc tầng
+- **Sửa hình khối và chiều cao tháp** (lỗi ở 2.42.0): mỗi phần thân tháp nay thuộc đúng toà con theo căn trên mặt bằng tầng, cao đúng số tầng: Beacon E5 36, E3 39, E2 40, E1 39; Beachtro E9 36, E8 40, E7 38, E6 34. Đỉnh mỗi toà có mái khung trắng như phối cảnh. Beachtro cũng dựng theo mặt bằng tầng điển hình.
+- **Mặt cắt có layout và mã từng căn**: mặt bằng tầng dán trên khối 3D kèm viền và mã đầy đủ của từng căn theo tầng đang xem (ví dụ E512A06), tô trạng thái nhẹ hơn để đọc được phòng bên trong.
+- **Beachtro bóc tầng được**: số hoá 53 căn mặt bằng tầng điển hình (tầng 4–19, 21–34). Chưa có bảng hàng nên thẻ căn có loại, diện tích, layout, chưa có giá.
+- **Ô đèn căn trống**: căn còn trống trong quỹ đại lý sáng lên trên mặt đứng tháp đúng tầng, đúng vị trí; chạm vào là bóc đúng tầng đó và mở thẻ căn.
+- PROJECT_RULES §16.3 thêm quy tắc toà con, số tầng, mặt cắt có mã căn, ô đèn. Chụp lại ảnh đại diện giỏ hàng.
+
+## 2.42.0 · 20/11/2026 — Sa bàn Blanca: bóc tầng chọn căn trên mặt bằng, điều khiển kiểu Google Maps, nền nhìn xa
+- **Bóc tầng Beacon, chọn căn ngay trên mặt bằng.** Mặt bằng tầng điển hình (tầng 4–19, 21–35) của chủ đầu tư được số hoá 63 căn và dán thẳng lên mặt cắt khối 3D. Căn còn trống trong quỹ đại lý tô xanh, đã cọc tô xám. Thanh "Mặt cắt 3D · Tầng …" có − + và "Hiện đủ"; dải tầng bên phải chọn nhanh tầng. Mở từ hồ sơ Beacon, chạm lần hai vào khối Beacon, hoặc nút "Mặt bằng" ở từng dòng bảng quỹ căn.
+- **Thẻ căn**: mã căn, loại, diện tích, giá, tình trạng, layout tách từ mặt bằng, tiến độ thanh toán từng đợt theo CSBH02 Beacon (10/07/2026) cho hai phương án không vay và vay hỗ trợ lãi suất; phương án vay chuyển thẳng sang Bản tính tài chính; nút thêm giỏ và ký gửi điền sẵn mã căn.
+- **Khối tháp Beacon dựng theo đúng thân toà trên mặt bằng tầng**, không còn theo nét tổng mặt bằng.
+- **Điều khiển giống Google Maps**: kéo trái trượt bản đồ, điểm dưới con trỏ bám tay; chuột phải hoặc Ctrl + kéo để xoay, nghiêng; lăn chuột phóng về phía con trỏ; nhấp đúp phóng to tại chỗ. Cảm ứng hai ngón: chụm thu phóng, xoay để xoay, vuốt dọc để nghiêng.
+- **Nền bản đồ nhìn xa**: thêm vành ảnh vệ tinh z15 quanh dự án và vành z13 rộng khoảng 38 km (cả Vũng Tàu, núi, cửa sông); kéo xa tới khoảng 12 km độ cao, nhãn phân khu tự ẩn khi nhìn xa.
+- Công cụ chuẩn mới `scripts/so-hoa-mat-bang.py`; PROJECT_RULES §16.3, §17.4 cập nhật. Chụp lại ảnh đại diện giỏ hàng.
+
+## 2.41.0 · 19/11/2026 — Sa bàn Blanca: tách từng khối, đặt theo ghim thực địa
+- **Không còn dán cả tổng mặt bằng lên bản đồ.** 939 căn thấp tầng tách thành 41 khối (song lập, đơn lập, Grand Villa, nhà phố) và 8 khối tháp (Beachtro, Beacon, B1–B3, B5–B7). Mỗi khối có một ghim thật (vĩ độ, kinh độ tâm khối) và hệ số giãn, đo trên ảnh vệ tinh Esri ngày 19/11/2026, ghi trong `georef.json > khoi`.
+- **Kết quả với ghim của Tú:** bốn căn ĐL-001, ĐL-136, GV-081, GV-068 nay rơi đúng lô cùng mã, lệch 1,8–7,9 m (trước 38–118 m). Hố móng Beacon và Beachtro đo trên ảnh trùng ghim tâm Tú đặt, lệch 6,6 m và 2,8 m. Dãy nhà mô hình nằm trên dãy nhà thật ở cả 32 khối đã xây; độ phủ trung bình tăng từ 0,54 lên 0,81.
+- **Nền Tổng mặt bằng giữ khối theo bản vẽ; nền bản đồ và Chồng lớp đặt khối theo ghim.** Đổi nền thì khối trượt sang vị trí mới, nhãn phân khu đi theo.
+- Khối chưa xây (K06, K14, K15, K32, tháp B2, B3, B5–B7) đặt theo bước khối bên cạnh và ghim căn, ghi rõ là suy. Năm khối song lập phía Tây xa còn là bãi san lấp, giữ theo phép chiếu chung.
+- **Công cụ chuẩn thêm tầng 4** (`scripts/khop-sa-ban.py tach / do / dat / nghiemthu`): tách khối tự động, gợi ý tinh chỉnh từng khối, ghi ghim, ảnh chồng nghiệm thu và đo khoảng cách tới ghim căn. Trang sa bàn tự đọc dữ liệu này, dự án sau không phải sửa mã.
+- Trang, công cụ đo và công cụ giải mốc dùng chung một công thức mét trên độ, nên ảnh nghiệm thu khớp đúng cái khách thấy.
+- **Chụp lại ảnh đại diện giỏ hàng** từ khối 3D đã đặt đúng chỗ. Chế độ chụp nay luôn đặt nắng lúc 14:00 giờ Việt Nam (`--gio` để đổi), không còn ra ảnh tối khi chạy script vào buổi tối.
+- **PROJECT_RULES §17**: định vị bốn tầng; đầu vào thêm "ghim căn theo mã"; tiêu chí nghiệm thu tầng 4. Nhật ký §14 ghi nguyên tắc mới.
+
 ## 2026-11-19 — Nội dung: đổi tên vùng "Thành Phố Đông Nam" → "Thành Phố Phía Nam", thêm The Peak Garden
 - Đổi tên vùng (slug giữ nguyên `truc-nguyen-huu-tho-thuong-cang-hiep-phuoc`, không đổi URL) trong tiêu đề vùng, dòng phụ, `seoTitle`, từ khoá tìm kiếm và chữ phụ đề của các bài dự án thuộc vùng; đồng bộ cả nhãn vùng trên bản đồ dự án (`du-an-cam-nang.json`).
 - Thêm trang `the-peak-garden` (Hưng Lộc Phát, Quận 7 cũ) vào vùng, trạng thái stub (đang cập nhật, noindex); thêm điểm trên bản đồ dự án theo toạ độ đã có sẵn trong công cụ.

@@ -32,6 +32,7 @@ const donVi = (met) => met / (GEO && GEO.tyLe ? GEO.tyLe.metTrenDonVi : 2.1958);
 // Thứ tự toà con từ trái sang phải trên tổng mặt bằng, khớp mã căn trong layout tầng.
 let CHAN = null;
 let CAN = null;   // quỹ căn hộ chủ đầu tư chia cho đại lý, nạp từ can-ho.json
+let MB = null;    // mặt bằng tầng đã số hoá (mat-bang.json, scripts/so-hoa-mat-bang.py)
 const KHOI = [
   { zone: 'beachtro', col: [.42, .56, .66], ten: 'Beachtro',
     thap: [['E9', 36], ['E8', 40], ['E7', 38], ['E6', 34]] },
@@ -48,30 +49,97 @@ const THAP_B = [
   { zone: 'b567', x: 321, y: 276, w: 13, h: 30, tang: 34, ten: 'B6', col: [.76, .3, .66] },
   { zone: 'b567', x: 321, y: 310, w: 13, h: 30, tang: 34, ten: 'B7', col: [.76, .3, .66] },
 ];
+const NHOM = { beachtro: 1, beacon: 2, B1: 3, B2: 3, B3: 3, B5: 4, B6: 4, B7: 4 };   // nhóm cắt tầng (iZ.z)
+const MAU_MAI = [.96, .95, .92];
+// Ô đèn: mỗi căn còn trống trong quỹ đại lý là một ô sáng trên mặt đứng, đúng tầng và đúng vị trí căn trên mặt bằng.
+// Chạm vào ô đèn: bóc tầng đó, mở mặt bằng và thẻ căn (PROJECT_RULES §16.2).
+function oDenCan(k, bx0, by0, sx, sy) {
+  const mbk = MB && MB[k.zone], out = [];
+  if (!mbk || !CAN) return out;
+  for (const c of CAN.can) {
+    if (c.phanKhu !== k.zone || c.tinhTrang !== 'trong') continue;
+    const m = mbk.can.find(x => x.toa === c.toa && x.so === c.can); if (!m) continue;
+    const xs = m.poly.map(p => p[0] / mbk.rong), ys = m.poly.map(p => p[1] / mbk.cao);
+    const x0 = bx0 + Math.min(...xs) * sx, x1 = bx0 + Math.max(...xs) * sx, y0 = by0 + Math.min(...ys) * sy, y1 = by0 + Math.max(...ys) * sy;
+    const tg = tangSo(c.tang);
+    out.push({ x: (x0 + x1) / 2, y: (y0 + y1) / 2, w: x1 - x0 + .35, h: y1 - y0 + .35, z0: donVi(caoM(tg - 1)) + .05, z: donVi(caoM(tg)) - .05,
+               khoi: k.zone, zone: k.zone, col: [1, .78, .3], can: c.ma, name: `${c.ma} · ${tenLoai(c.loai)} · còn trống · ${tien(c.gia)}` });
+  }
+  return out;
+}
 function dungThap() {
   const t = [], zDe = donVi(SO_TANG_DE * CAO_DE);
   for (const k of KHOI) {
     const d = CHAN && CHAN.khoi && CHAN.khoi[k.zone];
     if (!d) continue;
     const [bx0, by0, bx1, by1] = d.bao;
-    t.push({ x: (bx0 + bx1) / 2, y: (by0 + by1) / 2, w: bx1 - bx0, h: by1 - by0, z0: 0, z: zDe,
+    t.push({ x: (bx0 + bx1) / 2, y: (by0 + by1) / 2, w: bx1 - bx0, h: by1 - by0, z0: 0, z: zDe, khoi: k.zone,
              zone: k.zone, col: k.col, name: `Khối đế ${k.ten} · ${SO_TANG_DE} tầng` });
     const n = k.thap.length, b = (bx1 - bx0) / n;
-    for (const [lx, ly, lw, lh] of d.lat) {
+    // Có mặt bằng tầng đã số hoá: chân tháp lấy đúng thân toà trên mặt bằng (cùng khung với khối đế),
+    // nên mặt cắt tầng được ảnh mặt bằng phủ kín. Chưa có thì dùng lát cắt từ tổng mặt bằng.
+    const mbk = MB && MB[k.zone];
+    if (mbk && mbk.lat && mbk.toa) {
+      // Toà con đúng theo mặt bằng: mỗi lát mang chỉ số toà; cao đến tầng cuối của toà, trên cùng là mái khung trắng
+      const sx = bx1 - bx0, sy = by1 - by0;
+      for (const [u0, v0, u1, v1, ti] of mbk.lat) {
+        const o = mbk.toa[ti], tang = o.tangCuoi, hien = o.mai || tang, zt = donVi(caoM(tang));
+        const lx = bx0 + u0 * sx, ly = by0 + v0 * sy, lw = (u1 - u0) * sx + .04, lh = (v1 - v0) * sy;
+        t.push({ x: lx + lw / 2, y: ly + lh / 2, w: lw, h: lh, z0: zDe, z: zt, khoi: k.zone, toa: o.ten,
+                 zone: k.zone, col: k.col, name: `${k.ten} · ${o.ten} · ${hien} tầng${o.duplex ? ' · duplex ' + o.duplex : ''}` });
+        t.push({ x: lx + lw / 2, y: ly + lh / 2, w: lw, h: lh, z0: zt, z: zt + donVi(CAO_TANG * (o.mai ? 1 : 1.5)), khoi: k.zone, toa: o.ten,
+                 zone: k.zone, col: MAU_MAI, name: `${k.ten} · ${o.ten} · mái` });
+      }
+      t.push(...oDenCan(k, bx0, by0, sx, sy));
+    } else for (const [lx, ly, lw, lh] of d.lat) {
       const i = Math.max(0, Math.min(n - 1, Math.floor((lx + lw / 2 - bx0) / b)));
       const [ten, tang] = k.thap[i];
-      t.push({ x: lx + lw / 2, y: ly + lh / 2, w: lw + .04, h: lh, z0: zDe, z: donVi(caoM(tang)),
+      t.push({ x: lx + lw / 2, y: ly + lh / 2, w: lw + .04, h: lh, z0: zDe, z: donVi(caoM(tang)), khoi: k.zone,
                zone: k.zone, col: k.col, name: `${k.ten} · ${ten} · ${tang} tầng` });
     }
   }
   for (const b of THAP_B) {
-    t.push({ x: b.x, y: b.y, w: b.w + 6, h: b.h * .5, z0: 0, z: zDe, zone: b.zone, col: b.col, name: 'Khối đế ' + b.ten });
-    t.push({ x: b.x, y: b.y, w: b.w, h: b.h, z0: zDe, z: donVi(caoM(b.tang)),
+    t.push({ x: b.x, y: b.y, w: b.w + 6, h: b.h * .5, z0: 0, z: zDe, khoi: b.ten, zone: b.zone, col: b.col, name: 'Khối đế ' + b.ten });
+    t.push({ x: b.x, y: b.y, w: b.w, h: b.h, z0: zDe, z: donVi(caoM(b.tang)), khoi: b.ten,
              zone: b.zone, col: b.col, name: `${b.ten} · ${b.tang} tầng` });
   }
   return t;
 }
 let TOWERS = [];
+// Vị trí thực địa (PROJECT_RULES §17, tầng 4). Tổng mặt bằng là bản vẽ tiếp thị: nén theo chiều dọc và lệch
+// từng cụm, nên không dán cả tấm lên bản đồ. Mỗi khối nhà (song lập, đơn lập, Grand Villa, nhà phố, tháp căn hộ)
+// tách riêng và có một ghim thật trong georef.json > khoi: vĩ độ, kinh độ tâm khối và hệ số giãn so với bản vẽ.
+// Nền "Tổng mặt bằng": khối nằm theo bản vẽ. Nền bản đồ và "Chồng lớp": khối nằm theo ghim.
+const VT = { t: 1, dich: 1, co: false };          // 0 = theo bản vẽ, 1 = theo ghim thực địa
+function datThucDia() {
+  const kh = GEO && GEO.khoi;
+  for (const u of U) { u.px = u.x; u.py = u.y; u.rx = u.x; u.ry = u.y; }
+  for (const o of TOWERS) { o.px = o.x; o.py = o.y; o.pw = o.w; o.ph = o.h; o.rx = o.x; o.ry = o.y; o.rw = o.w; o.rh = o.h; }
+  if (!kh || !geo.ok) return;
+  const thuc = d => { const [wx, wy] = geo.world(d.ghim[0], d.ghim[1]); return [wx, PLAN_H - wy]; };
+  const ds = (kh.ds || []).filter(d => d.ghim && d.khung).map(d => ({ ...d, R: thuc(d) }));
+  let n = 0;
+  for (const u of U) {
+    const d = ds.find(d => d.loai === TYPES[u.t].k && u.px >= d.khung[0] && u.px <= d.khung[2] && u.py >= d.khung[1] && u.py <= d.khung[3]);
+    if (!d) continue;
+    const [sx, sy] = d.tyLe || [1, 1];
+    u.rx = d.R[0] + (u.px - d.tamBanVe[0]) * sx; u.ry = d.R[1] + (u.py - d.tamBanVe[1]) * sy; u.khoi = d.ma; n++;
+  }
+  const th = new Map((kh.thap || []).filter(d => d.ghim).map(d => [d.ma, { ...d, R: thuc(d) }]));
+  for (const o of TOWERS) {
+    const d = th.get(o.khoi); if (!d) continue;
+    const [sx, sy] = d.tyLe || [1, 1], [cx, cy] = d.tamBanVe;
+    o.rx = d.R[0] + (o.px - cx) * sx; o.ry = d.R[1] + (o.py - cy) * sy; o.rw = o.pw * sx; o.rh = o.ph * sy;
+  }
+  VT.co = n > 0 || th.size > 0;
+}
+function datViTri(t) {
+  VT.t = t;
+  for (const u of U) { u.x = u.px + (u.rx - u.px) * t; u.y = u.py + (u.ry - u.py) * t; }
+  for (const o of TOWERS) { o.x = o.px + (o.rx - o.px) * t; o.y = o.py + (o.ry - o.py) * t; o.w = o.pw + (o.rw - o.pw) * t; o.h = o.ph + (o.rh - o.ph) * t; }
+  capNhatNhanViTri();
+}
+const viTriDich = () => (state.base === 'plan' || !VT.co ? 0 : 1);
 const BEACON_MIX = [['Garden house', 'Chưa ghi', 47], ['Studio', '30,8–38,8', 477], ['1PN+', '50,1–59,4', 782], ['2PN', '65,7–79,9', 721], ['3PN', '94,3–109,7', 172], ['Duplex', '104,8–286,5', 12]];
 const BEACON_SHEETS = ['Tầng 4–19, 21–35', 'Tầng 20', 'Tầng 36', 'Tầng 37', 'Tầng 38', 'Tầng 39', 'Studio', '1PN+', '2PN', '2PN+', '3PN', '3PN view kép'];
 const STATUS = { available: ['Còn hàng', [.3, .78, .5], 'ok'], reserved: ['Giữ chỗ', [.95, .72, .25], 'warn'], sold: ['Đã bán', [.55, .56, .58], ''] };
@@ -197,7 +265,10 @@ const geo = {
       this.lat0 = g.neo.lat; this.lon0 = g.neo.lon; this.wx0 = g.neo.planX; this.wy0 = PLAN_H - g.neo.planY;
       this.n = [Math.sin(rad(this.north)), Math.cos(rad(this.north))];   // vector Bắc trong hệ thế giới
       this.e = [Math.cos(rad(this.north)), -Math.sin(rad(this.north))];  // vector Đông
-      this.mLat = 111320; this.mLon = 111320 * Math.cos(rad(this.lat0));
+      // mét trên một độ, cùng công thức với scripts/khop-sa-ban.py để ảnh nghiệm thu khớp đúng trang
+      const f = rad(this.lat0);
+      this.mLat = 111132.92 - 559.82 * Math.cos(2 * f) + 1.175 * Math.cos(4 * f);
+      this.mLon = 111412.84 * Math.cos(f) - 93.5 * Math.cos(3 * f);
       this.ok = true;
     } catch { this.ok = false; }
     return this.ok;
@@ -221,7 +292,8 @@ function sunNow() {
 
 /* ---------- camera ---------- */
 // Kéo xa nhất: đủ thấy hết Bãi Sau, Núi Nhỏ và phố Vũng Tàu quanh dự án.
-const XA_NHAT = 3600;
+// Kéo xa nhất khoảng 15 km để thấy cả Bãi Sau, Núi Nhỏ, Núi Lớn và trung tâm Vũng Tàu khi tư vấn.
+const XA_NHAT = 7000;
 const HOME = { tx: 476, ty: PLAN_H - 232, tz: 0, dist: 940, yaw: .3, pitch: .92 };
 // Góc nhìn tư vấn view: đứng trên dự án nhìn ra biển, ở độ cao camera cho trước (mét so với mặt đất).
 // Hướng ra biển: bờ Bãi Sau đoạn này chạy theo phương vị khoảng 60° (đo trên ảnh vệ tinh), nên pháp tuyến
@@ -281,13 +353,14 @@ const VS = `#version 300 es
 precision highp float; precision highp int;
 layout(location=0) in vec3 aPos; layout(location=1) in vec3 aNrm;
 layout(location=2) in vec4 iBox; layout(location=3) in vec4 iZ; layout(location=4) in vec4 iCol; layout(location=5) in vec2 iSt;
-uniform mat4 uVP; uniform int uPass; uniform vec2 uShadow; uniform float uUnits; uniform float uCut;
+uniform mat4 uVP; uniform int uPass; uniform vec2 uShadow; uniform float uUnits; uniform float uCut; uniform float uCutNhom;
 out vec3 vN; out vec3 vCol; out float vH; out float vSt; out float vId; out vec3 vW;
 void main(){
   vec3 p; vec3 n=aNrm; vH=aPos.z;
   if(uPass==0){
     float top=iZ.y;
-    if(uCut>0.&&iSt.y>uUnits) top=min(top,uCut);
+    // mặt cắt: uCutNhom = 0 cắt mọi tháp, > 0 chỉ cắt khối cùng nhóm (iZ.z); khối nằm trọn trên mặt cắt thì ẩn
+    if(uCut>0.&&iSt.y>uUnits&&(uCutNhom<.5||abs(iZ.z-uCutNhom)<.5)){ top=min(top,uCut); if(top<=iZ.x+.001){ gl_Position=vec4(2.,2.,2.,1.); return; } }
     p=vec3(iBox.xy+aPos.xy*iBox.zw, iZ.x+aPos.z*(top-iZ.x));
   }
   else if(uPass==1){
@@ -301,12 +374,19 @@ const FS = `#version 300 es
 precision highp float; precision highp int;
 in vec3 vN; in vec3 vCol; in float vH; in float vSt; in float vId; in vec3 vW;
 uniform int uPass; uniform int uPick; uniform vec3 uEye; uniform vec3 uFog; uniform float uUnits;
-uniform vec3 uSun; uniform float uNight;
+uniform vec3 uSun; uniform float uNight; uniform vec2 uTang;
 out vec4 o;
 void main(){
   if(uPick==1){ int id=int(vId+.5); o=vec4(float(id&255)/255.,float((id>>8)&255)/255.,float((id>>16)&255)/255.,1.); return; }
   if(uPass==2){ o=vec4(0.,0.,0.,.3); return; }
   vec3 n=normalize(vN); vec3 L=uSun;
+  int s0=int(vSt+.5);
+  if(s0>=5){
+    // căn còn trống trong quỹ: ô đèn ấm trên mặt đứng tháp, đúng tầng và vị trí căn
+    vec3 d=s0==6?vec3(1.,.55,.18):s0==7?vec3(1.,.93,.6):vec3(1.,.76,.28);
+    float g=.86+.14*max(dot(n,L),0.)+.25*uNight;
+    float fg=smoothstep(900.,2600.,length(uEye-vW)); o=vec4(mix(d*g,uFog,fg),1.); return;
+  }
   vec3 base=uPass==1?vCol*.92:mix(vCol,vec3(.93,.90,.84),.76);
   int s=int(vSt+.5);
   if(s==4) base=mix(base,vec3(.5,.52,.5),.74);
@@ -318,7 +398,7 @@ void main(){
   // ban đêm: chỉ còn ánh sáng trời khuếch tán, không có nắng trực tiếp
   vec3 c=base*mix(.34+.38*hemi+.6*d, .20+.16*hemi, uNight);
   c=mix(c, c*vec3(.72,.80,1.05), uNight);
-  if(uPass==0){ c*=.82+.18*vH; if(vId>uUnits&&n.z<.5){ float f=fract(vW.z/1.45); c*=.88+.12*step(.38,f); } }
+  if(uPass==0){ c*=.82+.18*vH; if(vId>uUnits&&n.z<.5){ float f=fract(max(vW.z-uTang.y,0.)/uTang.x); c*=.86+.14*step(.3,f); } }
   if(s==1||s==3) c+=vec3(.12,.1,.04);
   float fog=smoothstep(900.,2600.,length(uEye-vW)); c=mix(c,uFog,fog);
   o=vec4(c,1.);
@@ -326,21 +406,37 @@ void main(){
 const GVS = `#version 300 es
 precision highp float; precision highp int;
 layout(location=0) in vec2 a;
-uniform mat4 uVP; uniform vec2 uOrigin; uniform vec2 uSize; uniform vec2 uPad; uniform float uRot;
+uniform mat4 uVP; uniform vec2 uOrigin; uniform vec2 uSize; uniform vec2 uPad; uniform float uRot; uniform float uZ;
 out vec2 vUV;
 void main(){
   vec2 q=a*uPad*uSize*.5;
   float c=cos(uRot), si=sin(uRot);
   vec2 w=uOrigin+vec2(c*q.x-si*q.y, si*q.x+c*q.y);
   vUV=vec2(a.x*uPad.x*.5+.5, .5-a.y*uPad.y*.5);
-  gl_Position=uVP*vec4(w,0.,1.);
+  gl_Position=uVP*vec4(w,uZ,1.);
 }`;
 const GFS = `#version 300 es
 precision highp float; precision highp int;
 in vec2 vUV; uniform sampler2D uTex; uniform vec3 uFog; uniform int uMask; uniform float uDim; uniform float uAlpha; uniform float uNight; uniform float uFeather;
+uniform sampler2D uId; uniform sampler2D uSt;
 out vec4 o;
 void main(){
   vec2 uv=clamp(vUV,0.,1.);
+  if(uMask==5){
+    // Mặt bằng tầng dán trên mặt cắt: ảnh thật của chủ đầu tư, tô trạng thái từng căn theo bản đồ mã căn.
+    vec4 t=texture(uTex,uv); if(t.a<.5) discard;
+    vec3 c=t.rgb;
+    float id=floor(texture(uId,uv).r*255.+.5);
+    if(id>.5){
+      vec4 s=texelFetch(uSt,ivec2(int(id)-1,0),0);
+      // tô nhẹ để vẫn đọc được layout phòng bên trong căn
+      if(s.r>.75) c=mix(c,vec3(.2,.78,.42),.28);          // còn trống trong quỹ
+      else if(s.r>.25) c=mix(c,vec3(.42,.42,.42),.45);     // đã cọc
+      if(s.b>.5) c=mix(c,vec3(1.,.92,.6),.3);              // đang rê chuột
+      if(s.g>.5) c=mix(c,vec3(1.,.5,.18),.42);             // đang chọn
+    }
+    o=vec4(mix(c,c*vec3(.55,.62,.86),uNight*.5),1.); return;
+  }
   vec3 c=texture(uTex,uv).rgb;
   if(uMask==2){
     // Tô lại ô bản đồ OpenStreetMap theo tông của thương hiệu:
@@ -418,8 +514,8 @@ function roofMesh() {
 
 function initGL(plan) {
   prog = mk(VS, FS); gprog = mk(GVS, GFS);
-  for (const k of ['uVP', 'uPass', 'uShadow', 'uPick', 'uEye', 'uFog', 'uUnits', 'uSun', 'uNight', 'uCut']) U_[k] = gl.getUniformLocation(prog, k);
-  for (const k of ['uVP', 'uFog', 'uTex', 'uOrigin', 'uSize', 'uPad', 'uRot', 'uMask', 'uDim', 'uAlpha', 'uNight', 'uFeather']) U_['g_' + k] = gl.getUniformLocation(gprog, k);
+  for (const k of ['uVP', 'uPass', 'uShadow', 'uPick', 'uEye', 'uFog', 'uUnits', 'uSun', 'uNight', 'uCut', 'uCutNhom', 'uTang']) U_[k] = gl.getUniformLocation(prog, k);
+  for (const k of ['uVP', 'uFog', 'uTex', 'uOrigin', 'uSize', 'uPad', 'uRot', 'uMask', 'uDim', 'uAlpha', 'uNight', 'uFeather', 'uZ', 'uId', 'uSt']) U_['g_' + k] = gl.getUniformLocation(gprog, k);
   nInst = U.length + TOWERS.length;
   stat = gl.createBuffer(); dyn = gl.createBuffer();
   const mkVAO = mesh => {
@@ -458,7 +554,7 @@ function uploadStatic() {
     const ty = TYPES[u.t], c = colorOf(u), o = i * 12;
     a.set([u.x, W(u.y), u.bw, u.bh, 0, ty.floors * FLOOR_H, u.bw < u.bh ? 1 : 0, ty.roof, c[0], c[1], c[2], 1], o);
   });
-  TOWERS.forEach((t, j) => { const o = (U.length + j) * 12; a.set([t.x, W(t.y), t.w, t.h, t.z0 || 0, t.z, 0, 0, ...t.col, 1], o); });
+  TOWERS.forEach((t, j) => { const o = (U.length + j) * 12; a.set([t.x, W(t.y), t.w, t.h, t.z0 || 0, t.z, NHOM[t.khoi] || 0, 0, ...t.col, 1], o); });
   gl.bindBuffer(gl.ARRAY_BUFFER, stat); gl.bufferData(gl.ARRAY_BUFFER, a, gl.DYNAMIC_DRAW);
   pickDirty = true; dirty = true;
 }
@@ -476,6 +572,8 @@ function refreshStates() {
       lech = state.market === 'primary' ? !sc : !(it && it.status === 'sold');
     }
     if (out || lech) s = 4;
+    const den = i >= U.length && TOWERS[i - U.length].can;
+    if (den) { s = out ? 4 : inCart('can:' + den) ? 6 : i === state.hover ? 7 : 5; a[i * 2] = s; a[i * 2 + 1] = i + 1; continue; }
     if (i < U.length ? inCart('u:' + i) : inCart('z:' + z)) s = 2;
     if (i === state.hover) s = 1;
     if (i === state.sel) s = 3;
@@ -492,7 +590,7 @@ function resize() {
 function viewProj() {
   const cp = Math.cos(C.pitch), e = [C.tx + C.dist * Math.sin(C.yaw) * cp, C.ty - C.dist * Math.cos(C.yaw) * cp, C.tz + C.dist * Math.sin(C.pitch)];
   const near = Math.max(2, C.dist * .04);
-  return { vp: M.mul(M.persp(.66, canvas.width / canvas.height, near, 16000), M.look(e, [C.tx, C.ty, C.tz], [0, 0, 1])), eye: e };
+  return { vp: M.mul(M.persp(.66, canvas.width / canvas.height, near, 60000), M.look(e, [C.tx, C.ty, C.tz], [0, 0, 1])), eye: e };
 }
 let lastVP = null;
 const FOG = [.086, .106, .094];
@@ -507,7 +605,8 @@ function drawScene(pick) {
   }
   gl.useProgram(prog);
   gl.uniformMatrix4fv(U_.uVP, false, vp); gl.uniform3fv(U_.uEye, eye); gl.uniform3fv(U_.uFog, FOG);
-  gl.uniform1f(U_.uUnits, U.length + .5); gl.uniform1f(U_.uCut, state.cut || -1); gl.uniform1i(U_.uPick, pick ? 1 : 0);
+  gl.uniform1f(U_.uUnits, U.length + .5); gl.uniform1f(U_.uCut, catHienTai()); gl.uniform1f(U_.uCutNhom, state.mb ? NHOM[state.mb.khu] : 0);
+  gl.uniform2f(U_.uTang, donVi(CAO_TANG), donVi(SO_TANG_DE * CAO_DE)); gl.uniform1i(U_.uPick, pick ? 1 : 0);
   const sun = SUN || { az: 135, el: 50 };
   const hz = geo.dir(sun.az), el = Math.max(sun.el, 4), tan = Math.tan(rad(el));
   const len = Math.min(2.6, 1 / tan);
@@ -523,14 +622,14 @@ function drawScene(pick) {
     gl.uniform1i(U_.uPass, 0); gl.bindVertexArray(boxVAO); gl.drawArraysInstanced(gl.TRIANGLES, 0, boxVAO.n, nInst);
     gl.uniform1i(U_.uPass, 1); gl.bindVertexArray(roofVAO); gl.drawArraysInstanced(gl.TRIANGLES, 0, roofVAO.n, U.length);
   }
-  if (!pick) drawRanh(vp);
+  if (!pick) { veMatBang(vp); drawRanh(vp); }
 }
 function nightLevel() { if (state.night) return 1; const e = (SUN || { el: 45 }).el; return e > 2 ? 0 : e < -6 ? 1 : (2 - e) / 8; }
 function drawGround(vp) {
   const night = nightLevel();
   const osmOn = osm.tex && (state.base === 'osm' || state.base === 'blend');
   gl.useProgram(gprog); gl.uniformMatrix4fv(U_.g_uVP, false, vp); gl.uniform3fv(U_.g_uFog, FOG);
-  gl.uniform1i(U_.g_uTex, 0); gl.uniform1f(U_.g_uNight, night); gl.uniform1f(U_.g_uFeather, 0);
+  gl.uniform1i(U_.g_uTex, 0); gl.uniform1f(U_.g_uNight, night); gl.uniform1f(U_.g_uFeather, 0); gl.uniform1f(U_.g_uZ, 0);
   gl.activeTexture(gl.TEXTURE0); gl.bindVertexArray(gVAO); gl.depthMask(false);
   // lớp 1: ảnh tổng mặt bằng (ở chế độ "bản đồ thật" chỉ còn là nền mờ bao quanh)
   gl.bindTexture(gl.TEXTURE_2D, planTex);
@@ -546,13 +645,22 @@ function drawGround(vp) {
     gl.uniform1i(U_.g_uMask, NEN.kieu === 've-tinh' ? 4 : 2); gl.uniform1f(U_.g_uDim, 0); gl.uniform1f(U_.g_uAlpha, 1);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
   }
+  if (osmOn && osmGiua.tex) {
+    gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    gl.bindTexture(gl.TEXTURE_2D, osmGiua.tex);
+    gl.uniform2f(U_.g_uOrigin, osmGiua.cx, osmGiua.cy); gl.uniform2f(U_.g_uSize, osmGiua.w, osmGiua.h);
+    gl.uniform2f(U_.g_uPad, 1, 1); gl.uniform1f(U_.g_uRot, -rad(geo.north)); gl.uniform1f(U_.g_uFeather, osmXa.tex ? .06 : 0);
+    gl.uniform1i(U_.g_uMask, NEN.kieu === 've-tinh' ? 4 : 2); gl.uniform1f(U_.g_uDim, 0); gl.uniform1f(U_.g_uAlpha, 1);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.uniform1f(U_.g_uFeather, 0); gl.disable(gl.BLEND);
+  }
   // lớp 3: khảm gần, đúng khu đất, phân giải cao
   if (osmOn) {
     gl.enable(gl.BLEND); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     gl.bindTexture(gl.TEXTURE_2D, osm.tex);
     gl.uniform2f(U_.g_uOrigin, osm.cx, osm.cy); gl.uniform2f(U_.g_uSize, osm.w, osm.h);
     gl.uniform2f(U_.g_uPad, 1, 1); gl.uniform1f(U_.g_uRot, -rad(geo.north));
-    gl.uniform1f(U_.g_uFeather, osmXa.tex ? .07 : 0);
+    gl.uniform1f(U_.g_uFeather, osmGiua.tex || osmXa.tex ? .07 : 0);
     gl.uniform1i(U_.g_uMask, NEN.kieu === 've-tinh' ? 4 : 2); gl.uniform1f(U_.g_uDim, 0); gl.uniform1f(U_.g_uAlpha, state.base === 'blend' ? .55 : 1);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     gl.uniform1f(U_.g_uFeather, 0); gl.disable(gl.BLEND);
@@ -621,6 +729,7 @@ const urlTile = (z, x, y) => NEN.qua === 'api'
   : `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
 const osm = { tex: null, cx: 0, cy: 0, w: 0, h: 0, zoom: 0, soTile: 0 };
 const osmXa = { tex: null, cx: 0, cy: 0, w: 0, h: 0, zoom: 0, soTile: 0 };
+const osmGiua = { tex: null, cx: 0, cy: 0, w: 0, h: 0, zoom: 0, soTile: 0 };   // vành giữa: phố, biển quanh dự án
 const tileX = (lon, n) => (lon + 180) / 360 * n;
 const tileY = (lat, n) => { const r = rad(lat); return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * n; };
 const lonOf = (x, n) => x / n * 360 - 180;
@@ -690,7 +799,9 @@ async function loadOsm() {
     await ghepKham(osm, 1.15, 48, 17, 13, true, true);
     state.osm = 'xong'; dirty = true; render();
     // Lớp xa: rộng gấp bốn, để thấy biển, Bãi Sau và phố xung quanh. Hỏng cũng không sao.
-    try { await ghepKham(osmXa, 4.2, 30, 15, 11, false); dirty = true; } catch (e) { /* bỏ qua */ }
+    // Hai vành ngoài: vành giữa rộng gấp 4,5 khu đất ở z15, vành xa rộng khoảng 28 km ở z13. Hỏng cũng không sao.
+    try { await ghepKham(osmGiua, 4.5, 48, 15, 12, false); dirty = true; } catch (e) { /* bỏ qua */ }
+    try { await ghepKham(osmXa, 14, 42, 13, 10, false); dirty = true; } catch (e) { /* bỏ qua */ }
     // Nâng lớp gần lên z18 (0,6 m mỗi điểm ảnh) để nhìn rõ từng căn ở độ cao 500–1000 m.
     // Chỉ làm trên máy có texture đủ lớn; điện thoại yếu giữ z17. Hỏng thì giữ bản z17.
     if (CHUP || (gl.getParameter(gl.MAX_TEXTURE_SIZE) >= 4096 && !(navigator.connection && navigator.connection.saveData))) {
@@ -708,6 +819,251 @@ async function loadOsm() {
     state.osm = 'loi'; if (state.base !== 'plan') state.base = 'plan';
   }
   render();
+}
+
+
+/* ---------- mặt bằng tầng trên mặt cắt (PROJECT_RULES §16.3) ---------- */
+// Nhãn tầng Beacon: bỏ số 13 và 14, thay bằng 12A, 12B như trong bảng hàng chủ đầu tư.
+const TANG_BEACON = (() => { const t = []; for (let i = 1; i <= 40; i++) t.push(i === 13 ? '12A' : i === 14 ? '12B' : String(i)); return t; })();
+const tangNhan = (t) => String(t).replace(/^0+(?=\d)/, '');                 // '07' -> '7'
+const tangSo = (t) => TANG_BEACON.indexOf(tangNhan(t)) + 1;                   // tầng vật lý
+const tangMa = (t) => /^\d$/.test(t) ? '0' + t : t;                           // nhãn tầng trong mã căn: '7' -> '07'
+const LOAI_TEN = { 'STU': 'Studio', '1BR+': '1PN+', '2BR': '2PN', '2BR+': '2PN+', '3BR': '3PN', '3BR+': '3PN+' };
+const tenLoai = (l) => LOAI_TEN[l] || l;
+const mbDung = () => (state.mb && MB && MB[state.mb.khu] && MB[state.mb.khu].tangDung.includes(state.mb.tang)) ? MB[state.mb.khu] : null;
+const maDayDu = (c, tang) => c.toa + tangMa(tang) + c.so;
+const mbCoTang = (c) => MB && MB[c.phanKhu] && MB[c.phanKhu].tangDung.includes(tangNhan(c.tang));
+const TEN_KHU = { beacon: 'Beacon', beachtro: 'Beachtro' };
+const khuMB = () => (state.mb && state.mb.khu) || 'beacon';
+const mbTex = { anh: null, id: null, st: null, khu: null };
+function tangMacDinh(khu = 'beacon') {
+  const d = MB && MB[khu]; if (!d) return '15';
+  const c = CAN && CAN.can.filter(x => x.phanKhu === khu && x.tinhTrang === 'trong' && d.tangDung.includes(tangNhan(x.tang)))
+    .sort((a, b) => tangSo(b.tang) - tangSo(a.tang))[0];
+  return c ? tangNhan(c.tang) : d.tangDung[Math.floor(d.tangDung.length / 2)];
+}
+function dsTang() {
+  const d = MB && MB[khuMB()], max = d && d.toa ? Math.max(...d.toa.map(o => o.tangCuoi)) : 38;
+  return TANG_BEACON.slice(2, max);
+}
+function hopDeBeacon() { return TOWERS.find(o => o.khoi === khuMB() && o.name.startsWith('Khối đế')); }
+function caoTang(tang) { return donVi(caoM(tangSo(tang))); }
+function catHienTai() { return state.mb ? caoTang(state.mb.tang) + .02 : (state.cut || -1); }
+function napAnhMB(d) {
+  if (mbTex.khu === d.anh || !gl) return;
+  mbTex.khu = d.anh;
+  const im = new Image();
+  im.onload = () => {
+    const tex = (src, nearest) => {
+      const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, src);
+      if (nearest) { gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST); }
+      else { gl.generateMipmap(gl.TEXTURE_2D); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); }
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      return t;
+    };
+    mbTex.img = im; mbTex.anh = gl.createTexture(); veNhanMB();
+    // bản đồ mã căn: mỗi căn tô một màu đỏ = thứ tự căn + 1; bỏ điểm viền mờ để không lẫn sang căn bên cạnh
+    const cv = document.createElement('canvas'); cv.width = d.rong; cv.height = d.cao;
+    const cx = cv.getContext('2d');
+    d.can.forEach((c, i) => { cx.fillStyle = `rgb(${i + 1},0,0)`; cx.beginPath(); c.poly.forEach(([x, y], j) => j ? cx.lineTo(x, y) : cx.moveTo(x, y)); cx.closePath(); cx.fill(); });
+    const px2 = cx.getImageData(0, 0, d.rong, d.cao);
+    for (let i = 0; i < px2.data.length; i += 4) if (px2.data[i + 3] < 200) { px2.data[i] = 0; px2.data[i + 3] = 0; }
+    mbTex.id = tex(px2, true);
+    mbTex.st = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, mbTex.st); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 64, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(256));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    capNhatTrangThaiMB(); dirty = true;
+  };
+  im.src = d.anh;
+}
+// Ảnh dán lên mặt cắt: mặt bằng thật của chủ đầu tư + viền và mã từng căn theo tầng đang xem.
+function veNhanMB() {
+  const d = mbDung(); if (!d || !mbTex.img || !mbTex.anh) return;
+  const k = 2, cv = document.createElement('canvas'); cv.width = d.rong * k; cv.height = d.cao * k;
+  const x = cv.getContext('2d'); x.drawImage(mbTex.img, 0, 0, cv.width, cv.height);
+  x.lineJoin = 'round';
+  for (const c of d.can) {
+    x.beginPath(); c.poly.forEach(([px, py], j) => j ? x.lineTo(px * k, py * k) : x.moveTo(px * k, py * k)); x.closePath();
+    x.strokeStyle = 'rgba(30,30,30,.75)'; x.lineWidth = 2.2; x.stroke();
+    const xs = c.poly.map(p => p[0]), ys = c.poly.map(p => p[1]);
+    const cx = (Math.min(...xs) + Math.max(...xs)) / 2 * k, cy = (Math.min(...ys) + Math.max(...ys)) / 2 * k, rw = (Math.max(...xs) - Math.min(...xs)) * k;
+    const ma = maDayDu(c, state.mb.tang);
+    let fs = 22; x.font = `700 ${fs}px system-ui, sans-serif`;
+    while (fs > 11 && x.measureText(ma).width > rw * .92) { fs -= 1; x.font = `700 ${fs}px system-ui, sans-serif`; }
+    x.textAlign = 'center'; x.textBaseline = 'middle';
+    const w = x.measureText(ma).width + 10;
+    x.fillStyle = 'rgba(255,255,255,.88)'; x.fillRect(cx - w / 2, cy - fs * .7, w, fs * 1.4);
+    x.fillStyle = '#1d1a14'; x.fillText(ma, cx, cy + 1);
+  }
+  gl.bindTexture(gl.TEXTURE_2D, mbTex.anh);
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);       // hàng trên ảnh = phía Bắc, khớp mbHit
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cv);
+  gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  const ext = gl.getExtension('EXT_texture_filter_anisotropic'); if (ext) gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, 8);
+  dirty = true;
+}
+function canQuy(ma) { return CAN && CAN.can.find(x => x.ma === ma); }
+function capNhatTrangThaiMB() {
+  const d = mbDung(); if (!d || !mbTex.st) { dirty = true; return; }
+  const a = new Uint8Array(256);
+  d.can.forEach((c, i) => {
+    const q = canQuy(maDayDu(c, state.mb.tang));
+    a[i * 4] = q ? (q.tinhTrang === 'trong' ? 255 : 128) : 0;
+    a[i * 4 + 1] = state.mb.sel === i ? 255 : 0;
+    a[i * 4 + 2] = state.mb.hover === i ? 255 : 0;
+    a[i * 4 + 3] = 255;
+  });
+  gl.bindTexture(gl.TEXTURE_2D, mbTex.st); gl.texSubImage2D(gl.TEXTURE_2D, 0, 0, 0, 64, 1, gl.RGBA, gl.UNSIGNED_BYTE, a);
+  dirty = true;
+}
+function veMatBang(vp) {
+  const d = mbDung(), b = hopDeBeacon();
+  if (!d || !b || !mbTex.anh || !state.blocks) return;
+  gl.useProgram(gprog); gl.uniformMatrix4fv(U_.g_uVP, false, vp);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, mbTex.anh);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, mbTex.id);
+  gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, mbTex.st);
+  gl.uniform1i(U_.g_uTex, 0); gl.uniform1i(U_.g_uId, 1); gl.uniform1i(U_.g_uSt, 2);
+  gl.uniform2f(U_.g_uOrigin, b.x, W(b.y)); gl.uniform2f(U_.g_uSize, b.w, b.h); gl.uniform2f(U_.g_uPad, 1, 1); gl.uniform1f(U_.g_uRot, 0);
+  gl.uniform1i(U_.g_uMask, 5); gl.uniform1f(U_.g_uNight, nightLevel()); gl.uniform1f(U_.g_uZ, caoTang(state.mb.tang) + .08);
+  gl.bindVertexArray(gVAO); gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+  gl.uniform1f(U_.g_uZ, 0); gl.activeTexture(gl.TEXTURE0);
+}
+function trongDaGiac(x, y, poly) {
+  let o = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i], [xj, yj] = poly[j];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) o = !o;
+  }
+  return o;
+}
+function mbHit(cx, cy) {
+  const d = mbDung(), b = hopDeBeacon(); if (!d || !b) return -1;
+  const g = tiaMatDat(cx, cy, caoTang(state.mb.tang) + .08); if (!g) return -1;
+  const u = (g[0] - (b.x - b.w / 2)) / b.w, v = ((PLAN_H - g[1]) - (b.y - b.h / 2)) / b.h;
+  if (u < 0 || u > 1 || v < 0 || v > 1) return -1;
+  return d.can.findIndex(c => trongDaGiac(u * d.rong, v * d.cao, c.poly));
+}
+function moMatBang(tang, maMB, khu) {
+  khu = khu || (state.mb && state.mb.khu) || (MB && MB[state.zone] ? state.zone : 'beacon');
+  if (!MB || !MB[khu]) return;
+  tang = tangNhan(tang);
+  const moi = !state.mb || state.mb.khu !== khu;
+  state.mb = { khu, tang, sel: -1, hover: -1 };
+  state.zone = khu; state.sel = -1; state.tab = 'unit'; state.consignMa = null;
+  const d = mbDung();
+  if (d) { if (mbTex.khu !== d.anh) { mbTex.anh = mbTex.img = null; } napAnhMB(d); veNhanMB(); if (maMB) state.mb.sel = d.can.findIndex(c => c.toa + c.so === maMB); }
+  const b = hopDeBeacon(), h = caoTang(tang);
+  if (b && (moi || maMB)) fly({ tx: b.x, ty: W(b.y) - 18, tz: h, dist: innerWidth < 860 ? 270 : 175, pitch: 1.12, yaw: T.yaw });
+  else if (b) fly({ ...T, tz: h });
+  refreshStates(); capNhatTrangThaiMB(); render();
+}
+function dongMatBang() { state.mb = null; state.consignMa = null; $('#tip').hidden = true; const b = hopDeBeacon(); fly({ ...T, tz: 0 }); dirty = true; render(); }
+function buocTang(d) {
+  if (!state.mb) return;
+  const i = TANG_BEACON.indexOf(state.mb.tang), j = Math.max(2, Math.min(dsTang().length + 1, i + d));
+  if (j !== i) moMatBang(TANG_BEACON[j]);
+}
+function chonCanMB(k) {
+  if (!state.mb) return;
+  state.mb.sel = k; state.tab = 'unit'; state.keepScroll = false; capNhatTrangThaiMB(); render();
+  if (innerWidth < 860) { const p = $('#panel'); if (p) p.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+}
+function veThanhMB() {
+  let el = $('#mbBar');
+  if (!state.mb) { if (el) el.hidden = true; return; }
+  if (!el) { el = document.createElement('div'); el.id = 'mbBar'; el.className = 'mbbar'; $('#stage').append(el); }
+  const d = mbDung();
+  el.hidden = false;
+  el.innerHTML = `<span class="dot"></span><span><span class="pre">Mặt cắt 3D · ${TEN_KHU[state.mb.khu]} · </span><b>Tầng ${esc(state.mb.tang)}</b>${d ? ` <span class="mute">(mặt bằng điển hình ${esc(d.tenTang)})</span>` : ' <span class="mute">· mặt bằng tầng này chưa số hoá</span>'}</span>
+    <button type="button" data-mbbuoc="-1" aria-label="Xuống một tầng">−</button><button type="button" data-mbbuoc="1" aria-label="Lên một tầng">+</button>
+    <button type="button" class="dong" data-mbdong="1">Hiện đủ ✕</button>`;
+}
+// Tiến độ thanh toán Beacon theo CSBH02/B-BC/SPG/07-2026 (áp dụng từ 10/07/2026), Tú gửi trong thư mục CSBH 19/11/2026.
+// Giá trong quỹ đã gồm VAT 10% và KPBT 2% tính trên giá chưa VAT, nên giá chưa VAT = giá quỹ / 1,12.
+const CSBH_BEACON = { ma: 'CSBH02/B-BC/SPG/07-2026', tu: '10/07/2026', ckKhongVay: .05, htlsThang: 30, htlsDen: '2029-01-31', nhanNha: '31/05/2028', banGiao: '31/05/2030' };
+function tienDoBeacon(c, cach) {
+  const gia = c.gia, P0 = gia / 1.12, G = P0 * 1.1, KPBT = gia - G, coc = /^3BR/.test(c.loai) ? 150e6 : 100e6;
+  const r = [['Ký HĐTHNV (đặt cọc)', coc, 'Khi ký'], ['Thanh toán lần 2, đủ 15% giá trị căn hộ', .15 * G - coc, 'Ngày thứ 10']];
+  if (cach === 'vay') {
+    r.push(['Ký HĐMB · ngân hàng giải ngân tối đa 70%', .7 * G, 'Trong 15 ngày sau ký HĐMB (khoảng ngày 55)', 1]);
+    r.push(['Thanh toán lần 4', .1 * G, 'Ngày thứ 100']);
+    r.push(['Bàn giao: 100% KPBT và VAT của 5% cuối', KPBT + .005 * P0, `Dự kiến ${CSBH_BEACON.nhanNha}`]);
+  } else {
+    [100, 220, 340, 460, 580].forEach((n, i) => r.push([`Thanh toán lần ${i + 3}`, .1 * G, `Ngày thứ ${n}`]));
+    r.push(['Thanh toán lần 8 · đủ 70%, được nhận nhà để ở', .05 * G, 'Ngày thứ 670']);
+    [820, 970, 1120, 1270, 1420].forEach((n, i) => r.push([`Thanh toán lần ${i + 9}`, .05 * G, `Ngày thứ ${n}`]));
+    r.push(['Bàn giao chính thức: 100% KPBT và VAT của 5% cuối', KPBT + .005 * P0, `Dự kiến ${CSBH_BEACON.banGiao}`]);
+  }
+  r.push(['Ký quỹ cấp sổ 5% (chưa VAT), chủ đầu tư trả lãi 8%/năm', .05 * P0, 'Cùng đợt bàn giao, khấu trừ khi nhận sổ']);
+  return { r, gia, P0, G, KPBT, vay: cach === 'vay' ? .7 * G : 0, ck: cach === 'vay' ? 0 : CSBH_BEACON.ckKhongVay * P0 };
+}
+function goiBanTinh(c, t) {
+  const hom = new Date(), ngay = (n) => { const x = new Date(hom.getTime() + n * 864e5); return x.toISOString().slice(0, 10); };
+  const bd = ngay(55), den = new Date(CSBH_BEACON.htlsDen + 'T00:00:00');
+  const thang = Math.max(0, Math.min(CSBH_BEACON.htlsThang, Math.floor((den - new Date(bd + 'T00:00:00')) / (30.44 * 864e5))));
+  const p = { v: 1, src: { project: 'Blanca City · Beacon Tower', unit: c.ma, method: 'Vay hỗ trợ lãi suất · ' + CSBH_BEACON.ma },
+    f: { limit: Math.round(t.vay), start: bd, months: 300, method: 'emi', promo: 7, promoMonths: 12, floating: 10.5, grace: thang, basis: 'monthly', due: 'anniv', repay: 'recast', rateMode: 'period', price: Math.round(t.gia), htls: thang, htlsPct: 100 },
+    tranches: [{ date: bd, amount: Math.round(t.vay) }] };
+  return '/ban-tinh-tai-chinh/#nhan=' + btoa(unescape(encodeURIComponent(JSON.stringify(p)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function layoutSvg(d, c) {
+  const [x0, y0] = d.khung, xs = c.poly.map(p => p[0] + x0), ys = c.poly.map(p => p[1] + y0), pad = 46;
+  const bx = Math.min(...xs) - pad, by = Math.min(...ys) - pad, bw = Math.max(...xs) - Math.min(...xs) + pad * 2, bh = Math.max(...ys) - Math.min(...ys) + pad * 2;
+  return `<svg class="mblayout" viewBox="${bx} ${by} ${bw} ${bh}" role="img" aria-label="Layout căn ${esc(c.ma)} trên mặt bằng tầng"><image href="${esc(d.nguon)}" width="1728" height="972"/><polygon points="${c.poly.map(p => (p[0] + x0) + ',' + (p[1] + y0)).join(' ')}" fill="#e8743b22" stroke="#e8743b" stroke-width="3"/></svg>`;
+}
+function mbHtml() {
+  const m = state.mb, d = mbDung();
+  const ds = dsTang(), dung = new Set(MB[m.khu].tangDung), ten = TEN_KHU[m.khu];
+  const chon = `<label class="small">Tầng <select id="mbTangSel">${ds.map(t => `<option value="${t}"${t === m.tang ? ' selected' : ''}>Tầng ${t}${dung.has(t) ? '' : ' (chưa số hoá)'}</option>`).join('')}</select></label>`;
+  let h = `<p><button class="chip" data-mbdong="1">← Hiện đủ khối</button></p><h2>Mặt bằng ${ten} · Tầng ${esc(m.tang)}</h2>${chon}`;
+  if (!d) return h + `<div class="note">Tầng ${esc(m.tang)} có mặt bằng riêng trong hồ sơ, chưa số hoá để chọn căn trên khối 3D. Xem bản vẽ ở hồ sơ ${ten} hoặc chọn tầng ${esc(MB[m.khu].tenTang)}.</div>`;
+  const q = d.can.map((c, i) => ({ c, i, k: canQuy(maDayDu(c, m.tang)) }));
+  const coQuy = CAN && CAN.can.some(x => x.phanKhu === m.khu);
+  const trong = q.filter(x => x.k && x.k.tinhTrang === 'trong'), coc = q.filter(x => x.k && x.k.tinhTrang === 'coc');
+  h += `<p class="mbchu small"><span class="o trong"></span>Còn trống trong quỹ đại lý <span class="o coc"></span>Đã cọc <span class="o"></span>Chưa có trong quỹ đại lý</p>`;
+  if (m.sel >= 0 && d.can[m.sel]) h += mbCard(d, d.can[m.sel], m.tang);
+  else h += `<div class="note">Chạm vào một căn trên mặt bằng tầng ${esc(m.tang)} để xem ${coQuy ? 'giá, layout và tiến độ thanh toán' : 'loại căn, diện tích và layout'}. Dùng − + ở thanh trên hoặc dải tầng bên phải để đổi tầng.</div>`;
+  h += `<h3>Căn trong quỹ đại lý ở tầng ${esc(m.tang)}</h3>` + (trong.length + coc.length
+    ? `<div class="mbds">${[...trong, ...coc].map(x => `<button class="chip" data-mbcan="${x.i}" aria-pressed="${m.sel === x.i}">${esc(x.k.ma)} · ${esc(tenLoai(x.c.loai))} · ${x.k.tinhTrang === 'trong' ? tien(x.k.gia) : 'đã cọc'}</button>`).join('')}</div>`
+    : !coQuy ? `<p class="mute small">Quỹ đại lý chưa có căn ${ten}. Mã, loại và diện tích lấy từ mặt bằng của chủ đầu tư; giá cập nhật khi có bảng hàng.</p>`
+    : `<p class="mute small">Quỹ đại lý chưa có căn nào ở tầng này. Các tầng có căn: ${[...new Set(CAN.can.filter(x => x.phanKhu === m.khu).map(x => tangNhan(x.tang)))].sort((a, b) => tangSo(a) - tangSo(b)).map(t => `<button class="chip" style="padding:1px 8px" data-mbtang="${t}">${t}</button>`).join(' ')}</p>`);
+  h += `<p class="mute small">Mặt bằng: ${esc(d.ghiChu)} Mã căn, loại và diện tích trên mặt bằng đọc từ ô nhãn của bản vẽ; giá và tình trạng chỉ có ở căn nằm trong quỹ đại lý (${esc(CAN.capNhat)}).</p>`;
+  return h;
+}
+function mbCard(d, c, tang) {
+  const ma = maDayDu(c, tang), k = canQuy(ma), cach = state.pttt || 'khong-vay';
+  const tt = k ? (k.tinhTrang === 'trong' ? '<span class="tt trong">Còn trống</span>' : '<span class="tt coc">Đã cọc</span>') : '<span class="badge">Chưa có trong quỹ đại lý</span>';
+  const kk = 'can:' + ma;
+  let h = `<div class="card mbcard"><p class="mute small">${TEN_KHU[khuMB()]} · toà ${esc(c.toa)} · tầng ${esc(tang)} · căn ${esc(c.so)}</p>
+    <h3>${esc(ma)} · ${esc(tenLoai(k ? k.loai : c.loai))}</h3><p>${tt}</p>
+    <table class="kv"><tbody>
+      <tr><td>Thông thủy</td><td class="r">${k && k.thongThuy ? k.thongThuy : c.thongThuy} m²${k ? '' : ' <span class="mute small">(theo mặt bằng)</span>'}</td></tr>
+      <tr><td>Tim tường</td><td class="r">${k && k.timTuong ? k.timTuong : c.timTuong} m²${k ? '' : ' <span class="mute small">(theo mặt bằng)</span>'}</td></tr>
+      <tr><td>Giá đã gồm VAT và KPBT</td><td class="r"><b>${k && k.gia ? tien(k.gia) : 'Liên hệ'}</b></td></tr>
+    </tbody></table>
+    ${layoutSvg(d, c)}
+    <p class="mute small">Layout tách từ mặt bằng tầng điển hình của chủ đầu tư. <button class="chip" style="padding:1px 8px" data-zoom="${esc(d.nguon)}">Phóng to mặt bằng tầng</button></p>
+    <div class="row"><button class="btn primary" data-mbhoi="${esc(ma)}">${inCart(kk) ? '✓ Đã thêm, xem giỏ' : 'Thêm vào giỏ · hỏi căn này'}</button><button class="btn" data-mbky="${esc(ma)}">Ký gửi căn này</button></div></div>`;
+  if (k && k.gia) {
+    const t = tienDoBeacon(k, cach), tong = t.r.reduce((s, x) => s + x[1], 0);
+    h += `<h3>Tiến độ thanh toán</h3>
+    <p class="seg" role="group" aria-label="Phương thức"><button type="button" data-pttt="khong-vay" aria-pressed="${cach !== 'vay'}">Không vay · giãn 48 tháng</button><button type="button" data-pttt="vay" aria-pressed="${cach === 'vay'}">Vay hỗ trợ lãi suất</button></p>
+    <table class="tdo"><thead><tr><th>Đợt</th><th class="r">Số tiền</th></tr></thead><tbody>
+    ${t.r.map(([ten, so, han, nh]) => `<tr${nh ? ' class="nh"' : ''}><td>${esc(ten)}<br><span class="mute small">${esc(han)}</span></td><td class="r">${soVN(Math.round(so))}</td></tr>`).join('')}
+    <tr class="tong"><td>Tổng</td><td class="r">${soVN(Math.round(tong))}</td></tr></tbody></table>
+    ${cach === 'vay'
+      ? `<p class="small">Vốn tự có <b>${soVN(Math.round(t.gia - t.vay))}</b> · ngân hàng cho vay tối đa <b>${soVN(Math.round(t.vay))}</b> (70% giá trị căn hộ gồm VAT). Chủ đầu tư hỗ trợ lãi suất tối đa ${CSBH_BEACON.htlsThang} tháng từ lần giải ngân đầu, không quá 31/01/2029; sau đó lãi suất theo ngân hàng.</p>
+         <p><a class="btn block" href="${goiBanTinh(k, t)}" target="_top">Tính khoản vay chi tiết ở Bản tính tài chính →</a></p>`
+      : `<p class="small">Khách không vay được chiết khấu ${CSBH_BEACON.ckKhongVay * 100}% trên giá chưa VAT và KPBT, khoảng <b>${soVN(Math.round(t.ck))}</b>, trừ thẳng vào giá trị căn hộ. Bảng trên tính trên giá trong quỹ, <b>chưa trừ</b> chiết khấu này.</p>`}
+    <p class="mute small">Theo chính sách bán hàng ${esc(CSBH_BEACON.ma)}, áp dụng từ ${esc(CSBH_BEACON.tu)}. Chủ đầu tư có thể đổi chính sách mà không báo trước; số chính xác theo phiếu tính giá chính thức. Đây là minh hoạ dòng tiền, không phải báo giá.</p>`;
+  }
+  return h;
 }
 
 /* ---------- la bàn và kim chỉ hướng trên sa bàn ---------- */
@@ -730,6 +1086,22 @@ function veLaBan() {
 }
 
 /* ---------- nhãn nổi trên khối ---------- */
+// Nhãn phân khu: Casa Villa neo ở (470, 200) trên bản vẽ rồi dời theo độ dời trung bình của các căn;
+// nhãn tháp đặt ở trọng tâm các khối tháp cùng phân khu, nên luôn đi theo khối khi đổi nền.
+const NHAN_GOC = { casa: [470, 200], beachtro: [441.5, 85.5], beacon: [543.5, 84.5], b123: [666, 273], b567: [321, 273] };
+function capNhatNhanViTri() {
+  const box = $('#labels'); if (!box) return;
+  let dx = 0, dy = 0; for (const u of U) { dx += u.x - u.px; dy += u.y - u.py; }
+  const n = U.length || 1;
+  for (const b of box.children) {
+    const key = b.dataset.zone; if (!key || !NHAN_GOC[key]) continue;
+    let [x, y] = NHAN_GOC[key];
+    if (key === 'casa') { x += dx / n; y += dy / n; }
+    else { const t = TOWERS.filter(o => o.zone === key); if (t.length) { x = t.reduce((s, o) => s + o.x, 0) / t.length; y = t.reduce((s, o) => s + o.y, 0) / t.length; } }
+    const z = b.dataset.p ? b.dataset.p.split(',')[2] : 14;
+    b.dataset.p = [x, W(y), z].join(',');
+  }
+}
 function buildLabels() {
   const box = $('#labels'); box.innerHTML = '<span class="lbl pin" id="pin" hidden></span>';
   const defs = [['casa', 'Casa Villa', 470, 200, 14], ['beachtro', 'Beachtro', 441.5, 85.5, 62], ['beacon', 'Beacon', 543.5, 84.5, 62], ['b123', 'Cụm B1–B3', 666, 273, 34], ['b567', 'Cụm B5–B7', 321, 273, 34]];
@@ -740,7 +1112,7 @@ function buildLabels() {
     b.onclick = () => selectZone(key); box.append(b);
     if (lead) { const l = document.createElementNS('http://www.w3.org/2000/svg', 'line'); l.dataset.zone = key; lead.append(l); }
   });
-  capNhatGiaNhan();
+  capNhatGiaNhan(); if (U.length && U[0].px != null) capNhatNhanViTri();
 }
 function giaPhanKhu(key) {
   const g = inv.giaPhanKhu && inv.giaPhanKhu[key];
@@ -772,7 +1144,8 @@ function placeLabels() {
     if (b.id === 'pin') continue;
     const key = b.dataset.zone, [x, y, z] = b.dataset.p.split(',').map(Number);
     const p = proj(x, y, z);
-    const show = !!p && !state.hideLabels && (state.zone === 'all' || state.zone === key) && !(key === 'casa' && C.dist < 170);
+    // nhìn xa trên 4–5 km thì nhãn phân khu chồng lên nhau: ẩn đi, chỉ còn ranh dự án
+    const show = !!p && !state.hideLabels && C.dist < 2200 && (state.zone === 'all' || state.zone === key) && !(key === 'casa' && C.dist < 170);
     b.style.opacity = show ? 1 : 0; b.style.pointerEvents = show ? 'auto' : 'none';
     b.setAttribute('aria-pressed', String(state.zone === key));
     const l = lead && $(`line[data-zone="${key}"]`, lead);
@@ -801,6 +1174,12 @@ function frame(t) {
   const dt = Math.min(.05, (t - last) / 1000 || .016); last = t;
   const k = 1 - Math.exp(-dt * 7);
   let moving = false;
+  const dich = viTriDich();
+  if (VT.dich !== dich) { VT.dich = dich; VT.tu = VT.t; VT.batDau = t; }
+  if (VT.t !== dich) {
+    const k2 = reduce ? 1 : Math.min(1, (t - VT.batDau) / 700), e = k2 * k2 * (3 - 2 * k2);
+    datViTri(k2 >= 1 ? dich : VT.tu + (dich - VT.tu) * e); uploadStatic(); moving = true;
+  }
   for (const key of ['tx', 'ty', 'tz', 'dist', 'yaw', 'pitch']) {
     const d = T[key] - C[key];
     if (Math.abs(d) > (key === 'dist' ? C.dist * 5e-4 : 5e-4)) { C[key] += d * k; moving = true; } else C[key] = T[key];
@@ -809,6 +1188,15 @@ function frame(t) {
   if (moving || dirty) { resize(); gl.bindFramebuffer(gl.FRAMEBUFFER, null); drawScene(false); placeLabels(); veLaBan(); hienDoCao(); dirty = false; }
 }
 function doHover(x, y) {
+  if (state.mb && mbDung()) {
+    const k = mbHit(x, y);
+    if (k !== state.mb.hover) { state.mb.hover = k; capNhatTrangThaiMB(); }
+    if (k >= 0) {
+      const c = mbDung().can[k], tip = $('#tip'), r = $('#stage').getBoundingClientRect();
+      if (!matchMedia('(hover:none)').matches) { tip.hidden = false; tip.textContent = maDayDu(c, state.mb.tang) + ' · ' + tenLoai(c.loai); tip.style.left = (x - r.left) + 'px'; tip.style.top = (y - r.top) + 'px'; }
+      canvas.classList.add('hit'); return;
+    }
+  }
   const id = pickAt(x, y);
   if (id !== state.hover) { state.hover = id; refreshStates(); showTip(id, x, y); canvas.classList.toggle('hit', id >= 0); } else if (id >= 0) showTip(id, x, y);
 }
@@ -824,51 +1212,117 @@ function showTip(id, x, y) {
 }
 
 /* ---------- thao tác chuột / cảm ứng ---------- */
-const ptrs = new Map(); let down = null, pinch0 = null;
+// Điều khiển kiểu Google Maps:
+//   chuột: kéo trái = trượt bản đồ (điểm dưới con trỏ bám theo tay); kéo phải, kéo giữa hoặc Ctrl/Shift + kéo = xoay và nghiêng;
+//          lăn chuột = thu phóng về phía con trỏ; nhấp đúp vào nền = phóng to tại chỗ.
+//   cảm ứng: một ngón = trượt; hai ngón chụm/mở = thu phóng, xoay hai ngón = xoay, hai ngón cùng vuốt dọc = nghiêng.
+const ptrs = new Map(); let down = null, hai = null;
+const GIOI_HAN = { x0: -2600, x1: 3600, y0: -2600, y1: 3200 };
+function tiaMatDat(cx, cy, h = 0) {
+  // Tia từ camera hiện tại qua điểm màn hình (cx, cy) cắt mặt đất z = 0. Trả về null nếu tia hướng lên trời.
+  const r = canvas.getBoundingClientRect(), nx = ((cx - r.left) / r.width) * 2 - 1, ny = 1 - ((cy - r.top) / r.height) * 2;
+  const cp = Math.cos(C.pitch), e = [C.tx + C.dist * Math.sin(C.yaw) * cp, C.ty - C.dist * Math.cos(C.yaw) * cp, C.tz + C.dist * Math.sin(C.pitch)];
+  let f = [C.tx - e[0], C.ty - e[1], C.tz - e[2]]; const fl = Math.hypot(...f); f = f.map(v => v / fl);
+  let rr = [f[1], -f[0], 0]; const rl = Math.hypot(...rr) || 1; rr = rr.map(v => v / rl);
+  const u = [rr[1] * f[2] - rr[2] * f[1], rr[2] * f[0] - rr[0] * f[2], rr[0] * f[1] - rr[1] * f[0]];
+  const th = Math.tan(.33), a = r.width / r.height;
+  const d = [0, 1, 2].map(i => f[i] + nx * th * a * rr[i] + ny * th * u[i]);
+  if (d[2] > -1e-4 || e[2] <= h) return null;
+  const t = (h - e[2]) / d[2];
+  if (t > XA_NHAT * 6) return null;
+  return [e[0] + d[0] * t, e[1] + d[1] * t];
+}
+function datTam(tx, ty) {
+  T.tx = C.tx = Math.max(GIOI_HAN.x0, Math.min(GIOI_HAN.x1, tx)); T.ty = C.ty = Math.max(GIOI_HAN.y0, Math.min(GIOI_HAN.y1, ty));
+}
+function keoTheoDiem(g0, cx, cy) {   // dời tâm sao cho điểm mặt đất g0 nằm dưới (cx, cy)
+  const g = tiaMatDat(cx, cy); if (!g0 || !g) return;
+  datTam(C.tx + g0[0] - g[0], C.ty + g0[1] - g[1]);
+}
+function phongTai(cx, cy, he) {      // thu phóng giữ nguyên điểm dưới con trỏ
+  const g0 = tiaMatDat(cx, cy);
+  T.dist = C.dist = Math.max(28, Math.min(XA_NHAT, C.dist * he));
+  if (g0) keoTheoDiem(g0, cx, cy);
+  dirty = true;
+}
 canvas.addEventListener('pointerdown', e => {
   canvas.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
-  if (ptrs.size === 1) down = { x: e.clientX, y: e.clientY, t: performance.now(), moved: false, pan: e.button === 2 || e.shiftKey };
-  else { down && (down.moved = true); const [a, b] = [...ptrs.values()]; pinch0 = { d: Math.hypot(a.x - b.x, a.y - b.y), dist: T.dist, cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 }; }
+  Object.assign(T, { tx: C.tx, ty: C.ty, dist: C.dist, yaw: C.yaw, pitch: C.pitch });   // dừng mọi chuyển động bay
+  if (ptrs.size === 1) {
+    const xoay = e.button === 2 || e.button === 1 || e.ctrlKey || e.shiftKey || e.altKey || e.metaKey;
+    down = { x: e.clientX, y: e.clientY, t: performance.now(), moved: false, xoay, g0: xoay ? null : tiaMatDat(e.clientX, e.clientY) };
+  } else if (ptrs.size === 2) {
+    down && (down.moved = true);
+    const [a, b] = [...ptrs.values()];
+    hai = { d: Math.hypot(a.x - b.x, a.y - b.y), goc: Math.atan2(b.y - a.y, b.x - a.x), cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2, ya: a.y, yb: b.y };
+    hai.g0 = tiaMatDat(hai.cx, hai.cy);
+  }
 });
 canvas.addEventListener('pointermove', e => {
   const p = ptrs.get(e.pointerId);
   if (!p) { if (e.pointerType === 'mouse') hoverReq = { x: e.clientX, y: e.clientY }; return; }
   const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
-  if (ptrs.size >= 2 && pinch0) {
-    const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
-    T.dist = Math.max(28, Math.min(XA_NHAT, pinch0.dist * pinch0.d / Math.max(10, d))); C.dist = T.dist;
-    pan((cx - pinch0.cx), (cy - pinch0.cy)); pinch0.cx = cx; pinch0.cy = cy; dirty = true; return;
+  if (ptrs.size >= 2 && hai) {
+    const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), goc = Math.atan2(b.y - a.y, b.x - a.x), cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+    const dya = a.y - hai.ya, dyb = b.y - hai.yb;
+    // hai ngón cùng vuốt dọc, khoảng cách và góc gần như không đổi: nghiêng
+    if (Math.sign(dya) === Math.sign(dyb) && Math.abs(dya - dyb) < 6 && Math.abs(d - hai.d) < 8 && Math.abs(cy - hai.cy) > Math.abs(cx - hai.cx)) {
+      T.pitch = C.pitch = Math.max(.2, Math.min(1.5, C.pitch + (cy - hai.cy) * .006));
+    } else {
+      T.dist = C.dist = Math.max(28, Math.min(XA_NHAT, C.dist * hai.d / Math.max(10, d)));
+      let dg = goc - hai.goc; if (dg > Math.PI) dg -= 2 * Math.PI; if (dg < -Math.PI) dg += 2 * Math.PI;
+      T.yaw = C.yaw = C.yaw - dg;
+      keoTheoDiem(hai.g0, cx, cy);
+    }
+    Object.assign(hai, { d, goc, cx, cy, ya: a.y, yb: b.y }); hai.g0 = tiaMatDat(cx, cy);
+    dirty = true; return;
   }
   if (!down) return;
   if (!down.moved && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) { down.moved = true; canvas.classList.add('drag'); $('#tip').hidden = true; }
   if (!down.moved) return;
-  if (down.pan) pan(dx, dy);
-  else { T.yaw += dx * .006; T.pitch = Math.max(.2, Math.min(1.5, T.pitch + dy * .005)); C.yaw = T.yaw; C.pitch = T.pitch; }
+  if (down.xoay) { T.yaw = C.yaw = C.yaw + dx * .006; T.pitch = C.pitch = Math.max(.2, Math.min(1.5, C.pitch + dy * .005)); }
+  else if (down.g0) keoTheoDiem(down.g0, e.clientX, e.clientY);
+  else pan(dx, dy);
   dirty = true;
 });
 function pan(dx, dy) {
   const s = C.dist * .0011, c = Math.cos(C.yaw), sn = Math.sin(C.yaw);
-  T.tx = C.tx = Math.max(-100, Math.min(1060, C.tx - (dx * c + dy * sn * 1.2) * s)); T.ty = C.ty = Math.max(-100, Math.min(640, C.ty + (dx * sn - dy * c * 1.2) * s));
+  datTam(C.tx - (dx * c + dy * sn * 1.2) * s, C.ty + (dx * sn - dy * c * 1.2) * s);
 }
 const endPtr = e => {
-  ptrs.delete(e.pointerId); if (ptrs.size < 2) pinch0 = null; canvas.classList.remove('drag');
+  ptrs.delete(e.pointerId); if (ptrs.size < 2) hai = null; canvas.classList.remove('drag');
   if (down && e.type === 'pointerup' && !down.moved && performance.now() - down.t < 600 && ptrs.size === 0) clickAt(e.clientX, e.clientY);
   if (ptrs.size === 0) down = null;
+  else if (ptrs.size === 1 && down) { const [q] = [...ptrs.values()]; down.g0 = tiaMatDat(q.x, q.y); down.xoay = false; }
 };
 canvas.addEventListener('pointerup', endPtr); canvas.addEventListener('pointercancel', endPtr);
 canvas.addEventListener('pointerleave', () => { if (state.hover >= 0 && !ptrs.size) { state.hover = -1; refreshStates(); $('#tip').hidden = true; } });
 canvas.addEventListener('contextmenu', e => e.preventDefault());
-canvas.addEventListener('wheel', e => { e.preventDefault(); T.dist = Math.max(28, Math.min(XA_NHAT, T.dist * Math.exp(e.deltaY * .0012))); dirty = true; }, { passive: false });
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const dy = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaY;
+  phongTai(e.clientX, e.clientY, Math.exp(Math.max(-300, Math.min(300, dy)) * .0016));
+}, { passive: false });
 let lastTap = 0;
 function clickAt(x, y) {
   const id = pickAt(x, y);
   const now = performance.now(), dbl = now - lastTap < 350; lastTap = now;
-  if (id < 0) return;
+  if (state.mb && mbDung()) { const k = mbHit(x, y); if (k >= 0) { chonCanMB(k); return; } }
+  if (id < 0) { if (dbl) phongTai(x, y, .5); return; }
   if (id < U.length) { selectUnit(id, { fly: true }); if (dbl) fly({ ...T, dist: 55, pitch: 1.05 }); }
-  else selectZone(TOWERS[id - U.length].zone);
+  else if (TOWERS[id - U.length].can) {
+    const c = CAN.can.find(x => x.ma === TOWERS[id - U.length].can); if (c) moMatBang(tangNhan(c.tang), c.toa + c.can, c.phanKhu);
+  } else {
+    const z = TOWERS[id - U.length].zone;
+    // chạm lần hai vào Beacon: bóc tầng, mở mặt bằng để chọn căn
+    if (MB && MB[z] && state.zone === z && !state.mb) moMatBang(tangMacDinh(z), null, z);
+    else if (!state.mb || z !== state.mb.khu) selectZone(z);
+  }
 }
 canvas.addEventListener('keydown', e => {
   const k = e.key;
+  const buoc = 60;
+  if (k.startsWith('Arrow') && !e.shiftKey) { pan(k === 'ArrowLeft' ? buoc : k === 'ArrowRight' ? -buoc : 0, k === 'ArrowUp' ? buoc : k === 'ArrowDown' ? -buoc : 0); e.preventDefault(); dirty = true; return; }
   if (k === 'ArrowLeft') T.yaw -= .12; else if (k === 'ArrowRight') T.yaw += .12; else if (k === 'ArrowUp') T.pitch = Math.min(1.5, T.pitch + .08); else if (k === 'ArrowDown') T.pitch = Math.max(.2, T.pitch - .08);
   else if (k === '+' || k === '=') T.dist = Math.max(28, T.dist * .85); else if (k === '-') T.dist = Math.min(XA_NHAT, T.dist / .85); else if (k === 'Escape') { selectUnit(-1); return; } else return;
   e.preventDefault(); dirty = true;
@@ -877,6 +1331,7 @@ canvas.addEventListener('keydown', e => {
 /* ---------- chọn / lọc ---------- */
 function selectZone(key, o = {}) {
   if (!ZONES.some(z => z.key === key)) key = 'all';
+  if (state.mb && key !== state.mb.khu) { state.mb = null; state.consignMa = null; }
   state.zone = key; state.type = o.type ?? -1; state.sel = -1; state.sheet = state.sheet || 0;
   if (!(key === 'casa')) state.q = '';
   fly(zoneView(key, state.type));
@@ -886,7 +1341,7 @@ function selectZone(key, o = {}) {
 function selectType(t) { state.type = t; fly(zoneView('casa', t)); refreshStates(); render(); }
 function selectUnit(i, o = {}) {
   if (i < 0) { state.sel = -1; refreshStates(); if (state.tab === 'unit') render(); return; }
-  const u = U[i]; state.zone = 'casa'; state.sel = i; state.tab = 'unit';
+  const u = U[i]; state.mb = null; state.consignMa = null; state.zone = 'casa'; state.sel = i; state.tab = 'unit';
   if (o.fly !== false) fly({ tx: u.x, ty: W(u.y), tz: 7, dist: 118, pitch: .88, yaw: T.yaw });
   syncHash(); refreshStates(); render();
 }
@@ -924,7 +1379,7 @@ function envHtml() {
   ${dangXem ? '<p class="small mute">Đang theo giờ thực. Kéo thanh giờ ở đáy sa bàn để xem nắng đổ hướng nào vào giờ khác trong ngày hôm nay.</p>' : '<p class="small"><button class="btn" data-sun="now">↺ Về giờ thực</button></p>'}
   <div class="note">Hướng nắng và bóng đổ trên sa bàn đổi theo mùa và theo giờ thật của Vũng Tàu, không phải hiệu ứng cố định.</div>
   <h3>Nền bản đồ</h3>
-  <p class="small mute">${state.osm === 'xong' ? `Đã ghép ${osm.soTile} ô ${NEN.kieu === 've-tinh' ? 'ảnh vệ tinh' : 'bản đồ'} ở mức thu phóng ${osm.zoom} cho khu đất${osmXa.soTile ? `, thêm ${osmXa.soTile} ô ở mức ${osmXa.zoom} mở rộng ra biển và khu xung quanh` : ''}, xoay về đúng hướng Bắc thật.` : state.osm === 'loi' ? 'Chưa tải được ô bản đồ.' : 'Đang tải nền bản đồ…'}</p>
+  <p class="small mute">${state.osm === 'xong' ? `Đã ghép ${osm.soTile} ô ${NEN.kieu === 've-tinh' ? 'ảnh vệ tinh' : 'bản đồ'} ở mức thu phóng ${osm.zoom} cho khu đất${osmGiua.soTile ? `, ${osmGiua.soTile} ô mức ${osmGiua.zoom} cho phố và biển quanh dự án` : ''}${osmXa.soTile ? `, ${osmXa.soTile} ô mức ${osmXa.zoom} cho vùng rộng khoảng 28 km` : ''}, xoay về đúng hướng Bắc thật.` : state.osm === 'loi' ? 'Chưa tải được ô bản đồ.' : 'Đang tải nền bản đồ…'}</p>
   <p>${baseSeg()}</p>
   <h3>Màu khối</h3>
   <p>${legendHtml()}</p>
@@ -958,12 +1413,17 @@ function renderChrome() {
   for (const b of document.querySelectorAll('.rb')) b.setAttribute('aria-pressed', String(b.dataset.rail === 'blocks' ? !state.blocks : state.rail === b.dataset.rail));
   const fr = $('#floorRail');
   if (fr) {
-    const hien = state.rail === 'floors';
+    const hien = state.rail === 'floors' || !!state.mb;
     fr.hidden = !hien;
-    if (hien) fr.innerHTML = '<b>CAO ĐỘ</b>' + FLOORS.map(([t, z]) => `<button class="fb" data-cut="${z}" aria-pressed="${state.cut === z}">${t}</button>`).join('');
+    if (state.mb) {
+      const ds = dsTang().slice().reverse(), dung = new Set((mbDung() || { tangDung: [] }).tangDung);
+      fr.innerHTML = '<b>TẦNG</b><button class="fb" data-mbdong="1" title="Hiện đủ khối, thoát bóc tầng">Mái</button>' + ds.map(t => `<button class="fb${dung.has(t) ? '' : ' xam'}" data-mbtang="${t}" aria-pressed="${state.mb.tang === t}" title="${dung.has(t) ? 'Có mặt bằng tầng để chọn căn' : 'Mặt bằng tầng này chưa số hoá'}">T${t}</button>`).join('');
+      const on = fr.querySelector('[aria-pressed=true]'); if (on) on.scrollIntoView({ block: 'nearest' });
+    } else if (hien) fr.innerHTML = '<b>CAO ĐỘ</b>' + FLOORS.map(([t, z]) => `<button class="fb" data-cut="${z}" aria-pressed="${state.cut === z}">${t}</button>`).join('');
+    veThanhMB();
   }
   const cap = $('#caption');
-  if (cap) cap.textContent = `Blanca City · 96,6 ha · Sun Group — sa bàn mô phỏng theo tổng mặt bằng, ${hasInv() ? 'bảng hàng ' + (inv.updatedAt ? fmtTime(inv.updatedAt) : 'đã nạp') : 'chưa có bảng hàng chính thức'}${state.base !== 'plan' && state.osm === 'xong' ? ' · nền bản đồ ' + NEN.ghiNhan : ''} · Kéo xoay · Lăn chuột thu phóng · Giữ Shift để trượt`;
+  if (cap) cap.textContent = `Blanca City · 96,6 ha · Sun Group — sa bàn mô phỏng theo tổng mặt bằng, ${hasInv() ? 'bảng hàng ' + (inv.updatedAt ? fmtTime(inv.updatedAt) : 'đã nạp') : 'chưa có bảng hàng chính thức'}${state.base !== 'plan' && state.osm === 'xong' ? ' · nền bản đồ ' + NEN.ghiNhan : ''} · Kéo để di chuyển · Chuột phải hoặc Ctrl + kéo để xoay, nghiêng · Lăn chuột thu phóng · Hai ngón xoay, chụm, vuốt dọc để nghiêng`;
   capNhatDongHo();
 }
 function capNhatDongHo() {
@@ -994,7 +1454,7 @@ function render() {
 function exploreHtml() {
   return `<h2>Chọn phân khu</h2><p class="mute small">Chạm khối trên sa bàn hoặc chọn tại đây, cả hai mở cùng một hồ sơ.</p>
   <div class="zones">${ZONES.map(z => `<button class="zone" type="button" data-zone="${z.key}" aria-pressed="${state.zone === z.key}"><span class="dot" style="background:${z.col}"></span><b>${esc(z.name)}</b><span>${esc(z.sub)}</span><em>›</em></button>`).join('')}</div>
-  <div class="note"><b>Về dữ liệu:</b> vị trí và hình khối từng căn Casa Villa là <b>mô phỏng</b> theo tổng mặt bằng, chia đều theo chiều dài dãy; ranh lô, khoảng lùi, mái và chiều cao là ước tính. Khối tháp dựng theo số tầng công bố trong hồ sơ tư vấn 7/8/2026 (2 tầng khối đế cao 5 m, tầng căn hộ cao 3,6 m); chân tháp Beacon và Beachtro cắt theo đường bao công trình trên tổng mặt bằng, đối chiếu layout tầng điển hình; cụm B dựng khối hộp theo đúng hình trên tổng mặt bằng. Số căn đang bán chỉ hiện khi có bảng hàng chính thức.</div>
+  <div class="note"><b>Về dữ liệu:</b> hình khối từng căn Casa Villa là <b>mô phỏng</b> theo tổng mặt bằng; ranh lô, khoảng lùi, mái và chiều cao là ước tính. Trên nền bản đồ, mỗi khối nhà được tách riêng và đặt theo ghim thực địa đo trên ảnh vệ tinh 19/11/2026 (khối chưa xây đặt theo bước khối bên cạnh); trên nền Tổng mặt bằng, khối nằm đúng theo bản vẽ. Khối tháp dựng theo số tầng công bố trong hồ sơ tư vấn 7/8/2026 (2 tầng khối đế cao 5 m, tầng căn hộ cao 3,6 m); chân tháp Beacon và Beachtro cắt theo đường bao công trình trên tổng mặt bằng, đối chiếu layout tầng điển hình; cụm B dựng khối hộp theo đúng hình trên tổng mặt bằng. Số căn đang bán chỉ hiện khi có bảng hàng chính thức.</div>
   <div class="row"><button class="btn primary" data-go="cart">Giỏ quan tâm${state.cart.length ? ' (' + state.cart.length + ')' : ''}</button><button class="btn" data-go="consult">Nói chuyện với tư vấn</button></div>
   ${state.rail === 'infra' ? infraHtml() : ''}`;
 }
@@ -1006,6 +1466,7 @@ function infraHtml() {
   <p><a class="btn block" href="/cam-nang/blanca-city/" target="_top">Đọc phân tích vị trí →</a></p>`;
 }
 function unitHtml() {
+  if (state.mb) return mbHtml();
   if (state.sel >= 0) return dossierHtml(U[state.sel]);
   if (state.zone === 'beacon') return beaconHtml();
   if (state.zone === 'beachtro') return beachtroHtml();
@@ -1038,7 +1499,8 @@ function dossierHtml(u) {
 function beaconHtml() {
   const sheet = 8 + state.sheet, on = inCart('z:beacon');
   return `<h2>Beacon Tower</h2><p><span class="badge">2.211 căn hộ</span> <span class="badge">3 tầng hầm</span> <span class="badge">E1 · E2 · E3 · E5</span></p>
-  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E2</b>; bên trong gồm bốn toà con E1, E2, E3 và E5. Sơ đồ đứng ghi 2 tầng khối đế, tầng 3–38 căn hộ, tầng 39–40 duplex. Khối 3D cắt theo đường bao công trình trên tổng mặt bằng, đúng hình chữ U với hai cánh hai đầu; đối chiếu mặt bằng tầng điển hình. Nguồn: Beacon.pdf trang 6–7; hồ sơ tư vấn 7/8/2026 trang 80.</p>
+  ${MB && MB.beacon ? `<div class="card mbmo"><b>Bóc tầng, chọn căn trên mặt bằng</b><span class="mute small">Mặt bằng tầng ${esc(MB.beacon.tenTang)} dán thẳng lên khối 3D. Chạm vào căn để xem giá, layout và tiến độ thanh toán.</span><button class="btn primary" data-mbtang="${tangMacDinh()}" data-mbkhu="beacon">Mở mặt bằng tầng ${tangMacDinh()} →</button></div>` : ''}
+  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E2</b>; bên trong gồm bốn toà con E1, E2, E3 và E5. Sơ đồ đứng ghi 2 tầng khối đế, tầng 3–38 căn hộ, tầng 39–40 duplex. Khối 3D dựng theo đúng thân toà trên mặt bằng tầng điển hình, mỗi toà con đúng số tầng, mái khung trắng như phối cảnh. Nguồn: Beacon.pdf trang 6–7; hồ sơ tư vấn 7/8/2026 trang 80.</p>
   <table><caption class="small mute" style="text-align:left;margin-bottom:4px">Cơ cấu căn hộ Beacon</caption><thead><tr><th>Loại</th><th>Thông thủy (m²)</th><th class="r">Số căn</th><th></th></tr></thead><tbody>${BEACON_MIX.map(r => { const k = 'b:' + r[0]; return `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${nf.format(r[2])}</td><td class="r"><button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="Beacon · ${esc(r[0])}" data-sub="${esc(r[1])} m²" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}</tbody></table>
   <h3>Mặt bằng Beacon 1 và căn mẫu</h3>
   <label>Chọn bản vẽ<select id="sheet">${BEACON_SHEETS.map((n, i) => `<option value="${i}" ${i === state.sheet ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
@@ -1052,7 +1514,8 @@ function beachtroHtml() {
   const on = inCart('z:beachtro');
   return `<h2>Beachtro Tower</h2>
   <p><span class="badge">1.785 căn hộ</span> <span class="badge">E6 · E7 · E8 · E9</span></p>
-  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E1</b>, nằm sát đường 3/2 cạnh Beacon; bên trong gồm bốn toà con E6, E7, E8 và E9. Khối 3D cắt theo đường bao công trình trên tổng mặt bằng, đúng hình chữ U với hai cánh hai đầu; đối chiếu mặt bằng tầng điển hình. Nguồn: hồ sơ tư vấn Blanca City 7/8/2026, trang 14 và 98.</p>
+  ${MB && MB.beachtro ? `<div class="card mbmo"><b>Bóc tầng, xem layout từng căn trên mặt bằng</b><span class="mute small">Mặt bằng tầng điển hình ${esc(MB.beachtro.tenTang)} dán thẳng lên khối 3D. Chạm vào căn để xem loại căn, diện tích và layout. Chưa có bảng hàng nên chưa có giá.</span><button class="btn primary" data-mbtang="15" data-mbkhu="beachtro">Mở mặt bằng tầng 15 →</button></div>` : ''}
+  <p class="mute small">Trên tổng mặt bằng đây là khối ghi <b>E1</b>, nằm sát đường 3/2 cạnh Beacon; bên trong gồm bốn toà con E6, E7, E8 và E9. Khối 3D dựng theo đúng thân toà trên mặt bằng tầng điển hình, mỗi toà con đúng số tầng, mái khung trắng như phối cảnh. Nguồn: hồ sơ tư vấn Blanca City 7/8/2026, trang 14 và 98.</p>
   <table><caption class="small mute" style="text-align:left;margin-bottom:4px">Tỷ trọng loại căn</caption><thead><tr><th>Loại</th><th class="r">Tỷ trọng</th><th></th></tr></thead><tbody>${BEACHTRO_MIX.map(([t, p]) => { const k = 'bt:' + t; return `<tr><td>${t}</td><td class="r">${p}%</td><td class="r"><button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="Beachtro · ${esc(t)}" data-sub="${p}% rổ hàng" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}</tbody></table>
   <div class="note">Chưa có bảng hàng chính thức nên chưa hiện diện tích và giá từng căn.</div>
   <div class="row"><button class="btn ${on ? '' : 'primary'}" data-cart="z:beachtro" data-label="Beachtro Tower (chung)" data-sub="Quan tâm phân khu">${on ? '✓ Đã trong giỏ · bỏ' : '＋ Quan tâm Beachtro'}</button><a class="btn" href="/cam-nang/blanca-beachtro-tower/" target="_top">Hồ sơ phân khu →</a></div>`;
@@ -1089,7 +1552,7 @@ function canHoHtml(pk) {
   ${loc.map(c => { const k = 'can:' + c.ma; return `<tr><td><b>${esc(c.ma)}</b><br><span class="mute small">Toà ${esc(c.toa)} · tầng ${esc(c.tang)}</span></td>
     <td>${esc(c.loai)}</td><td class="r">${c.thongThuy ?? '—'} m²</td><td class="r">${tien(c.gia)}</td>
     <td><span class="tt ${c.tinhTrang}">${c.tinhTrang === 'trong' ? 'Còn trống' : 'Đã cọc'}</span></td>
-    <td class="r"><button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="${esc(c.ma)} · ${esc(c.loai)}" data-sub="${c.thongThuy ?? '—'} m² · ${tien(c.gia)}" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}
+    <td class="r">${mbCoTang(c) ? `<button class="chip" style="padding:2px 9px" data-mbto="${esc(c.ma)}" title="Xem căn trên mặt bằng tầng">Mặt bằng</button> ` : ''}<button class="chip" style="padding:2px 9px" data-cart="${k}" data-label="${esc(c.ma)} · ${esc(c.loai)}" data-sub="${c.thongThuy ?? '—'} m² · ${tien(c.gia)}" aria-pressed="${inCart(k)}">${inCart(k) ? '✓' : '＋'}</button></td></tr>`; }).join('')}
   </tbody></table>` : '<div class="note">Không có căn nào khớp bộ lọc.</div>'}
   <p class="mute small">Nguồn: ${esc(CAN.nguon)}</p>`;
 }
@@ -1189,7 +1652,7 @@ function capNhatHoaHong(form) {
   }
 }
 function consultHtml() {
-  const u = state.sel >= 0 ? U[state.sel] : null;
+  const u = state.consignMa ? { code: state.consignMa } : state.sel >= 0 ? U[state.sel] : null;
   return `<h2>Tư vấn trực tiếp</h2>${consultMini()}
   <p class="mute small">Tư vấn viên giải đáp về pháp lý, tiến độ, so sánh phân khu và cách tính dòng tiền. Thông tin mang tính tham khảo, không phải cam kết về giá hay chính sách bán hàng.</p>
   <h3>Đặt lịch gọi lại</h3>${formHtml('callback')}
@@ -1329,6 +1792,19 @@ document.addEventListener('click', e => {
   state.cut = Number(f.dataset.cut); dirty = true; render();
 });
 document.addEventListener('click', e => {
+  const b = e.target.closest('[data-mbtang],[data-mbdong],[data-mbbuoc],[data-mbto],[data-mbcan],[data-pttt],[data-mbky],[data-mbhoi]'); if (!b) return;
+  const d = b.dataset; state.keepScroll = true;
+  if (d.mbdong) dongMatBang();
+  else if (d.mbtang) moMatBang(d.mbtang, null, d.mbkhu);
+  else if (d.mbbuoc) buocTang(+d.mbbuoc);
+  else if (d.mbto) { const c = CAN && CAN.can.find(x => x.ma === d.mbto); if (c) { const t = tangNhan(c.tang); moMatBang(t, c.toa + c.can, c.phanKhu); } }
+  else if (d.mbcan !== undefined) chonCanMB(+d.mbcan);
+  else if (d.pttt) { state.pttt = d.pttt; render(); }
+  else if (d.mbky) { state.consignMa = d.mbky; state.openConsign = true; state.tab = 'consult'; state.keepScroll = false; render(); }
+  else if (d.mbhoi) { const ma = d.mbhoi, c = CAN && CAN.can.find(x => x.ma === ma); const k = 'can:' + ma; if (!inCart(k)) toggleCart(k, ma + ' · ' + TEN_KHU[khuMB()], c ? `${c.thongThuy} m² · ${tien(c.gia)}` : 'Căn trên mặt bằng tầng'); state.tab = 'cart'; state.keepScroll = false; render(); }
+});
+document.addEventListener('change', e => { if (e.target.id === 'mbTangSel') moMatBang(e.target.value); });
+document.addEventListener('click', e => {
   const m = e.target.closest('[data-market]'); if (!m || m.disabled) return;
   state.market = m.dataset.market; uploadStatic(); render();
 });
@@ -1340,7 +1816,7 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
 /* ---------- khởi động ---------- */
 (async () => {
   render(); buildLabels();
-  const [geoRaw, invData, plan, gref, chan, canHo, ranh] = await Promise.all([
+  const [geoRaw, invData, plan, gref, chan, canHo, ranh, matBang] = await Promise.all([
     fetch('geometry.json').then(r => r.json()),
     fetch('inventory.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = 'plan.webp'; }),
@@ -1348,21 +1824,28 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     fetch('chan-thap.json').then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('can-ho.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('ranh-du-an.json').then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('mat-bang.json').then(r => r.ok ? r.json() : null).catch(() => null),
   ]);
   if (invData && invData.units) inv = invData;
   if (gref) { GEO = gref; geo.init(gref); }
   else geo.init({ tyLe: { metTrenDonVi: geo.mpu }, huong: { bacSoVoiTrucDocAnh: geo.north }, neo: { lat: geo.lat0, lon: geo.lon0, planX: 488, planY: 268 } });
-  RANH = ranh; CHAN = chan; CAN = canHo;
+  RANH = ranh; CHAN = chan; CAN = canHo; MB = matBang;
   await hoiNen();
   TOWERS = dungThap();
+  if (CHUP) {
+    // Ảnh đại diện luôn chụp lúc trời sáng, không phụ thuộc giờ chạy script: ?gio=14 (giờ Việt Nam, mặc định 14:00)
+    const gio = +(new URLSearchParams(location.search).get('gio') || 14), vn = new Date(Date.now() + 7 * 3600e3);
+    state.sunT = Date.UTC(vn.getUTCFullYear(), vn.getUTCMonth(), vn.getUTCDate()) - 7 * 3600e3 + gio * 3600e3;
+  }
   capNhatNang();
   setInterval(() => { if (state.sunT == null) { capNhatNang(); if (state.tab === 'env') render(); } }, 60000);
   buildUnits(geoRaw);
+  datThucDia(); VT.dich = viTriDich(); datViTri(VT.dich);
   if (gl) {
     try { initGL(plan); resize(); buildRanh(); const h = homeView(); Object.assign(C, { ...h, dist: h.dist * 1.6, pitch: 1.3 }); fly(h); requestAnimationFrame(frame); if (state.base !== 'plan') loadOsm(); }
     catch (err) { console.error(err); $('#nogl').hidden = false; }
   } else $('#nogl').hidden = false;
   render(); openHash();
-  window.__blanca = { gocDoCao, doCaoMet, state, U, C, T, osmXa, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS };
+  window.__blanca = { fly, CAN: () => CAN, MB: () => MB, moMatBang, dongMatBang, mbHit, gocDoCao, doCaoMet, state, U, C, T, osmXa, osmGiua, tiaMatDat, phongTai, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS, VT };
 })().catch(err => { console.error(err); $('#pane').innerHTML = '<h2>Chưa tải được dữ liệu sa bàn</h2><p class="mute">Vui lòng tải lại trang hoặc nhắn Zalo ' + ZALO_TXT + '.</p>'; });
 })();

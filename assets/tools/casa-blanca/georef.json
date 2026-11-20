@@ -1,6 +1,6 @@
 {
  "duAn": "Blanca City",
- "trangThai": "huong-va-ty-le-tu-hai-nut-giao-vi-tri-khop-nen-mong-tren-anh-ve-tinh",
+ "trangThai": "khung-tu-hai-nut-giao-tung-khoi-dat-theo-ghim-thuc-dia",
  "anh": {
   "file": "plan.webp",
   "rongDonVi": 960,
@@ -78,6 +78,1263 @@
    }
   ],
   "nguyenNhan": "Tổng mặt bằng là bản vẽ tiếp thị, không vẽ đúng một tỷ lệ bên trong. Một phép chiếu chung khớp được khu giữa thì khu rìa vẫn lệch.",
-  "cachDutDiem": "Xin bản đồ quy hoạch tổng mặt bằng 1/500 có bảng toạ độ VN-2000 (kinh tuyến trục 107°45′, EPSG:5899) rồi chạy lệnh vn2000 đổi ra mốc."
+  "cachDutDiem": "Xin bản đồ quy hoạch tổng mặt bằng 1/500 có bảng toạ độ VN-2000 (kinh tuyến trục 107°45′, EPSG:5899) rồi chạy lệnh vn2000 đổi ra mốc.",
+  "capNhat": "2.41.0: không còn dùng một phép chiếu chung cho cả khu. Từng khối đặt theo ghim thật, xem mục khoi; các dòng theoKhu dưới đây là kết quả của phép chiếu chung trước khi tách khối."
+ },
+ "khoi": {
+  "nguyenTac": "Tổng mặt bằng là bản vẽ tiếp thị: nén theo chiều dọc (khối vẽ sâu 12–15 đơn vị, thực tế 18–20) và lệch từng cụm, nên dán cả tấm lên bản đồ thì càng xuống phía nam càng lệch, có dãy nằm đè lên đường. Vì vậy tách từng khối nhà (căn hộ, song lập, đơn lập, Grand Villa, nhà phố) rồi đặt mỗi khối theo ghim thật của nó. Nền Tổng mặt bằng: khối nằm theo bản vẽ. Nền bản đồ và Chồng lớp: khối nằm theo ghim.",
+  "cachDoc": "ds: mỗi khối có khung (chọn lô trong geometry.json theo khung và loại), tamBanVe (tâm khối trên bản vẽ), ghim (vĩ độ, kinh độ tâm khối thật), tyLe (hệ số giãn ngang, dọc so với bản vẽ). Lô thật = ghim + (lô bản vẽ − tamBanVe) × tyLe. ghim null: giữ theo phép chiếu chung. thap: như trên cho khối tháp (khungBanVe là hộp bao chân tháp trong chan-thap.json, hoặc tamBanVe của tháp cụm B).",
+  "ngayDo": "2026-11-19",
+  "anhDo": "Esri World Imagery z18 (0,59 m mỗi điểm ảnh), đưa về khung bản vẽ bằng phép chiếu chung",
+  "congCu": "scripts/khop-sa-ban.py tach / do / dat / nghiemthu",
+  "cachDo": "Đọc tâm hai dãy nhà và đầu khối trên ảnh có lưới đo; dò tự động trong ±5 đơn vị quanh số đọc tay (lệnh do); soát bằng mắt từng khối trước và sau, chỉ nhận gợi ý khi thấy khớp hơn. Gợi ý bị loại ở nhà phố, song lập phía Đông và K29 (dãy đều nhau, đường nhựa tối làm máy bắt nhầm). Khối chưa xây (K06, K14, K15, K32) suy theo bước khối bên cạnh. Tháp Beacon, Beachtro theo hố móng có hệ chống thép; B1 theo hố móng; B2, B3, B5, B6, B7 chưa xây, suy theo bước.",
+  "nghiemThu": {
+   "ketQua": "Cả bốn ghim căn Tú đặt đều rơi đúng lô cùng mã (lô gần ghim nhất), lệch 1,8–7,9 m, trước khi tách khối lệch 38–118 m. Tâm hố móng Beacon và Beachtro đo trên ảnh trùng ghim tâm Tú đặt độc lập, lệch 6,6 m và 2,8 m.",
+   "khoiDaXay": 32,
+   "doPhuTrungBinh": {
+    "truoc": 0.54,
+    "sau": 0.81
+   },
+   "doPhuGhiChu": "Độ phủ = tỷ lệ diện tích thân nhà mô hình nằm trên công trình thật (sàn bê tông, mái, khung đang đổ). Chỉ số phụ: Grand Villa mới đổ sàn nhỏ hơn hộp thân nhà nên phủ thấp dù đã khớp (K29); số \"trước\" của vài khối cao vì mô hình đè nhầm lên khối bên cạnh.",
+   "chuaKiem": "K00–K04 song lập phía Tây xa: bãi san lấp, chưa có dấu vết nền móng, giữ theo phép chiếu chung. K06, K14, K15, K32 và tháp B2, B3, B5, B6, B7 chưa xây: vị trí suy theo bước, phải đo lại khi có móng.",
+   "canLamTiep": "Bảng toạ độ VN-2000 trong quy hoạch 1/500 sẽ thay toàn bộ ghim đo trên ảnh. Có thêm ghim căn của Tú ở khu chưa xây thì đặt lại các khối đó theo ghim."
+  },
+  "ghimCan": [
+   {
+    "ten": "ĐL-001",
+    "lat": 10.3814671,
+    "lon": 107.1305663,
+    "nguon": "Tú, Google My Maps 19/11/2026",
+    "lechTruoc_m": 38,
+    "lechSau_m": 1.8
+   },
+   {
+    "ten": "ĐL-136",
+    "lat": 10.3837874,
+    "lon": 107.1352239,
+    "nguon": "Tú, Google My Maps 19/11/2026",
+    "lechTruoc_m": 63,
+    "lechSau_m": 2.4
+   },
+   {
+    "ten": "GV-081",
+    "lat": 10.3842335,
+    "lon": 107.1367159,
+    "nguon": "Tú, Google My Maps 19/11/2026",
+    "lechTruoc_m": 85,
+    "lechSau_m": 6.0
+   },
+   {
+    "ten": "GV-068",
+    "lat": 10.3785149,
+    "lon": 107.1331394,
+    "nguon": "Tú, Google My Maps 19/11/2026",
+    "lechTruoc_m": 118,
+    "lechSau_m": 7.9
+   }
+  ],
+  "ghimThap": [
+   {
+    "ten": "tâm Beacon",
+    "lat": 10.3851225,
+    "lon": 107.1332665,
+    "nguon": "Tú, Google My Maps 19/11/2026",
+    "lechVoiHoMong_m": 6.6
+   },
+   {
+    "ten": "tâm beachtro",
+    "lat": 10.3840107,
+    "lon": 107.1316155,
+    "nguon": "Tú, Google My Maps 19/11/2026",
+    "lechVoiHoMong_m": 2.8
+   }
+  ],
+  "ds": [
+   {
+    "ma": "K00",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 34,
+    "khung": [
+     98.02,
+     93.15,
+     182.98,
+     101.85
+    ],
+    "tamBanVe": [
+     140.5,
+     97.5
+    ],
+    "ghim": null,
+    "tyLe": [
+     1,
+     1
+    ],
+    "trangThai": "giu"
+   },
+   {
+    "ma": "K01",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 34,
+    "khung": [
+     98.02,
+     110.15,
+     182.98,
+     118.85
+    ],
+    "tamBanVe": [
+     140.5,
+     114.5
+    ],
+    "ghim": null,
+    "tyLe": [
+     1,
+     1
+    ],
+    "trangThai": "giu"
+   },
+   {
+    "ma": "K02",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 34,
+    "khung": [
+     98.02,
+     129.15,
+     182.98,
+     137.85
+    ],
+    "tamBanVe": [
+     140.5,
+     133.5
+    ],
+    "ghim": null,
+    "tyLe": [
+     1,
+     1
+    ],
+    "trangThai": "giu"
+   },
+   {
+    "ma": "K03",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 34,
+    "khung": [
+     193.02,
+     90.15,
+     277.98,
+     98.85
+    ],
+    "tamBanVe": [
+     235.5,
+     94.5
+    ],
+    "ghim": null,
+    "tyLe": [
+     1,
+     1
+    ],
+    "trangThai": "giu"
+   },
+   {
+    "ma": "K04",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 34,
+    "khung": [
+     193.02,
+     129.15,
+     277.98,
+     137.85
+    ],
+    "tamBanVe": [
+     235.5,
+     133.5
+    ],
+    "ghim": null,
+    "tyLe": [
+     1,
+     1
+    ],
+    "trangThai": "giu"
+   },
+   {
+    "ma": "K05",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 28,
+    "khung": [
+     318.86,
+     85.15,
+     384.13,
+     93.85
+    ],
+    "tamBanVe": [
+     351.5,
+     89.5
+    ],
+    "ghim": [
+     10.3830547,
+     107.130202
+    ],
+    "tyLe": [
+     1.0,
+     1.3333
+    ],
+    "trangThai": "xay",
+    "ghiChu": "chỉnh tay sau khi soát"
+   },
+   {
+    "ma": "K06",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 28,
+    "khung": [
+     318.86,
+     109.15,
+     384.13,
+     117.85
+    ],
+    "tamBanVe": [
+     351.5,
+     113.5
+    ],
+    "ghim": [
+     10.382598,
+     107.1305069
+    ],
+    "tyLe": [
+     1.0,
+     1.2667
+    ],
+    "trangThai": "chua",
+    "ghiChu": "nội suy giữa K05 và K07"
+   },
+   {
+    "ma": "K07",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 28,
+    "khung": [
+     318.86,
+     129.15,
+     384.13,
+     137.85
+    ],
+    "tamBanVe": [
+     351.5,
+     133.5
+    ],
+    "ghim": [
+     10.3822129,
+     107.1307541
+    ],
+    "tyLe": [
+     1.0,
+     1.2
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K08",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 20,
+    "khung": [
+     320.8,
+     153.4,
+     383.2,
+     162.6
+    ],
+    "tamBanVe": [
+     352.0,
+     158.0
+    ],
+    "ghim": [
+     10.3817148,
+     107.131107
+    ],
+    "tyLe": [
+     1.0,
+     1.375
+    ],
+    "trangThai": "xay",
+    "ghiChu": "ghim ĐL-001 của Tú; dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K09",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 20,
+    "khung": [
+     320.8,
+     174.4,
+     383.2,
+     183.6
+    ],
+    "tamBanVe": [
+     352.0,
+     179.0
+    ],
+    "ghim": [
+     10.3813304,
+     107.1313839
+    ],
+    "tyLe": [
+     1.0,
+     1.125
+    ],
+    "trangThai": "xay",
+    "ghiChu": "chỉnh tay sau khi soát"
+   },
+   {
+    "ma": "K10",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 18,
+    "khung": [
+     322.06,
+     197.65,
+     381.94,
+     207.35
+    ],
+    "tamBanVe": [
+     352.0,
+     202.5
+    ],
+    "ghim": [
+     10.3808277,
+     107.1316796
+    ],
+    "tyLe": [
+     1.0,
+     1.0588
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K11",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 12,
+    "khung": [
+     346.81,
+     218.65,
+     382.19,
+     228.35
+    ],
+    "tamBanVe": [
+     364.5,
+     223.5
+    ],
+    "ghim": [
+     10.3804885,
+     107.1321052
+    ],
+    "tyLe": [
+     1.17,
+     1.0
+    ],
+    "trangThai": "xay",
+    "ghiChu": "5 móng/dãy đã đổ, lô đầu phía Tây chưa xây; dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K12",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 12,
+    "khung": [
+     346.81,
+     240.65,
+     382.19,
+     250.35
+    ],
+    "tamBanVe": [
+     364.5,
+     245.5
+    ],
+    "ghim": [
+     10.38006,
+     107.1323958
+    ],
+    "tyLe": [
+     1.17,
+     1.0
+    ],
+    "trangThai": "xay",
+    "ghiChu": "5 móng/dãy đã đổ, lô đầu phía Tây chưa xây; dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K13",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 10,
+    "khung": [
+     347.5,
+     263.65,
+     381.5,
+     273.35
+    ],
+    "tamBanVe": [
+     364.5,
+     268.5
+    ],
+    "ghim": [
+     10.3796377,
+     107.1327665
+    ],
+    "tyLe": [
+     1.07,
+     1.0353
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K14",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 10,
+    "khung": [
+     347.5,
+     285.65,
+     381.5,
+     295.35
+    ],
+    "tamBanVe": [
+     364.5,
+     290.5
+    ],
+    "ghim": [
+     10.3791816,
+     107.1330891
+    ],
+    "tyLe": [
+     1.07,
+     1.0353
+    ],
+    "trangThai": "chua",
+    "ghiChu": "suy theo bước K12–K13"
+   },
+   {
+    "ma": "K15",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 10,
+    "khung": [
+     347.5,
+     307.65,
+     381.5,
+     317.35
+    ],
+    "tamBanVe": [
+     364.5,
+     312.5
+    ],
+    "ghim": [
+     10.3787282,
+     107.1334157
+    ],
+    "tyLe": [
+     1.07,
+     1.0353
+    ],
+    "trangThai": "chua",
+    "ghiChu": "suy theo bước, đối chiếu ghim GV-068 của Tú"
+   },
+   {
+    "ma": "K16",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 32,
+    "khung": [
+     394.96,
+     109.15,
+     473.04,
+     117.85
+    ],
+    "tamBanVe": [
+     434.0,
+     113.5
+    ],
+    "ghim": [
+     10.3834752,
+     107.1318557
+    ],
+    "tyLe": [
+     1.0,
+     1.1333
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K17",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 32,
+    "khung": [
+     394.96,
+     129.15,
+     473.04,
+     137.85
+    ],
+    "tamBanVe": [
+     434.0,
+     133.5
+    ],
+    "ghim": [
+     10.383084,
+     107.1320892
+    ],
+    "tyLe": [
+     1.0,
+     1.1333
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K18",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 24,
+    "khung": [
+     395.81,
+     153.4,
+     472.19,
+     162.6
+    ],
+    "tamBanVe": [
+     434.0,
+     158.0
+    ],
+    "ghim": [
+     10.3825893,
+     107.1324215
+    ],
+    "tyLe": [
+     1.0,
+     1.1875
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K19",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 24,
+    "khung": [
+     395.81,
+     174.4,
+     472.19,
+     183.6
+    ],
+    "tamBanVe": [
+     434.0,
+     179.0
+    ],
+    "ghim": [
+     10.3821834,
+     107.1327019
+    ],
+    "tyLe": [
+     1.0,
+     1.125
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K20",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 34,
+    "khung": [
+     508.87,
+     109.15,
+     589.13,
+     117.85
+    ],
+    "tamBanVe": [
+     549.0,
+     113.5
+    ],
+    "ghim": [
+     10.3847046,
+     107.1337237
+    ],
+    "tyLe": [
+     1.0,
+     1.1333
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K21",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 34,
+    "khung": [
+     508.87,
+     129.15,
+     589.13,
+     137.85
+    ],
+    "tamBanVe": [
+     549.0,
+     133.5
+    ],
+    "ghim": [
+     10.3843112,
+     107.1339709
+    ],
+    "tyLe": [
+     1.0,
+     1.1333
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K22",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 24,
+    "khung": [
+     509.9,
+     153.4,
+     588.1,
+     162.6
+    ],
+    "tamBanVe": [
+     549.0,
+     158.0
+    ],
+    "ghim": [
+     10.3838233,
+     107.1343044
+    ],
+    "tyLe": [
+     1.0,
+     1.125
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K23",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 24,
+    "khung": [
+     509.9,
+     174.4,
+     588.1,
+     183.6
+    ],
+    "tamBanVe": [
+     549.0,
+     179.0
+    ],
+    "ghim": [
+     10.3834106,
+     107.1345836
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "trangThai": "xay",
+    "ghiChu": "ghim ĐL-136 của Tú; dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K24",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 16,
+    "khung": [
+     602.02,
+     72.15,
+     639.98,
+     80.85
+    ],
+    "tamBanVe": [
+     621.0,
+     76.5
+    ],
+    "ghim": [
+     10.3861754,
+     107.1343671
+    ],
+    "tyLe": [
+     1.0,
+     1.0667
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K25",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 16,
+    "khung": [
+     602.02,
+     91.15,
+     639.98,
+     99.85
+    ],
+    "tamBanVe": [
+     621.0,
+     95.5
+    ],
+    "ghim": [
+     10.3858386,
+     107.1346098
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K26",
+    "loai": "SL",
+    "doc": false,
+    "soCan": 16,
+    "khung": [
+     602.02,
+     129.15,
+     639.98,
+     137.85
+    ],
+    "tamBanVe": [
+     621.0,
+     133.5
+    ],
+    "ghim": [
+     10.3851213,
+     107.1351265
+    ],
+    "tyLe": [
+     1.0,
+     1.0667
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K27",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 20,
+    "khung": [
+     601.8,
+     153.4,
+     664.2,
+     162.6
+    ],
+    "tamBanVe": [
+     633.0,
+     158.0
+    ],
+    "ghim": [
+     10.3846943,
+     107.1356395
+    ],
+    "tyLe": [
+     1.0,
+     1.125
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K28",
+    "loai": "DL",
+    "doc": false,
+    "soCan": 20,
+    "khung": [
+     601.8,
+     174.4,
+     664.2,
+     183.6
+    ],
+    "tamBanVe": [
+     633.0,
+     179.0
+    ],
+    "ghim": [
+     10.3842987,
+     107.1359004
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K29",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 18,
+    "khung": [
+     602.18,
+     197.65,
+     663.82,
+     207.35
+    ],
+    "tamBanVe": [
+     633.0,
+     202.5
+    ],
+    "ghim": [
+     10.3838407,
+     107.1362425
+    ],
+    "tyLe": [
+     1.0,
+     1.1765
+    ],
+    "trangThai": "xay",
+    "ghiChu": "ghim GV-081 của Tú; chỉnh tay sau khi soát"
+   },
+   {
+    "ma": "K30",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 12,
+    "khung": [
+     601.99,
+     218.65,
+     639.02,
+     228.35
+    ],
+    "tamBanVe": [
+     620.5,
+     223.5
+    ],
+    "ghim": [
+     10.3832866,
+     107.1363638
+    ],
+    "tyLe": [
+     1.0,
+     1.1176
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K31",
+    "loai": "GV",
+    "doc": false,
+    "soCan": 12,
+    "khung": [
+     601.99,
+     240.65,
+     639.02,
+     250.35
+    ],
+    "tamBanVe": [
+     620.5,
+     245.5
+    ],
+    "ghim": [
+     10.382874,
+     107.136643
+    ],
+    "tyLe": [
+     1.0,
+     1.1176
+    ],
+    "trangThai": "xay",
+    "ghiChu": "dò tự động ±5 đv quanh số đọc tay, đã soát bằng mắt"
+   },
+   {
+    "ma": "K32",
+    "loai": "GV",
+    "doc": true,
+    "soCan": 18,
+    "khung": [
+     628.9,
+     262.95,
+     639.1,
+     321.05
+    ],
+    "tamBanVe": [
+     634.0,
+     292.0
+    ],
+    "ghim": [
+     10.382225,
+     107.1374427
+    ],
+    "tyLe": [
+     1.0,
+     1.2
+    ],
+    "trangThai": "chua",
+    "ghiChu": "suy theo bước, phía nam K31"
+   },
+   {
+    "ma": "K33a",
+    "loai": "SL",
+    "doc": true,
+    "soCan": 12,
+    "khung": [
+     651.65,
+     72.07,
+     661.35,
+     99.94
+    ],
+    "tamBanVe": [
+     656.5,
+     86.0
+    ],
+    "ghim": [
+     10.3864432,
+     107.135068
+    ],
+    "tyLe": [
+     1.0,
+     1.16
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K33b",
+    "loai": "SL",
+    "doc": true,
+    "soCan": 14,
+    "khung": [
+     652.4,
+     107.9,
+     661.6,
+     139.1
+    ],
+    "tamBanVe": [
+     657.0,
+     123.5
+    ],
+    "ghim": [
+     10.3857038,
+     107.1356127
+    ],
+    "tyLe": [
+     1.0,
+     1.06
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K34a",
+    "loai": "TH",
+    "doc": true,
+    "soCan": 18,
+    "khung": [
+     691.9,
+     69.29,
+     702.1,
+     100.71
+    ],
+    "tamBanVe": [
+     697.0,
+     85.0
+    ],
+    "ghim": [
+     10.3868909,
+     107.1357358
+    ],
+    "tyLe": [
+     1.0,
+     1.2
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K34b",
+    "loai": "TH",
+    "doc": true,
+    "soCan": 18,
+    "khung": [
+     691.9,
+     107.4,
+     702.1,
+     140.6
+    ],
+    "tamBanVe": [
+     697.0,
+     124.0
+    ],
+    "ghim": [
+     10.3861221,
+     107.1362897
+    ],
+    "tyLe": [
+     1.0,
+     1.17
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K35",
+    "loai": "TH",
+    "doc": false,
+    "soCan": 38,
+    "khung": [
+     713.29,
+     91.15,
+     782.71,
+     99.85
+    ],
+    "tamBanVe": [
+     748.0,
+     95.5
+    ],
+    "ghim": [
+     10.3872369,
+     107.1367185
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K36",
+    "loai": "TH",
+    "doc": false,
+    "soCan": 37,
+    "khung": [
+     713.29,
+     109.4,
+     782.71,
+     118.6
+    ],
+    "tamBanVe": [
+     748.0,
+     114.0
+    ],
+    "ghim": [
+     10.3868715,
+     107.1369818
+    ],
+    "tyLe": [
+     1.0,
+     1.1
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K37",
+    "loai": "TH",
+    "doc": false,
+    "soCan": 36,
+    "khung": [
+     713.4,
+     128.65,
+     782.6,
+     138.35
+    ],
+    "tamBanVe": [
+     748.0,
+     133.5
+    ],
+    "ghim": [
+     10.3864919,
+     107.1372553
+    ],
+    "tyLe": [
+     1.0,
+     1.0706
+    ],
+    "trangThai": "xay"
+   },
+   {
+    "ma": "K38",
+    "loai": "TH",
+    "doc": false,
+    "soCan": 24,
+    "khung": [
+     691.36,
+     152.9,
+     782.64,
+     154.1
+    ],
+    "tamBanVe": [
+     737.0,
+     153.5
+    ],
+    "ghim": [
+     10.3859641,
+     107.1373698
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "trangThai": "xay"
+   }
+  ],
+  "thap": [
+   {
+    "ma": "beachtro",
+    "trangThai": "xay",
+    "khungBanVe": [
+     392.5,
+     72.5,
+     485.0,
+     94.0
+    ],
+    "tamBanVe": [
+     438.75,
+     83.25
+    ],
+    "tyLe": [
+     1.0054,
+     1.2558
+    ],
+    "ghim": [
+     10.3840112,
+     107.1315903
+    ],
+    "ghiChu": "hố móng có hệ chống thép"
+   },
+   {
+    "ma": "beacon",
+    "trangThai": "xay",
+    "khungBanVe": [
+     500.0,
+     66.5,
+     595.0,
+     94.5
+    ],
+    "tamBanVe": [
+     547.5,
+     80.5
+    ],
+    "tyLe": [
+     1.0421,
+     1.0357
+    ],
+    "ghim": [
+     10.3851757,
+     107.1332394
+    ],
+    "ghiChu": "hố móng có hệ chống thép"
+   },
+   {
+    "ma": "B1",
+    "trangThai": "xay",
+    "tamBanVe": [
+     666,
+     237
+    ],
+    "tyLe": [
+     1.0,
+     1.2
+    ],
+    "ghim": [
+     10.3834768,
+     107.1371327
+    ],
+    "ghiChu": "hố móng hệ chống thép x 640–664"
+   },
+   {
+    "ma": "B2",
+    "trangThai": "chua",
+    "tamBanVe": [
+     666,
+     275
+    ],
+    "tyLe": [
+     1.0,
+     1.2
+    ],
+    "ghim": [
+     10.3827604,
+     107.1376489
+    ],
+    "ghiChu": "suy theo bước B1"
+   },
+   {
+    "ma": "B3",
+    "trangThai": "chua",
+    "tamBanVe": [
+     666,
+     309
+    ],
+    "tyLe": [
+     1.0,
+     1.2
+    ],
+    "ghim": [
+     10.3821184,
+     107.1381114
+    ],
+    "ghiChu": "suy theo bước B1"
+   },
+   {
+    "ma": "B5",
+    "trangThai": "chua",
+    "tamBanVe": [
+     321,
+     235
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "ghim": [
+     10.3798187,
+     107.1316275
+    ],
+    "ghiChu": "suy theo cột Grand Villa phía Tây"
+   },
+   {
+    "ma": "B6",
+    "trangThai": "chua",
+    "tamBanVe": [
+     321,
+     276
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "ghim": [
+     10.3790468,
+     107.1321837
+    ],
+    "ghiChu": "suy theo cột Grand Villa phía Tây"
+   },
+   {
+    "ma": "B7",
+    "trangThai": "chua",
+    "tamBanVe": [
+     321,
+     310
+    ],
+    "tyLe": [
+     1.0,
+     1.0
+    ],
+    "ghim": [
+     10.3784064,
+     107.1326451
+    ],
+    "ghiChu": "suy theo cột Grand Villa phía Tây; giữ mép nam trong ranh"
+   }
+  ]
  }
 }
