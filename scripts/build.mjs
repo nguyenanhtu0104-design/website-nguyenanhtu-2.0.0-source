@@ -228,7 +228,7 @@ const navTplDung = goDanhGiaKhoiNav(goTimNhaKhoiNav(navTpl));
 // 1) đoạn <p> chỉ chứa đúng một nút p-cta → bỏ cả đoạn
 // 2) thẻ <a> đứng riêng một mình → bỏ cả thẻ
 // 3) liên kết nằm giữa câu → chỉ bỏ thẻ <a>, giữ nguyên chữ để câu không gãy
-const RE_TOOL = '[^"]*\\/assets\\/tools\\/casa-blanca\\/[^"]*';
+const RE_TOOL = '[^"]*\\/assets\\/tools\\/(?:casa-blanca|nam-mekong)\\/[^"]*';
 const goLinkSaBan = (html) => TIMNHA_CONGBO ? html
   : html
       .replace(new RegExp(`<p>\\s*<a [^>]*href="${RE_TOOL}"[^>]*>[\\s\\S]*?<\\/a>\\s*<\\/p>\\s*`, 'g'), '')

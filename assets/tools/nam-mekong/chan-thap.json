@@ -1,0 +1,23 @@
+{
+ "nguon": "Mặt bằng tầng điển hình G1, G2 đặt theo cạnh lô GCN; xoay tính theo độ, ngược chiều kim đồng hồ, 0 = trục ảnh mặt bằng song song hướng Đông.",
+ "khoi": {
+  "g1": {
+   "tam": [
+    453.19,
+    259.99
+   ],
+   "rong": 75.17,
+   "cao": 79.08,
+   "xoay": 13.59
+  },
+  "g2": {
+   "tam": [
+    514.31,
+    284.91
+   ],
+   "rong": 73.03,
+   "cao": 64.23,
+   "xoay": -37.35
+  }
+ }
+}

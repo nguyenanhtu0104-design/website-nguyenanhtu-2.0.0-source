@@ -1,0 +1,163 @@
+{
+ "nguon": "Bộ layout căn hộ Nam Mekong Grand Plaza của chủ đầu tư (Tú gửi 21/11/2026).",
+ "khu": {
+  "g1": [
+   {
+    "id": "phoi-studio",
+    "loai": "STU",
+    "ten": "Studio",
+    "truc": [],
+    "thongThuy": 36.45,
+    "anh": "layout/studio.webp",
+    "w": 1400,
+    "h": 832,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "phoi-1pn",
+    "loai": "1BR",
+    "ten": "1PN",
+    "truc": [],
+    "thongThuy": 39.85,
+    "anh": "layout/1pn.webp",
+    "w": 1400,
+    "h": 773,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "phoi-1pn-plus",
+    "loai": "1BR+",
+    "ten": "1PN+",
+    "truc": [],
+    "thongThuy": 66.32,
+    "anh": "layout/1pn-plus.webp",
+    "w": 1400,
+    "h": 827,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "phoi-3pn",
+    "loai": "3BR",
+    "ten": "3PN",
+    "truc": [],
+    "thongThuy": 100.77,
+    "anh": "layout/3pn.webp",
+    "w": 1400,
+    "h": 898,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "phoi-penthouse",
+    "loai": "PH",
+    "ten": "Penthouse",
+    "truc": [],
+    "thongThuy": 336.09,
+    "anh": "layout/penthouse.webp",
+    "w": 1400,
+    "h": 895,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "phoi-2pn",
+    "loai": "2BR",
+    "ten": "2PN",
+    "truc": [],
+    "thongThuy": 67.24,
+    "anh": "layout/2pn.webp",
+    "w": 1400,
+    "h": 874,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "phoi-2pn-plus",
+    "loai": "2BR+",
+    "ten": "2PN+",
+    "truc": [],
+    "thongThuy": 85.59,
+    "anh": "layout/2pn-plus.webp",
+    "w": 1400,
+    "h": 1019,
+    "kieu": "minh-hoa"
+   }
+  ],
+  "g2": [
+   {
+    "id": "g2-studio",
+    "loai": "STU",
+    "ten": "Studio",
+    "truc": [],
+    "thongThuy": 35.85,
+    "anh": "layout/g2-studio.webp",
+    "w": 1600,
+    "h": 900,
+    "kieu": "mat-bang"
+   },
+   {
+    "id": "g2-1pn",
+    "loai": "1BR",
+    "ten": "1PN",
+    "truc": [],
+    "thongThuy": 39.99,
+    "anh": "layout/g2-1pn.webp",
+    "w": 1600,
+    "h": 900,
+    "kieu": "mat-bang"
+   },
+   {
+    "id": "phoi-1pn-plus",
+    "loai": "1BR+",
+    "ten": "1PN+",
+    "truc": [],
+    "thongThuy": 66.32,
+    "anh": "layout/1pn-plus.webp",
+    "w": 1400,
+    "h": 827,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "g2-3pn",
+    "loai": "3BR",
+    "ten": "3PN",
+    "truc": [],
+    "thongThuy": 108.64,
+    "anh": "layout/g2-3pn.webp",
+    "w": 1600,
+    "h": 900,
+    "kieu": "mat-bang"
+   },
+   {
+    "id": "phoi-penthouse",
+    "loai": "PH",
+    "ten": "Penthouse",
+    "truc": [],
+    "thongThuy": 336.09,
+    "anh": "layout/penthouse.webp",
+    "w": 1400,
+    "h": 895,
+    "kieu": "minh-hoa"
+   },
+   {
+    "id": "g2-2pn",
+    "loai": "2BR",
+    "ten": "2PN",
+    "truc": [],
+    "thongThuy": 65.35,
+    "anh": "layout/g2-2pn.webp",
+    "w": 1600,
+    "h": 900,
+    "kieu": "mat-bang"
+   },
+   {
+    "id": "g2-2pn-plus",
+    "loai": "2BR+",
+    "ten": "2PN+",
+    "truc": [],
+    "thongThuy": 84.81,
+    "anh": "layout/g2-2pn-plus.webp",
+    "w": 1600,
+    "h": 900,
+    "kieu": "mat-bang"
+   }
+  ]
+ }
+}

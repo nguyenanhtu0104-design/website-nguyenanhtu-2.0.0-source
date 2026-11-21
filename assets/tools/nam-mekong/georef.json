@@ -1,0 +1,22 @@
+{
+ "duAn": "Nam Mekong Grand Plaza",
+ "trangThai": "ranh-theo-gcn",
+ "neo": {
+  "diem": "trọng tâm lô A4",
+  "planX": 480,
+  "planY": 270,
+  "lat": 11.0623736,
+  "lon": 106.6883557
+ },
+ "tyLe": {
+  "metTrenDonVi": 1.0
+ },
+ "huong": {
+  "bacSoVoiTrucDocAnh": 0
+ },
+ "cachDung": "Ranh lô dựng từ sơ đồ thửa đất trên GCN CY 375669 (thửa 131, tờ 78; chiều dài các cạnh 119,88 · 65,44 · 3,99 · cung 109,92 · 3,92 · 77,84 · 7,07 · 73,49 m; diện tích dựng lại 13.098 m² so với 13.095 m²), đặt lên ảnh vệ tinh Esri z19 theo hàng rào thi công (chỉ tịnh tiến, giữ hướng Bắc của GCN). Hai toà đặt theo cạnh lô: G1 song song cạnh Nguyễn Thị Định và Lê Hoàn, G2 song song cạnh Bắc và đường Duy Tân, lùi 6 m vào trong ranh; kích thước toà đo từ mặt bằng tầng điển hình (G1 0,0698 m, G2 0,0575 m mỗi điểm ảnh khổ 2000, đo theo chiều dài căn 1PN 9,77 m).",
+ "nghiemThu": {
+  "ranh": "Khớp hàng rào thi công trên ảnh vệ tinh, sai lệch đỉnh 3–7 m.",
+  "thap": "Hai toà chưa lên khung (ảnh vệ tinh: đang ép cọc). Vị trí toà là suy theo cạnh lô và mặt bằng tiện ích tổng thể; đo lại khi có khung hoặc bản 1/500 có toạ độ."
+ }
+}

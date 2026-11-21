@@ -263,6 +263,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 
 ## 14. Nhật ký thay đổi nguyên tắc
 
+- 2026-11-21 — **2.49.0** (Tú: "Dựng nội dung tìm nhà cho Nam Mekong… giao diện sạch hơn"): sa bàn Nam Mekong `assets/tools/nam-mekong/` theo §17. **Có GCN thì ranh dựng từ sơ đồ thửa (độ dài cạnh, diện tích) rồi chỉ tịnh tiến lên ảnh vệ tinh**, giữ hướng Bắc của GCN. Toà cao tầng nằm xiên so với hướng Bắc thì đặt góc `xoay` trong `chan-thap.json`, không dựng bậc thang. Dự án chỉ có bảng giá theo trục: giá ghi "giá từ", căn ngoài bảng ghi "Liên hệ", **không thắp ô đèn khi chưa có tình trạng căn**. **Giao diện sa bàn không hiện ghi chú kỹ thuật** (phép chiếu, số ô ảnh, nguồn dựng khối); những thông tin đó nằm trong `georef.json` và CHANGELOG. Chỉ giữ dòng ghi nguồn ảnh nền mà nhà cung cấp bắt buộc.
 - 2026-11-20 — **2.48.0**: Tú công bố trang Tự đánh giá dự án (`danhGia.congBo: true`).
 - 2026-11-20 — **2.47.0** (Tú yêu cầu): dữ kiện tham khảo bật/tắt được; dữ kiện chỉ là thông tin, không điều hướng (build kiểm từ ngữ).
 - 2026-11-20 — **2.46.0** (Tú chốt): bước đầu chỉ chọn dự án + nhu cầu; hồ sơ cá nhân ở cuối, câu hỏi theo nhu cầu (`apDung`).

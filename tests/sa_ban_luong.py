@@ -54,6 +54,7 @@ with sync_playwright() as p:
         r = J("""(()=>{const b=__blanca, out={n:0,lech:[],khongLayout:[],khongCS:[]}; const hom=BanTinh.homNay();
           for(const k of b.CAN().can){ const o=b.timCan(k.ma); if(!o){out.lech.push(k.ma+' không tìm được'); continue;}
             if(!b.layoutCua(o)) out.khongLayout.push(k.ma);
+            if(!k.gia) continue;   // căn chưa có giá (dự án chỉ có bảng giá theo trục): không có phiếu
             const pol=b.CS().khu[o.khu]; if(!pol){out.khongCS.push(k.ma); continue;}
             for(const pt of BanTinh.ptttHieuLuc(pol,hom)) for(const tl of [pol.htls?pol.htls.tyLeVay:.7,.5]){
               const ph=BanTinh.phieu(k.gia,o.loai,pol,pt,{ngayKy:hom,tyLeVay:tl}); out.n++;
@@ -63,9 +64,9 @@ with sync_playwright() as p:
         check(r['n'] > 0 and not r['lech'], f"{r['n']} phiếu (mọi căn trong quỹ × mọi phương thức): tổng tiến độ = tổng giá trị, không đợt âm {r['lech'][:3]}")
         check(not r['khongCS'], f"mọi căn trong quỹ có chính sách bán hàng {r['khongCS'][:3]}")
         check(not r['khongLayout'], f"mọi căn trong quỹ có layout chính thức {r['khongLayout'][:3]}")
-        ma = J("(()=>{const b=__blanca; const k=b.CAN().can.find(x=>x.tinhTrang==='trong'&&b.CS().khu[x.phanKhu]); return k&&k.ma})()")
-        ma2 = J("(()=>{const b=__blanca; const k=b.CAN().can.filter(x=>x.tinhTrang==='trong'&&b.CS().khu[x.phanKhu]).find(x=>x.ma!==%s); return k&&k.ma})()" % json.dumps(ma))
-        check(bool(ma and ma2), f'có ít nhất hai căn còn trống để thử ({ma}, {ma2})')
+        ma = J("(()=>{const b=__blanca; const k=b.CAN().can.find(x=>(x.tinhTrang==='trong'||(x.tinhTrang==null&&x.gia))&&b.CS().khu[x.phanKhu]); return k&&k.ma})()")
+        ma2 = J("(()=>{const b=__blanca; const k=b.CAN().can.filter(x=>(x.tinhTrang==='trong'||(x.tinhTrang==null&&x.gia))&&b.CS().khu[x.phanKhu]).find(x=>x.ma!==%s); return k&&k.ma})()" % json.dumps(ma))
+        check(bool(ma and ma2), f'có ít nhất hai căn còn trống (hoặc có giá, khi dự án chưa có tình trạng căn) để thử ({ma}, {ma2})')
         # 2. chat bị khoá khi chưa chọn căn
         pops = []; ctx.on('page', lambda np: pops.append(np))
         nut = "(()=>{const r=document.querySelector('#flow [data-chat]').getBoundingClientRect();return [r.x+r.width/2,r.y+r.height/2]})()"

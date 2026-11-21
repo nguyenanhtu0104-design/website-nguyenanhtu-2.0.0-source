@@ -9,7 +9,7 @@ function paint(){
  const a=el('invSource');a.hidden=!p.inventoryUrl;
  if(p.inventoryUrl)a.href=p.inventoryUrl;
  el('invMissing').textContent=p.inventoryUrl?'':'Đang chờ link giỏ hàng từ phụ trách dự án.';
- if(selector){const show=slug==='blanca-city';el('blancaZones').hidden=!show;if(show&&!el('blancaFrame').hasAttribute('src'))el('blancaFrame').src='/assets/tools/casa-blanca/blanca.html';el('sandboxArtisan').hidden=slug!=='artisan-park';el('profile').href='/cam-nang/'+slug+'/';el('projectName').textContent=p.name;}
+ if(selector){const sb=p.saBan&&p.saBanTrang?'/assets/tools/'+p.saBan+'/'+p.saBanTrang:'';el('blancaZones').hidden=!sb;if(sb){if(el('blancaFrame').getAttribute('src')!==sb)el('blancaFrame').src=sb;el('saBanMo').href=sb;el('saBanMo').textContent='Mở sa bàn 3D '+p.name+' toàn màn hình ↗';el('blancaFrame').title=p.name+' · sa bàn 3D, giỏ hàng và tư vấn';}el('sandboxArtisan').hidden=slug!=='artisan-park';el('profile').href='/cam-nang/'+slug+'/';el('projectName').textContent=p.name;}
 }
 async function refresh(clicked){
  const btn=el('invRefresh');btn.disabled=true;

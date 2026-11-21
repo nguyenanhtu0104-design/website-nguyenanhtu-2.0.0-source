@@ -585,6 +585,11 @@ function bgInit(){
 /* ── INIT ── */
 window.addEventListener('DOMContentLoaded',()=>{
   buildUI();bgInit();
+  /* mở từ sa bàn 3D: ?can=G1.12.CH05&dg=<đơn giá đ/m²>&pt=<phương thức> */
+  try{const q=new URLSearchParams(location.search),k=q.get('can');
+    if(k&&U[k]){const p=k.split('.');$('sT').value=p[0];oTC();$('sF').value=p[1];oFC();$('sU').value=k;oUC();
+      const dg=parseInt(q.get('dg'),10);if(dg>0)setPPM(dg);
+      const pi={'khong-vay':0,'vay':1,'tts70':2,'tts95':3}[q.get('pt')];if(pi!=null)setPT(pi);}}catch(e){}
   if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
   recalc();
 });

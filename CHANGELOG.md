@@ -2,6 +2,15 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.49.0 · 21/11/2026 — Tìm nhà: sa bàn 3D Nam Mekong Grand Plaza
+- **Sa bàn mới `assets/tools/nam-mekong/nam-mekong.html`**, dựng theo khung Blanca City (§17): hai toà G1, G2 trên ảnh vệ tinh thật, bóc từng tầng 3–30 với mặt bằng thật của chủ đầu tư (13 bản vẽ G1, 11 bản vẽ G2), chọn căn trên mặt bằng, layout căn, giá cuối theo 4 phương thức, phiếu tính giá và cân đối tài chính, chat Zalo, ký gửi.
+- **Ranh lô A4 dựng từ sơ đồ thửa trên GCN CY 375669** (thửa 131, tờ 78; đủ 8 cạnh, cung Chu Văn An; diện tích dựng lại 13.098 m² so với 13.095 m²), đặt lên ảnh vệ tinh theo hàng rào thi công. Hai toà đặt song song các cạnh lô vuông góc nhau trên GCN, lùi 6 m; khối giật cấp tầng 24–30 đọc từ mặt bằng từng tầng.
+- **Rổ giá đủ 1.622 căn** (G1 905, G2 717): mã căn, loại (đọc từ màu mặt bằng), thông thủy, tim tường theo bảng tính dự án; giá từ = thông thủy × đơn giá thấp nhất của trục căn (họp đại lý 20/11/2026) + VAT + KPBT. 203 căn ngoài các khoảng diện tích của bảng giá (penthouse, căn sân vườn lớn…) ghi "Liên hệ". Chưa có tình trạng còn/đã bán nên không thắp ô đèn.
+- Khung sa bàn bản Nam Mekong: khối toà xoay được theo góc (`chan-thap.json` → `xoay`), mỗi toà nhiều bản vẽ mặt bằng theo tầng (`mat-bang.json` → `mb[].tang`), `ban-tinh.js` có mẫu tiến độ riêng cho từng phương thức, đợt bàn giao theo % + KPBT và đợt cấp sổ. Bỏ các dòng ghi chú kỹ thuật trên giao diện (nguồn phép chiếu, số ô ảnh, mã mô phỏng); chỉ giữ dòng ghi nguồn ảnh nền bắt buộc.
+- Bảng tính Nam Mekong nhận `?can=…&dg=…&pt=…` để mở đúng căn và phương thức từ sa bàn.
+- Tìm nhà: khung sa bàn nhúng theo dự án (`saBan` + `saBanTrang` trong `data/project-inventory.json`), Blanca City và Nam Mekong dùng chung; thẻ Nam Mekong dùng ảnh chụp từ khối 3D.
+- `tests/sa_ban_luong.py` chạy được cho dự án chưa có tình trạng căn (thử trên căn có giá).
+
 ## 2.48.0 · 20/11/2026 — Công bố Tự đánh giá dự án
 - Tú duyệt công bố: `danhGia.congBo: true`. Mục "Đánh giá" lên menu; nút "Tự đánh giá chi tiết dự án này" hiện sau thang điểm ở 5 bài dự án (Nam Mekong Grand Plaza, Palm River, Norton Park, SkySOLIS, Artisan Park); trang vào sitemap, bỏ noindex.
 - Bản đánh giá chi tiết của Tú chưa có dự án nào; trang báo "đang được hoàn thiện" cho tới khi Tú chấm (chỉ điểm `duyet: true` mới hiện).

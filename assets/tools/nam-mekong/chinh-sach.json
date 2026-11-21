@@ -1,0 +1,570 @@
+{
+ "capNhat": "2026-11-20",
+ "nguon": "Chính sách bán hàng họp đại lý ngày 20/11/2026, theo bảng tính Nam Mekong trên nguyenanhtu.vn.",
+ "khu": {
+  "g1": {
+   "ten": "Nam Mekong Grand Plaza",
+   "ma": "Chính sách họp đại lý 20/11/2026",
+   "tu": "2026-11-20",
+   "nguon": "Chính sách bán hàng họp đại lý ngày 20/11/2026, theo bảng tính Nam Mekong trên nguyenanhtu.vn.",
+   "vatKpbt": 1.12,
+   "vat": 0.1,
+   "kpbt": 0.02,
+   "coc": {
+    "*": 50000000
+   },
+   "hdmbSau": 1,
+   "nhanNha": "2028-12-31",
+   "banGiao": "2028-12-31",
+   "htls": {
+    "tyLeVay": 0.5,
+    "thang": 24,
+    "den": "2028-12-31"
+   },
+   "uuDai": [
+    "Mua sỉ: chiết khấu 0,5% cho 2–3 căn, 1% từ 4 căn.",
+    "Chiết khấu 1% cho khách cư trú, làm việc tại phường Bình Dương hoặc đã mua bất động sản tại Thành phố mới Bình Dương.",
+    "Chiết khấu 1% cho khách từ chối nhận bảo lãnh nhà ở hình thành trong tương lai.",
+    "Vay ngân hàng tối đa 80% giá trị căn hộ, chủ đầu tư hỗ trợ lãi suất trên 50% giá trị căn trong 24 tháng hoặc đến khi nhận nhà."
+   ],
+   "pttt": [
+    {
+     "id": "khong-vay",
+     "ten": "Thanh toán chuẩn",
+     "phu": "23 đợt, giãn đến khi nhận sổ",
+     "ck": [],
+     "tienDo": "chuan"
+    },
+    {
+     "id": "vay",
+     "ten": "Vay ngân hàng, hỗ trợ lãi suất",
+     "phu": "Tự có 20%, ngân hàng giải ngân 50%, chủ đầu tư trả lãi 24 tháng",
+     "ck": [],
+     "tienDo": "vay"
+    },
+    {
+     "id": "tts70",
+     "ten": "Thanh toán sớm 70%",
+     "phu": "Đóng đủ 70% trong 30 ngày từ ký HĐMB",
+     "ck": [
+      {
+       "ten": "Chiết khấu thanh toán sớm 70%",
+       "tyLe": 0.04,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "som70",
+     "mucSom": 0.7
+    },
+    {
+     "id": "tts95",
+     "ten": "Thanh toán sớm 95%",
+     "phu": "Đóng đủ 95% trong 30 ngày từ ký HĐMB",
+     "ck": [
+      {
+       "ten": "Chiết khấu thanh toán sớm 95%",
+       "tyLe": 0.08,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "som95",
+     "mucSom": 0.95
+    }
+   ],
+   "tienDo": {
+    "chuan": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true,
+      "ten": "Đợt 1 · ký TTĐC và HĐMB"
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 37
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 67
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 97
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 127
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 157
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 187
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 217
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 247
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 277
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 307
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 337
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 367
+     },
+     {
+      "loai": "dot",
+      "pt": 0.06,
+      "ngay": 397,
+      "ghi": "cất nóc, dự kiến 01/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 427
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 457
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 487
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 517
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 547
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 577
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 607
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.25
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "vay": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 37
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.5,
+      "sauHdmb": 30
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.25
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "som70": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.6,
+      "ngay": 37
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.25
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "som95": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.85,
+      "ngay": 37
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ]
+   }
+  },
+  "g2": {
+   "ten": "Nam Mekong Grand Plaza",
+   "ma": "Chính sách họp đại lý 20/11/2026",
+   "tu": "2026-11-20",
+   "nguon": "Chính sách bán hàng họp đại lý ngày 20/11/2026, theo bảng tính Nam Mekong trên nguyenanhtu.vn.",
+   "vatKpbt": 1.12,
+   "vat": 0.1,
+   "kpbt": 0.02,
+   "coc": {
+    "*": 50000000
+   },
+   "hdmbSau": 1,
+   "nhanNha": "2028-12-31",
+   "banGiao": "2028-12-31",
+   "htls": {
+    "tyLeVay": 0.5,
+    "thang": 24,
+    "den": "2028-12-31"
+   },
+   "uuDai": [
+    "Mua sỉ: chiết khấu 0,5% cho 2–3 căn, 1% từ 4 căn.",
+    "Chiết khấu 1% cho khách cư trú, làm việc tại phường Bình Dương hoặc đã mua bất động sản tại Thành phố mới Bình Dương.",
+    "Chiết khấu 1% cho khách từ chối nhận bảo lãnh nhà ở hình thành trong tương lai.",
+    "Vay ngân hàng tối đa 80% giá trị căn hộ, chủ đầu tư hỗ trợ lãi suất trên 50% giá trị căn trong 24 tháng hoặc đến khi nhận nhà."
+   ],
+   "pttt": [
+    {
+     "id": "khong-vay",
+     "ten": "Thanh toán chuẩn",
+     "phu": "23 đợt, giãn đến khi nhận sổ",
+     "ck": [],
+     "tienDo": "chuan"
+    },
+    {
+     "id": "vay",
+     "ten": "Vay ngân hàng, hỗ trợ lãi suất",
+     "phu": "Tự có 20%, ngân hàng giải ngân 50%, chủ đầu tư trả lãi 24 tháng",
+     "ck": [],
+     "tienDo": "vay"
+    },
+    {
+     "id": "tts70",
+     "ten": "Thanh toán sớm 70%",
+     "phu": "Đóng đủ 70% trong 30 ngày từ ký HĐMB",
+     "ck": [
+      {
+       "ten": "Chiết khấu thanh toán sớm 70%",
+       "tyLe": 0.04,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "som70",
+     "mucSom": 0.7
+    },
+    {
+     "id": "tts95",
+     "ten": "Thanh toán sớm 95%",
+     "phu": "Đóng đủ 95% trong 30 ngày từ ký HĐMB",
+     "ck": [
+      {
+       "ten": "Chiết khấu thanh toán sớm 95%",
+       "tyLe": 0.08,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "som95",
+     "mucSom": 0.95
+    }
+   ],
+   "tienDo": {
+    "chuan": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true,
+      "ten": "Đợt 1 · ký TTĐC và HĐMB"
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 37
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 67
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 97
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 127
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 157
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 187
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 217
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 247
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 277
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 307
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 337
+     },
+     {
+      "loai": "dot",
+      "pt": 0.015,
+      "ngay": 367
+     },
+     {
+      "loai": "dot",
+      "pt": 0.06,
+      "ngay": 397,
+      "ghi": "cất nóc, dự kiến 01/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 427
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 457
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 487
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 517
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngay": 547
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 577
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngay": 607
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.25
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "vay": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 37
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.5,
+      "sauHdmb": 30
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.25
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "som70": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.6,
+      "ngay": 37
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.25
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "som95": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 7,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.85,
+      "ngay": 37
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ]
+   }
+  }
+ }
+}
