@@ -2,26 +2,8 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
-## 2.56.0 · 21/11/2026 — Sa bàn vùng Trung tâm TP.HCM: đủ 20 dự án
-- `vung-trung-tam/du-an.json`: thêm 22 khối theo toạ độ Tú gửi: Vinhomes Golden River (4 tháp Aqua, 147–176 m), The Grand Manhattan (3 tháp 39 tầng), Lancaster Lincoln (2 tháp 38 tầng + tòa tiện ích 8 tầng), Lancaster Legacy (3 tháp 38 tầng), Sunwah Pearl (Golden House, White House 50 tầng, Silver House 45 tầng); The Metropole Thủ Thiêm theo 6 phân khu (The Galleria, The Crest, The Mett, The Hallmark, The Opera, The OpusK); Sun Thủ Thiêm 2C, Thủ Thiêm Zeit River (T1 25 tầng, T2 32 tầng), The Empire City (tháp 86 tầng), The River Thủ Thiêm, Eco Smart City (11 tòa 4–60 tầng, dựng 4 tháp đại diện), The Petropolis, Sala Đại Quang Minh, Thảo Điền Green, The Berkley, Sun Thanh Đa, Masterise Thanh Đa.
-- Dự án chưa có số tầng công bố đánh dấu `uocLuong`; thẻ dự án ghi "Số tầng minh hoạ, chưa có số công bố". Thêm `rong` (bề rộng tháp) cho lô nhỏ, `nhan` / `nhanXa` để gộp nhãn phân khu khi nhìn xa.
-- Nhãn dự án hiện cả ở toàn cảnh vùng (tới 16 km).
-- Tìm nhà: 17 dự án trên mở sa bàn vùng đúng vị trí.
-- Bản đồ dự án: Sun Thủ Thiêm 2C và The Petropolis thay vị trí gần đúng bằng toạ độ Tú gửi.
-
-## 2.55.0 · 21/11/2026 — Sa bàn theo vùng: khung dùng chung, vùng Trung tâm TP.HCM
-- **Sa bàn vùng dùng chung mã của sa bàn Thành phố mới:** trang vùng chỉ khai báo `window.SB_VUNG` (tên, mốc toạ độ, file dự án) rồi nạp `../nam-mekong/showroom.js`. Không cần ảnh mặt bằng, phép chiếu hay giỏ hàng; dự án khai báo bằng toạ độ (`ll`), tự đặt lên ảnh vệ tinh. Ẩn các nút không dùng ở chế độ vùng (rổ giá, mặt cắt, ranh đất, metro).
-- **Vùng Trung tâm TP.HCM** `assets/tools/vung-trung-tam/` (Old Money · Thủ Thiêm · Thảo Điền · Thanh Đa): bước đầu có The Marq (2 tòa 29 tầng), Grand Marina Saigon (4 tòa 36–47 tầng), One Central Saigon (tháp đôi 56 và 47 tầng, cao 235 m), vị trí theo toạ độ có nguồn trên bản đồ dự án của website. Chạm khối: thẻ dự án, hỏi giỏ hàng, hồ sơ, ký gửi. Các dự án còn lại của vùng thêm khi có toạ độ.
-- Tìm nhà: The Marq, Grand Marina Saigon, One Central Saigon mở sa bàn vùng đúng dự án.
-- Sửa: dữ liệu nền tảng Thành phố mới gắn nhầm `habitat` (QL13) thay vì `grand-habitat`.
-- Bản tóm tắt tham vấn ghi đúng tên các dự án khách đã chọn.
-
-## 2.54.0 · 21/11/2026 — Sa bàn Thành phố mới: tất cả dự án trong nền tảng
-- **Nút "Tất cả dự án"** trên dải phân khu (`#tatca`): khung toàn bộ dự án của nền tảng Thành phố mới, danh sách dự án ở khung bên.
-- **12 dự án thêm vào sa bàn** (`du-an-nen.json`): Midori Park The Ten, The Nest, The Glory, Haruka; Sora Gardens I và II, Sora Gardens III; Sycamore: Orchard Heights, Orchard Hill, Orchard Grand, The Orchard, Orchard Mansion, Orchard Collection. Vị trí theo toạ độ Tú gửi, hướng khối theo lưới đường trên ảnh vệ tinh, số tầng và quy mô theo nguồn công bố; khối minh hoạ nhẹ (tháp + khối đế, khu thấp tầng là dãy nhà), không làm chậm thao tác.
-- Chạm khối hoặc nhãn: thẻ dự án (chủ đầu tư, tình trạng, quy mô), "Hỏi giỏ hàng dự án này" (vào danh sách tham vấn, chat Zalo chung), "Hồ sơ dự án", "Ký gửi căn". Dự án có giỏ hàng (Nam Mekong, Artisan) vẫn mở chọn căn như cũ.
-- Nội dung: `sycamore` sửa dòng phụ "Thủ Đức" thành "Thành phố mới Bình Dương" (Tú xác nhận).
-- Tìm nhà: các dự án trên mở sa bàn chung đúng vị trí (`saBanTrang` kèm `#da=…`); dự án dùng chung sa bàn mà không có ảnh riêng thì giữ ảnh hồ sơ (`scripts/build.mjs`).
+## Nội dung · 21/11/2026
+- **Thêm bài Serena Riverside** vào Dự Án Chọn Lọc, gắn dưới vùng Đại lộ Bình Dương (QL13). Trạng thái **đang cập nhật** (stub, noindex) cho đến khi có nội dung và ảnh.
 
 ## 2.53.0 · 21/11/2026 — Sa bàn Thành phố mới: mặt bằng khối đế, ga S1 theo phối cảnh, công trình quanh vòng xoay A1
 - **Mặt bằng khối đế tầng 1, 2 dán lên khối 3D** (`mb/de-tang-1.webp`, `mb/de-tang-2.webp`): tầng 1 gồm 29 căn thương mại dịch vụ (TMDV 01–29), tầng 2 gồm 16 văn phòng (VP 01–16), hai khu sinh hoạt cộng đồng và nhà trẻ, kèm nhãn diện tích thông thuỷ của chủ đầu tư. Ảnh khớp vào đường bao khối đế (`chan-thap.json` → `khoiDe`) bằng phép đồng dạng tối ưu theo cạnh ảnh; ngoài khối trong suốt. Mở từ nút "Mặt bằng tầng 1 · thương mại" / "Tầng 2 · văn phòng", từ thanh tầng (T1, T2) hoặc `#de=1`, `#de=2`; cắt cả hai toà ở cao độ sàn. Nút "Hỏi giá thuê, mua mặt bằng" đưa vào danh sách tham vấn.

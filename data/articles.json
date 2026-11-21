@@ -5141,7 +5141,7 @@
     "slug": "sycamore",
     "status": "stub",
     "title": "Sycamore",
-    "subtitle": "CapitaLand · 18,9ha · Thành phố mới Bình Dương",
+    "subtitle": "CapitaLand · 18,9ha · Thủ Đức",
     "icon": "🌳",
     "category": "du-an-chon-loc",
     "parent": "vung-khcn-cao-tpm-binh-duong",
@@ -5158,12 +5158,12 @@
     "author": "nguyen-anh-tu",
     "content": "content/articles/sycamore.html",
     "relatedArticles": [],
-    "seoTitle": "Sycamore — CapitaLand · 18,9ha · Thành phố mới Bình Dương",
+    "seoTitle": "Sycamore — CapitaLand · 18,9ha · Thủ Đức",
     "seoDescription": "Phân tích chi tiết về dự án 🌳 Sycamore đang được biên soạn và sẽ có trong phiên bản tiếp theo.",
     "ogImage": "assets/images/og/sycamore.jpg",
     "section": "🏛️ Dự Án Chọn Lọc",
     "accent": "#b05040",
-    "searchKeywords": "🌳 Sycamore CapitaLand · 18,9ha · Thành phố mới Bình Dương 🌳 Sycamore — CapitaLand · 18,9ha · Thành phố mới Bình Dương🔄 Nội dung đang được cập nhậtPhân tích chi tiết về dự án 🌳 Sycamore đang được biên soạn và sẽ có trong phiên bản tiếp theo.Liên hệ để được tư vấn trực tiếp về dự án này: 0978 618 149 — Nguyễn Anh Tú · ERA Vietnam",
+    "searchKeywords": "🌳 Sycamore CapitaLand · 18,9ha · Thủ Đức 🌳 Sycamore — CapitaLand · 18,9ha · Thủ Đức🔄 Nội dung đang được cập nhậtPhân tích chi tiết về dự án 🌳 Sycamore đang được biên soạn và sẽ có trong phiên bản tiếp theo.Liên hệ để được tư vấn trực tiếp về dự án này: 0978 618 149 — Nguyễn Anh Tú · ERA Vietnam",
     "legacy": {
       "source": "v57",
       "panelId": "sycamore"
@@ -8026,6 +8026,37 @@
     "section": "🏛️ Dự Án Chọn Lọc",
     "accent": "#b05040",
     "searchKeywords": "The Peak Garden Thành Phố Phía Nam Hưng Lộc Phát Nguyễn Lương Bằng Quận 7",
+    "legacy": null
+  },
+  {
+    "id": "serena_riverside",
+    "slug": "serena-riverside",
+    "status": "stub",
+    "title": "Serena Riverside",
+    "subtitle": "Dự án chọn lọc · Đại lộ Bình Dương",
+    "icon": "",
+    "category": "du-an-chon-loc",
+    "parent": "truc-quoc-lo-13",
+    "tags": [
+      "du-an-chon-loc",
+      "truc-quoc-lo-13"
+    ],
+    "description": "Serena Riverside là dự án chọn lọc trên trục Đại lộ Bình Dương (QL13), đang được cập nhật thông tin chi tiết.",
+    "thumbnail": null,
+    "heroImage": null,
+    "publishedDate": "2026-11-21",
+    "updatedDate": "2026-11-21",
+    "author": "nguyen-anh-tu",
+    "content": "content/articles/serena-riverside.html",
+    "relatedArticles": [
+      "truc-quoc-lo-13"
+    ],
+    "seoTitle": "Serena Riverside",
+    "seoDescription": "Serena Riverside là dự án chọn lọc trên trục Đại lộ Bình Dương (QL13), đang được cập nhật thông tin chi tiết.",
+    "ogImage": "assets/images/og/serena-riverside.jpg",
+    "section": "🏛️ Dự Án Chọn Lọc",
+    "accent": "#b05040",
+    "searchKeywords": "Serena Riverside, dự án Serena, Đại lộ Bình Dương, QL13, dự án chọn lọc",
     "legacy": null
   }
 ]
