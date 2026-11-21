@@ -1,0 +1,98 @@
+{
+ "vung": "Đại lộ Bình Dương (QL13)",
+ "neo": [
+  10.914,
+  106.711
+ ],
+ "nguon": "Toạ độ: Tú gửi 21/11/2026 (Google Maps). Harmonie (Thành phố mới) không đặt ở đây vì cách tâm vùng khoảng 14 km. Số tầng, quy mô, chủ đầu tư lấy từ bài dự án trên website (Norton Park, SkySOLIS); dự án chưa có số tầng công bố chỉ hiện ghim, chưa dựng khối. Khối minh hoạ, chưa theo mặt bằng.",
+ "duAn": [
+  {
+   "id": "norton-park",
+   "ten": "Norton Park",
+   "bai": "norton-park",
+   "cdt": "Gamuda Land",
+   "ll": [
+    10.930786325698124,
+    106.71284852713389
+   ],
+   "loai": "thap",
+   "thap": 6,
+   "tang": [
+    19,
+    19,
+    19,
+    19,
+    19,
+    19
+   ],
+   "tt": "Kick-off 10/2026",
+   "quyMo": "6 tháp 19 tầng, 1.286 sản phẩm, 7,9 ha, cạnh AEON Mall Bình Dương Canary",
+   "xoay": 0
+  },
+  {
+   "id": "habitat",
+   "ten": "Habitat",
+   "bai": "habitat",
+   "cdt": "",
+   "ll": [
+    10.9253089704014,
+    106.71494841215609
+   ],
+   "loai": "chua",
+   "thap": 0,
+   "tang": [],
+   "tt": "Đang cập nhật",
+   "quyMo": "Chưa có số tầng công bố trong nguồn hiện có; khối chưa dựng"
+  },
+  {
+   "id": "setia-edenia",
+   "ten": "Setia Edenia",
+   "bai": "setia-edenia",
+   "cdt": "",
+   "ll": [
+    10.910858423626024,
+    106.71150203862153
+   ],
+   "loai": "chua",
+   "thap": 0,
+   "tang": [],
+   "tt": "Đang cập nhật",
+   "quyMo": "Chưa có số tầng công bố trong nguồn hiện có; khối chưa dựng"
+  },
+  {
+   "id": "skysolis",
+   "ten": "SkySOLIS",
+   "bai": "skysolis",
+   "cdt": "SkyWorld",
+   "ll": [
+    10.90744589870959,
+    106.71175406835555
+   ],
+   "loai": "thap",
+   "thap": 3,
+   "tang": [
+    40,
+    40,
+    40
+   ],
+   "tt": "Mở bán 10/2026",
+   "quyMo": "3 tháp 40 tầng, 1.101 sản phẩm, FAR 12,98, khoảng 1 ha",
+   "xoay": 0
+  },
+  {
+   "id": "ho-guom-xanh",
+   "ten": "Hồ Gươm Xanh",
+   "bai": "ho-guom-xanh",
+   "cdt": "",
+   "ll": [
+    10.896737473005304,
+    106.70492680806701
+   ],
+   "loai": "chua",
+   "thap": 0,
+   "tang": [],
+   "tt": "Đang cập nhật",
+   "quyMo": "Chưa có số tầng công bố trong nguồn hiện có; khối chưa dựng"
+  }
+ ]
+}

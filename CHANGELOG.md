@@ -2,6 +2,14 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.57.0 · 21/11/2026 — Sa bàn vùng Đại lộ Bình Dương (QL13)
+- **Sa bàn 3D vùng mới** `assets/tools/vung-binh-duong/` theo khung §19 (sao từ vùng Trung tâm): nền ảnh vệ tinh thật, dự án chạm mở hồ sơ và giỏ hàng.
+- **Norton Park** (Gamuda Land): 6 tháp 19 tầng, dựng khối theo số tầng trong bài dự án. **SkySOLIS** (SkyWorld): 3 tháp 40 tầng, dựng khối theo bài dự án.
+- **Ghim không khối** cho Habitat, Setia Edenia và Hồ Gươm Xanh: chưa có số tầng công bố trong nguồn hiện có, không đoán số tầng. Trường `loai: "chua"` trong `du-an.json`.
+- `assets/tools/nam-mekong/showroom.js`: bỏ qua khối cho dự án `loai: "chua"` (một dòng, không đổi sa bàn khác).
+- `data/project-inventory.json`: Norton Park, SkySOLIS, Setia Edenia, Habitat, Hồ Gươm Xanh có `saBan: vung-binh-duong` để Tìm nhà mở đúng sa bàn.
+- Toạ độ từ Tú gửi 21/11/2026 (Google Maps). Tâm vùng đặt ở [10.914, 106.711]. Harmonie (Phú Mỹ Hưng, Thành phố mới Bình Dương) chưa đưa vào: cách tâm khoảng 14 km nên kéo khung toàn cảnh quá xa; chờ Tú quyết định đưa vào sa bàn Thành phố mới.
+
 ## Nội dung · 21/11/2026
 - **Thêm bài Serena Riverside** vào Dự Án Chọn Lọc, gắn dưới vùng Đại lộ Bình Dương (QL13). Trạng thái **đang cập nhật** (stub, noindex) cho đến khi có nội dung và ảnh.
 

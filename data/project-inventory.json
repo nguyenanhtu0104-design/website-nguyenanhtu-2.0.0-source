@@ -164,5 +164,25 @@
   "masterise-thanh-da": {
     "saBan": "vung-trung-tam",
     "saBanTrang": "index.html#da=masterise-thanh-da"
+  },
+  "norton-park": {
+    "saBan": "vung-binh-duong",
+    "saBanTrang": "index.html#da=norton-park"
+  },
+  "skysolis": {
+    "saBan": "vung-binh-duong",
+    "saBanTrang": "index.html#da=skysolis"
+  },
+  "setia-edenia": {
+    "saBan": "vung-binh-duong",
+    "saBanTrang": "index.html#da=setia-edenia"
+  },
+  "habitat": {
+    "saBan": "vung-binh-duong",
+    "saBanTrang": "index.html#da=habitat"
+  },
+  "ho-guom-xanh": {
+    "saBan": "vung-binh-duong",
+    "saBanTrang": "index.html#da=ho-guom-xanh"
   }
 }

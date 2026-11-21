@@ -100,6 +100,7 @@ function daCao(tang) { return tang * 3.3 + 4; }
 function dungDuAnNen() {
   const t = []; if (!DAN) return t;
   for (const d of DAN.duAn) {
+    if (d.loai === 'chua') continue; // chưa có số tầng công bố: chỉ ghim, không dựng khối
     const goc = rad(d.xoay), ux = Math.cos(goc), uy = -Math.sin(goc), vx = -uy, vy = ux, col = DA_MAU[d.cdt] || [.8, .8, .8];
     const them = (du, dv, w, h, z0, z, c, mau = 1) => t.push({ x: d.tam[0] + du * ux + dv * vx, y: d.tam[1] + du * uy + dv * vy, w, h, rot: goc, z0, z, khoi: 'da', zone: 'duan', da: d.id, col: c, mau, name: d.ten });
     if (d.loai === 'thap') {
