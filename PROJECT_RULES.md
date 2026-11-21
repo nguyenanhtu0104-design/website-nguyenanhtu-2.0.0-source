@@ -262,6 +262,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-11-21 — **2.51.0** (Tú yêu cầu): nhóm dự án theo nền tảng trong Tìm nhà. Mở một dự án thuộc nền tảng thì chỉ hiện dự án đó, có nút bật các dự án khác cùng nền tảng.
 
 - 2026-11-21 — **2.50.0** (Tú: minh hoạ khối đế và nhà ga, tuyến metro): hạ tầng quy hoạch trên sa bàn (metro, nhà ga) là **phương án theo tài liệu nguồn**, dựng trong `metro.json` có ghi nguồn; trên giao diện chỉ một dòng "phương án đang tham vấn" (§8.1), khối minh hoạ (đoàn tàu, mái ga) ghi rõ là minh hoạ. Khối dùng màu thật đặt `mau: 1` (alpha màu < 1 trong shader).
 - 2026-11-21 — **2.49.0** (Tú: "Dựng nội dung tìm nhà cho Nam Mekong… giao diện sạch hơn"): sa bàn Nam Mekong `assets/tools/nam-mekong/` theo §17. **Có GCN thì ranh dựng từ sơ đồ thửa (độ dài cạnh, diện tích) rồi chỉ tịnh tiến lên ảnh vệ tinh**, giữ hướng Bắc của GCN. Toà cao tầng nằm xiên so với hướng Bắc thì đặt góc `xoay` trong `chan-thap.json`, không dựng bậc thang. Dự án chỉ có bảng giá theo trục: giá ghi "giá từ", căn ngoài bảng ghi "Liên hệ", **không thắp ô đèn khi chưa có tình trạng căn**. **Giao diện sa bàn không hiện ghi chú kỹ thuật** (phép chiếu, số ô ảnh, nguồn dựng khối); những thông tin đó nằm trong `georef.json` và CHANGELOG. Chỉ giữ dòng ghi nguồn ảnh nền mà nhà cung cấp bắt buộc.
@@ -387,6 +388,8 @@ Hệ thống lấy giá cuối trên hợp đồng cộng mức chênh mong mu�
 ### 16.7 Tự động
 - Gửi email và Zalo xác nhận đã đăng ký ký gửi, cảm ơn, kèm lời chúc sớm thanh khoản.
 - Sau ngày đăng ký 15 ngày: tự nhắc chăm sóc, hỏi lại căn đã bán chưa để cập nhật hệ thống.
+
+- **Nền tảng dự án (từ 2.51.0):** mỗi dự án thuộc một nền tảng khai báo bằng `"nenTang": "<id>"` trong `data/project-inventory.json`; tên nền tảng và bài đầu vào định nghĩa trong `data/nen-tang.json`. Khi Tú nói dự án thuộc nền tảng nào, chỉ thêm `nenTang` cho dự án đó, không tạo nền tảng mới trừ khi Tú yêu cầu. Dự án chưa có trong CH04 vẫn vào Tìm nhà nhờ `nenTang`. Đã gắn: Thành Phố Mới Bình Dương (`tp-moi-binh-duong`).
 
 ## 17. Quy trình dựng sa bàn cho dự án mới (chuẩn từ Blanca City, 19/11/2026)
 

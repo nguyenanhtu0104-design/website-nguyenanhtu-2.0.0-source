@@ -361,3 +361,25 @@ ol.pv li{margin:6px 0}
 #pane{overflow-x:hidden}
 .cancard,.pttts,button.pt{min-width:0}
 .pt-t{min-width:0}
+
+/* ---- 2.50.2: tối ưu điện thoại và thao tác cảm ứng ---- */
+#touchHint{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);z-index:6;width:max-content;max-width:min(86%,320px);margin:0;padding:12px 14px;border:1px solid var(--gold2);border-radius:14px;background:#15130fee;color:var(--ink);font-size:13px;line-height:1.55;text-align:center;pointer-events:none;backdrop-filter:blur(6px)}
+#touchHint[hidden]{display:none}
+#touchHint b{color:var(--gold);font-weight:600}
+@media (max-width:860px){
+ .bottombar{bottom:calc(10px + env(safe-area-inset-bottom))}
+ .tools{bottom:calc(92px + env(safe-area-inset-bottom))}
+ .rb{min-height:52px}
+}
+@media (pointer:coarse){
+ .tb{min-height:40px}
+ .bb{min-height:40px}
+ .back{width:40px;height:40px}
+ .rb{width:52px}
+ .tools button{width:42px;height:42px;font-size:20px}
+ .floors .fb{min-height:38px}
+ .zonebar .chip{min-height:36px;display:inline-flex;align-items:center}
+ .mbbar button{width:38px;height:38px}
+ #touchHint{top:44%}
+}
+@media (max-width:860px){ .tb.sel{display:none} }

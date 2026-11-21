@@ -1,33 +1,65 @@
 {
- "artisan-park": {
-  "primaryCount": 32,
-  "secondaryCount": null,
-  "meanAskingVnd": 15948113846,
-  "inventoryUrl": null,
-  "updatedAt": null,
-  "snapshotDate": "2026-11-17"
- },
- "blanca-city": {
-  "saBan": "casa-blanca",
-  "primaryCount": null,
-  "secondaryCount": null,
-  "meanAskingVnd": null,
-  "inventoryUrl": null,
-  "updatedAt": "2026-11-19",
-  "snapshotDate": "2026-11-19",
-  "ghiChu": "quyDaiLy = quỹ chung chủ đầu tư chia cho đại lý (30 căn Beacon, 50 căn toà B2), không phải toàn bộ giỏ hàng sơ cấp.",
-  "quyDaiLy": 80,
-  "saBanTrang": "blanca.html"
- },
- "nam-mekong-grand-plaza": {
-  "saBan": "nam-mekong",
-  "saBanTrang": "nam-mekong.html",
-  "primaryCount": null,
-  "secondaryCount": null,
-  "meanAskingVnd": null,
-  "inventoryUrl": null,
-  "updatedAt": "2026-11-20",
-  "snapshotDate": "2026-11-20",
-  "ghiChu": "Sa bàn có đủ 1.622 căn của hai toà G1, G2 với giá từ theo bảng giá theo trục (họp đại lý 20/11/2026); chưa có tình trạng còn/đã bán từng căn."
- }
+  "artisan-park": {
+    "primaryCount": 32,
+    "secondaryCount": null,
+    "meanAskingVnd": 15948113846,
+    "inventoryUrl": null,
+    "updatedAt": null,
+    "snapshotDate": "2026-11-17",
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "blanca-city": {
+    "saBan": "casa-blanca",
+    "primaryCount": null,
+    "secondaryCount": null,
+    "meanAskingVnd": null,
+    "inventoryUrl": null,
+    "updatedAt": "2026-11-19",
+    "snapshotDate": "2026-11-19",
+    "ghiChu": "quyDaiLy = quỹ chung chủ đầu tư chia cho đại lý (30 căn Beacon, 50 căn toà B2), không phải toàn bộ giỏ hàng sơ cấp.",
+    "quyDaiLy": 80,
+    "saBanTrang": "blanca.html"
+  },
+  "nam-mekong-grand-plaza": {
+    "saBan": "nam-mekong",
+    "saBanTrang": "nam-mekong.html",
+    "primaryCount": null,
+    "secondaryCount": null,
+    "meanAskingVnd": null,
+    "inventoryUrl": null,
+    "updatedAt": "2026-11-20",
+    "snapshotDate": "2026-11-20",
+    "ghiChu": "Sa bàn có đủ 1.622 căn của hai toà G1, G2 với giá từ theo bảng giá theo trục (họp đại lý 20/11/2026); chưa có tình trạng còn/đã bán từng căn.",
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "midori-park": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "midori-the-nest": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "midori-the-ten": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "midori-the-glory": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "habitat": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "sycamore": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "sora-gardens": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "sora-gardens-1": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "sora-gardens-2": {
+    "nenTang": "tp-moi-binh-duong"
+  },
+  "sora-gardens-3": {
+    "nenTang": "tp-moi-binh-duong"
+  }
 }

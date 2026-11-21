@@ -354,15 +354,30 @@ function copyDir(src, dst) {
 rmrf(DIST); fs.mkdirSync(DIST, { recursive: true });
 copyDir(path.join(ROOT, 'assets'), path.join(DIST, 'assets'));
 
-// Danh mục Tìm nhà lấy đúng các dự án đang được liệt kê trong CH04.
+// Danh mục Tìm nhà: các dự án trong CH04 cộng dự án khai báo nenTang trong project-inventory.json (kể cả ngoài CH04).
 const handbookArticles = new Map(articles.map(a => [a.slug, a]));
 const inventory = json('data/project-inventory.json');
-const directory = {};
+const nenTang = json('data/nen-tang.json');
+const entries = [];
 for (const zone of categories.find(c => c.id === 'du-an-chon-loc').items) {
-  const region = handbookArticles.get(zone.article);
-  for (const {article: slug} of zone.projects || []) {
-    if (directory[slug]) continue;
+  for (const {article: slug, star} of zone.projects || []) {
+    const found = entries.find(e => e.slug === slug);
+    if (found) { if (star) found.star = true; continue; }
+    entries.push({ slug, star: !!star, regionSlug: zone.article });
+  }
+}
+for (const [slug, inv] of Object.entries(inventory)) {
+  if (inv.nenTang && !entries.some(e => e.slug === slug)) {
+    if (!nenTang[inv.nenTang]) throw new Error('data/project-inventory: nenTang lạ ' + inv.nenTang + ' ở ' + slug);
+    entries.push({ slug, star: false, regionSlug: nenTang[inv.nenTang].bai });
+  }
+}
+const directory = {};
+for (const { slug, star, regionSlug } of entries) {
+  {
+    const region = handbookArticles.get(regionSlug);
     const project = handbookArticles.get(slug);
+    if (!project || !region) throw new Error('Tìm nhà: thiếu bài cho ' + slug + ' hoặc ' + regionSlug);
     const photo = project.thumbnail || region.thumbnail;
     // Dự án có sa bàn 3D: ảnh đại diện chụp từ chính khối 3D (scripts/chup-anh-sa-ban.py), PROJECT_RULES §17.
     const saBan = inventory[slug] && inventory[slug].saBan;
@@ -373,7 +388,9 @@ for (const zone of categories.find(c => c.id === 'du-an-chon-loc').items) {
         : photo ? BASE+'assets/images/articles/'+photo+'-'+images[photo].v[0]+'.webp' : BASE+project.ogImage,
       thumbnailNho: anh3d ? BASE+'assets/tools/'+saBan+'/anh-dai-dien-640.webp' : undefined,
       imageCaption: anh3d ? 'Sa bàn 3D' : project.thumbnail ? 'Ảnh trong hồ sơ dự án' : photo ? 'Hình khu vực' : 'Bìa hồ sơ',
-      ...inventory[slug]
+      ...inventory[slug],
+      nenTangTen: inventory[slug] && inventory[slug].nenTang ? nenTang[inventory[slug].nenTang].ten : undefined,
+      star // dự án có dấu sao trong CH04 được đẩy lên trước ở Tìm nhà (tim-nha.js)
     };
   }
 }

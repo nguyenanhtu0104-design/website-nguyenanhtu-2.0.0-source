@@ -2,6 +2,21 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.51.0 · 21/11/2026 — Tìm nhà: nhóm dự án theo nền tảng
+- Thêm `data/nen-tang.json` (định nghĩa nền tảng) và trường `nenTang` trong `data/project-inventory.json`. Nền tảng đầu tiên: **Thành Phố Mới Bình Dương** gồm Nam Mekong Grand Plaza, Artisan Park, Midori Park, Midori The Nest, Midori The Ten, Midori The Glory, Habitat, Sycamore và Sora Gardens (1, 2, 3 và bản gốc).
+- Dự án thuộc nền tảng được đưa vào Tìm nhà kể cả khi không nằm trong CH04 (`scripts/build.mjs`).
+- Khi mở một dự án thuộc nền tảng, lưới chỉ hiện dự án đó. Nút "Hiện các dự án khác (n)" bật/tắt danh sách cả nền tảng. Khi đang gõ tìm kiếm, tìm trong tất cả dự án. Dự án không thuộc nền tảng giữ nguyên cách hiển thị cũ.
+
+## 2.50.2 · 21/11/2026 — Tối ưu điện thoại và thao tác cảm ứng
+- **Tìm nhà trên điện thoại:** danh sách dự án chuyển thành dải vuốt ngang (thẻ đầu tiên có dấu sao đứng trước), không còn khung cuộn lồng trong trang. Khung sa bàn cao hơn trên màn hình nhỏ. Nút và ô nhập đạt vùng chạm tối thiểu 44 px trên thiết bị cảm ứng.
+- **Sa bàn 3D trên điện thoại:** nhãn thông số mặc định ẩn để khỏi chồng lấn, bật lại bằng nút "Ẩn thông số". Ẩn ô chọn sa bàn đơn trên thanh trên. Nút thu phóng, rổ giá, thanh tầng và chip phân khu to hơn. Tính đến vùng an toàn (safe-area) ở đáy màn hình.
+- **Cảm ứng:** chạm để chọn căn dung sai 14 px (thay vì 6 px), để tay hơi rung vẫn tính là chạm. Gợi ý thao tác "Chạm · Kéo · Hai ngón" hiện một lần, ẩn khi chạm hoặc sau 9 giây.
+- Không đổi nội dung, dữ liệu hay luồng chọn căn, chat Zalo.
+
+## 2.50.1 · 21/11/2026 — Tìm nhà: dự án có dấu sao lên trước
+- Danh mục `tim-nha/projects.json` ghi cờ `star` lấy từ dấu sao của dự án trong CH04 (`data/categories.json`); dự án có sao ở bất kỳ vùng nào đều được đánh dấu.
+- Lưới thẻ và danh sách chọn dự án ở Tìm nhà xếp dự án có sao lên trước, trong mỗi nhóm xếp theo tên. Artisan Park vẫn đứng đầu như trước. Không đổi giao diện thẻ.
+
 ## 2.50.0 · 21/11/2026 — Sa bàn Nam Mekong: khối đế, metro số 1 và ga S1
 - **Khối đế tầng 1–2** dựng theo mặt bằng tiện ích tầng 1–2 của chủ đầu tư (khớp vào ranh lô theo 5 góc, sai lệch 0,5–4 m), cao 10 m, mái vườn xanh; chừa quảng trường Hội Tụ và lối vào – ra.
 - **Tuyến metro số 1 Bình Dương** theo báo cáo tham vấn cộng đồng 27/08/2026 (TEDI – Nippon Koei): cầu cạn rộng 10,9 m, ray ở độ cao khoảng 12,5 m, trụ cách 30 m; đoạn qua vòng xoay A1 đi theo trục đường Hùng Vương qua tâm vòng xoay, phía Đông Bắc theo hình tuyến số hoá từ bản đồ trang 14 (kiểm lại bằng lý trình S1–S0A 1.459 m), phía Tây Nam thẳng theo Hùng Vương tới ga S2 (1.383 m).

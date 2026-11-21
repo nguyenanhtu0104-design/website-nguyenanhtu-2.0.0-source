@@ -2,6 +2,7 @@ const el=id=>document.getElementById(id);
 const format=t=>new Date(t).toLocaleString('vi-VN',{timeZone:'Asia/Ho_Chi_Minh'});
 const selector=el('projectPicker'),root=el('inventoryTools');
 let projects={},slug=root.dataset.project;
+let showPlatform=false;
 function paint(){
  const p=projects[slug];if(!p)return;drawDirectory();
  el('invStamp').textContent=p.updatedAt?'Nguồn cập nhật '+format(p.updatedAt)+' (giờ Việt Nam)':p.snapshotDate?'Bảng giá ngày 17/11/2026 · chưa có giờ nguồn':'Chưa có thời điểm cập nhật từ nguồn';
@@ -17,7 +18,7 @@ async function refresh(clicked){
  const r=await fetch('/tim-nha/projects.json',{cache:'no-store'});if(!r.ok)throw Error();
  projects=await r.json();
  if(selector&&!selector.options.length){
- for(const [key,p] of Object.entries(projects).sort((a,b)=>a[1].name.localeCompare(b[1].name,'vi')))selector.add(new Option(p.name,key));
+ for(const [key,p] of Object.entries(projects).sort((a,b)=>byStar(a[1],b[1])))selector.add(new Option(p.name,key));
  slug=Object.hasOwn(projects,location.hash.slice(1))?location.hash.slice(1):'artisan-park';selector.value=slug;
  }
  if(selector){el('missingList').replaceChildren(...Object.values(projects).filter(p=>!p.inventoryUrl).map(p=>{const li=document.createElement('li');li.textContent=p.name;return li}));}
@@ -37,12 +38,24 @@ if(form)form.onsubmit=async e=>{
  try{await navigator.clipboard.writeText(msg);el('sendStatus').textContent='Đã sao chép. Mở Zalo, dán và gửi cho Nguyễn Anh Tú.'}catch{el('sendStatus').textContent='Sao chép nội dung bên dưới, mở Zalo và gửi cho Nguyễn Anh Tú.'}
 };
 
+// Dự án có dấu sao đứng trước; trong mỗi nhóm xếp theo tên (tiếng Việt).
+function byStar(a,b){return (!!b.star-!!a.star)||a.name.localeCompare(b.name,'vi')}
 function drawDirectory(){
  const grid=el('grid');if(!grid)return;
  const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/gi,'d').toLowerCase();
  const q=norm(el('findProject').value.trim());
  const cards=[];
- for(const [key,p] of Object.entries(projects).sort(([a],[b])=>a==='artisan-park'?-1:b==='artisan-park'?1:projects[a].name.localeCompare(projects[b].name,'vi'))){
+ const cur=projects[slug],plat=cur&&cur.nenTang||null;
+ const bar=el('platBar');
+ if(bar){
+  bar.hidden=!plat;
+  if(plat){const n=Object.values(projects).filter(p=>p.nenTang===plat).length;el('platName').textContent=cur.nenTangTen;const t=el('platToggle');t.textContent=showPlatform?'Chỉ hiện '+cur.name:'Hiện các dự án khác ('+(n-1)+')';t.setAttribute('aria-pressed',String(showPlatform));}
+ }
+ // Dự án thuộc nền tảng: mặc định chỉ hiện dự án đang mở; khi đang tìm kiếm thì tìm trong tất cả.
+ const scoped=plat&&!showPlatform&&!q;
+ for(const [key,p] of Object.entries(projects).sort(([a],[b])=>a==='artisan-park'?-1:b==='artisan-park'?1:byStar(projects[a],projects[b]))){
+  if(plat&&!q&&(showPlatform?p.nenTang!==plat:false))continue;
+  if(scoped&&key!==slug)continue;
   if(!norm(p.name+' '+p.region).includes(q))continue;
   const card=document.createElement('button');card.className='property';card.type='button';card.setAttribute('aria-pressed',String(key===slug));
   const photo=new Image();photo.src=p.thumbnail;if(p.thumbnailNho){photo.srcset=p.thumbnailNho+' 640w, '+p.thumbnail+' 1200w';photo.sizes='(max-width:600px) 100vw, 300px';}photo.loading='lazy';photo.decoding='async';photo.alt=p.imageCaption+' · '+p.name;card.append(photo);
@@ -59,3 +72,4 @@ function drawDirectory(){
  grid.replaceChildren(...cards);el('resultCount').textContent=cards.length+' dự án';
 }
 if(el('findProject'))el('findProject').oninput=drawDirectory;
+if(el('platToggle'))el('platToggle').onclick=()=>{showPlatform=!showPlatform;drawDirectory();};

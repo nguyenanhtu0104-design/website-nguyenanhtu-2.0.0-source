@@ -159,7 +159,7 @@ const rgb = c => '#' + c.map(v => Math.round(v * 255).toString(16).padStart(2, '
 /* ---------- dữ liệu ---------- */
 const U = [];            // căn Casa Villa mô phỏng
 let inv = { updatedAt: null, source: null, units: {} };
-const state = { zone: 'all', type: -1, sel: -1, hover: -1, tab: 'chon', mode: 'type', cart: [], q: '', sheet: 0, base: 'osm', sunT: null, osm: 'chua', night: false, hideLabels: false, blocks: true, cut: 0, market: 'all', rail: null, ranh: true, canToa: '', canTT: '', canLoai: '', canKhu: '', qcan: '',
+const state = { zone: 'all', type: -1, sel: -1, hover: -1, tab: 'chon', mode: 'type', cart: [], q: '', sheet: 0, base: 'osm', sunT: null, osm: 'chua', night: false, hideLabels: matchMedia('(pointer:coarse)').matches && innerWidth < 860, blocks: true, cut: 0, market: 'all', rail: null, ranh: true, canToa: '', canTT: '', canLoai: '', canKhu: '', qcan: '',
   canMa: null, pttt: null, bt: { ngayKy: null, tyLeVay: .7, laiSau: 10.5, namVay: 25 }, phieu: null, daChat: null, tvTen: '', tvNhan: '' };
 let GEO = null, SUN = null;
 // Danh sách căn tham vấn: chỉ giữ căn cụ thể (căn hộ theo mã, căn Casa trên sa bàn); bỏ mục "quan tâm phân khu" của bản cũ.
@@ -1359,7 +1359,7 @@ canvas.addEventListener('pointerdown', e => {
   Object.assign(T, { tx: C.tx, ty: C.ty, dist: C.dist, yaw: C.yaw, pitch: C.pitch });   // dừng mọi chuyển động bay
   if (ptrs.size === 1) {
     const xoay = e.button === 2 || e.button === 1 || e.ctrlKey || e.shiftKey || e.altKey || e.metaKey;
-    down = { x: e.clientX, y: e.clientY, t: performance.now(), moved: false, xoay, g0: xoay ? null : tiaMatDat(e.clientX, e.clientY) };
+    down = { x: e.clientX, y: e.clientY, t: performance.now(), moved: false, touch: e.pointerType === 'touch', xoay, g0: xoay ? null : tiaMatDat(e.clientX, e.clientY) };
   } else if (ptrs.size === 2) {
     down && (down.moved = true);
     const [a, b] = [...ptrs.values()];
@@ -1387,7 +1387,7 @@ canvas.addEventListener('pointermove', e => {
     dirty = true; return;
   }
   if (!down) return;
-  if (!down.moved && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) { down.moved = true; canvas.classList.add('drag'); $('#tip').hidden = true; }
+  if (!down.moved && Math.hypot(e.clientX - down.x, e.clientY - down.y) > (down.touch ? 14 : 6)) { down.moved = true; canvas.classList.add('drag'); $('#tip').hidden = true; }
   if (!down.moved) return;
   if (down.xoay) { T.yaw = C.yaw = C.yaw + dx * .006; T.pitch = C.pitch = Math.max(.2, Math.min(1.5, C.pitch + dy * .005)); }
   else if (down.g0) keoTheoDiem(down.g0, e.clientX, e.clientY);
@@ -1400,7 +1400,7 @@ function pan(dx, dy) {
 }
 const endPtr = e => {
   ptrs.delete(e.pointerId); if (ptrs.size < 2) hai = null; canvas.classList.remove('drag');
-  if (down && e.type === 'pointerup' && !down.moved && performance.now() - down.t < 600 && ptrs.size === 0) clickAt(e.clientX, e.clientY);
+  if (down && e.type === 'pointerup' && !down.moved && performance.now() - down.t < (down.touch ? 700 : 600) && ptrs.size === 0) clickAt(e.clientX, e.clientY);
   if (ptrs.size === 0) down = null;
   else if (ptrs.size === 1 && down) { const [q] = [...ptrs.values()]; down.g0 = tiaMatDat(q.x, q.y); down.xoay = false; }
 };
@@ -2123,4 +2123,15 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
   render(); openHash();
   window.__blanca = { VT, moMetro, METRO: () => METRO, fly, CAN: () => CAN, MB: () => MB, CS: () => CS, LAYOUT: () => LAYOUT, moMatBang, dongMatBang, mbHit, moCan, timCan, layoutCua, chatZalo, linkPhieu, tomTatTxt, dongTomTat, gocDoCao, doCaoMet, state, U, C, T, osmXa, osmGiua, tiaMatDat, phongTai, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS, VT };
 })().catch(err => { console.error(err); $('#pane').innerHTML = '<h2>Chưa tải được dữ liệu sa bàn</h2><p class="mute">Vui lòng tải lại trang hoặc nhắn Zalo ' + ZALO_TXT + '.</p>'; });
+})();
+
+// Gợi ý thao tác cho màn hình cảm ứng: hiện một lần, chạm bất kỳ đâu hoặc sau 9 giây thì ẩn.
+(() => {
+  const h = document.getElementById('touchHint'); if (!h || !matchMedia('(pointer:coarse)').matches) return;
+  let seen = false; try { seen = localStorage.getItem('sb.hint') === '1'; } catch {}
+  if (seen) return;
+  h.hidden = false;
+  const off = () => { h.hidden = true; try { localStorage.setItem('sb.hint', '1'); } catch {} };
+  document.getElementById('gl').addEventListener('pointerdown', off, { once: true });
+  setTimeout(off, 9000);
 })();
