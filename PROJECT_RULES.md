@@ -262,6 +262,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-11-21 — **2.52.0** (Tú chốt: "chung một sa bàn", giỏ Artisan theo bảng tính 108 căn): **dự án cùng nền tảng dựng chung một sa bàn** trên cùng nền ảnh vệ tinh. Sa bàn Thành phố mới Bình Dương nằm ở `assets/tools/nam-mekong/` (Nam Mekong + Artisan Park, `artisan.json`). Dự án nhà phố đã xây xong: số hoá ranh từng dãy trên ảnh vệ tinh, chia đều theo số lô của mặt bằng phân lô, đối chiếu mã căn của quỹ đại lý với số lô (phải khớp 100%). Dự án dùng chung sa bàn khai báo `saBanTrang` kèm `#<khu>` và `anhSaBan` (thư mục ảnh đại diện riêng) trong `data/project-inventory.json`; ở Tìm nhà các dự án cùng nền tảng có sa bàn luôn hiện cạnh nhau.
 - 2026-11-21 — **2.51.0** (Tú yêu cầu): nhóm dự án theo nền tảng trong Tìm nhà. Mở một dự án thuộc nền tảng thì chỉ hiện dự án đó, có nút bật các dự án khác cùng nền tảng.
 
 - 2026-11-21 — **2.50.0** (Tú: minh hoạ khối đế và nhà ga, tuyến metro): hạ tầng quy hoạch trên sa bàn (metro, nhà ga) là **phương án theo tài liệu nguồn**, dựng trong `metro.json` có ghi nguồn; trên giao diện chỉ một dòng "phương án đang tham vấn" (§8.1), khối minh hoạ (đoàn tàu, mái ga) ghi rõ là minh hoạ. Khối dùng màu thật đặt `mau: 1` (alpha màu < 1 trong shader).
@@ -389,6 +390,7 @@ Hệ thống lấy giá cuối trên hợp đồng cộng mức chênh mong mu�
 - Gửi email và Zalo xác nhận đã đăng ký ký gửi, cảm ơn, kèm lời chúc sớm thanh khoản.
 - Sau ngày đăng ký 15 ngày: tự nhắc chăm sóc, hỏi lại căn đã bán chưa để cập nhật hệ thống.
 
+- **Sa bàn chung theo nền tảng (từ 2.52.0):** dự án mới thuộc nền tảng đã có sa bàn thì thêm vào sa bàn đó (khối, nhãn, phân khu, rổ giá riêng), không dựng sa bàn mới. Thành phố mới Bình Dương: `assets/tools/nam-mekong/nam-mekong.html` (`#artisan` mở Artisan Park). Căn còn trong quỹ tô màu loại căn, căn đã bán, đang khoá và lô ngoài quỹ để trống.
 - **Nền tảng dự án (từ 2.51.0):** mỗi dự án thuộc một nền tảng khai báo bằng `"nenTang": "<id>"` trong `data/project-inventory.json`; tên nền tảng và bài đầu vào định nghĩa trong `data/nen-tang.json`. Khi Tú nói dự án thuộc nền tảng nào, chỉ thêm `nenTang` cho dự án đó, không tạo nền tảng mới trừ khi Tú yêu cầu. Dự án chưa có trong CH04 vẫn vào Tìm nhà nhờ `nenTang`. Đã gắn: Thành Phố Mới Bình Dương (`tp-moi-binh-duong`).
 
 ## 17. Quy trình dựng sa bàn cho dự án mới (chuẩn từ Blanca City, 19/11/2026)

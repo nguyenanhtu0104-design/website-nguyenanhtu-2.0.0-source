@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.52.0 · 21/11/2026 — Sa bàn chung Thành phố mới: Nam Mekong + Artisan Park
+- **Artisan Park lên sa bàn 3D**, cùng cảnh với Nam Mekong Grand Plaza và metro số 1 (`assets/tools/nam-mekong/artisan.json`): 27 dãy, 292 lô (117 nhà phố 3 tầng, 175 shophouse 4 tầng) theo mặt bằng phân lô. Ranh từng dãy số hoá trên ảnh vệ tinh Esri z19 (nhà đã xây xong), quay theo trục dãy 11,5°; 108 mã căn của quỹ đại lý khớp đủ vào số lô. 57 nhà phố còn lại của dự án (tổng 349 căn) chưa có trong mặt bằng phân lô nên chưa dựng.
+- Căn còn trong quỹ (56 căn) tô màu theo loại; căn đã bán, đang khoá và lô ngoài quỹ để trống. Thẻ căn: diện tích đất, sàn, giá bán trước VAT, tiền sử dụng đất, giá niêm yết gồm VAT (VAT chỉ trên phần nhà), giá cuối theo các phương thức căn được áp (PT01–PT05, đúng giỏ hàng từng căn), nút mở bản tính; chọn căn để tham vấn, chat Zalo chung với căn Nam Mekong.
+- Thanh tiêu đề, nút quay về hồ sơ, nút 500 m / 1 km đổi theo dự án đang xem; toàn cảnh khung cả hai dự án; ảnh vệ tinh nét cao phủ cả hai khu; ranh tham chiếu Artisan (đường xanh, bao các dãy nhà, không phải ranh pháp lý).
+- Bảng tính Artisan Park nhận `?can=…&pt=…` để mở đúng căn và phương thức từ sa bàn.
+- Tìm nhà: Artisan Park mở sa bàn chung (`nam-mekong.html#artisan`), ảnh thẻ chụp từ khối 3D (`assets/tools/nam-mekong/anh-artisan/`); dự án cùng nền tảng đã có sa bàn luôn hiện cạnh nhau, nút "Hiện các dự án khác" chỉ còn các dự án chưa có dữ liệu.
+
 ## 2.51.0 · 21/11/2026 — Tìm nhà: nhóm dự án theo nền tảng
 - Thêm `data/nen-tang.json` (định nghĩa nền tảng) và trường `nenTang` trong `data/project-inventory.json`. Nền tảng đầu tiên: **Thành Phố Mới Bình Dương** gồm Nam Mekong Grand Plaza, Artisan Park, Midori Park, Midori The Nest, Midori The Ten, Midori The Glory, Habitat, Sycamore và Sora Gardens (1, 2, 3 và bản gốc).
 - Dự án thuộc nền tảng được đưa vào Tìm nhà kể cả khi không nằm trong CH04 (`scripts/build.mjs`).

@@ -1411,6 +1411,15 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('#grp-pt .opt-btn')[2].classList.add('active-ck');
   if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
   recalc();
+  // Mở đúng căn và phương thức từ sa bàn Thành phố mới: ?can=G1A.01&pt=2 (pt: 0–4 ứng PT01–PT05)
+  try {
+    const q = new URLSearchParams(location.search), k = (q.get('can') || '').toUpperCase();
+    if (k && PRICE_LIST[k] && PRICE_LIST[k].status !== 'lock') {
+      selectUnit(k);
+      const pt = +q.get('pt');
+      if (q.get('pt') !== null && allowedPT(PRICE_LIST[k].pt || 'ALL', PRICE_LIST[k].status).includes(pt)) setPT(pt);
+    }
+  } catch (e) { /* bỏ qua tham số sai */ }
 });
 
 // ── UNIT DROPDOWN ─────────────────────────────────────

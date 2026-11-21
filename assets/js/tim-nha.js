@@ -49,13 +49,14 @@ function drawDirectory(){
  const bar=el('platBar');
  if(bar){
   bar.hidden=!plat;
-  if(plat){const n=Object.values(projects).filter(p=>p.nenTang===plat).length;el('platName').textContent=cur.nenTangTen;const t=el('platToggle');t.textContent=showPlatform?'Chỉ hiện '+cur.name:'Hiện các dự án khác ('+(n-1)+')';t.setAttribute('aria-pressed',String(showPlatform));}
+  if(plat){const n=Object.values(projects).filter(p=>p.nenTang===plat&&!(p.saBan&&cur.saBan)).length+(cur.saBan?1:0);el('platName').textContent=cur.nenTangTen;const t=el('platToggle');t.textContent=showPlatform?'Chỉ hiện '+cur.name:'Hiện các dự án khác ('+(n-1)+')';t.setAttribute('aria-pressed',String(showPlatform));}
  }
  // Dự án thuộc nền tảng: mặc định chỉ hiện dự án đang mở; khi đang tìm kiếm thì tìm trong tất cả.
  const scoped=plat&&!showPlatform&&!q;
  for(const [key,p] of Object.entries(projects).sort(([a],[b])=>a==='artisan-park'?-1:b==='artisan-park'?1:byStar(projects[a],projects[b]))){
   if(plat&&!q&&(showPlatform?p.nenTang!==plat:false))continue;
-  if(scoped&&key!==slug)continue;
+  // Dự án cùng nền tảng đã dựng trên cùng sa bàn (vd Nam Mekong và Artisan Park) luôn hiện cạnh nhau.
+  if(scoped&&key!==slug&&!(p.nenTang===plat&&p.saBan&&cur.saBan))continue;
   if(!norm(p.name+' '+p.region).includes(q))continue;
   const card=document.createElement('button');card.className='property';card.type='button';card.setAttribute('aria-pressed',String(key===slug));
   const photo=new Image();photo.src=p.thumbnail;if(p.thumbnailNho){photo.srcset=p.thumbnailNho+' 640w, '+p.thumbnail+' 1200w';photo.sizes='(max-width:600px) 100vw, 300px';}photo.loading='lazy';photo.decoding='async';photo.alt=p.imageCaption+' · '+p.name;card.append(photo);

@@ -380,7 +380,8 @@ for (const { slug, star, regionSlug } of entries) {
     if (!project || !region) throw new Error('Tìm nhà: thiếu bài cho ' + slug + ' hoặc ' + regionSlug);
     const photo = project.thumbnail || region.thumbnail;
     // Dự án có sa bàn 3D: ảnh đại diện chụp từ chính khối 3D (scripts/chup-anh-sa-ban.py), PROJECT_RULES §17.
-    const saBan = inventory[slug] && inventory[slug].saBan;
+    // anhSaBan: thư mục ảnh riêng khi nhiều dự án dùng chung một sa bàn (vd Artisan Park trong sa bàn Thành phố mới).
+    const saBan = inventory[slug] && (inventory[slug].anhSaBan || inventory[slug].saBan);
     const anh3d = saBan && fs.existsSync(path.join(ROOT, 'assets/tools', saBan, 'anh-dai-dien.webp'));
     directory[slug] = {
       name: project.title, region: region.title,

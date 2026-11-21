@@ -1,12 +1,17 @@
 {
   "artisan-park": {
+    "saBan": "nam-mekong",
+    "saBanTrang": "nam-mekong.html#artisan",
+    "anhSaBan": "nam-mekong/anh-artisan",
     "primaryCount": 32,
     "secondaryCount": null,
     "meanAskingVnd": 15948113846,
     "inventoryUrl": null,
     "updatedAt": null,
     "snapshotDate": "2026-11-17",
-    "nenTang": "tp-moi-binh-duong"
+    "nenTang": "tp-moi-binh-duong",
+    "quyDaiLy": 108,
+    "ghiChu": "Dựng chung sa bàn Thành phố mới với Nam Mekong Grand Plaza: 292 lô theo mặt bằng phân lô trên ảnh vệ tinh; quỹ đại lý 108 căn (còn 56) theo bảng tính 17/11/2026."
   },
   "blanca-city": {
     "saBan": "casa-blanca",
