@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.53.0 · 21/11/2026 — Sa bàn Thành phố mới: mặt bằng khối đế, ga S1 theo phối cảnh, công trình quanh vòng xoay A1
+- **Mặt bằng khối đế tầng 1, 2 dán lên khối 3D** (`mb/de-tang-1.webp`, `mb/de-tang-2.webp`): tầng 1 gồm 29 căn thương mại dịch vụ (TMDV 01–29), tầng 2 gồm 16 văn phòng (VP 01–16), hai khu sinh hoạt cộng đồng và nhà trẻ, kèm nhãn diện tích thông thuỷ của chủ đầu tư. Ảnh khớp vào đường bao khối đế (`chan-thap.json` → `khoiDe`) bằng phép đồng dạng tối ưu theo cạnh ảnh; ngoài khối trong suốt. Mở từ nút "Mặt bằng tầng 1 · thương mại" / "Tầng 2 · văn phòng", từ thanh tầng (T1, T2) hoặc `#de=1`, `#de=2`; cắt cả hai toà ở cao độ sàn. Nút "Hỏi giá thuê, mua mặt bằng" đưa vào danh sách tham vấn.
+- **Ga S1 dựng lại theo phối cảnh:** lõi kính trên hàng cột, vành 168 lam tím xoắn, mái vườn có giếng trời phễu trắng, ống kính dẫn khách về phía dự án (minh hoạ).
+- **Công trình quanh vòng xoay A1** (`cong-trinh.json`): WTC Tower (30 tầng) và Trung tâm Hành chính tập trung (hai tháp A, B nối mái chung, 22 tầng). Vị trí số hoá trên ảnh vệ tinh Esri z19, gần đúng; khối giản lược theo số tầng công bố. Chạm nhãn hoặc khối để mở thẻ công trình.
+- **Phối cảnh khu vực vòng xoay A1:** 6 phối cảnh từ tham quan 360° của chủ đầu tư (`phoi-canh/a1-*.webp`) trong tab Metro.
+- Sửa: chạm nhãn ga trên sa bàn không còn bị nhảy về toàn cảnh.
+
 ## 2.52.0 · 21/11/2026 — Sa bàn chung Thành phố mới: Nam Mekong + Artisan Park
 - **Artisan Park lên sa bàn 3D**, cùng cảnh với Nam Mekong Grand Plaza và metro số 1 (`assets/tools/nam-mekong/artisan.json`): 27 dãy, 292 lô (117 nhà phố 3 tầng, 175 shophouse 4 tầng) theo mặt bằng phân lô. Ranh từng dãy số hoá trên ảnh vệ tinh Esri z19 (nhà đã xây xong), quay theo trục dãy 11,5°; 108 mã căn của quỹ đại lý khớp đủ vào số lô. 57 nhà phố còn lại của dự án (tổng 349 căn) chưa có trong mặt bằng phân lô nên chưa dựng.
 - Căn còn trong quỹ (56 căn) tô màu theo loại; căn đã bán, đang khoá và lô ngoài quỹ để trống. Thẻ căn: diện tích đất, sàn, giá bán trước VAT, tiền sử dụng đất, giá niêm yết gồm VAT (VAT chỉ trên phần nhà), giá cuối theo các phương thức căn được áp (PT01–PT05, đúng giỏ hàng từng căn), nút mở bản tính; chọn căn để tham vấn, chat Zalo chung với căn Nam Mekong.

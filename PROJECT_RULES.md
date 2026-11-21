@@ -262,6 +262,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-11-21 — **2.53.0** (Tú gửi mặt bằng tầng 1, 2 và phối cảnh 360° vòng xoay A1): mặt bằng khối đế của chủ đầu tư được **khớp vào đường bao khối đế bằng phép đồng dạng tối ưu theo cạnh ảnh**, cắt theo đường bao, ngoài khối trong suốt, giữ nhãn diện tích. **Công trình mốc ngoài dự án** (ga, WTC, Trung tâm Hành chính) để trong `cong-trinh.json`: vị trí số hoá trên ảnh vệ tinh (ghi rõ gần đúng), số tầng theo nguồn công bố, chỉ ghi điều nguồn nói. Phối cảnh chủ đầu tư ghi rõ "phối cảnh chủ đầu tư"; khối dựng theo phối cảnh mà không có số đo ghi "minh hoạ".
 - 2026-11-21 — **2.52.0** (Tú chốt: "chung một sa bàn", giỏ Artisan theo bảng tính 108 căn): **dự án cùng nền tảng dựng chung một sa bàn** trên cùng nền ảnh vệ tinh. Sa bàn Thành phố mới Bình Dương nằm ở `assets/tools/nam-mekong/` (Nam Mekong + Artisan Park, `artisan.json`). Dự án nhà phố đã xây xong: số hoá ranh từng dãy trên ảnh vệ tinh, chia đều theo số lô của mặt bằng phân lô, đối chiếu mã căn của quỹ đại lý với số lô (phải khớp 100%). Dự án dùng chung sa bàn khai báo `saBanTrang` kèm `#<khu>` và `anhSaBan` (thư mục ảnh đại diện riêng) trong `data/project-inventory.json`; ở Tìm nhà các dự án cùng nền tảng có sa bàn luôn hiện cạnh nhau.
 - 2026-11-21 — **2.51.0** (Tú yêu cầu): nhóm dự án theo nền tảng trong Tìm nhà. Mở một dự án thuộc nền tảng thì chỉ hiện dự án đó, có nút bật các dự án khác cùng nền tảng.
 
