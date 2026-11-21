@@ -381,7 +381,9 @@ for (const { slug, star, regionSlug } of entries) {
     const photo = project.thumbnail || region.thumbnail;
     // Dự án có sa bàn 3D: ảnh đại diện chụp từ chính khối 3D (scripts/chup-anh-sa-ban.py), PROJECT_RULES §17.
     // anhSaBan: thư mục ảnh riêng khi nhiều dự án dùng chung một sa bàn (vd Artisan Park trong sa bàn Thành phố mới).
-    const saBan = inventory[slug] && (inventory[slug].anhSaBan || inventory[slug].saBan);
+    // Dự án mở sa bàn chung bằng #… mà không có anhSaBan thì giữ ảnh hồ sơ, không lấy ảnh của dự án chủ sa bàn.
+    const inv0 = inventory[slug] || {};
+    const saBan = inv0.anhSaBan || (inv0.saBan && !String(inv0.saBanTrang || '').includes('#') ? inv0.saBan : null);
     const anh3d = saBan && fs.existsSync(path.join(ROOT, 'assets/tools', saBan, 'anh-dai-dien.webp'));
     directory[slug] = {
       name: project.title, region: region.title,

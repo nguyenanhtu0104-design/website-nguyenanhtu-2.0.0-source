@@ -262,6 +262,8 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 - [ ] `update-*.zip` chỉ chứa file đã đổi, không chứa `dist/`
 
 ## 14. Nhật ký thay đổi nguyên tắc
+- 2026-11-21 — **2.55.0** (Tú giao: quét mọi vùng trên web và dựng sa bàn tiếp nối, cần gì hỏi): **mỗi nhóm vùng một sa bàn**, dùng chung `assets/tools/nam-mekong/showroom.js` qua `window.SB_VUNG` (xem §19). Thứ tự: 1 Trung tâm TP.HCM · 2 Thủ Đức · 3 Bình Dương (QL13, Mỹ Phước – Tân Vạn) · 4 Phía Nam · 5 Long Thành – Đại Phước · 6 Tây Bắc, Miền Tây · 7 Kinh tế biển. Toạ độ dự án: dùng toạ độ có nguồn đã có trong bản đồ dự án của website, còn lại xin Tú (Google Maps); không đặt theo ước lượng.
+- 2026-11-21 — **2.54.0** (Tú duyệt: nền tảng có nút hiện tất cả dự án, chạm khối mở hồ sơ, giỏ hàng; sau này Tìm nhà đi theo vùng): **dự án chưa có giỏ hàng vào sa bàn bằng toạ độ Tú gửi** (Google Maps), không tự đoán vị trí khi ảnh vệ tinh cũ hơn công trình. Khối minh hoạ phải nhẹ, ưu tiên thao tác mượt; thẻ dự án ghi rõ "khối minh hoạ, chưa theo mặt bằng". Khi có bảng hàng mới bật chọn căn.
 - 2026-11-21 — **2.53.0** (Tú gửi mặt bằng tầng 1, 2 và phối cảnh 360° vòng xoay A1): mặt bằng khối đế của chủ đầu tư được **khớp vào đường bao khối đế bằng phép đồng dạng tối ưu theo cạnh ảnh**, cắt theo đường bao, ngoài khối trong suốt, giữ nhãn diện tích. **Công trình mốc ngoài dự án** (ga, WTC, Trung tâm Hành chính) để trong `cong-trinh.json`: vị trí số hoá trên ảnh vệ tinh (ghi rõ gần đúng), số tầng theo nguồn công bố, chỉ ghi điều nguồn nói. Phối cảnh chủ đầu tư ghi rõ "phối cảnh chủ đầu tư"; khối dựng theo phối cảnh mà không có số đo ghi "minh hoạ".
 - 2026-11-21 — **2.52.0** (Tú chốt: "chung một sa bàn", giỏ Artisan theo bảng tính 108 căn): **dự án cùng nền tảng dựng chung một sa bàn** trên cùng nền ảnh vệ tinh. Sa bàn Thành phố mới Bình Dương nằm ở `assets/tools/nam-mekong/` (Nam Mekong + Artisan Park, `artisan.json`). Dự án nhà phố đã xây xong: số hoá ranh từng dãy trên ảnh vệ tinh, chia đều theo số lô của mặt bằng phân lô, đối chiếu mã căn của quỹ đại lý với số lô (phải khớp 100%). Dự án dùng chung sa bàn khai báo `saBanTrang` kèm `#<khu>` và `anhSaBan` (thư mục ảnh đại diện riêng) trong `data/project-inventory.json`; ở Tìm nhà các dự án cùng nền tảng có sa bàn luôn hiện cạnh nhau.
 - 2026-11-21 — **2.51.0** (Tú yêu cầu): nhóm dự án theo nền tảng trong Tìm nhà. Mở một dự án thuộc nền tảng thì chỉ hiện dự án đó, có nút bật các dự án khác cùng nền tảng.
@@ -459,3 +461,11 @@ Blanca City là bản mẫu. Dự án sau sao chép khung `assets/tools/casa-bla
 - Phần 1 (SWOT + Thang điểm 1–5, 19 chỉ số) → đưa vào bài dự án trong `content/articles/<slug>.html` (khối `swot-grid` và danh sách thang điểm; tự tính TB nhóm và tổng = TB 6 tiêu chí).
 - Phần 2 (29 thẻ) → `data/danh-gia/du-an.json`: cột Dữ kiện → `the.<id>.duKien` (qua lint trung lập); Điểm/Nhận xét → `chuyenGia.the.<id>.{s,nx}`; ô "Có, công bố" → `duyet:true`, ngược lại `duyet:false`.
 - Ô trống: Claude bổ sung từ hồ sơ/bài web, liệt kê để Tú duyệt; không tự chấm điểm thay Tú.
+
+## 19. Sa bàn vùng (từ 2.55.0)
+
+- Mỗi vùng một thư mục `assets/tools/vung-<ten>/` gồm `index.html` (sao từ `vung-trung-tam/index.html`, sửa `SB_VUNG` và tiêu đề) và `du-an.json`.
+- `SB_VUNG = { ten, phu, bai, neo: [lat, lon], duAn: 'du-an.json?v=…' }`; `neo` là tâm vùng, ảnh vệ tinh nạp quanh mốc này.
+- `du-an.json` → `duAn[]`: `id` (trùng slug bài nếu có), `ten`, `bai` (slug hồ sơ), `cdt`, `ll` [lat, lon], `loai` (`thap` | `thap-tang`), `thap` (số tháp), `tang` [số tầng từng tháp], `caoMet` (tuỳ chọn, chiều cao công bố), `dienTich` (ha, cho thấp tầng), `tt` (tình trạng), `quyMo` (một câu, chỉ số liệu có nguồn), `xoay` (độ, theo lưới đường), `saBan` (tuỳ chọn: link sa bàn riêng có giỏ hàng).
+- Dự án trong vùng: thêm `saBan: 'vung-<ten>'`, `saBanTrang: 'index.html#da=<id>'` vào `data/project-inventory.json` để Tìm nhà mở đúng chỗ.
+- Khối minh hoạ phải nhẹ (tháp + khối đế; thấp tầng là dãy nhà). Ưu tiên thao tác mượt hơn chi tiết.
