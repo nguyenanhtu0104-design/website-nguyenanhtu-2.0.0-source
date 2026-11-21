@@ -263,6 +263,7 @@ AI luôn phải: lấy bản mới nhất từ GitHub trước khi làm; chỉ �
 
 ## 14. Nhật ký thay đổi nguyên tắc
 
+- 2026-11-21 — **2.50.0** (Tú: minh hoạ khối đế và nhà ga, tuyến metro): hạ tầng quy hoạch trên sa bàn (metro, nhà ga) là **phương án theo tài liệu nguồn**, dựng trong `metro.json` có ghi nguồn; trên giao diện chỉ một dòng "phương án đang tham vấn" (§8.1), khối minh hoạ (đoàn tàu, mái ga) ghi rõ là minh hoạ. Khối dùng màu thật đặt `mau: 1` (alpha màu < 1 trong shader).
 - 2026-11-21 — **2.49.0** (Tú: "Dựng nội dung tìm nhà cho Nam Mekong… giao diện sạch hơn"): sa bàn Nam Mekong `assets/tools/nam-mekong/` theo §17. **Có GCN thì ranh dựng từ sơ đồ thửa (độ dài cạnh, diện tích) rồi chỉ tịnh tiến lên ảnh vệ tinh**, giữ hướng Bắc của GCN. Toà cao tầng nằm xiên so với hướng Bắc thì đặt góc `xoay` trong `chan-thap.json`, không dựng bậc thang. Dự án chỉ có bảng giá theo trục: giá ghi "giá từ", căn ngoài bảng ghi "Liên hệ", **không thắp ô đèn khi chưa có tình trạng căn**. **Giao diện sa bàn không hiện ghi chú kỹ thuật** (phép chiếu, số ô ảnh, nguồn dựng khối); những thông tin đó nằm trong `georef.json` và CHANGELOG. Chỉ giữ dòng ghi nguồn ảnh nền mà nhà cung cấp bắt buộc.
 - 2026-11-20 — **2.48.0**: Tú công bố trang Tự đánh giá dự án (`danhGia.congBo: true`).
 - 2026-11-20 — **2.47.0** (Tú yêu cầu): dữ kiện tham khảo bật/tắt được; dữ kiện chỉ là thông tin, không điều hướng (build kiểm từ ngữ).

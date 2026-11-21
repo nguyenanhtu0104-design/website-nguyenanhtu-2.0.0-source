@@ -32,6 +32,7 @@ let CAN = null;   // quỹ căn hộ chủ đầu tư chia cho đại lý, nạp
 let MB = null;    // mặt bằng tầng đã số hoá (mat-bang.json, scripts/so-hoa-mat-bang.py)
 let CS = null;    // chính sách bán hàng từng phân khu (chinh-sach.json), tính bằng ban-tinh.js
 let LAYOUT = null; // layout căn chính thức trong hồ sơ tư vấn (layout.json)
+let METRO = null;  // tuyến metro số 1 và các ga (metro.json)
 const KHOI = [
   { zone: 'g1', col: [.83, .62, .38], ten: 'Toà G1' },
   { zone: 'g2', col: [.78, .52, .42], ten: 'Toà G2' },
@@ -62,6 +63,54 @@ function dungThap() {
       t.push({ x, y, w, h, rot: f.rot, z0: 0, z: zt, khoi: k.zone, zone: k.zone, col: k.col, name: `${k.ten} · ${tc} tầng` });
       t.push({ x, y, w, h, rot: f.rot, z0: zt, z: zt + donVi(CAO_TANG * .8), khoi: k.zone, zone: k.zone, col: MAU_MAI, name: `${k.ten} · mái` });
     }
+  }
+  // khối đế tầng 1–2 theo mặt bằng tiện ích, mái là vườn
+  const de = CHAN && CHAN.khoiDe;
+  if (de) for (const [x, y, w, h, xoay, khu] of de.hop) {
+    t.push({ x, y, w: w + .05, h: h + .05, rot: rad(xoay), z0: 0, z: de.cao, khoi: khu, zone: khu, col: [.70, .50, .36], mau: 1, name: 'Khối đế tầng 1–2 · thương mại, tiện ích' });
+    t.push({ x, y, w: w + .05, h: h + .05, rot: rad(xoay), z0: de.cao, z: de.cao + .5, khoi: khu, zone: khu, col: [.38, .52, .30], mau: 1, name: 'Vườn mái khối đế' });
+  }
+  t.push(...dungMetro());
+  return t;
+}
+// Tuyến metro số 1 Bình Dương (metro.json): cầu cạn trên dải phân cách, trụ đỡ, nhà ga trên cao; ga S1 tại tâm vòng xoay A1.
+function dungMetro() {
+  const t = [], m = METRO; if (!m) return t;
+  const cn = m.catNgang, ray = cn.caoRay, dam = [.66, .66, .64], tru = [.6, .6, .58];
+  const ganGa = (x, y) => m.ga.some(g => Math.hypot(x - g.tam[0], y - g.tam[1]) < g.dai / 2 + (g.loai === 'trung-tam' ? 10 : 4));
+  const P = m.tuyen; let quang = 0;
+  for (let i = 1; i < P.length; i++) {
+    const [x0, y0] = P[i - 1], [x1, y1] = P[i], dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy);
+    const goc = Math.atan2(-dy, dx);   // góc trong hệ thế giới (y lên)
+    t.push({ x: (x0 + x1) / 2, y: (y0 + y1) / 2, w: L + .4, h: cn.rongDam, rot: goc, z0: ray - 2, z: ray, khoi: 'metro', zone: 'metro', col: dam, mau: 1, name: 'Tuyến metro số 1 · cầu cạn' });
+    for (let s = (cn.khoangTru - quang) % cn.khoangTru; s < L; s += cn.khoangTru) {
+      const x = x0 + dx * s / L, y = y0 + dy * s / L;
+      if (!ganGa(x, y)) t.push({ x, y, w: 2.4, h: 3.2, rot: goc, z0: 0, z: ray - 2, khoi: 'metro', zone: 'metro', col: tru, mau: 1, name: 'Tuyến metro số 1 · trụ cầu cạn' });
+    }
+    quang = (quang + L) % cn.khoangTru;
+  }
+  for (const g of m.ga) {
+    const [x, y] = g.tam, goc = rad(g.xoay);
+    t.push({ x, y, w: g.dai, h: g.rong, rot: goc, z0: 6, z: ray + 4.5, khoi: 'metro', zone: 'metro', col: [.84, .86, .88], mau: 1, name: g.ten + ' · nhà ga trên cao' });
+    t.push({ x, y, w: g.dai + 4, h: g.rong + 2, rot: goc, z0: ray + 4.5, z: ray + 6, khoi: 'metro', zone: 'metro', col: [.55, .60, .66], mau: 1, name: g.ten + ' · mái ga' });
+    for (const d of [-1, 1]) t.push({ x: x + d * g.dai * .3 * Math.cos(goc), y: y - d * g.dai * .3 * Math.sin(goc), w: 6, h: g.rong - 4, rot: goc, z0: 0, z: 6, khoi: 'metro', zone: 'metro', col: tru, mau: 1, name: g.ten + ' · lối lên xuống' });
+    if (g.loai !== 'trung-tam') continue;
+    // khối trụ tròn của ga trung tâm theo phối cảnh báo cáo: vách lam tím, mái xanh, giếng trời giữa
+    const R = 42, N = 44, cao = 28, buoc = 2 * Math.PI / N;
+    for (let k = 0; k < N; k++) {
+      const a = k * buoc, cx = x + R * Math.cos(a), cy = y - R * Math.sin(a);
+      t.push({ x: cx, y: cy, w: 2 * R * Math.sin(buoc / 2) + .5, h: 2.6, rot: a + Math.PI / 2, z0: 0, z: cao, khoi: 'metro', zone: 'metro', col: [.48, .30, .82], mau: 1, name: g.ten + ' · ga trung tâm' });
+      const r0 = 15, rm = (r0 + R) / 2;
+      t.push({ x: x + rm * Math.cos(a), y: y - rm * Math.sin(a), w: R - r0, h: 2 * R * Math.sin(buoc / 2) + .6, rot: a, z0: cao - .8, z: cao + .2, khoi: 'metro', zone: 'metro', col: [.46, .62, .32], mau: 1, name: g.ten + ' · mái xanh' });
+    }
+  }
+  // một đoàn tàu vào ga S1 từ phía dự án (minh hoạ)
+  const s1 = m.ga.find(g => g.loai === 'trung-tam');
+  if (s1) {
+    const goc = rad(s1.xoay), ux = Math.cos(goc), uy = -Math.sin(goc), dd = 175;
+    const x = s1.tam[0] + ux * dd - uy * 2.4, y = s1.tam[1] + uy * dd + ux * 2.4;
+    t.push({ x, y, w: 78, h: 3.1, rot: goc, z0: ray, z: ray + 3.8, khoi: 'metro', zone: 'metro', col: [.93, .94, .96], mau: 1, name: 'Tàu metro (minh hoạ)' });
+    t.push({ x, y, w: 78.2, h: 3.2, rot: goc, z0: ray + 1.6, z: ray + 2.2, khoi: 'metro', zone: 'metro', col: [.16, .36, .74], mau: 1, name: 'Tàu metro (minh hoạ)' });
   }
   return t;
 }
@@ -312,9 +361,9 @@ precision highp float; precision highp int;
 layout(location=0) in vec3 aPos; layout(location=1) in vec3 aNrm;
 layout(location=2) in vec4 iBox; layout(location=3) in vec4 iZ; layout(location=4) in vec4 iCol; layout(location=5) in vec2 iSt;
 uniform mat4 uVP; uniform int uPass; uniform vec2 uShadow; uniform float uUnits; uniform float uCut; uniform float uCutNhom;
-out vec3 vN; out vec3 vCol; out float vH; out float vSt; out float vId; out vec3 vW;
+out vec3 vN; out vec3 vCol; out float vH; out float vSt; out float vId; out vec3 vW; out float vMau;
 void main(){
-  vec3 p; vec3 n=aNrm; vH=aPos.z;
+  vec3 p; vec3 n=aNrm; vH=aPos.z; vMau=iCol.a;
   if(uPass==0){
     float top=iZ.y;
     // mặt cắt: uCutNhom = 0 cắt mọi tháp, > 0 chỉ cắt khối cùng nhóm (iZ.z); khối nằm trọn trên mặt cắt thì ẩn
@@ -331,7 +380,7 @@ void main(){
 }`;
 const FS = `#version 300 es
 precision highp float; precision highp int;
-in vec3 vN; in vec3 vCol; in float vH; in float vSt; in float vId; in vec3 vW;
+in vec3 vN; in vec3 vCol; in float vH; in float vSt; in float vId; in vec3 vW; in float vMau;
 uniform int uPass; uniform int uPick; uniform vec3 uEye; uniform vec3 uFog; uniform float uUnits;
 uniform vec3 uSun; uniform float uNight; uniform vec2 uTang;
 out vec4 o;
@@ -346,7 +395,7 @@ void main(){
     float g=.86+.14*max(dot(n,L),0.)+.25*uNight;
     float fg=smoothstep(2200.,7000.,length(uEye-vW)); o=vec4(mix(d*g,uFog,fg),1.); return;
   }
-  vec3 base=uPass==1?vCol*.92:mix(vCol,vec3(.93,.90,.84),.76);
+  vec3 base=uPass==1?vCol*.92:vMau<.99?vCol:mix(vCol,vec3(.93,.90,.84),.76);
   int s=int(vSt+.5);
   if(s==4) base=mix(base,vec3(.5,.52,.5),.74);
   if(s==2) base=mix(base,vec3(.98,.74,.22),.62);
@@ -357,7 +406,7 @@ void main(){
   // ban đêm: chỉ còn ánh sáng trời khuếch tán, không có nắng trực tiếp
   vec3 c=base*mix(.34+.38*hemi+.6*d, .20+.16*hemi, uNight);
   c=mix(c, c*vec3(.72,.80,1.05), uNight);
-  if(uPass==0){ c*=.82+.18*vH; if(vId>uUnits&&n.z<.5){ float f=fract(max(vW.z-uTang.y,0.)/uTang.x); c*=.86+.14*step(.3,f); } }
+  if(uPass==0){ c*=.82+.18*vH; if(vId>uUnits&&n.z<.5&&vMau>.99){ float f=fract(max(vW.z-uTang.y,0.)/uTang.x); c*=.86+.14*step(.3,f); } }
   if(s==1||s==3) c+=vec3(.12,.1,.04);
   float fog=smoothstep(2200.,7000.,length(uEye-vW)); c=mix(c,uFog,fog);
   o=vec4(c,1.);
@@ -513,7 +562,7 @@ function uploadStatic() {
     const ty = TYPES[u.t], c = colorOf(u), o = i * 12;
     a.set([u.x, W(u.y), u.bw, u.bh, 0, ty.floors * FLOOR_H, u.bw < u.bh ? 1 : 0, ty.roof, c[0], c[1], c[2], 1], o);
   });
-  TOWERS.forEach((t, j) => { const o = (U.length + j) * 12; a.set([t.x, W(t.y), t.w, t.h, t.z0 || 0, t.z, NHOM[t.khoi] || 0, t.rot || 0, ...t.col, 1], o); });
+  TOWERS.forEach((t, j) => { const o = (U.length + j) * 12; a.set([t.x, W(t.y), t.w, t.h, t.z0 || 0, t.z, NHOM[t.khoi] || 0, t.rot || 0, ...t.col, t.mau ? .5 : 1], o); });
   gl.bindBuffer(gl.ARRAY_BUFFER, stat); gl.bufferData(gl.ARRAY_BUFFER, a, gl.DYNAMIC_DRAW);
   pickDirty = true; dirty = true;
 }
@@ -523,7 +572,7 @@ function refreshStates() {
   const zoneOf = i => i < U.length ? 'casa' : TOWERS[i - U.length].zone;
   for (let i = 0; i < nInst; i++) {
     let s = 0; const z = zoneOf(i);
-    const out = state.zone !== 'all' && z !== state.zone || (z === 'casa' && state.type >= 0 && U[i].t !== state.type);
+    const out = state.zone !== 'all' && z !== state.zone && z !== 'metro' || (z === 'casa' && state.type >= 0 && U[i].t !== state.type);
     let lech = false;
     if (state.market !== 'all' && i < U.length && hasInv()) {
       const it = unitInv(U[i]);
@@ -1167,10 +1216,11 @@ function buildLabels() {
   const box = $('#labels'); box.innerHTML = '<span class="lbl pin" id="pin" hidden></span>';
   const defs = [['g1', 'Toà G1', 453, 260, 122], ['g2', 'Toà G2', 514, 285, 122]];
   const lead = $('#leaders'); if (lead) lead.innerHTML = '';
+  if (METRO) METRO.ga.forEach(g => defs.push(['ga:' + g.ten, g.ten + (g.loai === 'trung-tam' ? ' · Metro số 1' : ''), g.tam[0], g.tam[1], g.loai === 'trung-tam' ? 40 : 26]));
   defs.forEach(([key, text, x, y, z]) => {
-    const b = document.createElement('button'); b.type = 'button'; b.className = 'lbl'; b.dataset.zone = key; b.dataset.p = [x, W(y), z].join(',');
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'lbl' + (key.startsWith('ga:') ? ' ga' : ''); b.dataset.zone = key; b.dataset.p = [x, W(y), z].join(',');
     b.innerHTML = `<span>${esc(text)}</span><span class="pr"></span>`;
-    b.onclick = () => selectZone(key); box.append(b);
+    b.onclick = () => key.startsWith('ga:') ? moMetro(key.slice(3)) : selectZone(key); box.append(b);
     if (lead) { const l = document.createElementNS('http://www.w3.org/2000/svg', 'line'); l.dataset.zone = key; lead.append(l); }
   });
   capNhatGiaNhan(); if (U.length && U[0].px != null) capNhatNhanViTri();
@@ -1204,7 +1254,7 @@ function placeLabels() {
     const key = b.dataset.zone, [x, y, z] = b.dataset.p.split(',').map(Number);
     const p = proj(x, y, z);
     // nhìn xa trên 4–5 km thì nhãn phân khu chồng lên nhau: ẩn đi, chỉ còn ranh dự án
-    const show = !!p && !state.hideLabels && C.dist < 2200 && (state.zone === 'all' || state.zone === key) && !(key === 'casa' && C.dist < 170);
+    const ga = key.startsWith('ga:'), show = !!p && !state.hideLabels && (ga ? C.dist < 6000 && !state.mb && (key === 'ga:Ga S1' || C.dist > 700) : C.dist < 2200 && (state.zone === 'all' || state.zone === key));
     b.style.opacity = show ? 1 : 0; b.style.pointerEvents = show ? 'auto' : 'none';
     b.setAttribute('aria-pressed', String(state.zone === key));
     const l = lead && $(`line[data-zone="${key}"]`, lead);
@@ -1373,6 +1423,7 @@ function clickAt(x, y) {
     const c = CAN.can.find(x => x.ma === TOWERS[id - U.length].can); if (c) moMatBang(tangNhan(c.tang), c.toa + c.can, c.phanKhu);
   } else {
     const z = TOWERS[id - U.length].zone;
+    if (z === 'metro') { moMetro(); return; }
     // chạm lần hai vào Beacon: bóc tầng, mở mặt bằng để chọn căn
     if (MB && MB[z] && state.zone === z && !state.mb) moMatBang(tangMacDinh(z), null, z);
     else if (!state.mb || z !== state.mb.khu) selectZone(z);
@@ -1487,7 +1538,7 @@ function envHtml() {
 /* ---------- panel ---------- */
 const tabsDef = [['chon', 'Chọn căn'], ['can', 'Căn'], ['thamvan', 'Tham vấn']];
 function renderTabs() {
-  const ds = state.tab === 'env' ? [...tabsDef, ['env', 'Nắng']] : tabsDef;
+  const ds = state.tab === 'env' ? [...tabsDef, ['env', 'Nắng']] : state.tab === 'metro' ? [...tabsDef, ['metro', 'Metro']] : tabsDef;
   $('#tabs').innerHTML = ds.map(([k, n]) => `<button class="tab" role="tab" id="tab-${k}" data-tab="${k}" aria-selected="${state.tab === k}">${n}${k === 'thamvan' && state.cart.length ? `<span class="n">${state.cart.length}</span>` : ''}</button>`).join('');
 }
 function chipsHtml() {
@@ -1540,7 +1591,7 @@ function render() {
   renderTabs(); $('#zoneChips').innerHTML = chipsHtml(); renderChrome();
   const pane = $('#pane'); pane.setAttribute('aria-labelledby', 'tab-' + state.tab);
   const scroll = pane.scrollTop;
-  pane.innerHTML = ({ chon: chonHtml, can: canHtml, env: envHtml, thamvan: thamVanHtml })[state.tab]();
+  pane.innerHTML = ({ chon: chonHtml, can: canHtml, env: envHtml, thamvan: thamVanHtml, metro: metroHtml })[state.tab]();
   pane.scrollTop = state.keepScroll ? scroll : 0; state.keepScroll = false; formOpened = performance.now();
   // Trên điện thoại khung dưới thấp: chọn căn xong thì cuộn thẳng tới thẻ căn.
   if (state.cuon) { const el = $('#' + state.cuon); if (el && innerWidth < 860) pane.scrollTop = el.getBoundingClientRect().top - pane.getBoundingClientRect().top + pane.scrollTop - 8; state.cuon = null; }
@@ -1563,7 +1614,42 @@ function chonHtml() {
   return `<h2>Chọn căn</h2><ol class="buoc"><li><b>Xem</b> căn trên sa bàn, mặt bằng tầng hoặc rổ giá</li><li><b>Chọn</b> căn, xem layout và giá cuối theo phương thức thanh toán</li><li><b>Chat Zalo</b> với tư vấn, gửi kèm bản tóm tắt</li></ol>
   ${timNhanh()}
   <div class="zones">${ZONES.filter(z => z.key !== 'all').map(z => `<button class="zone" type="button" data-zone="${z.key}" aria-pressed="${state.zone === z.key}"><span class="dot" style="background:${z.col}"></span><b>${esc(z.name)}</b><span>${esc(z.sub)}${giaPhanKhu(z.key) ? ' · ' + giaPhanKhu(z.key) : ''}</span></button>`).join('')}</div>
+  ${tienIchHtml()}
+  <p><button class="btn block" data-ga="Ga S1">Metro số 1 · ga S1 cạnh dự án →</button></p>
   ${canHoHtml(null)}`;
+}
+const PHOI_CANH = [['phoi-canh/ga-s1-toan-canh.webp', 'Ga trung tâm và hai toà nhìn từ quảng trường vòng xoay A1'], ['phoi-canh/hai-toa-va-ga.webp', 'Hai toà G1, G2 cạnh ga trung tâm'], ['phoi-canh/view-tu-can-ho.webp', 'Tầm nhìn từ căn hộ về ga và Trung tâm hành chính']];
+function moMetro(ten = 'Ga S1') {
+  const g = METRO && METRO.ga.find(x => x.ten === ten); if (!g) return;
+  if (state.mb) { state.mb = null; dirty = true; }
+  state.tab = 'metro'; state.zone = 'all'; state.keepScroll = false;
+  const goc = rad(g.xoay);
+  fly({ tx: g.tam[0], ty: W(g.tam[1]), tz: 14, dist: g.loai === 'trung-tam' ? 430 : 300, pitch: .6, yaw: T.yaw });
+  refreshStates(); render();
+}
+function metroHtml() {
+  const s1 = METRO && METRO.ga.find(g => g.loai === 'trung-tam');
+  const cach = s1 ? Math.round(Math.hypot(s1.tam[0] - 480, s1.tam[1] - 270) / 10) * 10 : null;
+  return `<h2>Metro số 1 Bình Dương</h2>
+  <p class="mute small">Phương án đang tham vấn cộng đồng (8/2026).</p>
+  <div class="zones">${(METRO ? METRO.ga : []).map(g => `<button class="zone" type="button" data-ga="${esc(g.ten)}"><span class="dot" style="background:${g.loai === 'trung-tam' ? '#7a4fd1' : '#9aa3ad'}"></span><b>${esc(g.ten)}</b><span>${g.loai === 'trung-tam' ? 'Ga trung tâm · vòng xoay A1' : g.km > 0 ? 'cách ga S1 1,46 km' : 'đường Hùng Vương · cách ga S1 1,38 km'}</span></button>`).join('')}</div>
+  <table class="kv"><tbody>
+    <tr><td>Ga S1</td><td class="r">tâm vòng xoay A1, Km0+000</td></tr>
+    ${cach ? `<tr><td>Từ tâm lô dự án tới tâm ga</td><td class="r">khoảng ${cach} m</td></tr>` : ''}
+    <tr><td>Nhà ga S1</td><td class="r">trên cao, 3 tầng, 4 đường ray</td></tr>
+    <tr><td>Diện tích khu ga S1</td><td class="r">khoảng 0,98 ha</td></tr>
+    <tr><td>Toàn tuyến S1 – S17</td><td class="r">30,66 km · 19 ga trên cao</td></tr>
+    <tr><td>Kết nối</td><td class="r">TP.HCM, Đồng Nai, sân bay Long Thành</td></tr>
+  </tbody></table>
+  <h3>Phối cảnh</h3>
+  <div>${PHOI_CANH.map(([a, t]) => `<figure style="margin:0 0 10px"><img src="${a}" alt="${esc(t)}" loading="lazy" data-zoom="${a}" style="width:100%;border-radius:8px"><figcaption class="mute small">${esc(t)} · phối cảnh chủ đầu tư</figcaption></figure>`).join('')}
+  <figure style="margin:0 0 10px"><img src="phoi-canh/ga-s1-bao-cao.webp" alt="Phối cảnh ga S1 trong báo cáo tham vấn" loading="lazy" data-zoom="phoi-canh/ga-s1-bao-cao.webp" style="width:100%;border-radius:8px"><figcaption class="mute small">Phối cảnh ga S1 · báo cáo tham vấn Tuyến 1</figcaption></figure></div>
+  <p class="mute small">Nguồn: báo cáo tham vấn cộng đồng Tuyến 1 Bình Dương tại phường Bình Dương, 27/08/2026. Khối ga và đoàn tàu trên sa bàn là minh hoạ theo phương án tham vấn.</p>
+  <p><button class="btn block" data-tab="chon">← Chọn căn</button></p>`;
+}
+function tienIchHtml() {
+  return `<details class="small"><summary><b>Tiện ích khối đế tầng 1–2</b></summary><div>
+    ${[['phoi-canh/tien-ich-tang-1.webp', 'Tầng 1'], ['phoi-canh/tien-ich-tang-2.webp', 'Tầng 2'], ['phoi-canh/tien-ich-tong-the.webp', 'Tổng thể tiện ích']].map(([a, t]) => `<figure style="margin:8px 0"><img src="${a}" alt="Mặt bằng tiện ích ${t}" loading="lazy" data-zoom="${a}" style="width:100%;border-radius:8px"><figcaption class="mute small">${t}</figcaption></figure>`).join('')}</div></details>`;
 }
 function toaHtml(z) {
   const o = ZONES.find(x => x.key === z);
@@ -1955,8 +2041,8 @@ document.addEventListener('click', e => {
   state.rail = state.rail === k ? null : k;
   if (state.rail === 'cart') { state.tab = 'chon'; if (state.zone !== 'all' && !canPK(state.zone).length) selectZone('all'); }
   else if (state.rail === 'env') state.tab = 'env';
-  else if (state.rail === 'infra') state.tab = 'chon';
-  else if (!state.rail && state.tab === 'env') state.tab = 'chon';
+  else if (state.rail === 'metro') { state.rail = null; moMetro(); return; }
+  else if (!state.rail && (state.tab === 'env' || state.tab === 'metro')) state.tab = 'chon';
   if (state.rail !== 'floors') { state.cut = 0; dirty = true; }
   render();
   if (state.rail === 'cart') { const g = $('#roGia'); if (g) g.scrollIntoView({ block: 'start' }); }
@@ -1983,6 +2069,7 @@ document.addEventListener('click', e => {
   else if (d.dongphieu) { state.phieu = null; try { history.replaceState(null, '', '#' + state.zone); } catch {} render(); }
   else if (d.inphieu) { document.documentElement.classList.add('in-phieu'); setTimeout(() => print(), 30); }
 });
+document.addEventListener('click', e => { const g = e.target.closest('[data-ga]'); if (g) moMetro(g.dataset.ga); });
 document.addEventListener('keydown', e => {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset && e.target.dataset.canmo) { e.preventDefault(); moCan(e.target.dataset.canmo); }
 });
@@ -2000,7 +2087,7 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
 /* ---------- khởi động ---------- */
 (async () => {
   render(); buildLabels();
-  const [geoRaw, invData, plan, gref, chan, canHo, ranh, matBang, chinhSachDL, layoutDL] = await Promise.all([
+  const [geoRaw, invData, plan, gref, chan, canHo, ranh, matBang, chinhSachDL, layoutDL, metroDL] = await Promise.all([
     fetch('geometry.json').then(r => r.json()),
     fetch('inventory.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = 'plan.webp'; }),
@@ -2011,14 +2098,15 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     fetch('mat-bang.json').then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('chinh-sach.json', { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).catch(() => null),
     fetch('layout.json').then(r => r.ok ? r.json() : null).catch(() => null),
+    fetch('metro.json').then(r => r.ok ? r.json() : null).catch(() => null),
   ]);
   if (invData && invData.units) inv = invData;
   if (gref) { GEO = gref; geo.init(gref); }
   else geo.init({ tyLe: { metTrenDonVi: geo.mpu }, huong: { bacSoVoiTrucDocAnh: geo.north }, neo: { lat: geo.lat0, lon: geo.lon0, planX: 488, planY: 268 } });
-  RANH = ranh; CHAN = chan; CAN = canHo; MB = matBang; CS = chinhSachDL; LAYOUT = layoutDL;
+  RANH = ranh; CHAN = chan; CAN = canHo; MB = matBang; CS = chinhSachDL; LAYOUT = layoutDL; METRO = metroDL;
   if (MB) for (const k of Object.keys(MB)) { MB[k].tangDung = MB[k].mb.flatMap(p => p.tang); MB[k].toa = [{ ten: k.toUpperCase(), tangCuoi: 30 }]; }
   await hoiNen();
-  TOWERS = dungThap();
+  TOWERS = dungThap(); buildLabels();
   if (CHUP) {
     // Ảnh đại diện luôn chụp lúc trời sáng, không phụ thuộc giờ chạy script: ?gio=14 (giờ Việt Nam, mặc định 14:00)
     const gio = +(new URLSearchParams(location.search).get('gio') || 14), vn = new Date(Date.now() + 7 * 3600e3);
@@ -2033,6 +2121,6 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     catch (err) { console.error(err); $('#nogl').hidden = false; }
   } else $('#nogl').hidden = false;
   render(); openHash();
-  window.__blanca = { VT, fly, CAN: () => CAN, MB: () => MB, CS: () => CS, LAYOUT: () => LAYOUT, moMatBang, dongMatBang, mbHit, moCan, timCan, layoutCua, chatZalo, linkPhieu, tomTatTxt, dongTomTat, gocDoCao, doCaoMet, state, U, C, T, osmXa, osmGiua, tiaMatDat, phongTai, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS, VT };
+  window.__blanca = { VT, moMetro, METRO: () => METRO, fly, CAN: () => CAN, MB: () => MB, CS: () => CS, LAYOUT: () => LAYOUT, moMatBang, dongMatBang, mbHit, moCan, timCan, layoutCua, chatZalo, linkPhieu, tomTatTxt, dongTomTat, gocDoCao, doCaoMet, state, U, C, T, osmXa, osmGiua, tiaMatDat, phongTai, selectUnit, selectZone, geo, osm, sunNow, SUN: () => SUN, capNhatNang, RANH: () => RANH, NEN, TOWERS: () => TOWERS, VT };
 })().catch(err => { console.error(err); $('#pane').innerHTML = '<h2>Chưa tải được dữ liệu sa bàn</h2><p class="mute">Vui lòng tải lại trang hoặc nhắn Zalo ' + ZALO_TXT + '.</p>'; });
 })();

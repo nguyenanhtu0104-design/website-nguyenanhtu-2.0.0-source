@@ -2,6 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.50.0 · 21/11/2026 — Sa bàn Nam Mekong: khối đế, metro số 1 và ga S1
+- **Khối đế tầng 1–2** dựng theo mặt bằng tiện ích tầng 1–2 của chủ đầu tư (khớp vào ranh lô theo 5 góc, sai lệch 0,5–4 m), cao 10 m, mái vườn xanh; chừa quảng trường Hội Tụ và lối vào – ra.
+- **Tuyến metro số 1 Bình Dương** theo báo cáo tham vấn cộng đồng 27/08/2026 (TEDI – Nippon Koei): cầu cạn rộng 10,9 m, ray ở độ cao khoảng 12,5 m, trụ cách 30 m; đoạn qua vòng xoay A1 đi theo trục đường Hùng Vương qua tâm vòng xoay, phía Đông Bắc theo hình tuyến số hoá từ bản đồ trang 14 (kiểm lại bằng lý trình S1–S0A 1.459 m), phía Tây Nam thẳng theo Hùng Vương tới ga S2 (1.383 m).
+- **Ga S1 tại tâm vòng xoay** (nhà ga trên cao 170 × 34 m, 4 đường ray) kèm khối trụ tròn mái xanh có giếng trời theo phối cảnh trong báo cáo; ga S2, S0A dạng khối ga thường; một đoàn tàu minh hoạ. Khối metro giữ màu thật, không pha tông kem như khối toà.
+- Tab **Metro** (nút bên trái hoặc chạm vào tuyến/ga): thông số ga S1, khoảng cách tâm lô – tâm ga (~230 m, tính từ sơ đồ thửa GCN), phối cảnh chủ đầu tư và phối cảnh ga trong báo cáo. Mục **Tiện ích khối đế tầng 1–2** trong tab Chọn căn.
+
 ## 2.49.0 · 21/11/2026 — Tìm nhà: sa bàn 3D Nam Mekong Grand Plaza
 - **Sa bàn mới `assets/tools/nam-mekong/nam-mekong.html`**, dựng theo khung Blanca City (§17): hai toà G1, G2 trên ảnh vệ tinh thật, bóc từng tầng 3–30 với mặt bằng thật của chủ đầu tư (13 bản vẽ G1, 11 bản vẽ G2), chọn căn trên mặt bằng, layout căn, giá cuối theo 4 phương thức, phiếu tính giá và cân đối tài chính, chat Zalo, ký gửi.
 - **Ranh lô A4 dựng từ sơ đồ thửa trên GCN CY 375669** (thửa 131, tờ 78; đủ 8 cạnh, cung Chu Văn An; diện tích dựng lại 13.098 m² so với 13.095 m²), đặt lên ảnh vệ tinh theo hàng rào thi công. Hai toà đặt song song các cạnh lô vuông góc nhau trên GCN, lùi 6 m; khối giật cấp tầng 24–30 đọc từ mặt bằng từng tầng.
