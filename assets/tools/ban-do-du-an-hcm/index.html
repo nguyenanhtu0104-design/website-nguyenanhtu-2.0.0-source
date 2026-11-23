@@ -1026,7 +1026,42 @@ html,body{overflow:hidden}
   'Bản đồ đường':L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',xt(TO,{attribution:'© OpenStreetMap'}))};
  var baseName='Vệ tinh';try{var bs=localStorage.getItem('bdda-base');if(BASES[bs])baseName=bs}catch(e){}
  BASES[baseName].addTo(map);
- L.control.layers(BASES,null,{position:'topright',collapsed:window.innerWidth<=760}).addTo(map);
+ map.createPane('landUsePlan').style.zIndex = 300;
+ map.getPane('landUsePlan').style.pointerEvents = 'none';
+ var landUse = L.imageOverlay('quy-hoach-su-dung-dat.webp', [[10.17,105.97],[11.65,107.83]], {
+  pane: 'landUsePlan', opacity: .65, alt: 'Sơ đồ sử dụng đất khu vực đô thị TP.HCM'
+ });
+ L.control.layers(BASES, {'Sử dụng đất đô thị · Quy hoạch 100 năm': landUse}, {
+  position: 'topright', collapsed: window.innerWidth <= 760
+ }).addTo(map);
+ var planOpacity = 65;
+ var landUseTools = L.control({position:'bottomleft'});
+ landUseTools.onAdd = function () {
+  var box = L.DomUtil.create('div');
+  box.style.cssText = 'background:#1b1812;color:#fff;padding:8px 10px;border-radius:8px;max-width:min(205px,55vw)';
+  box.innerHTML = '<label>Độ mờ <input aria-label="Độ mờ lớp quy hoạch" type="range" min="0" max="100" value="65"></label><br>' +
+   '<a href="quy-hoach-ky-hieu.webp" target="_blank" rel="noopener" style="color:#ffd87b">Bảng ký hiệu</a>' +
+   '<div role="status">Căn chỉnh tham khảo từ bản vẽ số 16. Vị trí có thể lệch vài km.</div>';
+  L.DomEvent.disableClickPropagation(box);
+  L.DomEvent.disableScrollPropagation(box);
+  var slider = box.querySelector('input');
+  slider.value = planOpacity;
+  slider.addEventListener('input', function () {
+   planOpacity = Number(this.value);
+   landUse.setOpacity(planOpacity / 100);
+  });
+  return box;
+ };
+ map.on('overlayadd', function (event) {
+  if (event.layer === landUse) landUseTools.addTo(map);
+ });
+ map.on('overlayremove', function (event) {
+  if (event.layer === landUse) landUseTools.remove();
+ });
+ landUse.on('error', function () {
+  var box = landUseTools.getContainer();
+  if (box) box.querySelector('[role="status"]').textContent = 'Chưa tải được ảnh quy hoạch.';
+ });
  map.on('baselayerchange',function(e){try{localStorage.setItem('bdda-base',e.name)}catch(x){}});
  L.control.scale({imperial:false,position:'bottomleft'}).addTo(map);
  map.createPane('casing').style.zIndex=395;
