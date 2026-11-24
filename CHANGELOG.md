@@ -2,6 +2,13 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.64.0 · 24/11/2026 — Sơ đồ sử dụng đất khu vực đô thị (QĐ 7308) thành một lớp trên Bản đồ
+- **Tab "Quy hoạch"** trong `assets/tools/ban-do-du-an-hcm/`: bật/tắt lớp, thanh độ hiện rõ, 33 mục kí hiệu đọc thẳng từ bảng chú giải của tờ bản đồ.
+- Lớp là **chính ảnh tờ 16 "Sơ đồ sử dụng đất khu vực đô thị"** đã gắn tọa độ, cắt thành ô ảnh 512 px (z7–z12, 694 ô, 12 MB, PNG bảng màu cố định nên màu không đổi). Tải theo vùng đang xem; trang chủ và các trang khác không đổi dung lượng.
+- **Gắn tọa độ:** khớp vùng nước và đường bờ biển trên tờ bản đồ với ranh giới hành chính (bộ dữ liệu mở dvhcvn, trích từ gis.chinhphu.vn) trong hệ UTM 48N. Sai số vị trí trung vị **372 m**, p90 **683 m**; tỷ lệ in của tờ suy ra ≈ 1:225.000.
+- **Côn Đảo đã lược** khỏi lớp: trên tờ gốc được vẽ chèn trong vùng biển gần Vũng Tàu, lệch vị trí thật khoảng 195 km. Dải tiêu đề và khung chú giải cũng được che khỏi ô ảnh.
+- Không vector hoá loại đất theo màu — lý do ở PROJECT_RULES §14 (2.64.0).
+
 ## 2.63.0 · 24/11/2026 — Habitat Bình Dương giai đoạn 3 lên sa bàn 3D (tháp C1, C2, C3, 390 căn)
 - **Sa bàn riêng** `assets/tools/habitat-sa-ban/` theo khung Nam Mekong: ba tháp C1, C2, C3 cao 18 tầng, khối dựng từ mặt bằng tầng điển hình, đặt theo mái trên ảnh vệ tinh (đã trừ độ nghiêng của ảnh chụp xiên), trục lệch Bắc khoảng 8°.
 - **Bóc tầng 1–18 từng tháp**, đủ **390 căn** (C1 143, C2 133, C3 114) theo mặt bằng định vị của chủ đầu tư: tầng 1, 2, 3, 4 và tầng điển hình; 6 căn duplex tầng 3–4 (C2, C3) tính một căn ở tầng dưới. Đường bao từng căn lấy thẳng từ hình vẽ vector của PDF (mỗi phòng tô màu theo loại căn), mã căn ghép toà · tầng · số căn (C1.10.05).

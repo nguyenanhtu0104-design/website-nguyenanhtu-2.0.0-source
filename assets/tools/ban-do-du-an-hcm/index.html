@@ -55,6 +55,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 .qr button:hover,.qr button.on{background:#2a2419}
 .qr small{display:block;color:var(--muted);font-size:11px}
 .qe{padding:8px 10px;color:var(--muted);font-size:12px}
+.qhop{margin:6px 0 10px}.qhop label{display:block;font-size:11.5px;color:var(--muted);margin-bottom:4px}.qhop b{color:var(--text)}.qhop input{width:100%;accent-color:var(--gold)}.qhleg{display:grid;gap:3px;margin-bottom:10px}.qhl{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:1.45;color:var(--text)}.qhl i{width:13px;height:13px;flex:none;margin-top:2px;border-radius:3px;border:1px solid rgba(255,255,255,.3)}
 .lrow{display:flex;align-items:flex-start;gap:6px}.lrow .flt{flex:1;min-width:0}
 .zoom{flex:none;margin-top:6px;font:inherit;font-size:11px;color:var(--gold);background:none;border:1px solid var(--line);border-radius:6px;padding:2px 7px;cursor:pointer}
 .zoom:hover,.zoom:focus-visible{border-color:var(--gold)}
@@ -184,7 +185,7 @@ html,body{overflow:hidden}
   <div class="grip" id="grip" role="button" tabindex="0" aria-label="Kéo hoặc bấm để mở rộng bảng"><span></span></div>
  <div class="search"><label for="q" class="sr">Tìm dự án, ga, tuyến</label><input id="q" type="search" autocomplete="off" placeholder="Tìm dự án, nhà ga, tuyến…" aria-controls="qr"><div class="qr" id="qr" role="listbox" hidden></div></div>
   <div class="tabs" role="tablist">
-   <button type="button" role="tab" data-tab="du-an" aria-selected="true">Dự án</button><button type="button" role="tab" data-tab="tuyen" aria-selected="false">Tuyến &amp; ga</button><button type="button" role="tab" data-tab="info" aria-selected="false">Ghi chú</button>
+   <button type="button" role="tab" data-tab="du-an" aria-selected="true">Dự án</button><button type="button" role="tab" data-tab="tuyen" aria-selected="false">Tuyến &amp; ga</button><button type="button" role="tab" data-tab="quy-hoach" aria-selected="false">Quy hoạch</button><button type="button" role="tab" data-tab="info" aria-selected="false">Ghi chú</button>
   </div>
  </div>
  <div class="panes">
@@ -241,6 +242,15 @@ html,body{overflow:hidden}
   <details class="grp"><summary>Cao tốc dẫn vào TP.HCM</summary><div id="ln-ct"></div></details>
   <details class="grp"><summary>Quy hoạch metro dài hạn <small>(mặc định ẩn)</small></summary><div id="ln-plan"></div></details>
  </section>
+ <section class="pane" data-pane="quy-hoach" hidden>
+  <h2>Sơ đồ sử dụng đất khu vực đô thị</h2>
+  <label class="flt"><input type="checkbox" id="qh-on">Hiện trên bản đồ</label>
+  <div class="qhop"><label for="qh-op">Độ hiện rõ <b id="qh-opv">85%</b></label><input id="qh-op" type="range" min="10" max="100" value="85"></div>
+  <p class="note">Ảnh tờ <b>16 — Sơ đồ sử dụng đất khu vực đô thị</b> trong hồ sơ công bố Quy hoạch tổng thể TP.HCM thời kỳ 2025–2050, tầm nhìn 100 năm (Quyết định 7308). Lớp này là <b>chính ảnh bản đồ công bố</b> đã gắn tọa độ, không diễn giải lại màu. Sai số vị trí: trung vị khoảng <b>370 m</b>, 90% dưới <b>680 m</b> — đủ để xem tổng thể, không dùng để xác định ranh thửa. Phần Côn Đảo trên tờ gốc được vẽ chèn trong vùng biển gần Vũng Tàu, không đúng vị trí thật, nên đã lược khỏi lớp này.</p>
+  <h3 class="sub">Kí hiệu</h3>
+  <div class="qhleg"><div class="qhl"><i style="background:#984744"></i>Khu trung tâm thành phố</div><div class="qhl"><i style="background:#cf7e7b"></i>Khu trung tâm phân vùng</div><div class="qhl"><i style="background:#de6e6d"></i>Khu trung tâm khu vực</div><div class="qhl"><i style="background:#ffba86"></i>Khu vực đô thị</div><div class="qhl"><i style="background:#fadb7e"></i>Khu vực đô thị (định hướng)</div><div class="qhl"><i style="background:#dbebaa"></i>Khu vực nông thôn</div><div class="qhl"><i style="background:#6fdd00"></i>Khu vực đô thị - công viên công cộng</div><div class="qhl"><i style="background:#c0ff00"></i>Khu vực đô thị sinh thái, dịch vụ du lịch</div><div class="qhl"><i style="background:#beff7f"></i>Khu vực nông nghiệp, PT nông thôn - dự trữ phát triển đô thị</div><div class="qhl"><i style="background:#bcee8b"></i>Khu vực đa chức năng</div><div class="qhl"><i style="background:#fcdbec"></i>Khu phức hợp sân golf - dịch vụ</div><div class="qhl"><i style="background:#c0f1f8"></i>Khu đa chức năng không có ở</div><div class="qhl"><i style="background:#3ee5dd"></i>Khu vực đô thị du lịch</div><div class="qhl"><i style="background:#fe96e5"></i>Khu du lịch</div><div class="qhl"><i style="background:#816af8"></i>Khu công nghiệp, cụm CN, chế xuất, kho tàng, logistics, bến bãi</div><div class="qhl"><i style="background:#d9b6f6"></i>Khu vực đô thị công nghiệp, dịch vụ</div><div class="qhl"><i style="background:#75ccc6"></i>Khu công nghệ cao, công nghệ số, nghiên cứu, đào tạo, dịch vụ</div><div class="qhl"><i style="background:#63bb8e"></i>Khu vực đô thị công nghệ cao, nghiên cứu, đào tạo</div><div class="qhl"><i style="background:#007095"></i>Khu vực đô thị sinh thái, CNC, công nghiệp tiên tiến, y sinh, dịch vụ</div><div class="qhl"><i style="background:#00b800"></i>Khu thể dục thể thao, văn hóa</div><div class="qhl"><i style="background:#00ff7f"></i>Khu vực đô thị thể dục thể thao, văn hóa</div><div class="qhl"><i style="background:#6ddda5"></i>Khu công viên công cộng, công viên chuyên đề, du lịch, dịch vụ, hỗn hợp, tôn giáo</div><div class="qhl"><i style="background:#e700ae"></i>Khu phức hợp y tế</div><div class="qhl"><i style="background:#a7b7d0"></i>Khu đầu mối hạ tầng kỹ thuật</div><div class="qhl"><i style="background:#a5ace2"></i>Khu vực cảng</div><div class="qhl"><i style="background:#b95b01"></i>Khu vực di tích tôn giáo</div><div class="qhl"><i style="background:#5cb700"></i>Khu vực cây xanh đô thị tập trung</div><div class="qhl"><i style="background:#1cad46"></i>Khu vực cây xanh, công viên chuyên đề</div><div class="qhl"><i style="background:#00721b"></i>Khu vực cây xanh chuyên dùng</div><div class="qhl"><i style="background:#a9dd93"></i>Khu vực nông nghiệp, PT nông thôn hoặc đất NN đan xen chức năng đô thị</div><div class="qhl"><i style="background:#519b3a"></i>Khu vực lâm nghiệp</div><div class="qhl"><i style="background:#6c8454"></i>Khu vực an ninh, quốc phòng</div><div class="qhl"><i style="background:#2e7bb1"></i>Mặt nước</div></div>
+  <p class="note">Nguồn: UBND TP.HCM · đơn vị lập quy hoạch VIUP – BCG – Nikken. Hồ sơ gốc là nguồn chính thức; lớp này chỉ để tra cứu nhanh vị trí.</p>
+</section>
  <section class="pane note" data-pane="info" hidden>
 
   <b>Lưu ý:</b> vị trí dự án và nhà ga là <b>vị trí tham chiếu khu vực</b>, có thể lệch vài trăm mét đến vài km so với thực tế. Tình trạng mở bán lấy từ các bài trong Cẩm Nang và thông tin thị trường tại ngày cập nhật; thay đổi theo từng đợt hàng của chủ đầu tư, nên cần xác nhận trực tiếp trước khi quyết định. Nội dung chỉ mang tính tham khảo, không phải lời chào bán.<br><br>
@@ -1029,6 +1039,14 @@ html,body{overflow:hidden}
  L.control.layers(BASES,null,{position:'topright',collapsed:window.innerWidth<=760}).addTo(map);
  map.on('baselayerchange',function(e){try{localStorage.setItem('bdda-base',e.name)}catch(x){}});
  L.control.scale({imperial:false,position:'bottomleft'}).addTo(map);
+ map.createPane('qh');map.getPane('qh').style.zIndex=240;map.getPane('qh').style.pointerEvents='none';
+ var QHSDD=L.tileLayer('quy-hoach/sdd-do-thi/{z}/{x}/{y}.png',{tileSize:512,zoomOffset:-1,minZoom:6,maxNativeZoom:12,maxZoom:19,bounds:[[10.19,105.59],[11.93,108.05]],opacity:.85,pane:'qh',attribution:'Sơ đồ SDĐ đô thị: UBND TP.HCM (QĐ 7308) · VIUP–BCG–Nikken'});
+ (function(){var cb=document.getElementById('qh-on'),op=document.getElementById('qh-op'),ov=document.getElementById('qh-opv');
+  if(!cb)return;
+  function sync(){if(cb.checked)QHSDD.addTo(map);else if(map.hasLayer(QHSDD))map.removeLayer(QHSDD);try{localStorage.setItem('bdda-qh',cb.checked?'1':'0')}catch(e){}}
+  try{if(localStorage.getItem('bdda-qh')==='1')cb.checked=true}catch(e){}
+  cb.addEventListener('change',sync);sync();
+  op.addEventListener('input',function(){QHSDD.setOpacity(op.value/100);ov.textContent=op.value+'%'});})();
  map.createPane('casing').style.zIndex=395;
  var casingR=L.canvas({pane:'casing',padding:.4});
  var isMobile=function(){return window.innerWidth<=760};
