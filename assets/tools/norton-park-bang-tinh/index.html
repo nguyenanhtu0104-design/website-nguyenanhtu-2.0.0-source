@@ -990,6 +990,9 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(window.NATLoan)NATLoan.mount('dL',{getCtx:loanCtx,titleClass:'card-title',theme:{bg:'transparent',fg:'#fff',mu:'#8A9BB5',line:'rgba(255,255,255,.14)',ac:'#E8C96A',ac2:'#C9A84C',thbg:'rgba(255,255,255,.06)',thfg:'#C9A84C',inbg:'rgba(255,255,255,.06)'}});
   recalc();
 });
+
+// Mở thẳng một căn: ?can=B2.5.3 (sa bàn Tìm nhà gửi sang)
+addEventListener('load',function(){var c=new URLSearchParams(location.search).get('can');if(!c)return;setMode('code');$('codeInp').value=c.toUpperCase();onCode(c);var el=$('mode-code');if(el&&el.scrollIntoView)el.scrollIntoView({block:'start'});});
 </script>
 <meta name="lead-project" content="norton-park"><link rel="stylesheet" href="/assets/lead/lead.css?v=2.17.3"><script src="/assets/lead/lead.js?v=2.17.3" defer></script>
 <input type="hidden" id="leadPt" value="1" data-lead-input="pt" data-lead-label="Phương thức thanh toán số"><script>document.getElementById("leadPt").addEventListener("input",function(){var n=parseInt(this.value,10)-1;if(n>=0&&typeof setPT==="function")setPT(n)})</script><button type="button" data-lead-open style="position:fixed;right:14px;bottom:14px;z-index:90;padding:11px 16px;border:0;border-radius:24px;background:#b8894a;color:#fff;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.3)">Nhận phương án này</button>

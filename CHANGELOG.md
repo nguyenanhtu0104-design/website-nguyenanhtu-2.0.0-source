@@ -2,6 +2,14 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.59.0 · 24/11/2026 — Norton Park: toàn bộ căn, mặt bằng tầng, bản tính và cảnh quan trên sa bàn 3D
+- **Bóc tầng Phân khu B (B1, B2, B3) ngay trên sa bàn vùng Đại lộ Bình Dương:** chọn tầng 1–19 thì ba toà cắt ở cao độ tầng đó, mặt bằng thật của chủ đầu tư trải đúng chỗ, có mã căn (dạng bản tính B1.5.3). Đủ **645 căn** (13 + 13 + 31 + 37×6 + 37×6 + 37×2 + 35×2), khớp số căn công bố của Phân khu B. Tầng 13, 14 hiện kèm tên 12A, 12B của chủ đầu tư.
+- **Khớp ảnh mặt bằng:** 7 ảnh mặt bằng (tầng 1, 2, 3, 4–9, 10–15, 16 & 18, 17 & 19) khớp riêng vào đường bao toà của mặt bằng tổng thể (phép đồng dạng, ~97% nét vẽ quanh các căn nằm trong đường bao với tầng điển hình); ảnh cắt theo đường bao toà khi dán lên sa bàn.
+- **Thẻ căn:** loại, phòng, diện tích sàn và sử dụng (duplex hai tầng, sân vườn), cảnh quan, layout mẫu căn, khoảng giá tham khảo theo khung giá thị trường của bản tính (ghi rõ chưa phải báo giá chính thức; căn sân vườn, duplex D1 ghi "tư vấn báo giá" như bản tính). Nút mở bản tính đúng căn và chọn căn để tham vấn (đi vào tóm tắt Zalo). Đường dẫn `#vt=B1.5.3`.
+- **Bản tính Norton Park** nhận `?can=B2.5.3`: tự chuyển sang nhập mã căn và điền căn (không đổi giao diện).
+- **Cảnh quan và kết nối** (tab "Quanh dự án" trên sa bàn vùng, `cong-trinh.json` khai theo toạ độ): AEON Mall Bình Dương Canary (đường bao vẽ trên ảnh vệ tinh, cao quy đổi 3 tầng); Công viên 1 và hồ cảnh quan theo mặt bằng tổng thể; ga C8 metro số 2 (dự kiến) và cầu cạn trên dải phân cách phía Tây Đại lộ Bình Dương, đối diện AEON, trước cổng sân golf Sông Bé, theo báo cáo hướng tuyến 07/08/2026 (khối ga minh hoạ, kích thước chưa công bố).
+- `showroom.js`: mô-đun bóc tầng dự án vùng (`canBoc` trong `du-an.json`, nhóm cắt `vtb` = 4), công trình mốc khai theo `ll` + `khoiM`, nhánh "Quanh dự án" cho sa bàn vùng. Nam Mekong và vùng Trung tâm không đổi hành vi.
+
 ## 2.58.0 · 24/11/2026 — Sa bàn Đại lộ Bình Dương: Norton Park dựng theo mặt bằng tổng thể
 - **6 toà Norton Park dựng đúng hình** theo đường bao trong mặt bằng tổng thể trên trang trải nghiệm 3D của chủ đầu tư (Tú gửi), thay khối minh hoạ. Mỗi toà ghép 3–5 khối hộp theo đường bao (phủ khoảng 98%), cao 19 tầng (tầng 1–12, 12A, 12B, 15–19).
 - **Định vị:** sơ đồ khớp lên ảnh vệ tinh Esri theo đường nội bộ chia hai lô (chỗ ghim Tú gửi), đường phía Đông và ranh AEON Mall; sai lệch vài mét. Kiểm chứng tỷ lệ: diện tích chân tháp B2 > B3 > B1 đúng thứ tự 14 > 12 > 11 căn/tầng; tổng chân tháp trên hai lô cho mật độ khoảng 27%, khớp "27% khu B & C" trong hồ sơ.

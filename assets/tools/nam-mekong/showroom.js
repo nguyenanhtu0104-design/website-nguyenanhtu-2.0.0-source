@@ -54,7 +54,7 @@ const KHOI = [
   { zone: 'g2', col: [.78, .52, .42], ten: 'Toà G2' },
 ];
 const THAP_B = [];
-const NHOM = { g1: 1, g2: 2 };   // nhóm cắt tầng (iZ.z)
+const NHOM = { g1: 1, g2: 2, vtb: 4 };   // nhóm cắt tầng (iZ.z); vtb = toà có bóc tầng trên sa bàn vùng
 const MAU_MAI = [.96, .95, .92];
 // Ô đèn: mỗi căn còn trống trong quỹ đại lý là một ô sáng trên mặt đứng, đúng tầng và đúng vị trí căn trên mặt bằng.
 // Chạm vào ô đèn: bóc tầng đó, mở mặt bằng và thẻ căn (PROJECT_RULES §16.2).
@@ -106,7 +106,7 @@ function dungDuAnNen() {
       for (const o of d.toa) {
         const z = daCao(o.tang), c = o.mau || DA_MAU[d.cdt] || [.8, .8, .8], ten = `${d.ten} · ${o.nhan || 'Tháp ' + o.ten} · ${o.tang} tầng`;
         for (const [e, n, w, h, g] of o.hop) {
-          const p = { x: d.tam[0] + e, y: d.tam[1] - n, rot: rad(g), khoi: 'da', zone: 'duan', da: d.id, toa: o.ten, name: ten };
+          const p = { x: d.tam[0] + e, y: d.tam[1] - n, rot: rad(g), khoi: VTB && VTB.da === d.id && o.phanKhu === VTB.phanKhu ? 'vtb' : 'da', zone: 'duan', da: d.id, toa: o.ten, name: ten };
           t.push({ ...p, w, h, z0: 0, z, col: c, mau: 1 });
           t.push({ ...p, w: Math.max(.5, w - 1.2), h: Math.max(.5, h - 1.2), z0: z, z: z + 1.2, col: [.93, .93, .9], mau: 1 });
         }
@@ -718,7 +718,7 @@ function drawScene(pick) {
   }
   gl.useProgram(prog);
   gl.uniformMatrix4fv(U_.uVP, false, vp); gl.uniform3fv(U_.uEye, eye); gl.uniform3fv(U_.uFog, FOG);
-  gl.uniform1f(U_.uUnits, U.length + .5); gl.uniform1f(U_.uCut, catHienTai()); gl.uniform1f(U_.uCutNhom, state.mb ? NHOM[state.mb.khu] : state.de ? 3 : 0);
+  gl.uniform1f(U_.uUnits, U.length + .5); gl.uniform1f(U_.uCut, catHienTai()); gl.uniform1f(U_.uCutNhom, vtBat() ? NHOM.vtb : state.mb ? NHOM[state.mb.khu] : state.de ? 3 : 0);
   gl.uniform2f(U_.uTang, donVi(CAO_TANG), donVi(SO_TANG_DE * CAO_DE)); gl.uniform1i(U_.uPick, pick ? 1 : 0);
   const sun = SUN || { az: 135, el: 50 };
   const hz = geo.dir(sun.az), el = Math.max(sun.el, 4), tan = Math.tan(rad(el));
@@ -735,7 +735,7 @@ function drawScene(pick) {
     gl.uniform1i(U_.uPass, 0); gl.bindVertexArray(boxVAO); gl.drawArraysInstanced(gl.TRIANGLES, 0, boxVAO.n, nInst);
     gl.uniform1i(U_.uPass, 1); gl.bindVertexArray(roofVAO); gl.drawArraysInstanced(gl.TRIANGLES, 0, roofVAO.n, U.length);
   }
-  if (!pick) { veMatBang(vp); veDe(vp); drawRanh(vp); }
+  if (!pick) { veMatBang(vp); veDe(vp); veTangVung(vp); drawRanh(vp); }
 }
 function nightLevel() { if (state.night) return 1; const e = (SUN || { el: 45 }).el; return e > 2 ? 0 : e < -6 ? 1 : (2 - e) / 8; }
 function drawGround(vp) {
@@ -969,7 +969,7 @@ function tangMacDinh() { return '12'; }
 function dsTang() { return TANG_BEACON.slice(2, 30); }
 function hopDeBeacon() { return khungToa(khuMB()); }
 function caoTang(tang) { return donVi(caoM(tangSo(tang))); }
-function catHienTai() { return state.mb ? caoTang(state.mb.tang) + .02 : state.de ? DE[state.de].cao + .02 : (state.cut || -1); }
+function catHienTai() { return vtBat() ? vtCao(state.vt.tang) + .02 : state.mb ? caoTang(state.mb.tang) + .02 : state.de ? DE[state.de].cao + .02 : (state.cut || -1); }
 // Mặt bằng khối đế tầng 1 (thương mại dịch vụ) và tầng 2 (văn phòng, sinh hoạt cộng đồng, nhà trẻ) của chủ đầu tư,
 // khớp vào đường bao khối đế (chan-thap.json > khoiDe) bằng phép đồng dạng, khung ảnh theo toạ độ sa bàn (m).
 const DE = {
@@ -1461,6 +1461,15 @@ function frame(t) {
   if (moving || dirty) { resize(); gl.bindFramebuffer(gl.FRAMEBUFFER, null); drawScene(false); placeLabels(); veLaBan(); hienDoCao(); dirty = false; }
 }
 function doHover(x, y) {
+  if (vtBat()) {
+    const m = vtHit(x, y), ma = m && m.ma;
+    if (ma !== state.vt.hover) { state.vt.hover = ma; dirty = true; }
+    if (ma) {
+      const tip = $('#tip'), r = $('#stage').getBoundingClientRect(), c = vtCan(ma);
+      if (!matchMedia('(hover:none)').matches && c) { tip.hidden = false; tip.textContent = ma + ' · ' + c.loai; tip.style.left = (x - r.left) + 'px'; tip.style.top = (y - r.top) + 'px'; }
+      canvas.classList.add('hit'); return;
+    }
+  }
   if (state.mb && mbDung()) {
     const k = mbHit(x, y);
     if (k !== state.mb.hover) { state.mb.hover = k; capNhatTrangThaiMB(); }
@@ -1581,6 +1590,7 @@ function clickAt(x, y) {
   const id = pickAt(x, y);
   const now = performance.now(), dbl = now - lastTap < 350; lastTap = now;
   if (state.mb && mbDung()) { const k = mbHit(x, y); if (k >= 0) { chonCanMB(k); return; } }
+  if (vtBat()) { const m = vtHit(x, y); if (m && m.ma) { chonCanVung(m.ma); return; } if (m) return; }
   if (id < 0) { if (dbl) phongTai(x, y, .5); return; }
   if (id < U.length) { selectUnit(id, { fly: true }); if (dbl) fly({ ...T, dist: 55, pitch: 1.05 }); }
   else if (TOWERS[id - U.length].da) moDuAn(TOWERS[id - U.length].da, TOWERS[id - U.length].toa);
@@ -1653,13 +1663,14 @@ function canDangXem() {
 function syncHash() {
   if (state.phieu) return;
   const c = canDangXem();
-  try { history.replaceState(null, '', c ? '#can=' + c.ma : state.apMa ? '#ap=' + state.apMa : state.daSel ? '#da=' + state.daSel : state.tatCa ? '#tatca' : state.de ? '#de=' + state.de : state.sel >= 0 ? '#unit=' + U[state.sel].code : '#' + state.zone); } catch {}
+  try { history.replaceState(null, '', c ? '#can=' + c.ma : vtBat() && state.vt.sel ? '#vt=' + state.vt.sel : state.apMa ? '#ap=' + state.apMa : state.daSel ? '#da=' + state.daSel : state.tatCa ? '#tatca' : state.de ? '#de=' + state.de : state.sel >= 0 ? '#unit=' + U[state.sel].code : '#' + state.zone); } catch {}
 }
 function openHash() {
   const h = location.hash.slice(1);
   if (h.startsWith('phieu=')) { moPhieu(h.slice(6)); return; }
   if (h.startsWith('can=')) { if (moCan(decodeURIComponent(h.slice(4)))) return; }
   if (h === 'tatca') { selectZone('tatca'); return; }
+  if (h.startsWith('vt=')) { const m = vtTach(decodeURIComponent(h.slice(3))); if (m) { moTangVung(m.tang, m.ma); return; } }
   if (h.startsWith('da=')) { if (moDuAn(h.slice(3))) return; }
   if (h.startsWith('de=') && DE[h.slice(3)]) { moTangDe(h.slice(3)); return; }
   if (h.startsWith('ap=')) { if (moArtisan(decodeURIComponent(h.slice(3)))) return; }
@@ -1718,7 +1729,7 @@ function envHtml() {
 /* ---------- panel ---------- */
 const tabsDef = [['chon', 'Chọn căn'], ['can', 'Căn'], ['thamvan', 'Tham vấn']];
 function renderTabs() {
-  const ds = state.tab === 'env' ? [...tabsDef, ['env', 'Nắng']] : state.tab === 'metro' ? [...tabsDef, ['metro', 'Metro']] : state.tab === 'duan' ? [...tabsDef, ['duan', 'Dự án']] : tabsDef;
+  const ds = state.tab === 'env' ? [...tabsDef, ['env', 'Nắng']] : state.tab === 'metro' ? [...tabsDef, ['metro', VUNG ? 'Quanh dự án' : 'Metro']] : state.tab === 'duan' ? [...tabsDef, ['duan', 'Dự án']] : tabsDef;
   $('#tabs').innerHTML = ds.map(([k, n]) => `<button class="tab" role="tab" id="tab-${k}" data-tab="${k}" aria-selected="${state.tab === k}">${n}${k === 'thamvan' && state.cart.length ? `<span class="n">${state.cart.length}</span>` : ''}</button>`).join('');
 }
 function chipsHtml() {
@@ -1825,6 +1836,7 @@ function moCongTrinh(id) {
   const c = CT && CT.congTrinh.find(x => x.id === id); if (!c) return;
   if (state.mb) { state.mb = null; dirty = true; }
   state.de = null; state.daSel = null; state.tatCa = false; state.tab = 'metro'; state.zone = 'all'; state.ctSel = id; state.keepScroll = false;
+  if (VUNG) { fly({ tx: c.tam[0], ty: W(c.tam[1]), tz: c.cao * .4, dist: Math.max(520, c.cao * 9), pitch: .8, yaw: T.yaw }); refreshStates(); render(); return; }
   // nhìn từ phía ga S1 (vòng xoay A1) về công trình
   const s1 = METRO && METRO.ga.find(g => g.loai === 'trung-tam'), nx = c.tam[0] - (s1 ? s1.tam[0] : 480), ny = -(c.tam[1] - (s1 ? s1.tam[1] : 270)), L = Math.hypot(nx, ny) || 1;
   fly({ tx: c.tam[0], ty: W(c.tam[1]), tz: c.cao * .4, dist: Math.max(420, c.cao * 4.2), pitch: .32, yaw: Math.atan2(-nx / L, ny / L) });
@@ -1834,7 +1846,17 @@ function moCongTrinh(id) {
 function phoiCanhHtml(ds, nguon) {
   return ds.map(([a, t]) => `<figure style="margin:0 0 10px"><img src="${a}" alt="${esc(t)}" loading="lazy" data-zoom="${a}" style="width:100%;border-radius:8px"><figcaption class="mute small">${esc(t)} · ${nguon}</figcaption></figure>`).join('');
 }
+function ctDsHtml() {
+  return `<div class="zones">${CT.congTrinh.map(c => `<button class="zone" type="button" data-ct="${esc(c.id)}" aria-pressed="${state.ctSel === c.id}"><span class="dot" style="background:#9fb3c4"></span><b>${esc(c.ten)}</b><span>${esc(c.phu)}</span></button>`).join('')}</div>`;
+}
 function metroHtml() {
+  if (VUNG) {
+    const c = state.ctSel && CT && CT.congTrinh.find(x => x.id === state.ctSel);
+    const ds = CT ? ctDsHtml() : '';
+    const vt = VTB ? `<p><button class="btn block" data-da="${esc(VTB.da)}">Về ${esc(VTB.d.ten)} →</button></p>` : '';
+    if (c) return `<p><button class="chip" data-zone="tatca">← Tất cả dự án</button></p><h2>${esc(c.ten)}</h2><p class="mute small">${esc(c.phu)}</p><p>${esc(c.moTa)}</p>${vt}<h3>Quanh dự án</h3>${ds}`;
+    return `<h2>Quanh dự án</h2>${ds}${vt}`;
+  }
   const ct = state.ctSel && CT && CT.congTrinh.find(x => x.id === state.ctSel);
   const dsCT = CT ? `<h3>Công trình quanh vòng xoay A1</h3><div class="zones">${CT.congTrinh.map(c => `<button class="zone" type="button" data-ct="${esc(c.id)}" aria-pressed="${state.ctSel === c.id}"><span class="dot" style="background:#9fb3c4"></span><b>${esc(c.ten)}</b><span>${esc(c.phu)}</span></button>`).join('')}</div>` : '';
   if (ct) return `<p><button class="chip" data-ga="Ga S1">← Khu vực vòng xoay A1</button></p><h2>${esc(ct.ten)}</h2><p class="mute small">${esc(ct.phu)}</p><p>${esc(ct.moTa)}</p>
@@ -1967,7 +1989,7 @@ function deHtml() {
 }
 function moDuAn(id, toa) {
   const d = daCua(id); if (!d) return false;
-  state.daToa = toa || null;
+  state.daToa = toa || null; state.vt = null;
   if (state.mb) { state.mb = null; dirty = true; }
   state.de = null; state.apMa = null; state.canMa = null; state.sel = -1; state.ctSel = null; state.zone = 'all'; state.daSel = id; state.tab = 'duan'; state.keepScroll = false;
   const cao = d.loai === 'thap' ? daCao(Math.max(...d.tang)) : 12;
@@ -1990,12 +2012,177 @@ function daPhanKhuHtml(d) {
     return `<div class="card"><b>${esc(pk.ten)}</b>${pk.mo ? `<p class="mute small">${esc(pk.mo)}</p>` : ''}${ds.length ? `<p class="small">${ds.map(o => `<span class="chip"${state.daToa === o.ten ? ' aria-pressed="true"' : ''}>${esc(o.nhan || 'Tháp ' + o.ten)}${o.mo ? ' · ' + esc(o.mo) : ''}</span>`).join(' ')}</p>` : ''}</div>`;
   }).join('');
 }
+/* ---------- bóc tầng dự án trên sa bàn vùng ----------
+   Dữ liệu: <vùng>/<dự án>-can.json (scripts tạo từ bản tính dự án): nhóm tầng, ảnh mặt bằng thật, khung đặt ảnh
+   (mét Đông/Bắc so với ll dự án, góc từ hướng Đông), đường bao toà trên ảnh, vị trí từng căn, mẫu căn, khung giá. */
+let VTB = null;
+const vtTex = { tex: null, key: null, anh: {} };
+const vtBat = () => !!(VTB && state.vt && state.daSel === VTB.da);
+function vtCao(t) { return t <= 1 ? 0 : daCao(t - 1); }   // mặt sàn tầng t (m)
+const VT_TEN_TANG = { 13: '12A', 14: '12B' };              // tên tầng theo chủ đầu tư; mã căn theo bản tính giữ số tầng
+const vtTenTang = (t) => VT_TEN_TANG[t] ? `${t} (${VT_TEN_TANG[t]})` : String(t);
+function vtChuanBi() {
+  const d = VTB.d, ds = [];
+  for (const o of d.toa || []) if (o.phanKhu === VTB.phanKhu) for (const [e, n] of o.hop) ds.push([d.tam[0] + e, W(d.tam[1] - n)]);
+  VTB.tam = ds.length ? [ds.reduce((a, p) => a + p[0], 0) / ds.length, ds.reduce((a, p) => a + p[1], 0) / ds.length] : [d.tam[0], W(d.tam[1])];
+}
+function vtNhom(t) { t = t || (state.vt && state.vt.tang); return VTB && t ? VTB.nhom.find(g => g.tang.includes(+t)) : null; }
+function vtKhung(g) { const d = VTB.d, [e, n, w, h, r] = g.khung; return { x: d.tam[0] + e, y: W(d.tam[1] - n), w, h, rot: r }; }
+function vtTach(ma) {
+  const m = String(ma).toUpperCase().match(/^(B\d)\.(\d{1,2})\.(\d{1,2})$/); if (!m || !VTB) return null;
+  const tang = +m[2], g = vtNhom(tang); if (!g || !g.can[m[1]] || !g.can[m[1]][+m[3]]) return null;
+  return { toa: m[1], tang, so: +m[3], ma: `${m[1]}.${tang}.${+m[3]}` };
+}
+const vtMauKey = (c) => String(c).toUpperCase().replace(/ /g, '.').replace(/(\.PES)\.?\d$/, '$1');
+function vtLoai(code) {
+  const s = String(code).toUpperCase(), k = s.split('.')[0];
+  const b = k === 'ST1' ? 'Studio' : k[0] === 'A' ? '1PN+' : k === 'B2' ? '2PN+' : k[0] === 'B' ? '2PN' : k[0] === 'C' ? '3PN' : k[0] === 'D' ? 'Duplex' : 'Căn hộ';
+  return b + (/PES/.test(s) ? ' sân vườn' : '');
+}
+function vtNhomGia(code) {
+  const s = String(code).toUpperCase(); if (/PES|^SH/.test(s)) return null;
+  const k = s.split('.')[0];
+  return k === 'ST1' ? 'st' : k === 'D2' ? 'dx' : k[0] === 'A' ? 'pn1' : k[0] === 'B' ? 'pn2' : k[0] === 'C' ? 'pn3' : null;
+}
+// Khoảng giá theo bảng giá thị trường của bản tính: đơn giá = giá ÷ diện tích cùng đầu khoảng, nhân diện tích căn.
+function vtGia(toa, code, dt) {
+  const cat = vtNhomGia(code), row = cat && VTB.gia[toa] && VTB.gia[toa][cat]; if (!row) return null;
+  return [0, 1].map(i => row.p[i] * 1e9 / row.dt[i] * dt);
+}
+function vtCan(ma) {
+  const m = vtTach(ma); if (!m) return null;
+  const r = vtNhom(m.tang).can[m.toa][m.so], dup = r.length > 5;
+  const mau = VTB.mau[vtMauKey(r[0])] || {};
+  const san = dup ? +(r[1] + r[5]).toFixed(2) : r[1], sd = dup ? +(r[2] + r[6]).toFixed(2) : r[2];
+  return { ...m, mauMa: r[0], loai: vtLoai(r[0]), san, sd, dup: dup ? [r[1], r[5]] : null, mau, gia: vtGia(m.toa, r[0], san) };
+}
+const vtTy = (v) => (v / 1e9).toLocaleString('vi-VN', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+function vtAnh(g) {
+  let a = vtTex.anh[g.id]; if (a) return a.ok ? a.im : null;
+  a = vtTex.anh[g.id] = { ok: false, im: new Image() };
+  a.im.onload = () => { a.ok = true; vtTex.key = null; dirty = true; }; a.im.src = g.anh; return null;
+}
+// Ảnh dán lên mặt cắt: mặt bằng thật cắt theo đường bao toà, mã căn, căn đang chọn và căn đã chọn tham vấn.
+function vtDungTex(g) {
+  const st = state.vt, key = [g.id, st.tang, st.sel, st.hover, state.cart.map(c => c.k).join()].join('|');
+  if (vtTex.key === key && vtTex.tex) return true;
+  const im = vtAnh(g); if (!im) return false;
+  const k = 1.5, cw = Math.round(g.rong * k), ch = Math.round(g.cao * k);
+  const cv = document.createElement('canvas'); cv.width = cw; cv.height = ch; const x = cv.getContext('2d');
+  x.drawImage(im, 0, 0, cw, ch);
+  const mk = document.createElement('canvas'); mk.width = cw; mk.height = ch; const m = mk.getContext('2d');
+  m.fillStyle = m.strokeStyle = '#000'; m.lineWidth = 16 * k; m.lineJoin = 'round';
+  for (const t of VTB.toa) { const p = g.vien[t]; if (!p) continue; m.beginPath(); p.forEach(([a, b], i) => i ? m.lineTo(a * k, b * k) : m.moveTo(a * k, b * k)); m.closePath(); m.fill(); m.stroke(); }
+  x.globalCompositeOperation = 'destination-in'; x.drawImage(mk, 0, 0); x.globalCompositeOperation = 'source-over';
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  for (const t in g.can) for (const n in g.can[t]) {
+    const r = g.can[t][n], ma = `${t}.${st.tang}.${n}`, px = r[3] / 100 * cw, py = r[4] / 100 * ch;
+    const chon = st.sel === ma, rua = st.hover === ma, tv = inCart('vt:' + ma);
+    if (chon || rua || tv) { x.beginPath(); x.arc(px, py, 34 * k, 0, 7); x.fillStyle = chon ? 'rgba(255,128,46,.45)' : tv ? 'rgba(60,190,110,.38)' : 'rgba(255,230,150,.4)'; x.fill(); }
+    const fs = 15 * k; x.font = `700 ${fs}px system-ui, sans-serif`;
+    const w = x.measureText(ma).width + 8 * k;
+    x.fillStyle = chon ? '#ff8a3d' : 'rgba(255,255,255,.9)'; x.fillRect(px - w / 2, py - fs * .72, w, fs * 1.44);
+    x.fillStyle = chon ? '#fff' : '#1d1a14'; x.fillText(ma, px, py + 1);
+  }
+  if (!vtTex.tex) vtTex.tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, vtTex.tex); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cv); gl.generateMipmap(gl.TEXTURE_2D);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  const ext = gl.getExtension('EXT_texture_filter_anisotropic'); if (ext) gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, 8);
+  vtTex.key = key; return true;
+}
+function veTangVung(vp) {
+  if (!vtBat() || !state.blocks) return;
+  const g = vtNhom(); if (!g || !vtDungTex(g)) return;
+  const b = vtKhung(g);
+  gl.useProgram(gprog); gl.uniformMatrix4fv(U_.g_uVP, false, vp);
+  gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, vtTex.tex); gl.uniform1i(U_.g_uTex, 0);
+  gl.uniform2f(U_.g_uOrigin, b.x, b.y); gl.uniform2f(U_.g_uSize, b.w, b.h); gl.uniform2f(U_.g_uPad, 1, 1); gl.uniform1f(U_.g_uRot, b.rot);
+  gl.uniform1i(U_.g_uMask, 6); gl.uniform1f(U_.g_uNight, nightLevel()); gl.uniform1f(U_.g_uZ, vtCao(state.vt.tang) + .08);
+  gl.bindVertexArray(gVAO); gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
+  gl.drawArrays(gl.TRIANGLES, 0, 6); gl.uniform1f(U_.g_uZ, 0);
+}
+// Điểm chạm trên mặt cắt → căn gần nhất trong đường bao toà. Trả về { ma } khi trúng căn, {} khi trong toà, null khi ngoài.
+function vtHit(cx, cy) {
+  const g = vtNhom(); if (!g) return null;
+  const p = tiaMatDat(cx, cy, vtCao(state.vt.tang) + .08); if (!p) return null;
+  const b = vtKhung(g), dx = p[0] - b.x, dy = p[1] - b.y, c = Math.cos(b.rot), s = Math.sin(b.rot);
+  const lx = c * dx + s * dy, ly = -s * dx + c * dy, px = (lx / b.w + .5) * g.rong, py = (.5 - ly / b.h) * g.cao;
+  if (!VTB.toa.some(t => g.vien[t] && trongDaGiac(px, py, g.vien[t]))) return null;
+  let ma = null, bd = 70;
+  for (const t in g.can) for (const n in g.can[t]) { const r = g.can[t][n], d = Math.hypot(r[3] / 100 * g.rong - px, r[4] / 100 * g.cao - py); if (d < bd) { bd = d; ma = `${t}.${state.vt.tang}.${n}`; } }
+  return { ma };
+}
+function moTangVung(tang, sel) {
+  if (!VTB) return;
+  tang = Math.max(1, Math.min(VTB.soTang, Math.round(+tang) || 1));
+  const moi = !vtBat();
+  if (state.mb) state.mb = null;
+  state.de = null; state.apMa = null; state.canMa = null; state.sel = -1; state.ctSel = null; state.tatCa = false; state.zone = 'all';
+  state.daSel = VTB.da; state.tab = 'duan';
+  state.vt = { tang, sel: sel && vtTach(sel) ? vtTach(sel).ma : null, hover: null };
+  state.keepScroll = !moi && !sel; if (state.vt.sel) state.cuon = 'theVT';
+  const h = vtCao(tang);
+  if (moi) fly({ tx: VTB.tam[0], ty: VTB.tam[1], tz: h, dist: innerWidth < 860 ? 240 : 195, pitch: 1.12, yaw: T.yaw }); else fly({ ...T, tz: h });
+  syncHash(); refreshStates(); render();
+}
+function dongTangVung() { state.vt = null; fly({ ...T, tz: 0 }); dirty = true; syncHash(); render(); }
+function chonCanVung(ma) {
+  const m = vtTach(ma); if (!m) return;
+  if (!vtBat() || state.vt.tang !== m.tang) { moTangVung(m.tang, m.ma); return; }
+  state.vt.sel = m.ma; state.tab = 'duan'; state.keepScroll = false; state.cuon = 'theVT';
+  syncHash(); render(); dirty = true;
+  if (innerWidth < 860) { const p = $('#panel'); if (p) p.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+}
+function vtCardHtml(o) {
+  const nf2 = (v) => v.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const k = 'vt:' + o.ma, mau = o.mau;
+  const sub = `${o.loai} · ${nf2(o.san)} m²${o.gia ? ` · ${vtTy(o.gia[0])}–${vtTy(o.gia[1])} tỷ` : ''}`;
+  return `<div class="card" id="theVT"><h3 style="margin-top:0">Căn ${esc(o.ma)}</h3>
+  <p class="mute small">Tháp ${esc(o.toa)} · tầng ${esc(vtTenTang(o.tang))} · mẫu ${esc(o.mauMa)}</p>
+  <table class="kv"><tbody>
+    <tr><td>Loại căn</td><td class="r">${esc(mau.ten || o.loai)}</td></tr>
+    ${mau.phong ? `<tr><td>Phòng</td><td class="r">${esc(mau.phong)}</td></tr>` : ''}
+    <tr><td>Diện tích sàn (tim tường)</td><td class="r">${nf2(o.san)} m²</td></tr>
+    <tr><td>Diện tích sử dụng</td><td class="r">${nf2(o.sd)} m²</td></tr>
+    ${o.dup ? `<tr><td>Duplex</td><td class="r">tầng dưới ${nf2(o.dup[0])} m² · tầng trên ${nf2(o.dup[1])} m²</td></tr>` : ''}
+    ${mau.vuon ? `<tr><td>Sân vườn</td><td class="r">${nf2(mau.vuon)} m²</td></tr>` : ''}
+    ${mau.canh ? `<tr><td>Cảnh quan</td><td class="r">${esc(mau.canh)}</td></tr>` : ''}
+    <tr><td>Giá tham khảo</td><td class="r"><b>${o.gia ? `${vtTy(o.gia[0])} – ${vtTy(o.gia[1])} tỷ` : 'tư vấn báo giá'}</b></td></tr>
+  </tbody></table>
+  ${o.gia ? `<p class="mute small">${esc(VTB.giaGhi)}</p>` : ''}
+  ${mau.anh ? `<figure style="margin:8px 0"><img src="${esc(mau.anh)}" alt="Layout mẫu ${esc(o.mauMa)}" loading="lazy" data-zoom="${esc(mau.anh)}" style="width:100%;border-radius:8px;background:#fff"><figcaption class="mute small">Layout mẫu ${esc(mau.tuongDuong || o.mauMa)}${mau.tuongDuong ? ' (mẫu tương đương)' : ''}</figcaption></figure>` : ''}
+  <p><a class="btn primary block" href="${esc(VTB.banTinh)}?can=${encodeURIComponent(o.ma)}" target="_top">Bản tính căn ${esc(o.ma)} theo phương thức thanh toán →</a></p>
+  <div class="row"><button class="btn ${inCart(k) ? '' : 'primary'}" data-vtchon="${esc(o.ma)}" data-vtsub="${esc(sub)}">${inCart(k) ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Chọn căn này để tham vấn'}</button></div></div>`;
+}
+function vtHtml() {
+  const tangs = Array.from({ length: VTB.soTang }, (_, i) => i + 1);
+  if (!vtBat()) return `<div class="card"><b>Bóc tầng · chọn căn ${esc(VTB.toa.join(', '))}</b>
+    <p class="mute small">${nf.format(VTB.tongCan)} căn theo mặt bằng tầng của chủ đầu tư. Chọn tầng để xem mặt bằng và mã căn ngay trên sa bàn.</p>
+    <p class="small">${tangs.map(t => `<button class="chip" data-vttang="${t}">${esc(vtTenTang(t))}</button>`).join(' ')}</p></div>`;
+  const t = state.vt.tang, g = vtNhom(), o = state.vt.sel && vtCan(state.vt.sel);
+  const ds = VTB.toa.map(tw => g.can[tw] ? `<p class="small"><b>${tw}</b> ${Object.keys(g.can[tw]).sort((a, b) => a - b).map(n => { const ma = `${tw}.${t}.${n}`; return `<button class="chip" data-vtcan="${ma}" aria-pressed="${state.vt.sel === ma}">${n}${inCart('vt:' + ma) ? ' ✓' : ''}</button>`; }).join(' ')}</p>` : '').join('');
+  return `<div class="card"><b>Tầng ${esc(vtTenTang(t))}</b> <span class="mute small">· mặt bằng ${esc(g.ten.toLowerCase())}</span>
+    <p class="small"><button class="chip" data-vtbuoc="-1" ${t <= 1 ? 'disabled' : ''} aria-label="Tầng dưới">▼</button> <select id="vtTangSel" aria-label="Chọn tầng">${tangs.map(x => `<option value="${x}"${x === t ? ' selected' : ''}>Tầng ${esc(vtTenTang(x))}</option>`).join('')}</select> <button class="chip" data-vtbuoc="1" ${t >= VTB.soTang ? 'disabled' : ''} aria-label="Tầng trên">▲</button>
+    <button class="lk" data-vtdong="1">Thoát bóc tầng</button></p>
+    ${o ? '' : '<p class="mute small">Chạm vào căn trên mặt bằng hoặc chọn số căn bên dưới.</p>'}${ds}</div>${o ? vtCardHtml(o) : ''}`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-vttang],[data-vtcan],[data-vtchon],[data-vtdong],[data-vtbuoc]'); if (!b || !VTB) return;
+  if (b.dataset.vttang) moTangVung(b.dataset.vttang);
+  else if (b.dataset.vtcan) chonCanVung(b.dataset.vtcan);
+  else if (b.dataset.vtbuoc) { if (vtBat()) moTangVung(state.vt.tang + +b.dataset.vtbuoc, null); }
+  else if (b.dataset.vtdong) dongTangVung();
+  else { state.keepScroll = true; toggleCart('vt:' + b.dataset.vtchon, `${VTB.d.ten} · ${b.dataset.vtchon}`, b.dataset.vtsub); vtTex.key = null; }
+});
+document.addEventListener('change', e => { if (e.target.id === 'vtTangSel') moTangVung(e.target.value); });
 function duAnHtml() {
   const d = daCua(state.daSel); if (!d) return `<h2>Dự án</h2>${dsDuAnHtml()}`;
   const k = 'da:' + d.id;
   return `<p><button class="chip" data-zone="tatca">← Tất cả dự án</button></p><h2>${esc(d.ten)}</h2>
   <p class="mute small">${esc([d.cdt, d.tt].filter(Boolean).join(' · '))}</p>${d.quyMo ? `<p>${esc(d.quyMo)}.</p>` : ''}
-  ${daPhanKhuHtml(d)}${(d.lienKet || []).map(l => `<p><a class="btn block" href="${esc(l.href)}" target="_top">${esc(l.ten)} →</a></p>`).join('')}
+  ${daPhanKhuHtml(d)}${VTB && VTB.da === d.id ? vtHtml() : ''}${VUNG && CT ? `<h3>Quanh dự án</h3>${ctDsHtml()}` : ''}${(d.lienKet || []).map(l => `<p><a class="btn block" href="${esc(l.href)}" target="_top">${esc(l.ten)} →</a></p>`).join('')}
   ${d.saBan ? `<p><a class="btn primary block" href="${esc(d.saBan)}" target="_top">Mở sa bàn và giỏ hàng ${esc(d.ten)} →</a></p>` : `<div class="note small">Dự án chưa có giỏ hàng trên sa bàn. Anh/chị chọn để tư vấn gửi giỏ hàng, bảng giá và chính sách đang áp dụng.</div>`}
   <div class="row"><button class="btn ${inCart(k) ? '' : 'primary'}" data-dachon="${esc(d.id)}">${inCart(k) ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Hỏi giỏ hàng dự án này'}</button></div>
   <p><a class="btn block" href="/cam-nang/${esc(d.bai)}/" target="_top">Hồ sơ dự án →</a></p>
@@ -2065,7 +2252,7 @@ function ptttCuaMuc(c, o) {
 // Một dòng tóm tắt cho mỗi căn: dùng chung cho tin nhắn Zalo, thư báo tư vấn và phiếu.
 function dongTomTat(c, opt = btOpt()) {
   const o = canCuaMuc(c);
-  if (!o && /^(ap|da):/.test(c.k)) return `${c.label}${c.sub ? ' · ' + c.sub : ''}`;
+  if (!o && /^(ap|da|vt):/.test(c.k)) return `${c.label}${c.sub ? ' · ' + c.sub : ''}`;
   if (!o) return `${c.label}${c.sub ? ' · ' + c.sub : ''} · chưa có giá, nhờ tư vấn báo giá`;
   const dau = `${o.ma} · ${tenLoai(o.loai)} · ${m2(o.thongThuy)}`;
   const p = ptttCuaMuc(c, o);
@@ -2477,7 +2664,7 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     lay('layout.json'),
     lay('metro.json'),
     lay('artisan.json?v=2.56.0'),
-    lay('cong-trinh.json?v=2.56.0'),
+    VUNG ? (VUNG.congTrinh ? fetch(VUNG.congTrinh).then(r => r.ok ? r.json() : null).catch(() => null) : Promise.resolve(null)) : lay('cong-trinh.json?v=2.56.0'),
     fetch(VUNG ? VUNG.duAn : 'du-an-nen.json?v=2.56.0').then(r => r.ok ? r.json() : null).catch(() => null),
   ]);
   if (invData && invData.units) inv = invData;
@@ -2485,6 +2672,14 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
   else geo.init({ tyLe: { metTrenDonVi: geo.mpu }, huong: { bacSoVoiTrucDocAnh: geo.north }, neo: { lat: geo.lat0, lon: geo.lon0, planX: 488, planY: 268 } });
   RANH = ranh; CHAN = chan; CAN = canHo; MB = matBang; CS = chinhSachDL; LAYOUT = layoutDL; METRO = metroDL; ART = artDL; CT = ctDL; DAN = danDL;
   if (DAN) for (const d of DAN.duAn) { if (!d.tam && d.ll && geo.ok) { const [wx, wy] = geo.world(d.ll[0], d.ll[1]); d.tam = [wx, PLAN_H - wy]; } d.xoay = d.xoay || 0; }
+  // công trình mốc khai theo toạ độ (sa bàn vùng): khối tính bằng mét Đông/Bắc so với ll
+  if (CT) for (const c of CT.congTrinh) if (c.ll && c.khoiM && geo.ok) {
+    const [wx, wy] = geo.world(c.ll[0], c.ll[1]); c.tam = [wx, PLAN_H - wy];
+    c.khoi = c.khoiM.map(([e, n, w, h, g, z0, z, col, mau]) => [c.tam[0] + e, c.tam[1] - n, w, h, g, z0, z, col, mau]);
+  }
+  // bóc tầng dự án vùng: mặt bằng tầng và mã căn theo bản tính (du-an.json > canBoc)
+  const dvb = VUNG && DAN && DAN.duAn.find(d => d.canBoc && d.tam);
+  if (dvb) { VTB = await fetch(dvb.canBoc).then(r => r.ok ? r.json() : null).catch(() => null); if (VTB) { VTB.d = dvb; vtChuanBi(); } }
   if (VUNG) { Object.assign(HOME, tatCaView()); state.tatCa = true; }
   if (MB) for (const k of Object.keys(MB)) { MB[k].tangDung = MB[k].mb.flatMap(p => p.tang); MB[k].toa = [{ ten: k.toUpperCase(), tangCuoi: 30 }]; }
   await hoiNen();
