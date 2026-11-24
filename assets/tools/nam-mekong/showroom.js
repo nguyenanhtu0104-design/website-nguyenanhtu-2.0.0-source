@@ -101,6 +101,18 @@ function dungDuAnNen() {
   const t = []; if (!DAN) return t;
   for (const d of DAN.duAn) {
     if (d.loai === 'chua') continue; // chưa có số tầng công bố: chỉ ghim, không dựng khối
+    if (d.toa) {
+      // hình khối theo mặt bằng tổng thể của chủ đầu tư: mỗi toà là vài hộp ghép theo đường bao (m, Đông/Bắc so với ll, góc từ hướng Đông)
+      for (const o of d.toa) {
+        const z = daCao(o.tang), c = o.mau || DA_MAU[d.cdt] || [.8, .8, .8], ten = `${d.ten} · ${o.nhan || 'Tháp ' + o.ten} · ${o.tang} tầng`;
+        for (const [e, n, w, h, g] of o.hop) {
+          const p = { x: d.tam[0] + e, y: d.tam[1] - n, rot: rad(g), khoi: 'da', zone: 'duan', da: d.id, toa: o.ten, name: ten };
+          t.push({ ...p, w, h, z0: 0, z, col: c, mau: 1 });
+          t.push({ ...p, w: Math.max(.5, w - 1.2), h: Math.max(.5, h - 1.2), z0: z, z: z + 1.2, col: [.93, .93, .9], mau: 1 });
+        }
+      }
+      continue;
+    }
     const goc = rad(d.xoay), ux = Math.cos(goc), uy = -Math.sin(goc), vx = -uy, vy = ux, col = DA_MAU[d.cdt] || [.8, .8, .8];
     const them = (du, dv, w, h, z0, z, c, mau = 1) => t.push({ x: d.tam[0] + du * ux + dv * vx, y: d.tam[1] + du * uy + dv * vy, w, h, rot: goc, z0, z, khoi: 'da', zone: 'duan', da: d.id, col: c, mau, name: d.ten });
     if (d.loai === 'thap') {
@@ -1571,7 +1583,7 @@ function clickAt(x, y) {
   if (state.mb && mbDung()) { const k = mbHit(x, y); if (k >= 0) { chonCanMB(k); return; } }
   if (id < 0) { if (dbl) phongTai(x, y, .5); return; }
   if (id < U.length) { selectUnit(id, { fly: true }); if (dbl) fly({ ...T, dist: 55, pitch: 1.05 }); }
-  else if (TOWERS[id - U.length].da) moDuAn(TOWERS[id - U.length].da);
+  else if (TOWERS[id - U.length].da) moDuAn(TOWERS[id - U.length].da, TOWERS[id - U.length].toa);
   else if (TOWERS[id - U.length].ct) moCongTrinh(TOWERS[id - U.length].ct);
   else if (TOWERS[id - U.length].ap) moArtisan(TOWERS[id - U.length].ap, { fly: dbl });
   else if (TOWERS[id - U.length].can) {
@@ -1953,8 +1965,9 @@ function deHtml() {
   <div class="row"><button class="btn ${inCart(k) ? '' : 'primary'}" data-tmchon="${t}">${inCart(k) ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Hỏi giá thuê, mua mặt bằng ' + (t === '1' ? 'thương mại' : 'văn phòng')}</button></div>
   <p><button class="btn block" data-mbtang="3" data-mbkhu="g1">Lên tầng 3 · căn hộ toà G1</button></p>`;
 }
-function moDuAn(id) {
+function moDuAn(id, toa) {
   const d = daCua(id); if (!d) return false;
+  state.daToa = toa || null;
   if (state.mb) { state.mb = null; dirty = true; }
   state.de = null; state.apMa = null; state.canMa = null; state.sel = -1; state.ctSel = null; state.zone = 'all'; state.daSel = id; state.tab = 'duan'; state.keepScroll = false;
   const cao = d.loai === 'thap' ? daCao(Math.max(...d.tang)) : 12;
@@ -1969,16 +1982,25 @@ function dsDuAnHtml() {
     <button class="zone" type="button" data-zone="artisan"><span class="dot" style="background:#7fb08c"></span><b>Artisan Park</b><span>Có giỏ hàng · chọn căn, giá, bản tính</span></button>
     ${(DAN ? DAN.duAn : []).map(d => `<button class="zone" type="button" data-da="${esc(d.id)}" aria-pressed="${state.daSel === d.id}"><span class="dot" style="background:${rgb(DA_MAU[d.cdt] || [.8, .8, .8])}"></span><b>${esc(d.ten)}</b><span>${esc(d.cdt)} · ${esc(d.tt)}</span></button>`).join('')}</div>`;
 }
+// Phân khu và toà của dự án vùng (du-an.json > phanKhu, toa); toà vừa chạm trên sa bàn được đánh dấu.
+function daPhanKhuHtml(d) {
+  if (!d.phanKhu) return '';
+  return d.phanKhu.map(pk => {
+    const ds = (d.toa || []).filter(o => o.phanKhu === pk.id);
+    return `<div class="card"><b>${esc(pk.ten)}</b>${pk.mo ? `<p class="mute small">${esc(pk.mo)}</p>` : ''}${ds.length ? `<p class="small">${ds.map(o => `<span class="chip"${state.daToa === o.ten ? ' aria-pressed="true"' : ''}>${esc(o.nhan || 'Tháp ' + o.ten)}${o.mo ? ' · ' + esc(o.mo) : ''}</span>`).join(' ')}</p>` : ''}</div>`;
+  }).join('');
+}
 function duAnHtml() {
   const d = daCua(state.daSel); if (!d) return `<h2>Dự án</h2>${dsDuAnHtml()}`;
   const k = 'da:' + d.id;
   return `<p><button class="chip" data-zone="tatca">← Tất cả dự án</button></p><h2>${esc(d.ten)}</h2>
   <p class="mute small">${esc([d.cdt, d.tt].filter(Boolean).join(' · '))}</p>${d.quyMo ? `<p>${esc(d.quyMo)}.</p>` : ''}
+  ${daPhanKhuHtml(d)}${(d.lienKet || []).map(l => `<p><a class="btn block" href="${esc(l.href)}" target="_top">${esc(l.ten)} →</a></p>`).join('')}
   ${d.saBan ? `<p><a class="btn primary block" href="${esc(d.saBan)}" target="_top">Mở sa bàn và giỏ hàng ${esc(d.ten)} →</a></p>` : `<div class="note small">Dự án chưa có giỏ hàng trên sa bàn. Anh/chị chọn để tư vấn gửi giỏ hàng, bảng giá và chính sách đang áp dụng.</div>`}
   <div class="row"><button class="btn ${inCart(k) ? '' : 'primary'}" data-dachon="${esc(d.id)}">${inCart(k) ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Hỏi giỏ hàng dự án này'}</button></div>
   <p><a class="btn block" href="/cam-nang/${esc(d.bai)}/" target="_top">Hồ sơ dự án →</a></p>
   <p class="mute small">Chủ nhà muốn bán hoặc cho thuê căn tại đây? <button class="lk" data-mbky="${esc(d.ten)}">Ký gửi căn</button></p>
-  <p class="mute small">Khối 3D minh hoạ vị trí${d.uocLuong ? '' : ' và số tầng công bố'}, chưa theo mặt bằng dự án.${d.uocLuong ? ' ' + esc(d.uocLuong) : ''}</p>
+  <p class="mute small">${d.ghiKhoi ? esc(d.ghiKhoi) : `Khối 3D minh hoạ vị trí${d.uocLuong ? '' : ' và số tầng công bố'}, chưa theo mặt bằng dự án.${d.uocLuong ? ' ' + esc(d.uocLuong) : ''}`}</p>
   <h3>Các dự án khác trong ${esc(VUNG ? VUNG.ten : 'Thành phố mới')}</h3>${dsDuAnHtml()}`;
 }
 function canHtml() {

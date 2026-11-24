@@ -2,6 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.58.0 · 24/11/2026 — Sa bàn Đại lộ Bình Dương: Norton Park dựng theo mặt bằng tổng thể
+- **6 toà Norton Park dựng đúng hình** theo đường bao trong mặt bằng tổng thể trên trang trải nghiệm 3D của chủ đầu tư (Tú gửi), thay khối minh hoạ. Mỗi toà ghép 3–5 khối hộp theo đường bao (phủ khoảng 98%), cao 19 tầng (tầng 1–12, 12A, 12B, 15–19).
+- **Định vị:** sơ đồ khớp lên ảnh vệ tinh Esri theo đường nội bộ chia hai lô (chỗ ghim Tú gửi), đường phía Đông và ranh AEON Mall; sai lệch vài mét. Kiểm chứng tỷ lệ: diện tích chân tháp B2 > B3 > B1 đúng thứ tự 14 > 12 > 11 căn/tầng; tổng chân tháp trên hai lô cho mật độ khoảng 27%, khớp "27% khu B & C" trong hồ sơ.
+- **Toà 1–3 = B1, B2, B3** (Phân khu B · Pulse Forest, giai đoạn 1, liền kề AEON), nhận theo hình dạng trên mặt bằng tầng điển hình. Toà 4–6 thuộc Phân khu C · Cloud Forest, chưa có tên công bố nên giữ số theo sơ đồ.
+- **Thẻ dự án vùng** hiện phân khu, toà (kèm số căn/tầng điển hình), toà vừa chạm được đánh dấu; nút mở bản tính, mặt bằng tầng và mẫu căn. Trường mới tuỳ chọn trong `du-an.json`: `toa[]` (`ten`, `phanKhu`, `tang`, `mau`, `mo`, `nhan`, `hop` = [Đông m, Bắc m, dài, rộng, góc từ hướng Đông] so với `ll`), `phanKhu[]`, `lienKet[]`, `ghiKhoi`. Dự án không khai các trường này giữ nguyên cách dựng cũ.
+
 ## 2.57.0 · 21/11/2026 — Sa bàn vùng Đại lộ Bình Dương (QL13)
 - **Sa bàn 3D vùng mới** `assets/tools/vung-binh-duong/` theo khung §19 (sao từ vùng Trung tâm): nền ảnh vệ tinh thật, dự án chạm mở hồ sơ và giỏ hàng.
 - **Norton Park** (Gamuda Land): 6 tháp 19 tầng, dựng khối theo số tầng trong bài dự án. **SkySOLIS** (SkyWorld): 3 tháp 40 tầng, dựng khối theo bài dự án.
