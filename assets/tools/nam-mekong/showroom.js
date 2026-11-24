@@ -54,7 +54,7 @@ const KHOI = [
   { zone: 'g2', col: [.78, .52, .42], ten: 'Toà G2' },
 ];
 const THAP_B = [];
-const NHOM = { g1: 1, g2: 2, vtb: 4 };   // nhóm cắt tầng (iZ.z); vtb = toà có bóc tầng trên sa bàn vùng
+const NHOM = { g1: 1, g2: 2 };   // nhóm cắt tầng (iZ.z); dự án có bóc tầng trên sa bàn vùng thêm 'vtb:<id>' = 4, 5… khi nạp
 const MAU_MAI = [.96, .95, .92];
 // Ô đèn: mỗi căn còn trống trong quỹ đại lý là một ô sáng trên mặt đứng, đúng tầng và đúng vị trí căn trên mặt bằng.
 // Chạm vào ô đèn: bóc tầng đó, mở mặt bằng và thẻ căn (PROJECT_RULES §16.2).
@@ -105,10 +105,13 @@ function dungDuAnNen() {
       // hình khối theo mặt bằng tổng thể của chủ đầu tư: mỗi toà là vài hộp ghép theo đường bao (m, Đông/Bắc so với ll, góc từ hướng Đông)
       for (const o of d.toa) {
         const z = daCao(o.tang), c = o.mau || DA_MAU[d.cdt] || [.8, .8, .8], ten = `${d.ten} · ${o.nhan || 'Tháp ' + o.ten} · ${o.tang} tầng`;
-        for (const [e, n, w, h, g] of o.hop) {
-          const p = { x: d.tam[0] + e, y: d.tam[1] - n, rot: rad(g), khoi: VTB && VTB.da === d.id && o.phanKhu === VTB.phanKhu ? 'vtb' : 'da', zone: 'duan', da: d.id, toa: o.ten, name: ten };
-          t.push({ ...p, w, h, z0: 0, z, col: c, mau: 1 });
-          t.push({ ...p, w: Math.max(.5, w - 1.2), h: Math.max(.5, h - 1.2), z0: z, z: z + 1.2, col: [.93, .93, .9], mau: 1 });
+        const v = VTBS[d.id], khoi = v && (!v.phanKhu || o.phanKhu === v.phanKhu) ? 'vtb:' + d.id : 'da';
+        // hộp: [Đông, Bắc, dài, rộng, góc, (z0, z1)] — z0/z1 tuỳ chọn cho khối đế, sàn tiện ích, tháp đặt trên đế
+        const zMax = Math.max(...o.hop.map(b => b.length > 6 ? b[6] : z));
+        for (const [e, n, w, h, g, z0 = 0, z1 = z] of o.hop) {
+          const p = { x: d.tam[0] + e, y: d.tam[1] - n, rot: rad(g), khoi, zone: 'duan', da: d.id, toa: o.ten, name: ten };
+          t.push({ ...p, w, h, z0, z: z1, col: c, mau: 1 });
+          if (z1 >= zMax - .01) t.push({ ...p, w: Math.max(.5, w - 1.2), h: Math.max(.5, h - 1.2), z0: z1, z: z1 + 1.2, col: [.93, .93, .9], mau: 1 });
         }
       }
       continue;
@@ -718,7 +721,7 @@ function drawScene(pick) {
   }
   gl.useProgram(prog);
   gl.uniformMatrix4fv(U_.uVP, false, vp); gl.uniform3fv(U_.uEye, eye); gl.uniform3fv(U_.uFog, FOG);
-  gl.uniform1f(U_.uUnits, U.length + .5); gl.uniform1f(U_.uCut, catHienTai()); gl.uniform1f(U_.uCutNhom, vtBat() ? NHOM.vtb : state.mb ? NHOM[state.mb.khu] : state.de ? 3 : 0);
+  gl.uniform1f(U_.uUnits, U.length + .5); gl.uniform1f(U_.uCut, catHienTai()); gl.uniform1f(U_.uCutNhom, vtBat() ? NHOM['vtb:' + VTB.da] : state.mb ? NHOM[state.mb.khu] : state.de ? 3 : 0);
   gl.uniform2f(U_.uTang, donVi(CAO_TANG), donVi(SO_TANG_DE * CAO_DE)); gl.uniform1i(U_.uPick, pick ? 1 : 0);
   const sun = SUN || { az: 135, el: 50 };
   const hz = geo.dir(sun.az), el = Math.max(sun.el, 4), tan = Math.tan(rad(el));
@@ -1670,7 +1673,7 @@ function openHash() {
   if (h.startsWith('phieu=')) { moPhieu(h.slice(6)); return; }
   if (h.startsWith('can=')) { if (moCan(decodeURIComponent(h.slice(4)))) return; }
   if (h === 'tatca') { selectZone('tatca'); return; }
-  if (h.startsWith('vt=')) { const m = vtTach(decodeURIComponent(h.slice(3))); if (m) { moTangVung(m.tang, m.ma); return; } }
+  if (h.startsWith('vt=')) { const ma = decodeURIComponent(h.slice(3)); for (const v of Object.values(VTBS)) { const m = vtTach(ma, v); if (m) { vtDung(v.da); moTangVung(m.tang, m.ma); return; } } }
   if (h.startsWith('da=')) { if (moDuAn(h.slice(3))) return; }
   if (h.startsWith('de=') && DE[h.slice(3)]) { moTangDe(h.slice(3)); return; }
   if (h.startsWith('ap=')) { if (moArtisan(decodeURIComponent(h.slice(3)))) return; }
@@ -1853,7 +1856,7 @@ function metroHtml() {
   if (VUNG) {
     const c = state.ctSel && CT && CT.congTrinh.find(x => x.id === state.ctSel);
     const ds = CT ? ctDsHtml() : '';
-    const vt = VTB ? `<p><button class="btn block" data-da="${esc(VTB.da)}">Về ${esc(VTB.d.ten)} →</button></p>` : '';
+    const vt = Object.values(VTBS).map(v => `<p><button class="btn block" data-da="${esc(v.da)}">Về ${esc(v.d.ten)} →</button></p>`).join('');
     if (c) return `<p><button class="chip" data-zone="tatca">← Tất cả dự án</button></p><h2>${esc(c.ten)}</h2><p class="mute small">${esc(c.phu)}</p><p>${esc(c.moTa)}</p>${vt}<h3>Quanh dự án</h3>${ds}`;
     return `<h2>Quanh dự án</h2>${ds}${vt}`;
   }
@@ -2013,26 +2016,37 @@ function daPhanKhuHtml(d) {
   }).join('');
 }
 /* ---------- bóc tầng dự án trên sa bàn vùng ----------
-   Dữ liệu: <vùng>/<dự án>-can.json (scripts tạo từ bản tính dự án): nhóm tầng, ảnh mặt bằng thật, khung đặt ảnh
-   (mét Đông/Bắc so với ll dự án, góc từ hướng Đông), đường bao toà trên ảnh, vị trí từng căn, mẫu căn, khung giá. */
+   Mỗi dự án khai canBoc trong du-an.json → <vùng>/<dự án>-can.json (scripts tạo từ bản tính dự án): nhóm tầng, ảnh mặt bằng
+   thật, khung đặt ảnh (mét Đông/Bắc so với ll dự án, góc từ hướng Đông), đường bao trên ảnh (vien), vị trí từng căn.
+   Căn dạng mảng [mẫu, sàn, sử dụng, x%, y%, (duplex…)] (Norton Park, giá theo khung) hoặc đối tượng {m, t, s, d, x, y, pes}
+   (giá theo giỏ hàng gioHang). maMau: mẫu mã căn của bản tính, vd "{toa}.{tang}.{so}" hoặc "{toa}.{tang2}.{so}". */
+const VTBS = {};
 let VTB = null;
 const vtTex = { tex: null, key: null, anh: {} };
 const vtBat = () => !!(VTB && state.vt && state.daSel === VTB.da);
+function vtDung(id) { const v = VTBS[id]; if (v) VTB = v; return v || null; }
 function vtCao(t) { return t <= 1 ? 0 : daCao(t - 1); }   // mặt sàn tầng t (m)
-const VT_TEN_TANG = { 13: '12A', 14: '12B' };              // tên tầng theo chủ đầu tư; mã căn theo bản tính giữ số tầng
-const vtTenTang = (t) => VT_TEN_TANG[t] ? `${t} (${VT_TEN_TANG[t]})` : String(t);
-function vtChuanBi() {
-  const d = VTB.d, ds = [];
-  for (const o of d.toa || []) if (o.phanKhu === VTB.phanKhu) for (const [e, n] of o.hop) ds.push([d.tam[0] + e, W(d.tam[1] - n)]);
-  VTB.tam = ds.length ? [ds.reduce((a, p) => a + p[0], 0) / ds.length, ds.reduce((a, p) => a + p[1], 0) / ds.length] : [d.tam[0], W(d.tam[1])];
+const vtTenTang = (t) => VTB && VTB.tenTang && VTB.tenTang[t] ? `${t} (${VTB.tenTang[t]})` : String(t);
+function vtChuanBi(v) {
+  const d = v.d, ds = [];
+  for (const o of d.toa || []) if (!v.phanKhu || o.phanKhu === v.phanKhu) for (const [e, n] of o.hop) ds.push([d.tam[0] + e, W(d.tam[1] - n)]);
+  v.tam = ds.length ? [ds.reduce((a, p) => a + p[0], 0) / ds.length, ds.reduce((a, p) => a + p[1], 0) / ds.length] : [d.tam[0], W(d.tam[1])];
+  v.dsTang = [...new Set(v.nhom.flatMap(g => g.tang))].sort((a, b) => a - b);
+  v.maMau = v.maMau || '{toa}.{tang}.{so}';
 }
-function vtNhom(t) { t = t || (state.vt && state.vt.tang); return VTB && t ? VTB.nhom.find(g => g.tang.includes(+t)) : null; }
-function vtKhung(g) { const d = VTB.d, [e, n, w, h, r] = g.khung; return { x: d.tam[0] + e, y: W(d.tam[1] - n), w, h, rot: r }; }
-function vtTach(ma) {
-  const m = String(ma).toUpperCase().match(/^(B\d)\.(\d{1,2})\.(\d{1,2})$/); if (!m || !VTB) return null;
-  const tang = +m[2], g = vtNhom(tang); if (!g || !g.can[m[1]] || !g.can[m[1]][+m[3]]) return null;
-  return { toa: m[1], tang, so: +m[3], ma: `${m[1]}.${tang}.${+m[3]}` };
+const vtXY = (r) => Array.isArray(r) ? [r[3], r[4]] : [r.x, r.y];
+const vtSoSort = (a, b) => a.localeCompare(b, 'en', { numeric: true });
+function vtMa(t, tang, so, v = VTB) { return v.maMau.replace('{toa}', t).replace('{tang2}', String(tang).padStart(2, '0')).replace('{tang}', tang).replace('{so}', so); }
+function vtNhomV(v, t) { return v && t ? v.nhom.find(g => g.tang.includes(+t)) : null; }
+function vtNhom(t) { return vtNhomV(VTB, t || (state.vt && state.vt.tang)); }
+function vtTach(ma, v = VTB) {
+  if (!v) return null;
+  const p = String(ma).toUpperCase().split('.'); if (p.length !== 3) return null;
+  const toa = p[0], tang = parseInt(p[1], 10), g = vtNhomV(v, tang); if (!g || !g.can[toa]) return null;
+  const so = Object.keys(g.can[toa]).find(k => k.toUpperCase() === p[2] || (/^\d+$/.test(p[2]) && /^\d+$/.test(k) && +k === +p[2]));
+  return so == null ? null : { toa, tang, so, ma: vtMa(toa, tang, so, v) };
 }
+// --- riêng dạng Norton Park: mẫu căn và khung giá thị trường của bản tính
 const vtMauKey = (c) => String(c).toUpperCase().replace(/ /g, '.').replace(/(\.PES)\.?\d$/, '$1');
 function vtLoai(code) {
   const s = String(code).toUpperCase(), k = s.split('.')[0];
@@ -2044,27 +2058,32 @@ function vtNhomGia(code) {
   const k = s.split('.')[0];
   return k === 'ST1' ? 'st' : k === 'D2' ? 'dx' : k[0] === 'A' ? 'pn1' : k[0] === 'B' ? 'pn2' : k[0] === 'C' ? 'pn3' : null;
 }
-// Khoảng giá theo bảng giá thị trường của bản tính: đơn giá = giá ÷ diện tích cùng đầu khoảng, nhân diện tích căn.
+// Khoảng giá: đơn giá = giá ÷ diện tích cùng đầu khoảng, nhân diện tích căn.
 function vtGia(toa, code, dt) {
-  const cat = vtNhomGia(code), row = cat && VTB.gia[toa] && VTB.gia[toa][cat]; if (!row) return null;
+  const cat = vtNhomGia(code), row = cat && VTB.gia && VTB.gia[toa] && VTB.gia[toa][cat]; if (!row) return null;
   return [0, 1].map(i => row.p[i] * 1e9 / row.dt[i] * dt);
 }
 function vtCan(ma) {
   const m = vtTach(ma); if (!m) return null;
-  const r = vtNhom(m.tang).can[m.toa][m.so], dup = r.length > 5;
-  const mau = VTB.mau[vtMauKey(r[0])] || {};
-  const san = dup ? +(r[1] + r[5]).toFixed(2) : r[1], sd = dup ? +(r[2] + r[6]).toFixed(2) : r[2];
-  return { ...m, mauMa: r[0], loai: vtLoai(r[0]), san, sd, dup: dup ? [r[1], r[5]] : null, mau, gia: vtGia(m.toa, r[0], san) };
+  const r = vtNhom(m.tang).can[m.toa][m.so];
+  if (Array.isArray(r)) {
+    const dup = r.length > 5, mau = (VTB.mau || {})[vtMauKey(r[0])] || {};
+    const san = dup ? +(r[1] + r[5]).toFixed(2) : r[1], sd = dup ? +(r[2] + r[6]).toFixed(2) : r[2];
+    return { ...m, mauMa: r[0], loai: vtLoai(r[0]), san, sd, dup: dup ? [r[1], r[5]] : null, mau, gia: vtGia(m.toa, r[0], san) };
+  }
+  const gh = VTB.gioHang && VTB.gioHang[m.ma], t = gh ? gh.t : r.t;
+  return { ...m, mauMa: r.m, loai: (VTB.loai && VTB.loai[t]) || t, san: gh ? gh.s : r.s, sd: gh ? gh.d : r.d, pes: r.pes || null, mau: {}, gio: gh || null, gia: null };
 }
 const vtTy = (v) => (v / 1e9).toLocaleString('vi-VN', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const vtTy2 = (v) => (v / 1e9).toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 function vtAnh(g) {
-  let a = vtTex.anh[g.id]; if (a) return a.ok ? a.im : null;
-  a = vtTex.anh[g.id] = { ok: false, im: new Image() };
+  const key = g.anh; let a = vtTex.anh[key]; if (a) return a.ok ? a.im : null;
+  a = vtTex.anh[key] = { ok: false, im: new Image() };
   a.im.onload = () => { a.ok = true; vtTex.key = null; dirty = true; }; a.im.src = g.anh; return null;
 }
-// Ảnh dán lên mặt cắt: mặt bằng thật cắt theo đường bao toà, mã căn, căn đang chọn và căn đã chọn tham vấn.
+// Ảnh dán lên mặt cắt: mặt bằng thật cắt theo đường bao, mã căn; căn đang mở bán (giỏ hàng), căn đang chọn, căn chọn tham vấn.
 function vtDungTex(g) {
-  const st = state.vt, key = [g.id, st.tang, st.sel, st.hover, state.cart.map(c => c.k).join()].join('|');
+  const st = state.vt, key = [VTB.da, g.id, st.tang, st.sel, st.hover, state.cart.map(c => c.k).join()].join('|');
   if (vtTex.key === key && vtTex.tex) return true;
   const im = vtAnh(g); if (!im) return false;
   const k = 1.5, cw = Math.round(g.rong * k), ch = Math.round(g.cao * k);
@@ -2072,17 +2091,17 @@ function vtDungTex(g) {
   x.drawImage(im, 0, 0, cw, ch);
   const mk = document.createElement('canvas'); mk.width = cw; mk.height = ch; const m = mk.getContext('2d');
   m.fillStyle = m.strokeStyle = '#000'; m.lineWidth = 16 * k; m.lineJoin = 'round';
-  for (const t of VTB.toa) { const p = g.vien[t]; if (!p) continue; m.beginPath(); p.forEach(([a, b], i) => i ? m.lineTo(a * k, b * k) : m.moveTo(a * k, b * k)); m.closePath(); m.fill(); m.stroke(); }
+  for (const p of Object.values(g.vien)) { m.beginPath(); p.forEach(([a, b], i) => i ? m.lineTo(a * k, b * k) : m.moveTo(a * k, b * k)); m.closePath(); m.fill(); m.stroke(); }
   x.globalCompositeOperation = 'destination-in'; x.drawImage(mk, 0, 0); x.globalCompositeOperation = 'source-over';
   x.textAlign = 'center'; x.textBaseline = 'middle';
   for (const t in g.can) for (const n in g.can[t]) {
-    const r = g.can[t][n], ma = `${t}.${st.tang}.${n}`, px = r[3] / 100 * cw, py = r[4] / 100 * ch;
-    const chon = st.sel === ma, rua = st.hover === ma, tv = inCart('vt:' + ma);
+    const [xp, yp] = vtXY(g.can[t][n]), ma = vtMa(t, st.tang, n), px = xp / 100 * cw, py = yp / 100 * ch;
+    const chon = st.sel === ma, rua = st.hover === ma, tv = inCart('vt:' + ma), ban = !!(VTB.gioHang && VTB.gioHang[ma]);
     if (chon || rua || tv) { x.beginPath(); x.arc(px, py, 34 * k, 0, 7); x.fillStyle = chon ? 'rgba(255,128,46,.45)' : tv ? 'rgba(60,190,110,.38)' : 'rgba(255,230,150,.4)'; x.fill(); }
     const fs = 15 * k; x.font = `700 ${fs}px system-ui, sans-serif`;
     const w = x.measureText(ma).width + 8 * k;
-    x.fillStyle = chon ? '#ff8a3d' : 'rgba(255,255,255,.9)'; x.fillRect(px - w / 2, py - fs * .72, w, fs * 1.44);
-    x.fillStyle = chon ? '#fff' : '#1d1a14'; x.fillText(ma, px, py + 1);
+    x.fillStyle = chon ? '#ff8a3d' : ban ? '#1f8f5a' : 'rgba(255,255,255,.9)'; x.fillRect(px - w / 2, py - fs * .72, w, fs * 1.44);
+    x.fillStyle = chon || ban ? '#fff' : '#1d1a14'; x.fillText(ma, px, py + 1);
   }
   if (!vtTex.tex) vtTex.tex = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, vtTex.tex); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
@@ -2092,6 +2111,7 @@ function vtDungTex(g) {
   const ext = gl.getExtension('EXT_texture_filter_anisotropic'); if (ext) gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, 8);
   vtTex.key = key; return true;
 }
+function vtKhung(g) { const d = VTB.d, [e, n, w, h, r] = g.khung; return { x: d.tam[0] + e, y: W(d.tam[1] - n), w, h, rot: r }; }
 function veTangVung(vp) {
   if (!vtBat() || !state.blocks) return;
   const g = vtNhom(); if (!g || !vtDungTex(g)) return;
@@ -2103,30 +2123,33 @@ function veTangVung(vp) {
   gl.bindVertexArray(gVAO); gl.enable(gl.DEPTH_TEST); gl.disable(gl.BLEND);
   gl.drawArrays(gl.TRIANGLES, 0, 6); gl.uniform1f(U_.g_uZ, 0);
 }
-// Điểm chạm trên mặt cắt → căn gần nhất trong đường bao toà. Trả về { ma } khi trúng căn, {} khi trong toà, null khi ngoài.
+// Điểm chạm trên mặt cắt → căn gần nhất trong đường bao. Trả về { ma } khi trúng căn, {} khi trong toà, null khi ngoài.
 function vtHit(cx, cy) {
   const g = vtNhom(); if (!g) return null;
   const p = tiaMatDat(cx, cy, vtCao(state.vt.tang) + .08); if (!p) return null;
   const b = vtKhung(g), dx = p[0] - b.x, dy = p[1] - b.y, c = Math.cos(b.rot), s = Math.sin(b.rot);
   const lx = c * dx + s * dy, ly = -s * dx + c * dy, px = (lx / b.w + .5) * g.rong, py = (.5 - ly / b.h) * g.cao;
-  if (!VTB.toa.some(t => g.vien[t] && trongDaGiac(px, py, g.vien[t]))) return null;
+  if (!Object.values(g.vien).some(v => trongDaGiac(px, py, v))) return null;
   let ma = null, bd = 70;
-  for (const t in g.can) for (const n in g.can[t]) { const r = g.can[t][n], d = Math.hypot(r[3] / 100 * g.rong - px, r[4] / 100 * g.cao - py); if (d < bd) { bd = d; ma = `${t}.${state.vt.tang}.${n}`; } }
+  for (const t in g.can) for (const n in g.can[t]) { const [xp, yp] = vtXY(g.can[t][n]), d = Math.hypot(xp / 100 * g.rong - px, yp / 100 * g.cao - py); if (d < bd) { bd = d; ma = vtMa(t, state.vt.tang, n); } }
   return { ma };
 }
 function moTangVung(tang, sel) {
   if (!VTB) return;
-  tang = Math.max(1, Math.min(VTB.soTang, Math.round(+tang) || 1));
+  const ds = VTB.dsTang; tang = Math.round(+tang) || ds[0];
+  if (!ds.includes(tang)) tang = ds.reduce((a, b) => Math.abs(b - tang) < Math.abs(a - tang) ? b : a, ds[0]);
   const moi = !vtBat();
   if (state.mb) state.mb = null;
   state.de = null; state.apMa = null; state.canMa = null; state.sel = -1; state.ctSel = null; state.tatCa = false; state.zone = 'all';
   state.daSel = VTB.da; state.tab = 'duan';
-  state.vt = { tang, sel: sel && vtTach(sel) ? vtTach(sel).ma : null, hover: null };
+  const m = sel && vtTach(sel);
+  state.vt = { tang, sel: m ? m.ma : null, hover: null };
   state.keepScroll = !moi && !sel; if (state.vt.sel) state.cuon = 'theVT';
   const h = vtCao(tang);
   if (moi) fly({ tx: VTB.tam[0], ty: VTB.tam[1], tz: h, dist: innerWidth < 860 ? 240 : 195, pitch: 1.12, yaw: T.yaw }); else fly({ ...T, tz: h });
   syncHash(); refreshStates(); render();
 }
+function buocTangVung(d) { const ds = VTB.dsTang, i = ds.indexOf(state.vt.tang) + d; if (i >= 0 && i < ds.length) moTangVung(ds[i], null); }
 function dongTangVung() { state.vt = null; fly({ ...T, tz: 0 }); dirty = true; syncHash(); render(); }
 function chonCanVung(ma) {
   const m = vtTach(ma); if (!m) return;
@@ -2135,44 +2158,54 @@ function chonCanVung(ma) {
   syncHash(); render(); dirty = true;
   if (innerWidth < 860) { const p = $('#panel'); if (p) p.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
 }
+const vtTenToa = (t) => VTB.tenToa && VTB.tenToa[t] ? `Tháp ${VTB.tenToa[t]}` : `Tháp ${t}`;
 function vtCardHtml(o) {
   const nf2 = (v) => v.toLocaleString('vi-VN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const k = 'vt:' + o.ma, mau = o.mau;
-  const sub = `${o.loai} · ${nf2(o.san)} m²${o.gia ? ` · ${vtTy(o.gia[0])}–${vtTy(o.gia[1])} tỷ` : ''}`;
+  const k = 'vt:' + o.ma, mau = o.mau, gh = o.gio;
+  const giaTxt = gh ? `${vtTy2(gh.p)} tỷ (niêm yết)` : o.gia ? `${vtTy(o.gia[0])}–${vtTy(o.gia[1])} tỷ` : '';
+  const sub = `${o.loai} · ${nf2(o.san)} m²${giaTxt ? ' · ' + giaTxt : ''}`;
+  const giaRows = gh ? `
+    <tr><td>Giá niêm yết (chưa VAT, KPBT)</td><td class="r"><b>${vtTy2(gh.p)} tỷ</b></td></tr>
+    <tr><td>Đơn giá</td><td class="r">${(gh.dg / 1e6).toLocaleString('vi-VN', { maximumFractionDigits: 1 })} tr/m²</td></tr>
+    <tr><td>Tổng gồm VAT và KPBT</td><td class="r">${vtTy2(gh.tong)} tỷ</td></tr>`
+    : `<tr><td>Giá tham khảo</td><td class="r"><b>${o.gia ? `${vtTy(o.gia[0])} – ${vtTy(o.gia[1])} tỷ` : 'tư vấn báo giá'}</b></td></tr>`;
   return `<div class="card" id="theVT"><h3 style="margin-top:0">Căn ${esc(o.ma)}</h3>
-  <p class="mute small">Tháp ${esc(o.toa)} · tầng ${esc(vtTenTang(o.tang))} · mẫu ${esc(o.mauMa)}</p>
+  <p class="mute small">${esc(vtTenToa(o.toa))} · tầng ${esc(vtTenTang(o.tang))} · mẫu ${esc(o.mauMa)}</p>
+  ${gh ? `<p class="small"><span class="chip" aria-pressed="true">Đang mở bán · rổ hàng ${esc(VTB.gioNgay)}</span></p>` : ''}
   <table class="kv"><tbody>
     <tr><td>Loại căn</td><td class="r">${esc(mau.ten || o.loai)}</td></tr>
     ${mau.phong ? `<tr><td>Phòng</td><td class="r">${esc(mau.phong)}</td></tr>` : ''}
-    <tr><td>Diện tích sàn (tim tường)</td><td class="r">${nf2(o.san)} m²</td></tr>
-    <tr><td>Diện tích sử dụng</td><td class="r">${nf2(o.sd)} m²</td></tr>
+    <tr><td>Diện tích tim tường</td><td class="r">${nf2(o.san)} m²</td></tr>
+    <tr><td>Diện tích thông thuỷ</td><td class="r">${nf2(o.sd)} m²</td></tr>
     ${o.dup ? `<tr><td>Duplex</td><td class="r">tầng dưới ${nf2(o.dup[0])} m² · tầng trên ${nf2(o.dup[1])} m²</td></tr>` : ''}
-    ${mau.vuon ? `<tr><td>Sân vườn</td><td class="r">${nf2(mau.vuon)} m²</td></tr>` : ''}
-    ${mau.canh ? `<tr><td>Cảnh quan</td><td class="r">${esc(mau.canh)}</td></tr>` : ''}
-    <tr><td>Giá tham khảo</td><td class="r"><b>${o.gia ? `${vtTy(o.gia[0])} – ${vtTy(o.gia[1])} tỷ` : 'tư vấn báo giá'}</b></td></tr>
+    ${mau.vuon || o.pes ? `<tr><td>Sân vườn</td><td class="r">${nf2(mau.vuon || o.pes)} m²</td></tr>` : ''}
+    ${gh && gh.huong ? `<tr><td>Hướng</td><td class="r">${esc(gh.huong)}</td></tr>` : ''}
+    ${gh && gh.view ? `<tr><td>View</td><td class="r">${esc(gh.view)}</td></tr>` : mau.canh ? `<tr><td>Cảnh quan</td><td class="r">${esc(mau.canh)}</td></tr>` : ''}
+    ${giaRows}
   </tbody></table>
-  ${o.gia ? `<p class="mute small">${esc(VTB.giaGhi)}</p>` : ''}
+  ${gh || o.gia ? `<p class="mute small">${esc(VTB.giaGhi)}</p>` : ''}
   ${mau.anh ? `<figure style="margin:8px 0"><img src="${esc(mau.anh)}" alt="Layout mẫu ${esc(o.mauMa)}" loading="lazy" data-zoom="${esc(mau.anh)}" style="width:100%;border-radius:8px;background:#fff"><figcaption class="mute small">Layout mẫu ${esc(mau.tuongDuong || o.mauMa)}${mau.tuongDuong ? ' (mẫu tương đương)' : ''}</figcaption></figure>` : ''}
   <p><a class="btn primary block" href="${esc(VTB.banTinh)}?can=${encodeURIComponent(o.ma)}" target="_top">Bản tính căn ${esc(o.ma)} theo phương thức thanh toán →</a></p>
   <div class="row"><button class="btn ${inCart(k) ? '' : 'primary'}" data-vtchon="${esc(o.ma)}" data-vtsub="${esc(sub)}">${inCart(k) ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Chọn căn này để tham vấn'}</button></div></div>`;
 }
 function vtHtml() {
-  const tangs = Array.from({ length: VTB.soTang }, (_, i) => i + 1);
-  if (!vtBat()) return `<div class="card"><b>Bóc tầng · chọn căn ${esc(VTB.toa.join(', '))}</b>
-    <p class="mute small">${nf.format(VTB.tongCan)} căn theo mặt bằng tầng của chủ đầu tư. Chọn tầng để xem mặt bằng và mã căn ngay trên sa bàn.</p>
+  const tangs = VTB.dsTang, nGio = VTB.gioHang ? Object.keys(VTB.gioHang).length : 0;
+  const tenDs = VTB.toa.map(t => VTB.tenToa && VTB.tenToa[t] ? VTB.tenToa[t] : t).join(', ');
+  if (!vtBat()) return `<div class="card"><b>Bóc tầng · chọn căn ${esc(tenDs)}</b>
+    <p class="mute small">${nf.format(VTB.tongCan)} căn theo mặt bằng tầng của chủ đầu tư${nGio ? `; ${nGio} căn đang mở bán (rổ hàng ${esc(VTB.gioNgay)}) tô xanh trên mặt bằng` : ''}. Chọn tầng để xem mặt bằng và mã căn ngay trên sa bàn.</p>
     <p class="small">${tangs.map(t => `<button class="chip" data-vttang="${t}">${esc(vtTenTang(t))}</button>`).join(' ')}</p></div>`;
-  const t = state.vt.tang, g = vtNhom(), o = state.vt.sel && vtCan(state.vt.sel);
-  const ds = VTB.toa.map(tw => g.can[tw] ? `<p class="small"><b>${tw}</b> ${Object.keys(g.can[tw]).sort((a, b) => a - b).map(n => { const ma = `${tw}.${t}.${n}`; return `<button class="chip" data-vtcan="${ma}" aria-pressed="${state.vt.sel === ma}">${n}${inCart('vt:' + ma) ? ' ✓' : ''}</button>`; }).join(' ')}</p>` : '').join('');
+  const t = state.vt.tang, g = vtNhom(), o = state.vt.sel && vtCan(state.vt.sel), i = tangs.indexOf(t);
+  const ds = VTB.toa.map(tw => g.can[tw] ? `<p class="small"><b>${esc(VTB.tenToa && VTB.tenToa[tw] ? VTB.tenToa[tw] : tw)}</b> ${Object.keys(g.can[tw]).sort(vtSoSort).map(n => { const ma = vtMa(tw, t, n); return `<button class="chip" data-vtcan="${esc(ma)}" aria-pressed="${state.vt.sel === ma}">${esc(n)}${VTB.gioHang && VTB.gioHang[ma] ? ' ●' : ''}${inCart('vt:' + ma) ? ' ✓' : ''}</button>`; }).join(' ')}</p>` : '').join('');
   return `<div class="card"><b>Tầng ${esc(vtTenTang(t))}</b> <span class="mute small">· mặt bằng ${esc(g.ten.toLowerCase())}</span>
-    <p class="small"><button class="chip" data-vtbuoc="-1" ${t <= 1 ? 'disabled' : ''} aria-label="Tầng dưới">▼</button> <select id="vtTangSel" aria-label="Chọn tầng">${tangs.map(x => `<option value="${x}"${x === t ? ' selected' : ''}>Tầng ${esc(vtTenTang(x))}</option>`).join('')}</select> <button class="chip" data-vtbuoc="1" ${t >= VTB.soTang ? 'disabled' : ''} aria-label="Tầng trên">▲</button>
+    <p class="small"><button class="chip" data-vtbuoc="-1" ${i <= 0 ? 'disabled' : ''} aria-label="Tầng dưới">▼</button> <select id="vtTangSel" aria-label="Chọn tầng" style="width:auto;display:inline-block">${tangs.map(x => `<option value="${x}"${x === t ? ' selected' : ''}>Tầng ${esc(vtTenTang(x))}</option>`).join('')}</select> <button class="chip" data-vtbuoc="1" ${i >= tangs.length - 1 ? 'disabled' : ''} aria-label="Tầng trên">▲</button>
     <button class="lk" data-vtdong="1">Thoát bóc tầng</button></p>
-    ${o ? '' : '<p class="mute small">Chạm vào căn trên mặt bằng hoặc chọn số căn bên dưới.</p>'}${ds}</div>${o ? vtCardHtml(o) : ''}`;
+    ${o ? '' : `<p class="mute small">Chạm vào căn trên mặt bằng hoặc chọn số căn bên dưới${nGio ? ' (● đang mở bán)' : ''}.</p>`}${ds}</div>${o ? vtCardHtml(o) : ''}`;
 }
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-vttang],[data-vtcan],[data-vtchon],[data-vtdong],[data-vtbuoc]'); if (!b || !VTB) return;
   if (b.dataset.vttang) moTangVung(b.dataset.vttang);
   else if (b.dataset.vtcan) chonCanVung(b.dataset.vtcan);
-  else if (b.dataset.vtbuoc) { if (vtBat()) moTangVung(state.vt.tang + +b.dataset.vtbuoc, null); }
+  else if (b.dataset.vtbuoc) { if (vtBat()) buocTangVung(+b.dataset.vtbuoc); }
   else if (b.dataset.vtdong) dongTangVung();
   else { state.keepScroll = true; toggleCart('vt:' + b.dataset.vtchon, `${VTB.d.ten} · ${b.dataset.vtchon}`, b.dataset.vtsub); vtTex.key = null; }
 });
@@ -2182,7 +2215,7 @@ function duAnHtml() {
   const k = 'da:' + d.id;
   return `<p><button class="chip" data-zone="tatca">← Tất cả dự án</button></p><h2>${esc(d.ten)}</h2>
   <p class="mute small">${esc([d.cdt, d.tt].filter(Boolean).join(' · '))}</p>${d.quyMo ? `<p>${esc(d.quyMo)}.</p>` : ''}
-  ${daPhanKhuHtml(d)}${VTB && VTB.da === d.id ? vtHtml() : ''}${VUNG && CT ? `<h3>Quanh dự án</h3>${ctDsHtml()}` : ''}${(d.lienKet || []).map(l => `<p><a class="btn block" href="${esc(l.href)}" target="_top">${esc(l.ten)} →</a></p>`).join('')}
+  ${daPhanKhuHtml(d)}${vtDung(d.id) ? vtHtml() : ''}${VUNG && CT ? `<h3>Quanh dự án</h3>${ctDsHtml()}` : ''}${(d.lienKet || []).map(l => `<p><a class="btn block" href="${esc(l.href)}" target="_top">${esc(l.ten)} →</a></p>`).join('')}
   ${d.saBan ? `<p><a class="btn primary block" href="${esc(d.saBan)}" target="_top">Mở sa bàn và giỏ hàng ${esc(d.ten)} →</a></p>` : `<div class="note small">Dự án chưa có giỏ hàng trên sa bàn. Anh/chị chọn để tư vấn gửi giỏ hàng, bảng giá và chính sách đang áp dụng.</div>`}
   <div class="row"><button class="btn ${inCart(k) ? '' : 'primary'}" data-dachon="${esc(d.id)}">${inCart(k) ? '✓ Đã chọn để tham vấn · bỏ chọn' : 'Hỏi giỏ hàng dự án này'}</button></div>
   <p><a class="btn block" href="/cam-nang/${esc(d.bai)}/" target="_top">Hồ sơ dự án →</a></p>
@@ -2678,8 +2711,11 @@ function capNhatNang() { SUN = sunNow(); dirty = true; }
     c.khoi = c.khoiM.map(([e, n, w, h, g, z0, z, col, mau]) => [c.tam[0] + e, c.tam[1] - n, w, h, g, z0, z, col, mau]);
   }
   // bóc tầng dự án vùng: mặt bằng tầng và mã căn theo bản tính (du-an.json > canBoc)
-  const dvb = VUNG && DAN && DAN.duAn.find(d => d.canBoc && d.tam);
-  if (dvb) { VTB = await fetch(dvb.canBoc).then(r => r.ok ? r.json() : null).catch(() => null); if (VTB) { VTB.d = dvb; vtChuanBi(); } }
+  if (VUNG && DAN) {
+    const ds = DAN.duAn.filter(d => d.canBoc && d.tam);
+    const kq = await Promise.all(ds.map(d => fetch(d.canBoc).then(r => r.ok ? r.json() : null).catch(() => null)));
+    ds.forEach((d, i) => { const v = kq[i]; if (!v) return; v.d = d; VTBS[d.id] = v; NHOM['vtb:' + d.id] = 4 + i; vtChuanBi(v); });
+  }
   if (VUNG) { Object.assign(HOME, tatCaView()); state.tatCa = true; }
   if (MB) for (const k of Object.keys(MB)) { MB[k].tangDung = MB[k].mb.flatMap(p => p.tang); MB[k].toa = [{ ten: k.toUpperCase(), tangCuoi: 30 }]; }
   await hoiNen();

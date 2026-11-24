@@ -336,7 +336,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
 <div class="hdr">
   <div class="hdr-badge">SkySOLIS · Exclusive Preview Event</div>
   <h1>Bảng Tính Chiết Khấu &amp; Phương Thức Thanh Toán</h1>
-  <div class="hdr-sub">Căn hộ · 3 PTTT: Chuẩn · Nhanh · Vay Ngân Hàng<br>Bảng tạm tính 14/09/2026 · Bảng giá căn cập nhật 09/10/2026 · Booking 01–23/10/2026</div>
+  <div class="hdr-sub">Căn hộ · 3 PTTT: Chuẩn · Nhanh · Vay Ngân Hàng<br>Chính sách bán hàng 11/11/2026 · Rổ chung 30 căn có giá niêm yết</div>
   <div class="div-gold"></div>
 </div>
 
@@ -476,24 +476,41 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
     <tbody>
       <tr>
         <td class="stt-cell">1</td>
-        <td class="name-cell">CK Khách Hàng Booking<div class="name-sub">Discount for customers booking<br>Tính % trên giá niêm yết</div></td>
-        <td class="opt-cell"><div class="radio-group horizontal" id="grp-bk">
-          <button class="opt-btn" onclick="setBK('before')">Trước 01/10/2026<br><span style="font-size:10px;opacity:.7">CK 2%</span></button>
-          <button class="opt-btn active-ck" onclick="setBK('oct')">01/10 – 23/10/2026<br><span style="font-size:10px;opacity:.7">CK 1%</span></button>
-          <button class="opt-btn" onclick="setBK('none')">Không áp dụng</button></div></td>
-        <td class="val-cell"><span id="val-bk" class="val-none">—</span></td>
+        <td class="name-cell">Ưu Đãi Đặc Quyền Ngành Giáo Dục &amp; Khu Vực<div class="name-sub">Ngành giáo dục · khu vực Đông, Tây Bắc &amp; Đông Bắc<br>Tính 1% trên giá niêm yết</div></td>
+        <td class="opt-cell"><div class="radio-group horizontal" id="grp-ud">
+          <button class="opt-btn" onclick="setUD(true)">Áp dụng 1%</button>
+          <button class="opt-btn active-none" onclick="setUD(false)">Không áp dụng</button></div></td>
+        <td class="val-cell"><span id="val-ud" class="val-none">—</span></td>
       </tr>
       <tr style="background:rgba(255,255,255,.015)">
         <td class="stt-cell">2</td>
-        <td class="name-cell">CK Không Nhận Bảo Lãnh Ngân Hàng<div class="name-sub">Non-Bank Guarantee Option<br>Tính 1% trên giá sau ƯĐ 1</div></td>
+        <td class="name-cell">CK Nhóm Mua Chung<div class="name-sub">Group Purchase Discount<br>Tính % trên giá sau ƯĐ 1</div></td>
+        <td class="opt-cell"><div class="radio-group horizontal" id="grp-nh">
+          <button class="opt-btn active-none" onclick="setNH(0)">Không có</button>
+          <button class="opt-btn" onclick="setNH(2)">2 sản phẩm<br><span style="font-size:10px;opacity:.7">CK 1%</span></button>
+          <button class="opt-btn" onclick="setNH(3)">3 sản phẩm<br><span style="font-size:10px;opacity:.7">CK 2%</span></button></div></td>
+        <td class="val-cell"><span id="val-nh" class="val-none">—</span></td>
+      </tr>
+      <tr>
+        <td class="stt-cell">3</td>
+        <td class="name-cell">Chiết Khấu Khác<div class="name-sub">Others (Đặc biệt · Đại sứ…)<br>Tính % trên giá sau ƯĐ 1 &amp; 2</div></td>
+        <td class="opt-cell">
+          <input id="ck-khac-input" class="mini-inp" type="text" inputmode="decimal" placeholder="Nhập % (VD: 1.5)" style="width:160px" oninput="onCKKhac(this)">
+          <div style="font-size:11px;color:var(--mut);margin-top:4px">Để trống nếu không có</div>
+        </td>
+        <td class="val-cell"><span id="val-kh" class="val-none">—</span></td>
+      </tr>
+      <tr style="background:rgba(255,255,255,.015)">
+        <td class="stt-cell">4</td>
+        <td class="name-cell">CK Không Nhận Bảo Lãnh Ngân Hàng<div class="name-sub">Non-Bank Guarantee Option<br>Tính 1% trên giá sau ƯĐ 1→3</div></td>
         <td class="opt-cell"><div class="radio-group horizontal" id="grp-ng">
           <button class="opt-btn active-ck" onclick="setNG(true)">Áp dụng 1%</button>
           <button class="opt-btn" onclick="setNG(false)">Không áp dụng</button></div></td>
         <td class="val-cell"><span id="val-ng" class="val-none">—</span></td>
       </tr>
       <tr>
-        <td class="stt-cell">3</td>
-        <td class="name-cell">CK Phương Thức Thanh Toán<div class="name-sub">Chuẩn 3% · Nhanh 8% · Vay NH 0%<br>Tính % trên giá sau ƯĐ 1 &amp; 2</div></td>
+        <td class="stt-cell">5</td>
+        <td class="name-cell">CK Phương Thức Thanh Toán<div class="name-sub">Chuẩn 3% · Nhanh 8% · Vay NH 0%<br>Tính % trên giá sau ƯĐ 1→4</div></td>
         <td class="opt-cell">
           <div class="radio-group horizontal" id="grp-pt">
             <button class="opt-btn active-ck" onclick="setPT(0)">PTTT Chuẩn<br><span style="font-size:10px">CK 3%</span></button>
@@ -506,15 +523,6 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
           </div>
         </td>
         <td class="val-cell"><span id="val-pt" class="val-none">—</span></td>
-      </tr>
-      <tr style="background:rgba(255,255,255,.015)">
-        <td class="stt-cell">4</td>
-        <td class="name-cell">Chiết Khấu Khác<div class="name-sub">Others (Đặc biệt · Đại sứ · VVIP...)<br>Tính % trên giá sau ƯĐ 1→3</div></td>
-        <td class="opt-cell">
-          <input id="ck-khac-input" class="mini-inp" type="text" inputmode="decimal" placeholder="Nhập % (VD: 1.5)" style="width:160px" oninput="onCKKhac(this)">
-          <div style="font-size:11px;color:var(--mut);margin-top:4px">Để trống nếu không có · bản Excel gốc đang ẩn các dòng CK này</div>
-        </td>
-        <td class="val-cell"><span id="val-kh" class="val-none">—</span></td>
       </tr>
     </tbody>
   </table>
@@ -561,7 +569,7 @@ table.sched tbody td:nth-child(2){color:rgba(255,255,255,.7);font-size:12px}
   <b>Khoản quan tâm 50.000.000 đ</b> (Interest Expression Form) là khoản có hoàn lại, không tính vào tổng thanh toán.<br>
   <b>Vay ngân hàng:</b> hỗ trợ tài chính cho đợt 1 &amp; 2 do ngân hàng khách hàng chọn quyết định theo chính sách tín dụng; Chủ đầu tư không cam kết khách hàng được chấp thuận cấp tín dụng.
 </div>
-<div class="footer-note">SkySOLIS · Bảng tính theo mã căn · Dữ liệu căn lập từ mặt bằng tầng 4-5, 6, 7-20 / 22-40 và 21 · Giá niêm yết 43 căn theo bảng giá 09/10/2026 · các căn còn lại: giá/m² linh động · chiết khấu theo bảng tính tạm tính 14/09/2026</div>
+<div class="footer-note">SkySOLIS · Bảng tính theo mã căn · Dữ liệu căn lập từ mặt bằng tầng 4-5, 6, 7-20 / 22-40 và 21 · Giá niêm yết 30 căn rổ chung theo chính sách bán hàng 11/11/2026 · các căn còn lại: giá/m² linh động · chiết khấu và tiến độ thanh toán theo CSBH 11/11/2026</div>
 </div>
 
 <div id="print-sheet"></div>
@@ -600,53 +608,40 @@ for(let f=7;f<=20;f++) PLANS.ftyp.units.forEach(u=>addUnit(f,u,'ftyp','7-20',PLA
 PLANS.f21.units.forEach(u=>addUnit(21,u,'f21','21',PLANS.f21.src,u.nsa,u.nfa));
 for(let f=22;f<=40;f++) PLANS.ftyp.units.forEach(u=>addUnit(f,u,'ftyp','22-40',PLANS.ftyp.src,u.nsa2,u.nfa2));
 
-// ── BẢNG GIÁ CÓ SẴN (nguồn: Bảng giá niêm yết 09/10/2026 · sheet GIỎ CĂN) ──
-// p = giá niêm yết chưa VAT & KPBT · nfa = tim tường · nsa = thông thủy · x:1 = căn ngoài bảng 36 căn
-const LIST_DATE='09/10/2026';
+// ── BẢNG GIÁ CÓ SẴN (nguồn: CSBH 11/11/2026 · sheet RỔ CHUNG, 30 căn) ──
+// p = giá niêm yết chưa VAT & KPBT = đơn giá/m² × NFA làm tròn (cách tính của sheet PTTT) · nfa = tim tường · nsa = thông thủy
+const LIST_DATE='11/11/2026';
 const LISTED=[
- {c:"C.07.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3656380103},
- {c:"C.07.02",nsa:93.56,nfa:103.19,t:"3PN2WC",p:5299814916},
- {c:"C.07.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4412631966},
- {c:"C.08.09",nsa:121.66,nfa:131.96,t:"Sky Villa",p:6899568051},
- {c:"C.08.03",nsa:93.81,nfa:103.06,t:"3PN2WC",p:5391787631},
- {c:"C.08.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4495640514},
- {c:"C.09.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4512242268},
- {c:"C.09.05",nsa:62.62,nfa:69.9,t:"2PN2WC",p:3763899713},
- {c:"C.09.09",nsa:121.66,nfa:131.96,t:"Sky Villa",p:6926004161},
- {c:"C.09.10",nsa:74.01,nfa:81.43,t:"2PN2WC",p:4353797223},
- {c:"C.09.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4473187291},
- {c:"C.10.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4524693584},
- {c:"C.11.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4578649062},
- {c:"C.11.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3776089853},
- {c:"C.11.09",nsa:121.66,nfa:131.96,t:"Sky Villa",p:6965658386},
- {c:"C.11.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4539313683},
- {c:"C.14.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3779610765},
- {c:"C.14.05",nsa:62.62,nfa:69.9,t:"2PN2WC",p:3784904778},
- {c:"C.14.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3708259076},
- {c:"C.15.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3761305118},
- {c:"C.15.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4601307166},
- {c:"C.16.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3762006330},
- {c:"C.16.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3778987131},
- {c:"C.17.08",nsa:30.14,nfa:34.07,t:"Studio",p:1898805322},
- {c:"C.17.05",nsa:62.62,nfa:69.9,t:"2PN2WC",p:3837417347},
- {c:"C.18.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4712895406},
- {c:"C.22.08",nsa:30.19,nfa:34.07,t:"Studio",p:1951780783},
- {c:"C.24.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4015991778},
- {c:"C.25.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4036996912},
- {c:"C.26.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4054501096},
- {c:"C.27.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4026494314},
- {c:"C.29.08",nsa:30.19,nfa:34.07,t:"Studio",p:1970550600},
- {c:"C.30.08",nsa:30.19,nfa:34.07,t:"Studio",p:1970550600},
- {c:"C.34.12",nsa:74.79,nfa:82.52,t:"2PN2WC",p:4783705266},
- {c:"C.36.08",nsa:30.19,nfa:34.07,t:"Studio",p:1970550600},
- {c:"C.37.08",nsa:30.19,nfa:34.07,t:"Studio",p:1965431553},
- {c:"B.04.03A",nsa:170.5,nfa:181.7,t:"Mixed-used",p:7057481659,x:1},
- {c:"B.04.05",nsa:87.2,nfa:93.8,t:"Mixed-used",p:3933860907,x:1},
- {c:"B.09.03A",nsa:54.7,nfa:59.8,t:"Mixed-used",p:2880325477,x:1},
- {c:"C.08.06",nsa:63.7,nfa:70.3,t:"2PN1WC",p:3832423879,x:1},
- {c:"C.18.06",nsa:63.7,nfa:70.3,t:"2PN1WC",p:3832423879,x:1},
- {c:"C.19.05",nsa:62.6,nfa:69.9,t:"2PN2WC",p:3903933375,x:1},
- {c:"C.25.12",nsa:74.7,nfa:82.5,t:"2PN2WC",p:4878761860,x:1}
+  {c:"B.09.01",nsa:107.42,nfa:116.01,t:"Dual Key",p:5561576129},
+  {c:"B.09.02",nsa:106.24,nfa:116.02,t:"Dual Key",p:5560128442},
+  {c:"B.09.03",nsa:106.03,nfa:115.37,t:"Dual Key",p:5661049228},
+  {c:"B.09.05",nsa:54.78,nfa:59.56,t:"Mixed-used",p:2995884677},
+  {c:"B.10.01",nsa:107.42,nfa:116.01,t:"Dual Key",p:5577437248},
+  {c:"B.10.02",nsa:106.24,nfa:116.02,t:"Dual Key",p:5575990928},
+  {c:"B.10.03",nsa:106.03,nfa:115.37,t:"Dual Key",p:5676822845},
+  {c:"B.10.05",nsa:54.78,nfa:59.56,t:"Mixed-used",p:3004027780},
+  {c:"B.11.01",nsa:107.42,nfa:116.01,t:"Dual Key",p:5646168997},
+  {c:"B.11.02",nsa:106.24,nfa:116.02,t:"Dual Key",p:5644728485},
+  {c:"B.11.03",nsa:106.03,nfa:115.37,t:"Dual Key",p:5745175301},
+  {c:"B.11.03A",nsa:54.79,nfa:59.8,t:"Mixed-used",p:2983087240},
+  {c:"B.11.05",nsa:54.78,nfa:59.56,t:"Mixed-used",p:3012171001},
+  {c:"C.07.02",nsa:93.56,nfa:103.19,t:"3PN2WC",p:5389911816},
+  {c:"C.07.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4487646680},
+  {c:"C.07.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3718538536},
+  {c:"C.08.03",nsa:93.81,nfa:103.06,t:"3PN2WC",p:5483447977},
+  {c:"C.08.03A",nsa:74.33,nfa:82.87,t:"2PN2WC",p:4630509753},
+  {c:"C.09.10",nsa:74.01,nfa:81.43,t:"2PN2WC",p:4427811785},
+  {c:"C.09.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4549231464},
+  {c:"C.11.06",nsa:63.75,nfa:70.3,t:"2PN1WC",p:3840283372},
+  {c:"C.14.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3771299447},
+  {c:"C.15.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3825247323},
+  {c:"C.15.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4679529389},
+  {c:"C.16.07",nsa:64.28,nfa:70.61,t:"2PN1WC",p:3843229925},
+  {c:"C.18.12",nsa:74.44,nfa:82.52,t:"2PN2WC",p:4793014606},
+  {c:"C.22.08",nsa:30.19,nfa:34.07,t:"Studio",p:1984961060},
+  {c:"C.24.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4084263641},
+  {c:"C.25.05",nsa:62.64,nfa:69.9,t:"2PN2WC",p:4105625849},
+  {c:"C.29.08",nsa:30.19,nfa:34.07,t:"Studio",p:2004049970}
 ];
 LISTED.forEach(l=>{const u=UNIT_MAP[l.c.replace(/[^A-Z0-9]/g,'')]; if(!u) return;
   u.list={price:l.p,extra:!!l.x}; u.nfa=l.nfa; u.nsa=l.nsa; if(!l.x) u.type=l.t;});
@@ -654,13 +649,14 @@ const LISTED_N=UNITS.filter(u=>u.list).length;
 
 // ── STATE ──
 const DEFAULT_PPM=55_000_000;
-const st={code:'',ppm:DEFAULT_PPM,typePpm:{},floorStep:0,floorBase:7,adj:0,unitPpm:{},price:0,priceManual:false,bk:'oct',ng:true,pt:0,ptck:true,kh:0};
+const st={code:'',ppm:DEFAULT_PPM,typePpm:{},floorStep:0,floorBase:7,adj:0,unitPpm:{},price:0,priceManual:false,ud:false,nh:0,ng:true,pt:0,ptck:true,kh:0};
 const PT_META=[
   {name:'PTTT Chuẩn',full:'Thanh Toán Chuẩn',ck:0.03},
   {name:'PTTT Nhanh',full:'Thanh Toán Nhanh',ck:0.08},
   {name:'Vay Ngân Hàng',full:'Thanh Toán Vay Ngân Hàng',ck:0}
 ];
-const BK={before:{pct:.02,label:'CK Booking trước 01/10/2026 (2%)'},oct:{pct:.01,label:'CK Booking 01/10–23/10/2026 (1%)'},none:{pct:0}};
+// CSBH 11/11/2026: nhóm mua chung 2 sản phẩm 1%, 3 sản phẩm 2%
+const NH={0:0,2:.01,3:.02};
 
 function curUnit(){return UNIT_MAP[st.code.replace(/[^A-Z0-9]/g,'')]||null}
 function parseNum(s){return parseInt(String(s).replace(/\D/g,''))||0}
@@ -679,7 +675,7 @@ function effPPM(u){
 function ppmSource(u){
   if(!u) return 'Chưa chọn căn — dùng giá chung';
   if(st.unitPpm[u.code]) return `Giá riêng của căn ${u.code} (${u.list?'giá niêm yết sẽ là':'tự động sẽ là'} ${fmtS(autoPPM(u))})`;
-  if(u.list) return `Giá niêm yết bảng giá ${LIST_DATE}: ${fmtS(u.list.price)} ÷ ${u.nfa.toLocaleString('vi-VN')} m² (tim tường)`+(u.list.extra?' · căn ngoài bảng 36 căn':'');
+  if(u.list) return `Giá niêm yết bảng giá ${LIST_DATE}: ${fmtS(u.list.price)} ÷ ${u.nfa.toLocaleString('vi-VN')} m² (tim tường)`;
   const typed=st.typePpm[u.type]; let s=typed?`Giá loại ${u.type} ${fmtS(typed)}`:`Giá chung ${fmtS(st.ppm)}`;
   if(st.floorStep) s+=` ${st.floorStep>0?'+':'−'} ${fmtS(Math.abs(st.floorStep))} × ${Math.abs(u.floor-st.floorBase)} tầng ${u.floor>=st.floorBase?'trên':'dưới'} tầng ${st.floorBase}`;
   if(st.adj) s+=` · điều chỉnh ${st.adj>0?'+':''}${(st.adj*100).toFixed(2).replace(/\.?0+$/,'')}%`;
@@ -749,7 +745,8 @@ function resetAllPrice(){st.ppm=DEFAULT_PPM;st.typePpm={};st.floorStep=0;st.floo
 function toggleCfg(){const b=$('cfg-body'),open=b.style.display==='none';b.style.display=open?'block':'none';$('cfg-arrow').textContent=open?'▲ Thu gọn':'▼ Mở';}
 
 function onCKKhac(el){const v=parseFloat(String(el.value).replace(',','.'));st.kh=(isFinite(v)&&v>0)?Math.min(v,100)/100:0;recalc();}
-function setBK(k){st.bk=k;const b=$('grp-bk').querySelectorAll('.opt-btn');['before','oct','none'].forEach((x,i)=>{b[i].classList.remove('active-ck','active-none');if(x===k)b[i].classList.add(k==='none'?'active-none':'active-ck')});recalc();}
+function setUD(on){st.ud=on;const b=$('grp-ud').querySelectorAll('.opt-btn');b.forEach(x=>x.classList.remove('active-ck','active-none'));b[on?0:1].classList.add(on?'active-ck':'active-none');recalc();}
+function setNH(k){st.nh=k;const b=$('grp-nh').querySelectorAll('.opt-btn');[0,2,3].forEach((x,i)=>{b[i].classList.remove('active-ck','active-none');if(x===k)b[i].classList.add(k?'active-ck':'active-none')});recalc();}
 function setNG(on){st.ng=on;const b=$('grp-ng').querySelectorAll('.opt-btn');b.forEach(x=>x.classList.remove('active-ck','active-none'));b[on?0:1].classList.add(on?'active-ck':'active-none');recalc();}
 function setPTCK(on){st.ptck=on;const b=$('grp-ptck').querySelectorAll('.opt-btn');b.forEach(x=>x.classList.remove('active-ck','active-none'));b[on?0:1].classList.add(on?'active-ck':'active-none');recalc();}
 function setPT(i){
@@ -765,11 +762,13 @@ function setPT(i){
 function compute(pt){
   const list=st.price, steps=[]; let run=list;
   function pctStep(id,label,p){ if(p<=0) return; const amt=r(run*p); steps.push({id,label,pct:p,amt,before:run,after:run-amt}); run-=amt; }
-  pctStep('bk',BK[st.bk].label||'',BK[st.bk].pct);
+  // thứ tự theo CSBH 11/11/2026: ưu đãi đặc quyền → nhóm mua chung → CK khác → không nhận bảo lãnh → PTTT
+  if(st.ud) pctStep('ud','Ưu đãi đặc quyền ngành giáo dục & khu vực (1%)',0.01);
+  if(NH[st.nh]) pctStep('nh',`CK nhóm mua chung ${st.nh} sản phẩm (${NH[st.nh]*100}%)`,NH[st.nh]);
+  if(st.kh>0) pctStep('kh',`Chiết khấu khác (${(st.kh*100).toFixed(2).replace(/\.?0+$/,'')}%)`,st.kh);
   if(st.ng) pctStep('ng','CK Không nhận bảo lãnh ngân hàng (1%)',0.01);
   const ptp=st.ptck?PT_META[pt].ck:0;
   if(ptp>0) pctStep('pt',`CK ${PT_META[pt].name} (${(ptp*100).toFixed(0)}%)`,ptp);
-  if(st.kh>0) pctStep('kh',`Chiết khấu khác (${(st.kh*100).toFixed(2).replace(/\.?0+$/,'')}%)`,st.kh);
   const A=r(list-steps.reduce((s,x)=>s+x.amt,0));
   const B=r(A*KPBT), C=r(A*VAT), D=A+B+C;
   return {list,steps,A,B,C,D,totalDisc:list-A};
@@ -777,56 +776,55 @@ function compute(pt){
 
 // ── SCHEDULES (công thức theo 3 sheet PTTT gốc) ──
 function schedule(pt,R){
+  // Theo 3 sheet PTTT của CSBH 11/11/2026
   const {A,B,C,D}=R, rows=[];
   const mk=(n,when,desc,pct,pre,vat,tot,k,tag)=>({n,when,desc,pct,pre,vat,tot,k,tag});
   if(pt===0||pt===1){
-    const i1=r(.05*A), i2=r(.05*A), i11=r(.05*A);
-    const first=pt===0?.10:.40;
-    const i3=r(first*A*1.1)+r((i1+i2)*VAT);
-    rows.push(mk(1,'Dự kiến T10/2026','Ký thỏa thuận ký quỹ',.05,i1,0,i1,'k1'));
-    rows.push(mk(2,'T03/2027','Đợt 2 — ký quỹ',.05,i2,0,i2,'k1'));
-    rows.push(mk(3,'Dự kiến T06/2027',`Thông báo ký HĐMB — ${first*100}% (gồm VAT) + VAT đợt 1 & 2`,first,r(first*A),i3-r(first*A),i3,'k1','📝 Ký HĐMB'));
+    const i1=r(.05*A), iC=r(.05*A);
+    const first=pt===0?.15:.45;
+    const i2=r(first*A*1.1)+r(i1*VAT);
+    rows.push(mk(1,'Dự kiến T10/2026','Ký thỏa thuận ký quỹ — 5% giá bán (chưa VAT)',.05,i1,0,i1,'k1'));
+    rows.push(mk(2,'Dự kiến T06/2027',`Thông báo ký HĐMB — ${first*100}% (gồm VAT) + VAT đợt 1`,first,r(first*A),i2-r(first*A),i2,'k1','📝 Ký HĐMB'));
     if(pt===0){
       ['T09/2027','T12/2027','T03/2028','T06/2028','T09/2028','T12/2028'].forEach((w,j)=>{
-        const t=r(.05*A*1.1); rows.push(mk(4+j,w,'5% Giá bán (gồm VAT)',.05,r(.05*A),t-r(.05*A),t,'k2')); });
-      var hn=10, cn=11;
-    } else { var hn=4, cn=5; }
-    const hand=r((D-B)*.45+i11*VAT);
+        const t=r(.05*A*1.1); rows.push(mk(3+j,w,'5% Giá bán (gồm VAT)',.05,r(.05*A),t-r(.05*A),t,'k2')); });
+      var hn=9, cn=10;
+    } else { var hn=3, cn=4; }
+    const hand=r((D-B)*.45+iC*VAT);
     rows.push(mk(hn,'Dự kiến Q2/2029','Thông báo bàn giao — 45% (gồm VAT) + VAT đợt CNQSH',.45,r(.45*A),hand-r(.45*A),hand,'k3','🏠 Nhận Nhà'));
     rows.push(mk('+','Cùng đợt bàn giao','Phí bảo trì 2%',.02,B,0,B,'k3'));
-    rows.push(mk(cn,'Khi nhận giấy CNQSH','5% Giá bán (chưa VAT)',.05,i11,0,i11,'k4','📄 CNQSH'));
+    rows.push(mk(cn,'Khi nhận giấy CNQSH','5% Giá bán (chưa VAT)',.05,iC,0,iC,'k4','📄 CNQSH'));
     return {rows,total:rows.reduce((s,x)=>s+x.tot,0)};
   }
-  // Vay ngân hàng: own / bank
-  const i1=r(.05*A), i2=r(.05*A), i5=r(.05*A);
-  const own3=r(.10*A*1.1)+r((i1+i2)*VAT), bank3=r(.30*A*1.1);
-  const own4=B+r(.05*A*VAT), bank4=r((A+C)*.45);
-  rows.push({n:1,when:'Dự kiến T10/2026',desc:'Ký thỏa thuận ký quỹ',pct:.05,own:i1,bank:0,tot:i1,k:'k1'});
-  rows.push({n:2,when:'T03/2027',desc:'Đợt 2 — ký quỹ',pct:.05,own:i2,bank:0,tot:i2,k:'k1'});
-  rows.push({n:3,when:'Dự kiến T06/2027',desc:'Thông báo ký HĐMB — vốn tự có 10% (gồm VAT) + VAT đợt 1 & 2 · NH giải ngân 30% (gồm VAT)',pct:.40,own:own3,bank:bank3,tot:own3+bank3,k:'k1',tag:'📝 Ký HĐMB'});
-  rows.push({n:4,when:'Dự kiến Q2/2029',desc:'Thông báo bàn giao — vốn tự có: KPBT 2% + VAT đợt 5 · NH giải ngân 45% (gồm VAT)',pct:.45,own:own4,bank:bank4,tot:own4+bank4,k:'k3',tag:'🏠 Nhận Nhà'});
-  rows.push({n:5,when:'Khi nhận giấy CNQSH',desc:'5% Giá bán (chưa VAT)',pct:.05,own:i5,bank:0,tot:i5,k:'k4',tag:'📄 CNQSH'});
+  // Vay ngân hàng: vốn tự có / ngân hàng giải ngân
+  const i1=r(.05*A), i4=r(.05*A);
+  const own2=r(.15*A*1.1)+r(i1*VAT), bank2=r(.30*A*1.1);
+  const own3=B+r(i4*VAT), bank3=r((A+C)*.45);
+  rows.push({n:1,when:'Dự kiến T10/2026',desc:'Ký thỏa thuận ký quỹ — 5% giá bán (chưa VAT)',pct:.05,own:i1,bank:0,tot:i1,k:'k1'});
+  rows.push({n:2,when:'Dự kiến T06/2027',desc:'Thông báo ký HĐMB — vốn tự có 15% (gồm VAT) + VAT đợt 1 · NH giải ngân 30% (gồm VAT)',pct:.45,own:own2,bank:bank2,tot:own2+bank2,k:'k1',tag:'📝 Ký HĐMB'});
+  rows.push({n:3,when:'Dự kiến Q2/2029',desc:'Thông báo bàn giao — vốn tự có: KPBT 2% + VAT đợt 4 · NH giải ngân 45% (gồm VAT)',pct:.45,own:own3,bank:bank3,tot:own3+bank3,k:'k3',tag:'🏠 Nhận Nhà'});
+  rows.push({n:4,when:'Khi nhận giấy CNQSH',desc:'5% Giá bán (chưa VAT)',pct:.05,own:i4,bank:0,tot:i4,k:'k4',tag:'📄 CNQSH'});
   return {rows,total:rows.reduce((s,x)=>s+x.tot,0),ownTotal:rows.reduce((s,x)=>s+x.own,0),bankTotal:rows.reduce((s,x)=>s+x.bank,0)};
 }
 
 // ── RENDER ──
 const PHASES=[
   [ // chuẩn
-   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · 3 đợt',k:'ph1',idx:[0,1,2]},
-   {t:'Thanh Toán Theo Tiến Độ',s:'T09/2027 → T12/2028 · mỗi 3 tháng',k:'ph2',idx:[3,4,5,6,7,8]},
-   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[9,10,11]}],
+   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · 2 đợt',k:'ph1',idx:[0,1]},
+   {t:'Thanh Toán Theo Tiến Độ',s:'T09/2027 → T12/2028 · mỗi 3 tháng',k:'ph2',idx:[2,3,4,5,6,7]},
+   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[8,9,10]}],
   [ // nhanh
-   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · 3 đợt',k:'ph1',idx:[0,1,2]},
-   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[3,4,5]}],
+   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · 2 đợt',k:'ph1',idx:[0,1]},
+   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[2,3,4]}],
   [ // bank
-   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · vay ngân hàng từ đợt 3',k:'ph1',idx:[0,1,2]},
-   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[3,4]}]
+   {t:'Giai Đoạn Ký Quỹ & Ký HĐMB',s:'T10/2026 → T06/2027 · vay ngân hàng từ đợt 2',k:'ph1',idx:[0,1]},
+   {t:'Bàn Giao & CNQSH',s:'Q2/2029 → khi có giấy CNQSH',k:'ph3',idx:[2,3]}]
 ];
 const PH_COL={ph1:'var(--ph1)',ph2:'var(--ph2)',ph3:'var(--ph3)',ph4:'var(--ph4)'};
 const PROG=[
- [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1,2]},{k:'ph2',t:'Theo tiến độ',idx:[3,4,5,6,7,8]},{k:'ph3',t:'Bàn giao',idx:[9,10]},{k:'ph4',t:'CNQSH',idx:[11]}],
- [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1,2]},{k:'ph3',t:'Bàn giao',idx:[3,4]},{k:'ph4',t:'CNQSH',idx:[5]}],
- [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1,2]},{k:'ph3',t:'Bàn giao',idx:[3]},{k:'ph4',t:'CNQSH',idx:[4]}]];
+ [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1]},{k:'ph2',t:'Theo tiến độ',idx:[2,3,4,5,6,7]},{k:'ph3',t:'Bàn giao',idx:[8,9]},{k:'ph4',t:'CNQSH',idx:[10]}],
+ [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1]},{k:'ph3',t:'Bàn giao',idx:[2,3]},{k:'ph4',t:'CNQSH',idx:[4]}],
+ [{k:'ph1',t:'Ký quỹ & HĐMB',idx:[0,1]},{k:'ph3',t:'Bàn giao',idx:[2]},{k:'ph4',t:'CNQSH',idx:[3]}]];
 
 function buildPanels(){
   $('pt-panels').innerHTML=[0,1,2].map(i=>`
@@ -900,7 +898,7 @@ function summaryHTML(R){
 }
 
 function updateValCells(R){
-  ['bk','ng','pt','kh'].forEach(id=>{const e=$('val-'+id);e.textContent='—';e.className='val-none';});
+  ['ud','nh','kh','ng','pt'].forEach(id=>{const e=$('val-'+id);e.textContent='—';e.className='val-none';});
   R.steps.forEach(s=>{const e=$('val-'+s.id);if(!e)return;e.textContent=`${(s.pct*100).toFixed(2).replace(/\.?0+$/,'')}% → - ${fmt(s.amt)}`;e.className='val-pct';});
 }
 
@@ -964,7 +962,7 @@ function renderDDList(){
     <span class="di-badge ${TYPE_CLS[u.type]}">${u.type.toUpperCase()}</span></div>`).join('')
     +(total>150?`<div style="padding:8px 14px;font-size:11px;color:var(--mut)">Hiển thị 150/${total} căn — gõ thêm để lọc</div>`:'')
     +(total===0?`<div style="padding:12px 14px;font-size:12px;color:var(--mut)">Không có căn phù hợp</div>`:'')
-    +(ddTab==='listed'&&total?`<div style="padding:8px 14px;font-size:11px;color:var(--mut)">Giá niêm yết chưa VAT &amp; KPBT · bảng giá ${LIST_DATE} · (*) căn ngoài bảng 36 căn</div>`:'');
+    +(ddTab==='listed'&&total?`<div style="padding:8px 14px;font-size:11px;color:var(--mut)">Giá niêm yết chưa VAT &amp; KPBT · rổ chung CSBH ${LIST_DATE}</div>`:'');
 }
 function setDDTab(t){ddTab=t;document.querySelectorAll('.dd-tab').forEach(b=>b.classList.toggle('active',b.dataset.f===t));renderDDList();}
 function toggleFullList(){ddOpen?closeDD():(ddOpen=true,$('unit-dropdown').style.display='block',renderDDList(),$('dd-search').focus());}
@@ -1071,6 +1069,9 @@ window.addEventListener('DOMContentLoaded',()=>{
   setPT(0);
 });
 
+
+// Mở thẳng một căn: ?can=C.07.06 (sa bàn Tìm nhà gửi sang)
+addEventListener('load',function(){var c=new URLSearchParams(location.search).get('can');if(!c)return;var u=UNIT_MAP[c.toUpperCase().replace(/[^A-Z0-9]/g,'')];if(!u)return;$('unitInp').value=u.code;selectUnit(u.code,true);});
 </script>
 <script src="/assets/js/zoom.js"></script>
 <script>
