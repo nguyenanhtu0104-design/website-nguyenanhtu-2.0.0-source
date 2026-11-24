@@ -1,0 +1,908 @@
+{
+ "nguon": "Layout mẫu căn trong leaflet Habitat Bình Dương của chủ đầu tư.",
+ "khu": {
+  "c1": [
+   {
+    "id": "b1d",
+    "loai": "2BR",
+    "ten": "Mẫu B1d",
+    "mau": [
+     "B1d"
+    ],
+    "thongThuy": 64.2,
+    "timTuong": 69.9,
+    "anh": "layout/b1d.webp",
+    "w": 879,
+    "h": 441
+   },
+   {
+    "id": "c2",
+    "loai": "3BR",
+    "ten": "Mẫu C2",
+    "mau": [
+     "C2"
+    ],
+    "thongThuy": 89.6,
+    "timTuong": 96.2,
+    "anh": "layout/c2.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "a2",
+    "loai": "1BR",
+    "ten": "Mẫu A2",
+    "mau": [
+     "A2"
+    ],
+    "thongThuy": 51.0,
+    "timTuong": 55.1,
+    "anh": "layout/a2.webp",
+    "w": 879,
+    "h": 451
+   },
+   {
+    "id": "b3a",
+    "loai": "2BR",
+    "ten": "Mẫu B3a",
+    "mau": [
+     "B3a"
+    ],
+    "thongThuy": 73.3,
+    "timTuong": 79.2,
+    "anh": "layout/b3a.webp",
+    "w": 880,
+    "h": 451
+   },
+   {
+    "id": "a1",
+    "loai": "1BR",
+    "ten": "Mẫu A1",
+    "mau": [
+     "A1"
+    ],
+    "thongThuy": 50.5,
+    "timTuong": 54.4,
+    "anh": "layout/a1.webp",
+    "w": 879,
+    "h": 446
+   },
+   {
+    "id": "b3d",
+    "loai": "2BR",
+    "ten": "Mẫu B3d",
+    "mau": [
+     "B3d"
+    ],
+    "thongThuy": 73.3,
+    "timTuong": 79.2,
+    "anh": "layout/b3d.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b1b",
+    "loai": "2BR",
+    "ten": "Mẫu B1b",
+    "mau": [
+     "B1b"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1b.webp",
+    "w": 879,
+    "h": 446
+   },
+   {
+    "id": "b1a",
+    "loai": "2BR",
+    "ten": "Mẫu B1a",
+    "mau": [
+     "B1a"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1a.webp",
+    "w": 879,
+    "h": 451
+   },
+   {
+    "id": "b1f",
+    "loai": "2BR",
+    "ten": "Mẫu B1f",
+    "mau": [
+     "B1f"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1f.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "dp-c3",
+    "loai": "DUP",
+    "ten": "DP-C3 · duplex hai tầng, bản vẽ theo mẫu C3 (tầng dưới)",
+    "mau": [
+     "DP-C3"
+    ],
+    "thongThuy": 136.6,
+    "timTuong": 150.5,
+    "anh": "layout/c3.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "dp-b3",
+    "loai": "DUP",
+    "ten": "DP-B3 · duplex hai tầng, bản vẽ theo mẫu B3 (tầng dưới)",
+    "mau": [
+     "DP-B3"
+    ],
+    "thongThuy": 125.8,
+    "timTuong": 138.5,
+    "anh": "layout/b3.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "dp-b6",
+    "loai": "DUP",
+    "ten": "DP-B6 · duplex hai tầng, bản vẽ theo mẫu B6 (tầng dưới)",
+    "mau": [
+     "DP-B6"
+    ],
+    "thongThuy": 129.9,
+    "timTuong": 143.3,
+    "anh": "layout/b6.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b5a",
+    "loai": "2BR",
+    "ten": "Mẫu B5a",
+    "mau": [
+     "B5a"
+    ],
+    "thongThuy": 74.8,
+    "timTuong": 80.7,
+    "anh": "layout/b5a.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "c3",
+    "loai": "3BR",
+    "ten": "Mẫu C3",
+    "mau": [
+     "C3"
+    ],
+    "thongThuy": 91.5,
+    "timTuong": 98.1,
+    "anh": "layout/c3.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b3",
+    "loai": "2BR",
+    "ten": "Mẫu B3",
+    "mau": [
+     "B3"
+    ],
+    "thongThuy": 72.8,
+    "timTuong": 78.8,
+    "anh": "layout/b3.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "b6",
+    "loai": "2BR",
+    "ten": "Mẫu B6",
+    "mau": [
+     "B6"
+    ],
+    "thongThuy": 77.1,
+    "timTuong": 83.7,
+    "anh": "layout/b6.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b1",
+    "loai": "2BR",
+    "ten": "Mẫu B1",
+    "mau": [
+     "B1"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1.webp",
+    "w": 879,
+    "h": 441
+   },
+   {
+    "id": "dp-b3b",
+    "loai": "DUP",
+    "ten": "DP-B3b · duplex hai tầng, bản vẽ theo mẫu B3b (tầng dưới)",
+    "mau": [
+     "DP-B3b"
+    ],
+    "thongThuy": 127.7,
+    "timTuong": 139.7,
+    "anh": "layout/b3b.webp",
+    "w": 880,
+    "h": 441
+   },
+   {
+    "id": "dp-b3e",
+    "loai": "DUP",
+    "ten": "DP-B3e · duplex hai tầng, bản vẽ theo mẫu B3e (tầng dưới)",
+    "mau": [
+     "DP-B3e"
+    ],
+    "thongThuy": 122.9,
+    "timTuong": 135.7,
+    "anh": "layout/b3e.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "dp-b6a",
+    "loai": "DUP",
+    "ten": "DP-B6a · duplex hai tầng, bản vẽ theo mẫu B6a (tầng dưới)",
+    "mau": [
+     "DP-B6a"
+    ],
+    "thongThuy": 129.8,
+    "timTuong": 143.5,
+    "anh": "layout/b6a.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b3b",
+    "loai": "2BR",
+    "ten": "Mẫu B3b",
+    "mau": [
+     "B3b"
+    ],
+    "thongThuy": 73.6,
+    "timTuong": 79.5,
+    "anh": "layout/b3b.webp",
+    "w": 880,
+    "h": 441
+   },
+   {
+    "id": "b3e",
+    "loai": "2BR",
+    "ten": "Mẫu B3e",
+    "mau": [
+     "B3e"
+    ],
+    "thongThuy": 71.5,
+    "timTuong": 77.6,
+    "anh": "layout/b3e.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b6a",
+    "loai": "2BR",
+    "ten": "Mẫu B6a",
+    "mau": [
+     "B6a"
+    ],
+    "thongThuy": 77.1,
+    "timTuong": 83.6,
+    "anh": "layout/b6a.webp",
+    "w": 906,
+    "h": 464
+   }
+  ],
+  "c2": [
+   {
+    "id": "b1d",
+    "loai": "2BR",
+    "ten": "Mẫu B1d",
+    "mau": [
+     "B1d"
+    ],
+    "thongThuy": 64.2,
+    "timTuong": 69.9,
+    "anh": "layout/b1d.webp",
+    "w": 879,
+    "h": 441
+   },
+   {
+    "id": "c2",
+    "loai": "3BR",
+    "ten": "Mẫu C2",
+    "mau": [
+     "C2"
+    ],
+    "thongThuy": 89.6,
+    "timTuong": 96.2,
+    "anh": "layout/c2.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "a2",
+    "loai": "1BR",
+    "ten": "Mẫu A2",
+    "mau": [
+     "A2"
+    ],
+    "thongThuy": 51.0,
+    "timTuong": 55.1,
+    "anh": "layout/a2.webp",
+    "w": 879,
+    "h": 451
+   },
+   {
+    "id": "b3a",
+    "loai": "2BR",
+    "ten": "Mẫu B3a",
+    "mau": [
+     "B3a"
+    ],
+    "thongThuy": 73.3,
+    "timTuong": 79.2,
+    "anh": "layout/b3a.webp",
+    "w": 880,
+    "h": 451
+   },
+   {
+    "id": "a1",
+    "loai": "1BR",
+    "ten": "Mẫu A1",
+    "mau": [
+     "A1"
+    ],
+    "thongThuy": 50.5,
+    "timTuong": 54.4,
+    "anh": "layout/a1.webp",
+    "w": 879,
+    "h": 446
+   },
+   {
+    "id": "b3d",
+    "loai": "2BR",
+    "ten": "Mẫu B3d",
+    "mau": [
+     "B3d"
+    ],
+    "thongThuy": 73.3,
+    "timTuong": 79.2,
+    "anh": "layout/b3d.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b1b",
+    "loai": "2BR",
+    "ten": "Mẫu B1b",
+    "mau": [
+     "B1b"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1b.webp",
+    "w": 879,
+    "h": 446
+   },
+   {
+    "id": "b1a",
+    "loai": "2BR",
+    "ten": "Mẫu B1a",
+    "mau": [
+     "B1a"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1a.webp",
+    "w": 879,
+    "h": 451
+   },
+   {
+    "id": "b1f",
+    "loai": "2BR",
+    "ten": "Mẫu B1f",
+    "mau": [
+     "B1f"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1f.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "dp-c3",
+    "loai": "DUP",
+    "ten": "DP-C3 · duplex hai tầng, bản vẽ theo mẫu C3 (tầng dưới)",
+    "mau": [
+     "DP-C3"
+    ],
+    "thongThuy": 136.6,
+    "timTuong": 150.5,
+    "anh": "layout/c3.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "dp-b3",
+    "loai": "DUP",
+    "ten": "DP-B3 · duplex hai tầng, bản vẽ theo mẫu B3 (tầng dưới)",
+    "mau": [
+     "DP-B3"
+    ],
+    "thongThuy": 125.8,
+    "timTuong": 138.5,
+    "anh": "layout/b3.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "dp-b6",
+    "loai": "DUP",
+    "ten": "DP-B6 · duplex hai tầng, bản vẽ theo mẫu B6 (tầng dưới)",
+    "mau": [
+     "DP-B6"
+    ],
+    "thongThuy": 129.9,
+    "timTuong": 143.3,
+    "anh": "layout/b6.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b5a",
+    "loai": "2BR",
+    "ten": "Mẫu B5a",
+    "mau": [
+     "B5a"
+    ],
+    "thongThuy": 74.8,
+    "timTuong": 80.7,
+    "anh": "layout/b5a.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "c3",
+    "loai": "3BR",
+    "ten": "Mẫu C3",
+    "mau": [
+     "C3"
+    ],
+    "thongThuy": 91.5,
+    "timTuong": 98.1,
+    "anh": "layout/c3.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b3",
+    "loai": "2BR",
+    "ten": "Mẫu B3",
+    "mau": [
+     "B3"
+    ],
+    "thongThuy": 72.8,
+    "timTuong": 78.8,
+    "anh": "layout/b3.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "b6",
+    "loai": "2BR",
+    "ten": "Mẫu B6",
+    "mau": [
+     "B6"
+    ],
+    "thongThuy": 77.1,
+    "timTuong": 83.7,
+    "anh": "layout/b6.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b1",
+    "loai": "2BR",
+    "ten": "Mẫu B1",
+    "mau": [
+     "B1"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1.webp",
+    "w": 879,
+    "h": 441
+   },
+   {
+    "id": "dp-b3b",
+    "loai": "DUP",
+    "ten": "DP-B3b · duplex hai tầng, bản vẽ theo mẫu B3b (tầng dưới)",
+    "mau": [
+     "DP-B3b"
+    ],
+    "thongThuy": 127.7,
+    "timTuong": 139.7,
+    "anh": "layout/b3b.webp",
+    "w": 880,
+    "h": 441
+   },
+   {
+    "id": "dp-b3e",
+    "loai": "DUP",
+    "ten": "DP-B3e · duplex hai tầng, bản vẽ theo mẫu B3e (tầng dưới)",
+    "mau": [
+     "DP-B3e"
+    ],
+    "thongThuy": 122.9,
+    "timTuong": 135.7,
+    "anh": "layout/b3e.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "dp-b6a",
+    "loai": "DUP",
+    "ten": "DP-B6a · duplex hai tầng, bản vẽ theo mẫu B6a (tầng dưới)",
+    "mau": [
+     "DP-B6a"
+    ],
+    "thongThuy": 129.8,
+    "timTuong": 143.5,
+    "anh": "layout/b6a.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b3b",
+    "loai": "2BR",
+    "ten": "Mẫu B3b",
+    "mau": [
+     "B3b"
+    ],
+    "thongThuy": 73.6,
+    "timTuong": 79.5,
+    "anh": "layout/b3b.webp",
+    "w": 880,
+    "h": 441
+   },
+   {
+    "id": "b3e",
+    "loai": "2BR",
+    "ten": "Mẫu B3e",
+    "mau": [
+     "B3e"
+    ],
+    "thongThuy": 71.5,
+    "timTuong": 77.6,
+    "anh": "layout/b3e.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b6a",
+    "loai": "2BR",
+    "ten": "Mẫu B6a",
+    "mau": [
+     "B6a"
+    ],
+    "thongThuy": 77.1,
+    "timTuong": 83.6,
+    "anh": "layout/b6a.webp",
+    "w": 906,
+    "h": 464
+   }
+  ],
+  "c3": [
+   {
+    "id": "b1d",
+    "loai": "2BR",
+    "ten": "Mẫu B1d",
+    "mau": [
+     "B1d"
+    ],
+    "thongThuy": 64.2,
+    "timTuong": 69.9,
+    "anh": "layout/b1d.webp",
+    "w": 879,
+    "h": 441
+   },
+   {
+    "id": "c2",
+    "loai": "3BR",
+    "ten": "Mẫu C2",
+    "mau": [
+     "C2"
+    ],
+    "thongThuy": 89.6,
+    "timTuong": 96.2,
+    "anh": "layout/c2.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "a2",
+    "loai": "1BR",
+    "ten": "Mẫu A2",
+    "mau": [
+     "A2"
+    ],
+    "thongThuy": 51.0,
+    "timTuong": 55.1,
+    "anh": "layout/a2.webp",
+    "w": 879,
+    "h": 451
+   },
+   {
+    "id": "b3a",
+    "loai": "2BR",
+    "ten": "Mẫu B3a",
+    "mau": [
+     "B3a"
+    ],
+    "thongThuy": 73.3,
+    "timTuong": 79.2,
+    "anh": "layout/b3a.webp",
+    "w": 880,
+    "h": 451
+   },
+   {
+    "id": "a1",
+    "loai": "1BR",
+    "ten": "Mẫu A1",
+    "mau": [
+     "A1"
+    ],
+    "thongThuy": 50.5,
+    "timTuong": 54.4,
+    "anh": "layout/a1.webp",
+    "w": 879,
+    "h": 446
+   },
+   {
+    "id": "b3d",
+    "loai": "2BR",
+    "ten": "Mẫu B3d",
+    "mau": [
+     "B3d"
+    ],
+    "thongThuy": 73.3,
+    "timTuong": 79.2,
+    "anh": "layout/b3d.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b1b",
+    "loai": "2BR",
+    "ten": "Mẫu B1b",
+    "mau": [
+     "B1b"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1b.webp",
+    "w": 879,
+    "h": 446
+   },
+   {
+    "id": "b1a",
+    "loai": "2BR",
+    "ten": "Mẫu B1a",
+    "mau": [
+     "B1a"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1a.webp",
+    "w": 879,
+    "h": 451
+   },
+   {
+    "id": "b1f",
+    "loai": "2BR",
+    "ten": "Mẫu B1f",
+    "mau": [
+     "B1f"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1f.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "dp-c3",
+    "loai": "DUP",
+    "ten": "DP-C3 · duplex hai tầng, bản vẽ theo mẫu C3 (tầng dưới)",
+    "mau": [
+     "DP-C3"
+    ],
+    "thongThuy": 136.6,
+    "timTuong": 150.5,
+    "anh": "layout/c3.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "dp-b3",
+    "loai": "DUP",
+    "ten": "DP-B3 · duplex hai tầng, bản vẽ theo mẫu B3 (tầng dưới)",
+    "mau": [
+     "DP-B3"
+    ],
+    "thongThuy": 125.8,
+    "timTuong": 138.5,
+    "anh": "layout/b3.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "dp-b6",
+    "loai": "DUP",
+    "ten": "DP-B6 · duplex hai tầng, bản vẽ theo mẫu B6 (tầng dưới)",
+    "mau": [
+     "DP-B6"
+    ],
+    "thongThuy": 129.9,
+    "timTuong": 143.3,
+    "anh": "layout/b6.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b5a",
+    "loai": "2BR",
+    "ten": "Mẫu B5a",
+    "mau": [
+     "B5a"
+    ],
+    "thongThuy": 74.8,
+    "timTuong": 80.7,
+    "anh": "layout/b5a.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "c3",
+    "loai": "3BR",
+    "ten": "Mẫu C3",
+    "mau": [
+     "C3"
+    ],
+    "thongThuy": 91.5,
+    "timTuong": 98.1,
+    "anh": "layout/c3.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b3",
+    "loai": "2BR",
+    "ten": "Mẫu B3",
+    "mau": [
+     "B3"
+    ],
+    "thongThuy": 72.8,
+    "timTuong": 78.8,
+    "anh": "layout/b3.webp",
+    "w": 880,
+    "h": 446
+   },
+   {
+    "id": "b6",
+    "loai": "2BR",
+    "ten": "Mẫu B6",
+    "mau": [
+     "B6"
+    ],
+    "thongThuy": 77.1,
+    "timTuong": 83.7,
+    "anh": "layout/b6.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b1",
+    "loai": "2BR",
+    "ten": "Mẫu B1",
+    "mau": [
+     "B1"
+    ],
+    "thongThuy": 61.7,
+    "timTuong": 66.9,
+    "anh": "layout/b1.webp",
+    "w": 879,
+    "h": 441
+   },
+   {
+    "id": "dp-b3b",
+    "loai": "DUP",
+    "ten": "DP-B3b · duplex hai tầng, bản vẽ theo mẫu B3b (tầng dưới)",
+    "mau": [
+     "DP-B3b"
+    ],
+    "thongThuy": 127.7,
+    "timTuong": 139.7,
+    "anh": "layout/b3b.webp",
+    "w": 880,
+    "h": 441
+   },
+   {
+    "id": "dp-b3e",
+    "loai": "DUP",
+    "ten": "DP-B3e · duplex hai tầng, bản vẽ theo mẫu B3e (tầng dưới)",
+    "mau": [
+     "DP-B3e"
+    ],
+    "thongThuy": 122.9,
+    "timTuong": 135.7,
+    "anh": "layout/b3e.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "dp-b6a",
+    "loai": "DUP",
+    "ten": "DP-B6a · duplex hai tầng, bản vẽ theo mẫu B6a (tầng dưới)",
+    "mau": [
+     "DP-B6a"
+    ],
+    "thongThuy": 129.8,
+    "timTuong": 143.5,
+    "anh": "layout/b6a.webp",
+    "w": 906,
+    "h": 464
+   },
+   {
+    "id": "b3b",
+    "loai": "2BR",
+    "ten": "Mẫu B3b",
+    "mau": [
+     "B3b"
+    ],
+    "thongThuy": 73.6,
+    "timTuong": 79.5,
+    "anh": "layout/b3b.webp",
+    "w": 880,
+    "h": 441
+   },
+   {
+    "id": "b3e",
+    "loai": "2BR",
+    "ten": "Mẫu B3e",
+    "mau": [
+     "B3e"
+    ],
+    "thongThuy": 71.5,
+    "timTuong": 77.6,
+    "anh": "layout/b3e.webp",
+    "w": 906,
+    "h": 465
+   },
+   {
+    "id": "b6a",
+    "loai": "2BR",
+    "ten": "Mẫu B6a",
+    "mau": [
+     "B6a"
+    ],
+    "thongThuy": 77.1,
+    "timTuong": 83.6,
+    "anh": "layout/b6a.webp",
+    "w": 906,
+    "h": 464
+   }
+  ]
+ }
+}

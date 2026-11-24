@@ -1,0 +1,32 @@
+{
+ "nguon": "Khung đặt mặt bằng tầng theo mái ba tháp C1, C2, C3 trên ảnh vệ tinh (dời theo độ nghiêng ảnh chụp xiên), tỷ lệ theo diện tích tim tường.",
+ "khoi": {
+  "c1": {
+   "tam": [
+    426.15,
+    272.91
+   ],
+   "rong": 42.83,
+   "cao": 29.45,
+   "xoay": 8.0
+  },
+  "c2": {
+   "tam": [
+    480.39,
+    266.8
+   ],
+   "rong": 43.12,
+   "cao": 32.34,
+   "xoay": 8.0
+  },
+  "c3": {
+   "tam": [
+    533.45,
+    270.29
+   ],
+   "rong": 41.35,
+   "cao": 29.76,
+   "xoay": 8.0
+  }
+ }
+}

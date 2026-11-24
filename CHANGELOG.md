@@ -2,6 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.63.0 · 24/11/2026 — Habitat Bình Dương giai đoạn 3 lên sa bàn 3D (tháp C1, C2, C3, 390 căn)
+- **Sa bàn riêng** `assets/tools/habitat-sa-ban/` theo khung Nam Mekong: ba tháp C1, C2, C3 cao 18 tầng, khối dựng từ mặt bằng tầng điển hình, đặt theo mái trên ảnh vệ tinh (đã trừ độ nghiêng của ảnh chụp xiên), trục lệch Bắc khoảng 8°.
+- **Bóc tầng 1–18 từng tháp**, đủ **390 căn** (C1 143, C2 133, C3 114) theo mặt bằng định vị của chủ đầu tư: tầng 1, 2, 3, 4 và tầng điển hình; 6 căn duplex tầng 3–4 (C2, C3) tính một căn ở tầng dưới. Đường bao từng căn lấy thẳng từ hình vẽ vector của PDF (mỗi phòng tô màu theo loại căn), mã căn ghép toà · tầng · số căn (C1.10.05).
+- **Thẻ căn:** loại căn, diện tích thông thủy và tim tường, vị trí trên tầng, layout mẫu căn cắt từ leaflet (29 mẫu A1–C5; căn duplex dùng mẫu tầng dưới, ghi rõ). Chưa có bảng giá và chính sách bán hàng nên giá ghi "Liên hệ", chưa có phiếu tính giá.
+- Sa bàn vùng Đại lộ Bình Dương: Habitat thay ghim bằng khối ba tháp giai đoạn 3, nút mở sa bàn dự án; giai đoạn 1, 2 chưa có số tầng trong hồ sơ nên chưa dựng. Tìm nhà trỏ sa bàn mới.
+
 ## 2.62.0 · 24/11/2026 — Tra căn thấy ngay trên 3D, rổ hàng đọc thẳng Google Sheets, lọc căn còn trống, gọn nút trên điện thoại, nền bản đồ nét hơn
 - **Tra căn (mã căn, rổ giá, ô đèn):** sa bàn bay thẳng tới căn và cắm ghim mã căn trên mặt bằng tầng (trước chỉ bay tới tâm toà nên căn ở toà xa nằm ngoài khung nhìn). Thẻ căn có nút "Xem căn trên sa bàn 3D ↑" (điện thoại: cuộn lên sa bàn). Sửa: chip căn trong danh sách tầng của dự án nhiều toà mở nhầm căn cùng số ở toà khác.
 - **Rổ hàng sống** `functions/api/ro-hang.js`: đọc Google Sheets giỏ hàng chung (tab "THÁP …", khối "Mã căn / NFA / Giá bán", màu ô theo chú thích "Đang lock", "Đã bán"), trả tình trạng và giá từng căn; giữ 10 phút, nút **↻ Cập nhật** trong rổ giá đọc lại (tối đa mỗi phút một lần). Link sheet nằm trong biến môi trường `RO_HANG_SKYSOLIS` (không ghi vào kho). Chưa đặt biến hoặc sheet lỗi: sa bàn giữ rổ lưu sẵn và ghi rõ ngày. Bật cho SkySOLIS (`SB_DA.roHang`).

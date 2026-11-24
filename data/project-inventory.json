@@ -192,8 +192,15 @@
     "saBanTrang": "index.html#da=setia-edenia"
   },
   "habitat": {
-    "saBan": "vung-binh-duong",
-    "saBanTrang": "index.html#da=habitat"
+    "saBan": "habitat-sa-ban",
+    "saBanTrang": "index.html",
+    "primaryCount": null,
+    "secondaryCount": null,
+    "meanAskingVnd": null,
+    "inventoryUrl": null,
+    "updatedAt": "2026-11-24",
+    "snapshotDate": "2026-11-24",
+    "ghiChu": "Sa bàn giai đoạn 3 (tháp C1, C2, C3): 390 căn theo mặt bằng định vị của chủ đầu tư; chưa có bảng giá và tình trạng căn."
   },
   "ho-guom-xanh": {
     "saBan": "vung-binh-duong",
