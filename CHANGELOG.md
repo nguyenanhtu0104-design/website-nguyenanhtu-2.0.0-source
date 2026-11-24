@@ -2,6 +2,19 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.66.0 · 24/11/2026 — Thêm Vành đai 5 vào Bản đồ dự án & metro
+- Lớp **Tuyến & ga** có thêm **Vành đai 5** (`r5`), vẽ theo kiểu "vành đai quy hoạch" như VĐ3, VĐ4.
+- **Cách dựng:** tách lớp đường cao tốc/vành đai theo màu nền xanh trên tờ 16 đã gắn tọa độ, dò 16 nhãn "VD5" bằng so khớp mẫu, rồi tìm đường đi men theo mạng lưới giữa các nhãn kề nhau. Tuyến khép kín, quét đủ 360°, rút gọn còn 174 điểm (3,5 KB). Đo trên tuyến vẽ lại được khoảng 650 km — ghi rõ **không phải số liệu trong hồ sơ**.
+- **Hướng tuyến:** Chơn Thành (Bình Phước) → Định Quán – Tân Phú (Đồng Nai) → Xuân Lộc → Xuyên Mộc → ra biển ở Bình Châu – Hồ Tràm → ven biển BR-VT qua Đất Đỏ, Long Hải → Bà Rịa – Phú Mỹ → **hầm qua sông sang Cần Giờ** → vượt cửa Soài Rạp sang Gò Công → Châu Thành (Tiền Giang) → Đức Hòa (Long An) → Tây Ninh → khép về Chơn Thành.
+- Ghi chú tuyến nêu rõ hai điều dễ nhầm: phần lớn VĐ5 nằm **ngoài** ranh TP.HCM mới; và **hầm vượt biển Cần Giờ – Vũng Tàu là tuyến riêng**, không thuộc VĐ5 (tờ 07 vẽ hai tuyến tách biệt).
+- Trạng thái `nghien-cuu`, đoạn vẽ kiểu `uoc` (vẽ ước lượng), sai số vị trí khoảng 400 m.
+
+## 2.65.0 · 24/11/2026 — Mục "Bản đồ quy hoạch": thư viện các tờ bản đồ công bố
+- Trang mới `assets/tools/ban-do-quy-hoach/`, chia **3 khu**: Thành phố Hồ Chí Minh, Đồng Nai, Tây Ninh. TP.HCM có **16 tờ**: 05 hệ thống đô thị và nông thôn · 06 phát triển không gian toàn thành phố · 07 giao thông đường bộ · 08 giao thông đường thủy, đường sắt, hàng không · 10 cung cấp năng lượng và chiếu sáng · 12 cao độ nền và thoát nước mưa · 15 sử dụng đất toàn thành phố · 16 sử dụng đất khu vực đô thị · 18 không gian cây xanh mặt nước, biển, núi, rừng, sông hồ · 19 các trục không gian chính · 20 khu vực cửa ngõ, điểm nhấn, không gian tầm thấp và tầm cao · 21 bảo tồn cảnh quan và di sản văn hóa · 22 phối cảnh tổng thể · 23 phát triển kinh tế – xã hội · 24 tăng trưởng GRDP và ngành ưu tiên · 25 kinh tế tầm thấp. Hai khu còn lại dựng sẵn khung, ghi "chưa có tài liệu".
+- Mỗi tờ mở trong **trình xem phóng to được**: ô ảnh 512 px ở một nửa độ phân giải bản in (3.072 ô, 73 MB), tải theo vùng đang xem nên không tải cả tờ A0. Dùng lại Leaflet sẵn có của Bản đồ dự án, không thêm thư viện.
+- Menu **Bản đồ** thành danh sách thả xuống: *Dự án & metro* · *Bản đồ quy hoạch* (theo đúng mẫu menu Atlas đang dùng). Tab Quy hoạch trong Bản đồ dự án có link sang thư viện; tờ 16 trong thư viện có nút quay về lớp đã gắn tọa độ.
+- Thêm tờ mới = thả ô ảnh vào `to/<slug>/` và thêm một mục trong `to.json`, không sửa mã.
+
 ## 2.64.0 · 24/11/2026 — Sơ đồ sử dụng đất khu vực đô thị (QĐ 7308) thành một lớp trên Bản đồ
 - **Tab "Quy hoạch"** trong `assets/tools/ban-do-du-an-hcm/`: bật/tắt lớp, thanh độ hiện rõ, 33 mục kí hiệu đọc thẳng từ bảng chú giải của tờ bản đồ.
 - Lớp là **chính ảnh tờ 16 "Sơ đồ sử dụng đất khu vực đô thị"** đã gắn tọa độ, cắt thành ô ảnh 512 px (z7–z12, 694 ô, 12 MB, PNG bảng màu cố định nên màu không đổi). Tải theo vùng đang xem; trang chủ và các trang khác không đổi dung lượng.
