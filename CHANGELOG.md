@@ -2,6 +2,9 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## Nội dung · 24/11/2026 — Nhật san kỳ 7 (bản nháp)
+- Thêm `publications/nhat-san/2026-11-23-so-07/` (`trang-thai: nhap`): Quy hoạch tổng thể TP.HCM được công bố, TOD, Vành đai 3, Tân An – Bình Hiệp, sức mua căn hộ quý III. Kèm 4 tờ bản đồ quy hoạch, sơ đồ metro, ảnh Norton Park và bìa.
+
 ## 2.66.0 · 24/11/2026 — Thêm Vành đai 5 vào Bản đồ dự án & metro
 - Lớp **Tuyến & ga** có thêm **Vành đai 5** (`r5`), vẽ theo kiểu "vành đai quy hoạch" như VĐ3, VĐ4.
 - **Cách dựng:** tách lớp đường cao tốc/vành đai theo màu nền xanh trên tờ 16 đã gắn tọa độ, dò 16 nhãn "VD5" bằng so khớp mẫu, rồi tìm đường đi men theo mạng lưới giữa các nhãn kề nhau. Tuyến khép kín, quét đủ 360°, rút gọn còn 174 điểm (3,5 KB). Đo trên tuyến vẽ lại được khoảng 650 km — ghi rõ **không phải số liệu trong hồ sơ**.
