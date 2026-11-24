@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Bản đồ quy hoạch</title>
+<link rel="stylesheet" href="../ban-do-du-an-hcm/vendor/leaflet.css">
+<style>
+:root{--bg:#12100d;--panel:#1b1812;--line:#3a3326;--text:#f1ece0;--muted:#a89f8a;--gold:#c8993a;--font:'Segoe UI',system-ui,-apple-system,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.5}
+.hdr{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;gap:14px;align-items:center;position:sticky;top:0;z-index:10}
+.hdr a.bk{flex:none;width:34px;height:34px;display:grid;place-items:center;border:1px solid var(--line);border-radius:9px;color:var(--text);text-decoration:none;font-size:16px}
+.hdr a.bk:hover{border-color:var(--gold);color:var(--gold)}
+.hdr h1{font-size:17px;font-weight:700;color:var(--gold);line-height:1.25}
+.hdr p{font-size:12px;color:var(--muted)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 60px}
+.khu{margin-bottom:34px}
+.khu h2{font-size:15px;font-weight:700;margin-bottom:3px}
+.khu .mo{font-size:12.5px;color:var(--muted);margin-bottom:14px;max-width:760px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{display:flex;flex-direction:column;text-align:left;font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;padding:0}
+.card:hover,.card:focus-visible{border-color:var(--gold);outline:none}
+.card img{display:block;width:100%;height:auto;background:#f5f1e8}
+.card .cb{display:block;padding:10px 12px 12px}.card .cc,.card .ct{display:block}
+.card .cc{font-size:11px;letter-spacing:.08em;color:var(--gold);font-weight:700}
+.card .ct{font-size:13px;margin-top:3px;line-height:1.35}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:18px;color:var(--muted);font-size:12.5px}
+.vw{position:fixed;inset:0;background:#0d0b09;z-index:100;display:none;flex-direction:column}
+.vw.on{display:flex}
+.vb{padding:9px 14px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;gap:12px;align-items:center}
+.vb b{font-size:13.5px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vb button,.vb a{font:inherit;font-size:12px;color:var(--text);background:#15130e;border:1px solid var(--line);border-radius:7px;padding:5px 11px;cursor:pointer;text-decoration:none;flex:none}
+.vb button:hover,.vb a:hover{border-color:var(--gold);color:var(--gold)}
+#vmap{flex:1;min-height:0;background:#15130e}
+.note{font-size:11.5px;color:var(--muted);margin-top:18px;line-height:1.6;max-width:820px}
+@media(max-width:700px){.vb b{font-size:12px}}
+</style></head><body>
+<div class="hdr">
+  <a class="bk" href="../ban-do-du-an-hcm/" aria-label="Về Bản đồ dự án &amp; metro">←</a>
+  <div><h1>Bản đồ quy hoạch</h1><p>Các tờ bản đồ trong hồ sơ công bố quy hoạch · Nguyễn Anh Tú · Cẩm Nang BĐS</p></div>
+</div>
+<div class="wrap" id="wrap"></div>
+<div class="vw" id="vw" role="dialog" aria-modal="true" aria-label="Xem tờ bản đồ">
+  <div class="vb"><b id="vt"></b><a id="vl" hidden href="../ban-do-du-an-hcm/">Xem chồng trên bản đồ</a><button type="button" id="vc">Đóng</button></div>
+  <div id="vmap"></div>
+</div>
+<script src="../ban-do-du-an-hcm/vendor/leaflet.js"></script>
+<script>
+(function(){
+ var D=null,map=null,layer=null,cur=null;
+ function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+ fetch('to.json').then(function(r){return r.json()}).then(function(d){D=d;render();
+   if(location.hash.length>1)open(location.hash.slice(1))});
+ function by(slug){for(var i=0;i<D.to.length;i++)if(D.to[i].slug===slug)return D.to[i];return null}
+ function render(){
+  var h='';
+  D.khu.forEach(function(k){
+   h+='<section class="khu"><h2>'+esc(k.ten)+'</h2>'+(k.mo?'<div class="mo">'+esc(k.mo)+'</div>':'');
+   if(!k.to.length){h+='<div class="empty">Chưa có tài liệu — sẽ cập nhật khi có hồ sơ công bố.</div></section>';return}
+   h+='<div class="grid">';
+   k.to.forEach(function(s){var t=by(s);if(!t)return;
+    h+='<button type="button" class="card" data-s="'+esc(s)+'">'+
+       '<img src="anh/'+esc(s)+'.webp" alt="Thu nhỏ tờ '+esc(t.code)+' — '+esc(t.ten)+'" loading="lazy" width="520" height="368">'+
+       '<span class="cb"><span class="cc">TỜ '+esc(t.code)+'</span><span class="ct">'+esc(t.ten)+'</span></span></button>'});
+   h+='</div></section>'});
+  h+='<p class="note">Các tờ bản đồ thuộc hồ sơ công bố Quy hoạch tổng thể TP.HCM thời kỳ 2025–2050, tầm nhìn 100 năm (Quyết định 7308). Nguồn: UBND TP.HCM · đơn vị lập quy hoạch VIUP – BCG – Nikken. Ảnh hiển thị ở độ phân giải một nửa bản in để tải nhanh; hồ sơ gốc là nguồn chính thức.</p>';
+  document.getElementById('wrap').innerHTML=h;
+  Array.prototype.forEach.call(document.querySelectorAll('.card'),function(b){
+    b.addEventListener('click',function(){open(b.dataset.s)})});
+ }
+ function open(slug){
+  var t=by(slug);if(!t)return;cur=slug;
+  document.getElementById('vt').textContent='Tờ '+t.code+' — '+t.ten;
+  var lk=document.getElementById('vl');lk.hidden=(slug!=='16-su-dung-dat-khu-vuc-do-thi');
+  document.getElementById('vw').classList.add('on');
+  try{history.replaceState(null,'','#'+slug)}catch(e){}
+  if(!map){map=L.map('vmap',{crs:L.CRS.Simple,minZoom:0,zoomSnap:.25,attributionControl:false,zoomControl:true})}
+  if(layer){map.removeLayer(layer);layer=null}
+  var mz=t.maxZoom,ts=t.tileSize,uw=t.w/Math.pow(2,mz),uh=t.h/Math.pow(2,mz);
+  var bd=L.latLngBounds([[-uh,0],[0,uw]]);
+  layer=L.tileLayer('to/'+slug+'/{z}/{x}/{y}.'+t.ext,{tileSize:ts,minZoom:0,maxNativeZoom:mz,maxZoom:mz+3,
+    noWrap:true,bounds:bd,errorTileUrl:'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=='}).addTo(map);
+  map.setMaxBounds(bd.pad(.25));
+  setTimeout(function(){map.invalidateSize();map.fitBounds(bd)},30);
+ }
+ function close(){document.getElementById('vw').classList.remove('on');cur=null;
+  try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}}
+ document.getElementById('vc').addEventListener('click',close);
+ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cur)close()});
+})();
+</script></body></html>
