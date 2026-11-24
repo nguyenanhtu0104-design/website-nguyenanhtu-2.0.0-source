@@ -565,6 +565,340 @@
      }
     ]
    }
+  },
+  "artisan": {
+   "ten": "Artisan Park",
+   "ma": "Chính sách Artisan Park theo bản tính",
+   "tu": "2026-10-01",
+   "nguon": "5 phương thức thanh toán theo bản tính Artisan Park trên nguyenanhtu.vn; VAT 10% chỉ tính trên phần giá nhà, không tính tiền sử dụng đất.",
+   "tieuDe": "ARTISAN PARK · NHÀ PHỐ, SHOPHOUSE",
+   "banTinh": "/assets/tools/artisan-park-bang-tinh/",
+   "vatKpbt": 1,
+   "vat": 0.1,
+   "kpbt": 0,
+   "coc": {
+    "*": 100000000
+   },
+   "hdmbSau": 1,
+   "nhanNha": "2026-12-31",
+   "banGiao": "2026-12-31",
+   "nhan": {
+    "toa": "Dãy",
+    "tang": "Số tầng",
+    "can": "Lô số",
+    "loai": "Loại căn",
+    "dt": "Diện tích sàn",
+    "p0": "Giá bán trước VAT, trước chiết khấu",
+    "p0Phu": "giá niêm yết của lô",
+    "p": "Giá bán trước VAT, sau chiết khấu",
+    "vatPhu": "10% phần giá nhà, không tính tiền sử dụng đất",
+    "ma": "Mã lô",
+    "tPhu": "giá sau chiết khấu, đã gồm VAT"
+   },
+   "uuDai": [
+    "Ưu đãi cộng thêm (booking, gói nội thất, nhóm khách, ký HĐMB, mua sỉ) tính trong bản tính dự án.",
+    "PT01: chủ đầu tư cam kết thuê 4%/năm giá trước VAT trong 4 năm từ bàn giao."
+   ],
+   "pttt": [
+    {
+     "id": "pt01",
+     "btPt": 0,
+     "ten": "PT01 · Cam kết cho thuê",
+     "phu": "4%/năm × 4 năm",
+     "ck": [],
+     "tienDo": "pt01",
+     "tom": "Không chiết khấu · nhận tiền thuê 4%/năm × 4 năm sau bàn giao"
+    },
+    {
+     "id": "pt02",
+     "btPt": 1,
+     "ten": "PT02 · Thanh toán chuẩn",
+     "phu": "Cọc, 4 đợt 10%, bàn giao 55%",
+     "ck": [
+      {
+       "ten": "Chiết khấu PT02",
+       "tyLe": 0.02,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "pt02",
+     "tom": "Chiết khấu 2% · 40% trước bàn giao, 55% khi bàn giao"
+    },
+    {
+     "id": "pt03",
+     "btPt": 2,
+     "ten": "PT03 · Thanh toán nhanh",
+     "phu": "Cọc, 2 đợt 20%, bàn giao 55%",
+     "ck": [
+      {
+       "ten": "Chiết khấu PT03",
+       "tyLe": 0.05,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "pt03",
+     "tom": "Chiết khấu 5% · 40% trong khoảng 1,5 tháng, 55% khi bàn giao"
+    },
+    {
+     "id": "pt04",
+     "btPt": 3,
+     "ten": "PT04 · Linh hoạt 36 tháng",
+     "phu": "Nhận nhà tạm thời khi đóng 30%",
+     "ck": [],
+     "tienDo": "pt04",
+     "tom": "Đóng 30% nhận nhà tạm thời 04/2027, bàn giao chính thức 04/2029"
+    },
+    {
+     "id": "pt05",
+     "btPt": 4,
+     "ten": "PT05 · Nhàn rỗi 60 tháng",
+     "phu": "Nhận nhà tạm thời khi đóng 30%",
+     "ck": [],
+     "tienDo": "pt05",
+     "tom": "Đóng 30% nhận nhà tạm thời 04/2027, 5% mỗi 6 tháng, bàn giao chính thức 04/2031"
+    }
+   ],
+   "tienDo": {
+    "pt01": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 14,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 44
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 104
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 164
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.55,
+      "ngayCo": "2026-12-31",
+      "ngay": 224
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt02": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 14,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 44
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 104
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 164
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.55,
+      "ngayCo": "2026-12-31",
+      "ngay": 224
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt03": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.2,
+      "ngay": 14,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.2,
+      "ngay": 44
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.55,
+      "ngayCo": "2026-12-31",
+      "ngay": 74
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt04": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 14,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 164
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngayCo": "2027-04-30",
+      "ngay": 194,
+      "ngayTxt": "dự kiến 04/2027",
+      "tenDot": "Đợt 3 · bàn giao tạm thời"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.08,
+      "ngayCo": "2027-10-31",
+      "ngayTxt": "6 tháng sau bàn giao tạm thời"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.08,
+      "ngayCo": "2028-04-30",
+      "ngayTxt": "6 tháng sau đợt trước"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.08,
+      "ngayCo": "2028-10-31",
+      "ngayTxt": "6 tháng sau đợt trước"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.41,
+      "ngayCo": "2029-04-30"
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt05": [
+     {
+      "loai": "coc"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 14,
+      "truCoc": true
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 164
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngayCo": "2027-04-30",
+      "ngay": 194,
+      "ngayTxt": "dự kiến 04/2027",
+      "tenDot": "Đợt 3 · bàn giao tạm thời"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2027-10-31",
+      "ngayTxt": "6 tháng một đợt"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-04-30",
+      "ngayTxt": "6 tháng một đợt"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-10-31",
+      "ngayTxt": "6 tháng một đợt"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2029-04-30",
+      "ngayTxt": "6 tháng một đợt"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2029-10-31",
+      "ngayTxt": "6 tháng một đợt"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2030-04-30",
+      "ngayTxt": "6 tháng một đợt"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2030-10-31",
+      "ngayTxt": "6 tháng một đợt"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.3,
+      "ngayCo": "2031-04-30"
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ]
+   }
   }
  }
 }

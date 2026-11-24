@@ -1,0 +1,225 @@
+{
+ "capNhat": "2026-11-11",
+ "khu": {
+  "s": {
+   "ten": "SkySOLIS",
+   "ma": "CSBH SkySOLIS 11/11/2026",
+   "tu": "2026-11-11",
+   "nguon": "Chính sách bán hàng SkySOLIS ngày 11/11/2026 (3 phương thức thanh toán), theo bản tính SkySOLIS trên nguyenanhtu.vn.",
+   "vatKpbt": 1.12,
+   "vat": 0.1,
+   "kpbt": 0.02,
+   "coc": {
+    "*": 0
+   },
+   "hdmbSau": 1,
+   "nhanNha": "2029-06-30",
+   "banGiao": "2029-06-30",
+   "uuDai": [
+    "Chiết khấu 1% khi không nhận bảo lãnh ngân hàng (áp dụng mặc định trong phiếu).",
+    "Ưu đãi đặc quyền ngành giáo dục và khu vực 1%; nhóm mua chung 2 sản phẩm 1%, 3 sản phẩm 2%: tính trong bản tính dự án.",
+    "Ký quỹ 5% giá bán chưa VAT; VAT của phần ký quỹ đóng ở đợt ký HĐMB, VAT của 5% cấp sổ đóng ở đợt bàn giao."
+   ],
+   "pttt": [
+    {
+     "id": "chuan",
+     "ten": "Thanh toán chuẩn",
+     "phu": "Ký quỹ 5%, HĐMB 15%, 6 đợt 5%/quý, bàn giao 45%",
+     "ck": [
+      {
+       "ten": "Chiết khấu không nhận bảo lãnh ngân hàng",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      },
+      {
+       "ten": "Chiết khấu PTTT chuẩn",
+       "tyLe": 0.03,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "chuan",
+     "tom": "Chiết khấu 3% + 1% · ký quỹ 5%, HĐMB 06/2027, 5% mỗi quý đến 12/2028"
+    },
+    {
+     "id": "nhanh",
+     "ten": "Thanh toán nhanh",
+     "phu": "Ký quỹ 5%, HĐMB 45%, bàn giao 45%",
+     "ck": [
+      {
+       "ten": "Chiết khấu không nhận bảo lãnh ngân hàng",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      },
+      {
+       "ten": "Chiết khấu PTTT nhanh",
+       "tyLe": 0.08,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "nhanh",
+     "tom": "Chiết khấu 8% + 1% · đóng 50% đến khi ký HĐMB 06/2027"
+    },
+    {
+     "id": "nh",
+     "ten": "Vay ngân hàng",
+     "phu": "Tự có 25%, ngân hàng giải ngân 75%",
+     "ck": [
+      {
+       "ten": "Chiết khấu không nhận bảo lãnh ngân hàng",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "nh",
+     "tom": "Chiết khấu 1% · tự có 25%, ngân hàng giải ngân 30% khi ký HĐMB và 45% khi bàn giao"
+    }
+   ],
+   "tienDo": {
+    "chuan": [
+     {
+      "loai": "kyQuy",
+      "pt": 0.05,
+      "ngayCo": "2026-10-01",
+      "tenDot": "Ký thỏa thuận ký quỹ",
+      "ghi": "5% giá bán chưa VAT"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "vatThem": 0.05,
+      "ngayCo": "2027-06-01",
+      "ngayTxt": "dự kiến 06/2027",
+      "tenDot": "Đợt 1 · ký HĐMB",
+      "ghi": "15% gồm VAT + VAT của đợt ký quỹ"
+     },
+     {
+      "loai": "hdmb",
+      "ngayCo": "2027-06-01"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2027-09-01",
+      "ngayTxt": "tháng 09/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2027-12-01",
+      "ngayTxt": "tháng 12/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-03-01",
+      "ngayTxt": "tháng 03/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-06-01",
+      "ngayTxt": "tháng 06/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-09-01",
+      "ngayTxt": "tháng 09/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-12-01",
+      "ngayTxt": "tháng 12/2028"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.45,
+      "vatThem": 0.05
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05,
+      "chuaVat": true
+     }
+    ],
+    "nhanh": [
+     {
+      "loai": "kyQuy",
+      "pt": 0.05,
+      "ngayCo": "2026-10-01",
+      "tenDot": "Ký thỏa thuận ký quỹ",
+      "ghi": "5% giá bán chưa VAT"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.45,
+      "vatThem": 0.05,
+      "ngayCo": "2027-06-01",
+      "ngayTxt": "dự kiến 06/2027",
+      "tenDot": "Đợt 1 · ký HĐMB",
+      "ghi": "45% gồm VAT + VAT của đợt ký quỹ"
+     },
+     {
+      "loai": "hdmb",
+      "ngayCo": "2027-06-01"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.45,
+      "vatThem": 0.05
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05,
+      "chuaVat": true
+     }
+    ],
+    "nh": [
+     {
+      "loai": "kyQuy",
+      "pt": 0.05,
+      "ngayCo": "2026-10-01",
+      "tenDot": "Ký thỏa thuận ký quỹ",
+      "ghi": "5% giá bán chưa VAT"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "vatThem": 0.05,
+      "ngayCo": "2027-06-01",
+      "ngayTxt": "dự kiến 06/2027",
+      "tenDot": "Đợt 1 · ký HĐMB, vốn tự có",
+      "ghi": "15% gồm VAT + VAT của đợt ký quỹ"
+     },
+     {
+      "loai": "hdmb",
+      "ngayCo": "2027-06-01"
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.3,
+      "ngayCo": "2027-06-01",
+      "ghi": "ngân hàng giải ngân 30% gồm VAT khi ký HĐMB"
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.45,
+      "theo": "banGiao",
+      "ghi": "ngân hàng giải ngân 45% gồm VAT khi bàn giao"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0,
+      "vatThem": 0.05
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05,
+      "chuaVat": true
+     }
+    ]
+   }
+  }
+ }
+}

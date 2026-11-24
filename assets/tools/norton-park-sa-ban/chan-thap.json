@@ -1,0 +1,23 @@
+{
+ "nguon": "Khung đặt mặt bằng tầng theo đường bao 6 toà trên mặt bằng tổng thể Norton Park (bản tính dự án).",
+ "khoi": {
+  "b": {
+   "tam": [
+    462.12,
+    191.08
+   ],
+   "rong": 182.93,
+   "cao": 129.76,
+   "xoay": -81.161
+  },
+  "c": {
+   "tam": [
+    462.12,
+    191.08
+   ],
+   "rong": 182.93,
+   "cao": 129.76,
+   "xoay": -81.161
+  }
+ }
+}

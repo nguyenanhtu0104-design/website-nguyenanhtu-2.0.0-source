@@ -1,0 +1,77 @@
+{
+ "nguon": "Layout căn hộ trong brochure SkySOLIS (10/2026), diện tích tim tường.",
+ "khu": {
+  "s": [
+   {
+    "id": "stu",
+    "loai": "STU",
+    "ten": "Studio · mẫu A1.2",
+    "timTuong": 35.5,
+    "thongThuy": null,
+    "anh": "layout/stu.webp",
+    "w": 1000,
+    "h": 1102
+   },
+   {
+    "id": "2br1",
+    "loai": "2BR1",
+    "ten": "2PN1WC · mẫu B1.1",
+    "timTuong": 70.6,
+    "thongThuy": null,
+    "anh": "layout/2br1.webp",
+    "w": 1000,
+    "h": 1102
+   },
+   {
+    "id": "2br",
+    "loai": "2BR",
+    "ten": "2PN2WC · mẫu C3.1",
+    "timTuong": 81.2,
+    "thongThuy": null,
+    "anh": "layout/2br.webp",
+    "w": 1000,
+    "h": 1102
+   },
+   {
+    "id": "3br",
+    "loai": "3BR",
+    "ten": "3PN2WC · mẫu D1.1a",
+    "timTuong": 102.8,
+    "thongThuy": null,
+    "anh": "layout/3br.webp",
+    "w": 1000,
+    "h": 1102
+   },
+   {
+    "id": "sv",
+    "loai": "SV",
+    "ten": "Sky Villa · mẫu E1.1",
+    "timTuong": 131.9,
+    "thongThuy": null,
+    "anh": "layout/sv.webp",
+    "w": 1000,
+    "h": 1102
+   },
+   {
+    "id": "mu",
+    "loai": "MU",
+    "ten": "Mixed Use · mẫu X1.1a",
+    "timTuong": 59.8,
+    "thongThuy": null,
+    "anh": "layout/mu.webp",
+    "w": 1000,
+    "h": 1102
+   },
+   {
+    "id": "dk",
+    "loai": "DK",
+    "ten": "Dual Key · mẫu Z10.1",
+    "timTuong": 116.0,
+    "thongThuy": null,
+    "anh": "layout/dk.webp",
+    "w": 1000,
+    "h": 1102
+   }
+  ]
+ }
+}

@@ -166,12 +166,26 @@
     "saBanTrang": "index.html#da=masterise-thanh-da"
   },
   "norton-park": {
-    "saBan": "vung-binh-duong",
-    "saBanTrang": "index.html#da=norton-park"
+    "saBan": "norton-park-sa-ban",
+    "saBanTrang": "index.html",
+    "primaryCount": null,
+    "secondaryCount": null,
+    "meanAskingVnd": null,
+    "inventoryUrl": null,
+    "updatedAt": "2026-11-24",
+    "snapshotDate": "2026-11-24",
+    "ghiChu": "Sa bàn riêng theo khung Nam Mekong: 645 căn phân khu B (B1, B2, B3), giá từ theo khung giá thị trường của bản tính; chưa có tình trạng còn/đã bán từng căn."
   },
   "skysolis": {
-    "saBan": "vung-binh-duong",
-    "saBanTrang": "index.html#da=skysolis"
+    "saBan": "skysolis-sa-ban",
+    "saBanTrang": "index.html",
+    "primaryCount": 30,
+    "secondaryCount": null,
+    "meanAskingVnd": null,
+    "inventoryUrl": null,
+    "updatedAt": "2026-11-11",
+    "snapshotDate": "2026-11-11",
+    "ghiChu": "Sa bàn riêng theo khung Nam Mekong: 1.081 căn ba tháp; 30 căn rổ hàng chung CSBH 11/11/2026 thắp sáng, có giá và phiếu tính giá."
   },
   "setia-edenia": {
     "saBan": "vung-binh-duong",

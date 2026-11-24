@@ -1,0 +1,388 @@
+{
+ "capNhat": "2026-11-24",
+ "khu": {
+  "b": {
+   "ten": "Norton Park",
+   "ma": "Chính sách theo bản tính Norton Park 10/2026",
+   "tu": "2026-10-01",
+   "nguon": "5 phương thức thanh toán và chiết khấu theo bản tính Norton Park trên nguyenanhtu.vn (thông tin thị trường đợt kick-off 10/2026). Giá từ theo khung giá thị trường, chưa phải báo giá chính thức.",
+   "vatKpbt": 1.12,
+   "vat": 0.1,
+   "kpbt": 0.02,
+   "coc": {
+    "*": 0
+   },
+   "hdmbSau": 1,
+   "nhanNha": "2029-09-30",
+   "banGiao": "2029-09-30",
+   "uuDai": [
+    "Chiết khấu booking sớm 1% áp dụng chung cho các phương thức, trừ sau chiết khấu phương thức.",
+    "Giá từ tính theo đơn giá thấp nhất của loại căn ở từng tháp trong khung giá thị trường; căn sân vườn, duplex sân vườn chưa có giá.",
+    "Phương thức vay: ngân hàng giải ngân 75% theo tiến độ, chưa có thông tin hỗ trợ lãi suất."
+   ],
+   "pttt": [
+    {
+     "id": "pt01",
+     "ten": "PT 01 · Thanh toán chuẩn",
+     "phu": "15% ký HĐMB, 3 tháng một đợt, 35% bàn giao",
+     "ck": [
+      {
+       "ten": "Chiết khấu phương thức 01",
+       "tyLe": 0.05,
+       "luc": "HĐMB"
+      },
+      {
+       "ten": "Chiết khấu booking sớm",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "pt01",
+     "tom": "Chiết khấu 5% + booking 1% · 15% ký HĐMB, giãn 3 tháng một đợt đến bàn giao"
+    },
+    {
+     "id": "pt02",
+     "ten": "PT 02 · 10% ký HĐMB, 10 điểm",
+     "phu": "10% ký HĐMB, 10 lần thanh toán",
+     "ck": [
+      {
+       "ten": "Chiết khấu phương thức 02",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      },
+      {
+       "ten": "Chiết khấu booking sớm",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "pt02",
+     "tom": "Chiết khấu 1% + booking 1% · 10% ký HĐMB, 10 lần thanh toán"
+    },
+    {
+     "id": "pt03",
+     "ten": "PT 03 · Nửa năm vô ưu",
+     "phu": "10% ký HĐMB, 6 tháng một đợt",
+     "ck": [
+      {
+       "ten": "Chiết khấu phương thức 03",
+       "tyLe": 0.02,
+       "luc": "HĐMB"
+      },
+      {
+       "ten": "Chiết khấu booking sớm",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "pt03",
+     "tom": "Chiết khấu 2% + booking 1% · 10% ký HĐMB, 6 tháng một đợt"
+    },
+    {
+     "id": "pt04",
+     "ten": "PT 04 · Thanh toán nhanh",
+     "phu": "70% trong 9 tháng",
+     "ck": [
+      {
+       "ten": "Chiết khấu phương thức 04",
+       "tyLe": 0.1,
+       "luc": "HĐMB"
+      },
+      {
+       "ten": "Chiết khấu booking sớm",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "pt04",
+     "tom": "Chiết khấu 10% + booking 1% · đóng 70% đến 09/2027"
+    },
+    {
+     "id": "pt05",
+     "ten": "PT 05 · Vay ngân hàng",
+     "phu": "Tự có 25%, ngân hàng giải ngân 75%",
+     "ck": [
+      {
+       "ten": "Chiết khấu booking sớm",
+       "tyLe": 0.01,
+       "luc": "HĐMB"
+      }
+     ],
+     "tienDo": "pt05",
+     "tom": "Booking 1% · tự có 10% ký HĐMB, ngân hàng giải ngân 75% theo tiến độ"
+    }
+   ],
+   "tienDo": {
+    "pt01": [
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "ngay": 1,
+      "tenDot": "Đặt cọc và ký HĐMB"
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngayCo": "2027-03-01",
+      "ngayTxt": "tháng 03/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngayCo": "2027-06-01",
+      "ngayTxt": "tháng 06/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngayCo": "2027-09-01",
+      "ngayTxt": "tháng 09/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngayCo": "2027-12-01",
+      "ngayTxt": "tháng 12/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.02,
+      "ngayCo": "2028-03-01",
+      "ngayTxt": "tháng 03/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-06-01",
+      "ngayTxt": "tháng 06/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-09-01",
+      "ngayTxt": "tháng 09/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-12-01",
+      "ngayTxt": "tháng 12/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngayCo": "2029-03-01",
+      "ngayTxt": "tháng 03/2029"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngayCo": "2029-06-01",
+      "ngayTxt": "tháng 06/2029"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.35
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt02": [
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 1,
+      "tenDot": "Đặt cọc và ký HĐMB"
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2027-06-01",
+      "ngayTxt": "tháng 06/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2027-12-01",
+      "ngayTxt": "tháng 12/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-06-01",
+      "ngayTxt": "tháng 06/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2028-09-01",
+      "ngayTxt": "tháng 09/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngayCo": "2028-12-01",
+      "ngayTxt": "tháng 12/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngayCo": "2029-03-01",
+      "ngayTxt": "tháng 03/2029"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngayCo": "2029-06-01",
+      "ngayTxt": "tháng 06/2029"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.35
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt03": [
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 1,
+      "tenDot": "Đặt cọc và ký HĐMB"
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2027-06-01",
+      "ngayTxt": "tháng 06/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.05,
+      "ngayCo": "2027-12-01",
+      "ngayTxt": "tháng 12/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "ngayCo": "2028-06-01",
+      "ngayTxt": "tháng 06/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "ngayCo": "2028-12-01",
+      "ngayTxt": "tháng 12/2028"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "ngayCo": "2029-06-01",
+      "ngayTxt": "tháng 06/2029"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.3
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt04": [
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "ngay": 1,
+      "tenDot": "Đặt cọc và ký HĐMB"
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.2,
+      "ngayCo": "2027-03-01",
+      "ngayTxt": "tháng 03/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.2,
+      "ngayCo": "2027-06-01",
+      "ngayTxt": "tháng 06/2027"
+     },
+     {
+      "loai": "dot",
+      "pt": 0.15,
+      "ngayCo": "2027-09-01",
+      "ngayTxt": "tháng 09/2027"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.25
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ],
+    "pt05": [
+     {
+      "loai": "dot",
+      "pt": 0.1,
+      "ngay": 1,
+      "tenDot": "Đặt cọc và ký HĐMB"
+     },
+     {
+      "loai": "hdmb"
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.2,
+      "ngayCo": "2027-09-01",
+      "ghi": "ngân hàng giải ngân tháng 09/2027"
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.2,
+      "ngayCo": "2027-12-01",
+      "ghi": "ngân hàng giải ngân tháng 12/2027"
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.2,
+      "ngayCo": "2028-03-01",
+      "ghi": "ngân hàng giải ngân tháng 03/2028"
+     },
+     {
+      "loai": "nganHang",
+      "pt": 0.15,
+      "theo": "banGiao",
+      "ghi": "ngân hàng giải ngân khi bàn giao"
+     },
+     {
+      "loai": "banGiao",
+      "pt": 0.1
+     },
+     {
+      "loai": "gcn",
+      "pt": 0.05
+     }
+    ]
+   }
+  }
+ }
+}

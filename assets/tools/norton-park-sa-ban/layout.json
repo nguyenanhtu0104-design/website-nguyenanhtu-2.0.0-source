@@ -1,0 +1,324 @@
+{
+ "nguon": "Layout mẫu căn của chủ đầu tư (leaflet Norton Park).",
+ "khu": {
+  "b": [
+   {
+    "id": "a1-1a",
+    "loai": "1BR+",
+    "ten": "A1.1A · A1.1B · A1.1C · A1.3A · A1.3B · A2.1A · A2.1B · A2.2C",
+    "mau": [
+     "A1.1A",
+     "A1.1B",
+     "A1.1C",
+     "A1.3A",
+     "A1.3B",
+     "A2.1A",
+     "A2.1B",
+     "A2.2C"
+    ],
+    "thongThuy": 46.57,
+    "timTuong": 50.65,
+    "anh": "layout/mau-a1-1a.webp",
+    "w": 708,
+    "h": 1100
+   },
+   {
+    "id": "a1-1c-pes",
+    "loai": "1BR+-SV",
+    "ten": "A1.1C.PES",
+    "mau": [
+     "A1.1C.PES"
+    ],
+    "thongThuy": 47.15,
+    "timTuong": 51.08,
+    "anh": "layout/mau-a1-1c-pes.webp",
+    "w": 533,
+    "h": 1100
+   },
+   {
+    "id": "b1-4a",
+    "loai": "2BR",
+    "ten": "B1.1A · B1.1B · B1.4A · B1.4B",
+    "mau": [
+     "B1.1A",
+     "B1.1B",
+     "B1.4A",
+     "B1.4B"
+    ],
+    "thongThuy": 67.66,
+    "timTuong": 73.1,
+    "anh": "layout/mau-b1-4a.webp",
+    "w": 1018,
+    "h": 1100
+   },
+   {
+    "id": "b1-3a",
+    "loai": "2BR",
+    "ten": "B1.3A · B1.3B · B1.3C",
+    "mau": [
+     "B1.3A",
+     "B1.3B",
+     "B1.3C"
+    ],
+    "thongThuy": 66.8,
+    "timTuong": 72.46,
+    "anh": "layout/mau-b1-3a.webp",
+    "w": 1072,
+    "h": 1100
+   },
+   {
+    "id": "b1-3c-pes",
+    "loai": "2BR-SV",
+    "ten": "B1.3C.PES",
+    "mau": [
+     "B1.3C.PES"
+    ],
+    "thongThuy": 66.82,
+    "timTuong": 72.22,
+    "anh": "layout/mau-b1-3c-pes.webp",
+    "w": 790,
+    "h": 1100
+   },
+   {
+    "id": "b2-2a",
+    "loai": "2BR+",
+    "ten": "B2.1A · B2.1B · B2.2A",
+    "mau": [
+     "B2.1A",
+     "B2.1B",
+     "B2.2A"
+    ],
+    "thongThuy": 79.96,
+    "timTuong": 86.93,
+    "anh": "layout/mau-b2-2a.webp",
+    "w": 1100,
+    "h": 1004
+   },
+   {
+    "id": "b3-1a",
+    "loai": "2BR",
+    "ten": "B3.1A · B3.1B · B3.1C",
+    "mau": [
+     "B3.1A",
+     "B3.1B",
+     "B3.1C"
+    ],
+    "thongThuy": 70.93,
+    "timTuong": 76.85,
+    "anh": "layout/mau-b3-1a.webp",
+    "w": 1043,
+    "h": 1100
+   },
+   {
+    "id": "b3-1c-pes",
+    "loai": "2BR-SV",
+    "ten": "B3.1C.PES",
+    "mau": [
+     "B3.1C.PES"
+    ],
+    "thongThuy": 70.9,
+    "timTuong": 76.39,
+    "anh": "layout/mau-b3-1c-pes.webp",
+    "w": 1100,
+    "h": 1020
+   },
+   {
+    "id": "b4-1a",
+    "loai": "2BR",
+    "ten": "B4.1A · B4.1B",
+    "mau": [
+     "B4.1A",
+     "B4.1B"
+    ],
+    "thongThuy": 69.96,
+    "timTuong": 76.49,
+    "anh": "layout/mau-b4-1a.webp",
+    "w": 1100,
+    "h": 1039
+   },
+   {
+    "id": "b5-1a",
+    "loai": "2BR",
+    "ten": "B5.1A · B5.1B · B5.2A · B5.2B · B5.2C",
+    "mau": [
+     "B5.1A",
+     "B5.1B",
+     "B5.2A",
+     "B5.2B",
+     "B5.2C"
+    ],
+    "thongThuy": 60.95,
+    "timTuong": 66.38,
+    "anh": "layout/mau-b5-1a.webp",
+    "w": 1084,
+    "h": 1100
+   },
+   {
+    "id": "b6-1a",
+    "loai": "2BR",
+    "ten": "B6.1A · B6.1B · B6.1C",
+    "mau": [
+     "B6.1A",
+     "B6.1B",
+     "B6.1C"
+    ],
+    "thongThuy": 66.37,
+    "timTuong": 71.94,
+    "anh": "layout/mau-b6-1a.webp",
+    "w": 944,
+    "h": 1100
+   },
+   {
+    "id": "b6-1c-pes",
+    "loai": "2BR-SV",
+    "ten": "B6.1C.PES",
+    "mau": [
+     "B6.1C.PES"
+    ],
+    "thongThuy": 66.57,
+    "timTuong": 71.84,
+    "anh": "layout/mau-b6-1c-pes.webp",
+    "w": 1100,
+    "h": 751
+   },
+   {
+    "id": "c1-1a",
+    "loai": "3BR",
+    "ten": "C1.1A · C1.1B",
+    "mau": [
+     "C1.1A",
+     "C1.1B"
+    ],
+    "thongThuy": 88.7,
+    "timTuong": 95.36,
+    "anh": "layout/mau-c1-1a.webp",
+    "w": 1100,
+    "h": 804
+   },
+   {
+    "id": "c2-1a",
+    "loai": "3BR",
+    "ten": "C2.1A · C2.1B",
+    "mau": [
+     "C2.1A",
+     "C2.1B"
+    ],
+    "thongThuy": 99.78,
+    "timTuong": 106.82,
+    "anh": "layout/mau-c2-1a.webp",
+    "w": 1100,
+    "h": 866
+   },
+   {
+    "id": "c3-1a",
+    "loai": "3BR",
+    "ten": "C3.1A · C3.1B · C3.1C",
+    "mau": [
+     "C3.1A",
+     "C3.1B",
+     "C3.1C"
+    ],
+    "thongThuy": 89.02,
+    "timTuong": 95.63,
+    "anh": "layout/mau-c3-1a.webp",
+    "w": 1100,
+    "h": 675
+   },
+   {
+    "id": "c3-1c-pes",
+    "loai": "3BR-SV",
+    "ten": "C3.1C.PES",
+    "mau": [
+     "C3.1C.PES"
+    ],
+    "thongThuy": 88.55,
+    "timTuong": 95.44,
+    "anh": "layout/mau-c3-1c-pes.webp",
+    "w": 1100,
+    "h": 823
+   },
+   {
+    "id": "c4-1a",
+    "loai": "3BR",
+    "ten": "C4.1A · C4.1B",
+    "mau": [
+     "C4.1A",
+     "C4.1B"
+    ],
+    "thongThuy": 106.54,
+    "timTuong": 113.65,
+    "anh": "layout/mau-c4-1a.webp",
+    "w": 1100,
+    "h": 741
+   },
+   {
+    "id": "c5-1a",
+    "loai": "3BR",
+    "ten": "C5.1A · C5.1B",
+    "mau": [
+     "C5.1A",
+     "C5.1B"
+    ],
+    "thongThuy": 93.5,
+    "timTuong": 100.54,
+    "anh": "layout/mau-c5-1a.webp",
+    "w": 1100,
+    "h": 931
+   },
+   {
+    "id": "d1-1b",
+    "loai": "DUP",
+    "ten": "D1.1B",
+    "mau": [
+     "D1.1B"
+    ],
+    "thongThuy": 128.56,
+    "timTuong": 140.21,
+    "anh": "layout/mau-d1-1b.webp",
+    "w": 1500,
+    "h": 748
+   },
+   {
+    "id": "d1-1c",
+    "loai": "DUP-SV",
+    "ten": "D1.1C",
+    "mau": [
+     "D1.1C"
+    ],
+    "thongThuy": 128.96,
+    "timTuong": 139.86,
+    "anh": "layout/mau-d1-1c.webp",
+    "w": 1500,
+    "h": 830
+   },
+   {
+    "id": "d2-1c",
+    "loai": "DUP",
+    "ten": "D2.1C",
+    "mau": [
+     "D2.1C"
+    ],
+    "thongThuy": 143.01,
+    "timTuong": 156.07,
+    "anh": "layout/mau-d2-1c.webp",
+    "w": 1500,
+    "h": 686
+   },
+   {
+    "id": "st1-1a",
+    "loai": "STU",
+    "ten": "ST1.1A · ST1.1B · ST1.1C",
+    "mau": [
+     "ST1.1A",
+     "ST1.1B",
+     "ST1.1C"
+    ],
+    "thongThuy": 38.13,
+    "timTuong": 42.12,
+    "anh": "layout/mau-st1-1a.webp",
+    "w": 603,
+    "h": 1100
+   }
+  ]
+ }
+}

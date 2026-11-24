@@ -383,3 +383,21 @@ ol.pv li{margin:6px 0}
  #touchHint{top:44%}
 }
 @media (max-width:860px){ .tb.sel{display:none} }
+/* 2.62.0 — rổ hàng sống, lọc còn trống, số căn trống trên thanh tầng */
+.rohang{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0 10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#ffffff08}
+.rohang .btn{padding:6px 12px;font-size:12.5px;white-space:nowrap}
+.tt.ban{background:rgba(160,160,160,.16);color:#b9b6ae}
+.rogia .tt{display:block;width:max-content;margin:2px 0 0 auto;font-size:10.5px}
+.fb .ntr{font-style:normal;display:inline-block;margin-left:4px;min-width:15px;padding:0 4px;border-radius:8px;background:#3f9a5c;color:#fff;font-size:10px;line-height:15px;text-align:center}
+/* điện thoại: gọn nút — Nắng, Khối 3D, Metro, giờ nắng, độ cao, nền, ranh, Tối, thu phóng gộp vào nút "Thêm" */
+.bb.them{display:none}
+@media (max-width:860px){
+ .bb.them{display:inline-flex}
+ #app:not(.them-mo) .bottombar .docao,#app:not(.them-mo) .bottombar .time,#app:not(.them-mo) #bBase,#app:not(.them-mo) #bRanh,
+ #app:not(.them-mo) .rail [data-rail=env],#app:not(.them-mo) .rail [data-rail=blocks],#app:not(.them-mo) .rail [data-rail=metro],
+ #app:not(.them-mo) #bNight,#app:not(.them-mo) .tools{display:none!important}
+ #app.them-mo .bottombar{flex-wrap:wrap;overflow:visible;row-gap:6px}
+ #app.them-mo .bb.them{border-color:var(--gold);color:var(--gold)}
+ #app.them-mo #compass{display:none}
+ .bb.them span{display:inline!important}
+}
