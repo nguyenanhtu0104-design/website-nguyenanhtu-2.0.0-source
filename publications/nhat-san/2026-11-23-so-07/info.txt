@@ -3,4 +3,4 @@ so: 07
 ngay: 2026-11-23
 mo-ta: Nhật san BĐS kỳ 7 (23/11/2026): TP.HCM công bố Quy hoạch tổng thể 2025–2050 tầm nhìn 100 năm cùng bộ bản đồ quy hoạch, ranh giới TOD quanh ga metro, tiến độ Vành đai 3, mốc khởi công đường Tân An – Bình Hiệp và sức mua căn hộ. Điểm tin 16–22/11/2026.
 trich-doan: Quy hoạch tổng thể TP.HCM 2025–2050 đã được công bố cùng bộ bản đồ quy hoạch. Nhưng với người mua nhà, câu hỏi sát sườn nằm ở đoạn đường từ cửa nhà đến ga, từ nút giao đến nơi làm việc. Kỳ này điểm lại ranh giới TOD, mốc 30/11 của Vành đai 3, khởi công đường Tân An – Bình Hiệp và sức mua căn hộ quý III.
-trang-thai: nhap
+trang-thai: cong-bo
