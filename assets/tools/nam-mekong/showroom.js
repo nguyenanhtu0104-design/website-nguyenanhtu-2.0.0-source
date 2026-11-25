@@ -1618,7 +1618,7 @@ function showTip(id, x, y) {
 // Điều khiển kiểu Google Maps:
 //   chuột: kéo trái = trượt bản đồ (điểm dưới con trỏ bám theo tay); kéo phải, kéo giữa hoặc Ctrl/Shift + kéo = xoay và nghiêng;
 //          lăn chuột = thu phóng về phía con trỏ; nhấp đúp vào nền = phóng to tại chỗ.
-//   cảm ứng: một ngón = trượt; hai ngón chụm/mở = thu phóng, xoay hai ngón = xoay, hai ngón cùng vuốt dọc = nghiêng.
+//   cảm ứng: một ngón = di chuyển (điểm dưới ngón tay bám theo tay); hai ngón chụm/mở = chỉ thu phóng.
 const ptrs = new Map(); let down = null, hai = null;
 const GIOI_HAN = { x0: -2600, x1: 3600, y0: -2600, y1: 3200 };
 function tiaMatDat(cx, cy, h = 0) {
@@ -1652,12 +1652,12 @@ canvas.addEventListener('pointerdown', e => {
   canvas.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY });
   Object.assign(T, { tx: C.tx, ty: C.ty, dist: C.dist, yaw: C.yaw, pitch: C.pitch });   // dừng mọi chuyển động bay
   if (ptrs.size === 1) {
-    const xoay = e.button === 2 || e.button === 1 || e.ctrlKey || e.shiftKey || e.altKey || e.metaKey;
+    const xoay = e.pointerType !== 'touch' && (e.button === 2 || e.button === 1 || e.ctrlKey || e.shiftKey || e.altKey || e.metaKey);
     down = { x: e.clientX, y: e.clientY, t: performance.now(), moved: false, touch: e.pointerType === 'touch', xoay, g0: xoay ? null : tiaMatDat(e.clientX, e.clientY) };
   } else if (ptrs.size === 2) {
     down && (down.moved = true);
     const [a, b] = [...ptrs.values()];
-    hai = { d: Math.hypot(a.x - b.x, a.y - b.y), goc: Math.atan2(b.y - a.y, b.x - a.x), cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2, ya: a.y, yb: b.y };
+    hai = { d: Math.hypot(a.x - b.x, a.y - b.y), cx: (a.x + b.x) / 2, cy: (a.y + b.y) / 2 };
     hai.g0 = tiaMatDat(hai.cx, hai.cy);
   }
 });
@@ -1666,23 +1666,17 @@ canvas.addEventListener('pointermove', e => {
   if (!p) { if (e.pointerType === 'mouse') hoverReq = { x: e.clientX, y: e.clientY }; return; }
   const dx = e.clientX - p.x, dy = e.clientY - p.y; p.x = e.clientX; p.y = e.clientY;
   if (ptrs.size >= 2 && hai) {
-    const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), goc = Math.atan2(b.y - a.y, b.x - a.x), cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
-    const dya = a.y - hai.ya, dyb = b.y - hai.yb;
-    // hai ngón cùng vuốt dọc, khoảng cách và góc gần như không đổi: nghiêng
-    if (Math.sign(dya) === Math.sign(dyb) && Math.abs(dya - dyb) < 6 && Math.abs(d - hai.d) < 8 && Math.abs(cy - hai.cy) > Math.abs(cx - hai.cx)) {
-      T.pitch = C.pitch = Math.max(.2, Math.min(1.5, C.pitch + (cy - hai.cy) * .006));
-    } else {
-      T.dist = C.dist = Math.max(28, Math.min(XA_NHAT, C.dist * hai.d / Math.max(10, d)));
-      let dg = goc - hai.goc; if (dg > Math.PI) dg -= 2 * Math.PI; if (dg < -Math.PI) dg += 2 * Math.PI;
-      T.yaw = C.yaw = C.yaw - dg;
-      keoTheoDiem(hai.g0, cx, cy);
-    }
-    Object.assign(hai, { d, goc, cx, cy, ya: a.y, yb: b.y }); hai.g0 = tiaMatDat(cx, cy);
+    // hai ngón: chỉ thu phóng. Điểm đất dưới giữa hai ngón giữ nguyên dưới ngón tay; không xoay, không nghiêng.
+    const [a, b] = [...ptrs.values()], d = Math.hypot(a.x - b.x, a.y - b.y), cx = (a.x + b.x) / 2, cy = (a.y + b.y) / 2;
+    T.dist = C.dist = Math.max(28, Math.min(XA_NHAT, C.dist * hai.d / Math.max(10, d)));
+    keoTheoDiem(hai.g0, cx, cy);
+    Object.assign(hai, { d, cx, cy }); hai.g0 = tiaMatDat(cx, cy);
     dirty = true; return;
   }
   if (!down) return;
   if (!down.moved && Math.hypot(e.clientX - down.x, e.clientY - down.y) > (down.touch ? 14 : 6)) { down.moved = true; canvas.classList.add('drag'); $('#tip').hidden = true; }
   if (!down.moved) return;
+  // một ngón (hoặc chuột trái): điểm đất dưới ngón tay bám theo tay, nên bản đồ đi theo đúng chiều tay kéo
   if (down.xoay) { T.yaw = C.yaw = C.yaw + dx * .006; T.pitch = C.pitch = Math.max(.2, Math.min(1.5, C.pitch + dy * .005)); }
   else if (down.g0) keoTheoDiem(down.g0, e.clientX, e.clientY);
   else pan(dx, dy);

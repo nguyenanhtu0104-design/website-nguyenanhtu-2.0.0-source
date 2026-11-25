@@ -1,5 +1,5 @@
 {
-  "version": "2.66.0",
+  "version": "2.67.0",
   "danhGia": { "congBo": true, "ghiChu": "false = bản xem thử: không có trong menu, không có nút ở bài dự án, gắn noindex; điểm chuyên gia nháp (duyet:false) vẫn hiện để xem thử. Đổi thành true khi công bố — khi đó chỉ điểm chuyên gia duyet:true mới hiện." },
   "timNha": { "congBo": true, "ghiChu": "false = chưa công bố: không có trong menu, không có liên kết từ bài, gắn noindex; trang vẫn tạo để xem thử qua link trực tiếp. Đổi thành true khi muốn công bố." },
   "ctaCategories": [
@@ -7,8 +7,7 @@
   ],
   "embedHosts": [
     "360nmkbd.tech3art.com",
-    "360.skysolis.my",
-    "360blancacity.com"
+    "360.skysolis.my"
   ],
   "siteName": "Cẩm Nang Bất Động Sản",
   "siteTitle": "Nguyễn Anh Tú | Cẩm nang bất động sản Đông Nam Bộ",

@@ -2,10 +2,12 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
-## Nội dung · 25/11/2026 — Tham quan 360° cho Blanca City và 5 phân khu
-- Thêm khối `.p-360` (chế độ mở tab mới) trỏ tới bản 360° chính thức `360blancacity.com` vào bài Blanca City và 5 phân khu (Casa Villa, Beacon Tower, Beachtro Tower, Cụm B1·B2·B3, Cụm B5·B6·B7). Ảnh nền: `blanca-city/01` (ảnh sa bàn 3D). Đường dẫn bỏ tham số theo dõi `utm_*`/`zarsrc`.
-- Thêm host `360blancacity.com` vào `embedHosts` (Tú gửi link để dùng).
-- Thêm ảnh phối cảnh vào 6 bài (`blanca-city/02`–`06`), dựng phẳng từ các cảnh 360° của tour; chú thích ghi rõ nguồn chủ đầu tư. Vị trí cụm B1·B2·B3 (phía đông) và B5·B6·B7 (phía tây) theo nhãn trong tour.
+## 2.67.0 · 25/11/2026 — Sa bàn 3D trên màn hình cảm ứng: một ngón di chuyển, hai ngón thu phóng
+- **Một ngón:** kéo để di chuyển. Điểm đất dưới ngón tay bám theo tay, nên bản đồ đi theo đúng chiều tay kéo.
+- **Hai ngón:** chụm để thu nhỏ, mở để phóng to. Không còn xoay và nghiêng bằng hai ngón, để tránh nhầm với thao tác di chuyển.
+- **Chuột:** kéo trái để di chuyển, lăn chuột để thu phóng về phía con trỏ. Chuột phải hoặc Ctrl + kéo vẫn để xoay và nghiêng.
+- Áp dụng cho mọi sa bàn 3D dùng chung khung: Blanca City, Nam Mekong (và Artisan Park), Norton Park, SkySOLIS, Habitat, các sa bàn vùng. Dòng gợi ý trên màn hình và mô tả trong trang đã cập nhật theo.
+- Chỉ sửa `showroom.js` ở hai thư mục công cụ và nhãn hướng dẫn trong các trang; không đổi dữ liệu, giao diện, URL.
 
 ## Nội dung · 24/11/2026 — Nhật san kỳ 7 (bản nháp)
 - Thêm `publications/nhat-san/2026-11-23-so-07/` (`trang-thai: nhap`): Quy hoạch tổng thể TP.HCM được công bố, TOD, Vành đai 3, Tân An – Bình Hiệp, sức mua căn hộ quý III. Kèm 4 tờ bản đồ quy hoạch, sơ đồ metro, ảnh Norton Park và bìa.
