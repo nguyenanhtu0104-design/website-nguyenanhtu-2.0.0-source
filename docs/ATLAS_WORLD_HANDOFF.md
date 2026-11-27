@@ -89,6 +89,7 @@ Mỗi quốc gia có 5 section mang id theo mẫu `c<index>-<tên mục>`:
 | `cN-credit` | **Tín nhiệm quốc gia** |
 | `cN-market` | **Phân hạng thị trường cổ phiếu** |
 | `cN-compare` | So sánh cùng kỳ |
+| `cN-dev` | Phát triển & hạ tầng (từ v1.5.28): HDI, GNI/người, R&D, CO₂, nước, vệ sinh, giường bệnh, rừng, Internet |
 
 Ví dụ: Việt Nam là `c0-credit`, `c0-market`. Hàn Quốc là `c11-credit`, `c11-market`.
 
@@ -282,6 +283,7 @@ Giải nén **đè** vào thư mục kho trên máy → GitHub Desktop → Summa
 | 22/10/2026 | Chuẩn hóa bảng tín nhiệm 17 nước về cùng format 6 cột |
 | 22/10/2026 | Đối chiếu nguồn sơ cấp: S&P DJI, MSCI, STOXX; đối chiếu chéo S&P tín nhiệm |
 | 01/11/2026 | Bản v1.5.27 (`publications/atlas/2026-q3-v1-5-27/`, nháp): đổi bố cục, thêm xuất PDF — xem mục 10 |
+| 27/11/2026 | Bản v1.5.28 (`publications/atlas/2026-q3-v1-5-28/`, nháp): thêm mục `cN-dev` "Phát triển & hạ tầng" cho 17 nước, bảng `dev-17`, mục `indicator-glossary` (giải thích chỉ số, GRDP, đối chiếu QĐ 7308/QĐ-UBND). Chỉ ghi số hiện trạng, không ghi số mục tiêu quy hoạch |
 
 ---
 

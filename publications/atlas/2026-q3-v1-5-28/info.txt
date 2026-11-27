@@ -1,0 +1,6 @@
+tieu-de: World Atlas quý III/2026 — bản v1.5.28 (chỉ số phát triển, giải thích chỉ số)
+so: 04
+ngay: 2026-11-27
+mo-ta: World Atlas v1.5.28: thêm mục "Phát triển & hạ tầng" cho 17 nước (HDI, thu nhập quốc dân/người, chi R&D, phát thải CO₂, nước sạch, vệ sinh, giường bệnh, che phủ rừng, Internet), bảng so sánh 17 nước và mục giải thích chỉ số cho người không chuyên, kể cả GRDP.
+trich-doan: Chọn quốc gia để xem thêm nhóm chỉ số phát triển và hạ tầng, đối chiếu với các chỉ tiêu mà Quy hoạch tổng thể TP.HCM 2025–2050 dùng. Mọi số là số thực đã công bố, không có số mục tiêu. Mục "Giải thích chỉ số" nói rõ từng chỉ số đo cái gì và nên đọc thế nào.
+trang-thai: nhap
