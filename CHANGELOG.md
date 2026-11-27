@@ -2,6 +2,15 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## Nội dung · 27/11/2026 — Bài riêng về Luật Kinh doanh BĐS (sửa đổi) 2026
+- Bài mới `luat-kinh-doanh-bat-dong-san-2026` (Chương 1, đặt đầu chương): phân tích 8 thay đổi quan trọng của luật thông qua 21/11/2026 — cấm thu tiền giữ chỗ dưới mọi hình thức (gồm thu qua trung gian), cấm chủ đầu tư ủy quyền ký hợp đồng, danh sách điều khoản bị cấm trong hợp đồng mẫu, thủ tục bảo lãnh ngân hàng, khoản 5% cuối (đề xuất phong tỏa đã bị rút), mã định danh điện tử, chuyển nhượng dự án và cơ chế điều tiết thị trường, quy định với người nước ngoài.
+- Có mục "Những gì KHÔNG đổi" tách các con số vốn đã có trong Luật 2023 (cọc 5%, 30/70, trần 95%, vốn chủ sở hữu 20/15, 50 ngày, chứng chỉ môi giới) khỏi các điểm mới thật sự; mục tác động riêng cho Đông Nam Bộ; hai khung phân tầng nguồn và mốc hiệu lực; 4 câu Hỏi & Đáp. Ảnh OG sinh bằng `images.py og`.
+- Bài `phap-luat-bds`: rút gọn khung cập nhật đầu bài và câu 08 còn phần tóm tắt, trỏ sang bài mới.
+- Chương 1: đổi badge và tagline, đưa bài mới lên đầu danh sách. Không đổi URL, giao diện hay version.
+- Bổ sung phần trình bày trực quan cho bài mới: bảng so sánh Luật 2023 → Luật 2026 (chip ĐỔI / GIỮ NGUYÊN, hai cột đối chiếu), danh sách đầy đủ 6 nhóm điều khoản bị cấm trong hợp đồng kèm nhãn CẤM, ba thanh tiến trình trần thanh toán 30% · 70% · 95%, lưới 6 nhóm đối tượng được cấp mã định danh. Dùng class sẵn có và inline style theo tiền lệ bài Luật Đất đai, không thêm CSS.
+- Đính chính mốc mã định danh: Nghị định 357/2025/NĐ-CP đã gắn mã từ 01/3/2026, luật mới chỉ đưa lên cấp luật và buộc dùng mã khi giao dịch. Thêm câu hỏi đáp số 04 về nội dung này.
+- Bổ sung số điều báo chí dẫn: Điều 10 (cấm thu tiền trước điều kiện), Điều 36 (điều khoản cấm đưa vào hợp đồng).
+
 ## Nội dung · 25/11/2026 — Cập nhật Luật Kinh doanh BĐS (sửa đổi) vào Chương 1
 - Bài `phap-luat-bds` (Pháp Luật BĐS — Hỏi & Đáp): thêm khung cập nhật đầu bài (Quốc hội thông qua 21/11/2026, 471/479 phiếu, 10 chương 63 điều, hiệu lực 01/7/2027; Luật 2023 vẫn áp dụng đến lúc đó nên các Điều đã trích giữ nguyên) và khung phân tầng nguồn (tường thuật báo chí, chưa có văn bản chính thức, chưa có quy định chuyển tiếp).
 - Thêm câu 08 nhóm "Hồ sơ & Mở bán": các điểm chính của luật mới (công khai thông tin, điều kiện nhà hình thành trong tương lai, cọc ≤5%, thanh toán 30%/70%/50%, vốn chủ sở hữu 20%/15%, cấm ủy quyền ký hợp đồng, 50 ngày nộp hồ sơ GCN, sàn và môi giới) kèm lưu ý cho người mua tại TP.HCM và Đông Nam Bộ.

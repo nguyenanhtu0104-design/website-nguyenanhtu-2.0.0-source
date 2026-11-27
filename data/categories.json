@@ -5,10 +5,13 @@
   "num": "CH.01",
   "icon": "⚖️",
   "title": "Pháp Luật & Quy Định",
-  "tagline": "Hành lang pháp lý mới từ bộ ba Luật Đất đai · Kinh doanh BĐS · Nhà ở 2024",
-  "badge": "FAQ · 54 câu · NOXH 2024–2026",
+  "tagline": "Hành lang pháp lý từ bộ ba luật 2024 và Luật Kinh doanh BĐS sửa đổi 2026",
+  "badge": "Luật KDBĐS 2026 · FAQ 54 câu · NOXH",
   "layout": "list",
   "items": [
+   {
+    "article": "luat-kinh-doanh-bat-dong-san-2026"
+   },
    {
     "article": "nha-o-xa-hoi-toan-canh-phap-ly-2024-2026"
    },
