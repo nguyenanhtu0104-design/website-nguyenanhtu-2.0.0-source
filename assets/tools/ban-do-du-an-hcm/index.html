@@ -255,6 +255,13 @@ html,body{overflow:hidden}
   <label class="flt"><input type="checkbox" id="t-on">Hiện 6 cống kiểm soát triều lớn<em id="t-n"></em></label>
   <div id="t-list"></div>
   <p class="note">Dự án Giải quyết ngập do triều cường khu vực TP.HCM có xét đến yếu tố biến đổi khí hậu – giai đoạn 1, chủ đầu tư Trung Nam. Vị trí và thân cống theo <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:var(--gold)">OpenStreetMap</a>; tên sông, kênh và ghi chú theo báo chí, không phải hồ sơ thiết kế.</p>
+  <h2 style="margin-top:18px">Hồ điều tiết</h2>
+  <label class="flt"><input type="checkbox" id="h-on">Hiện trên bản đồ<em id="h-n"></em></label>
+  <label class="flt"><input type="checkbox" id="h-hh" checked><span class="qk" style="background:#0e8f8a"></span>Hiện hữu</label>
+  <label class="flt"><input type="checkbox" id="h-qh" checked><span class="qk" style="background:#fff;border:2px dashed #0e8f8a;box-sizing:border-box"></span>Quy hoạch, đề xuất (chưa xây)</label>
+  <div id="h-list"></div>
+  <details class="grp" id="h-cvt"><summary>Chưa ghim được vị trí <em id="h-cn"></em></summary><div id="h-cl"></div></details>
+  <p class="note">Chỉ gồm hồ được nguồn gọi là hồ điều tiết, nêu rõ chức năng trữ nước mưa chống ngập, hoặc được Tú xác nhận; không gán nhãn chỉ vì là mặt nước. Viền đứt to: khu vực quy hoạch vẽ ước lượng theo tờ 16. Ranh hồ, ranh công viên theo <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:var(--gold)">OpenStreetMap</a>; hồ nằm trong công viên mà chưa có ranh mặt nước riêng thì vẽ ranh công viên. Thông số theo báo chí, có ghi ngày.</p>
 </section>
  <section class="pane note" data-pane="info" hidden>
 
@@ -559,6 +566,25 @@ html,body{overflow:hidden}
    var b=document.createElement('a');b.href='#t='+p.id;b.className='flt';b.style.cssText='display:block;color:inherit;text-decoration:none';b.textContent='🌊 '+p.name+(p.song?' · '+p.song:'');b.addEventListener('click',function(e){e.preventDefault();focusT(p.id)});box.appendChild(b);
    idx.push({k:'t='+p.id,t:p.name,s:'Cống ngăn triều · '+(p.song||p.khuVuc),n:norm(p.name+' cong ngan trieu chong ngap '+p.song+' '+p.khuVuc)})});
   tRefresh()}).catch(function(){document.getElementById('t-n').textContent='không tải được dữ liệu'});
+ // ---------- hồ điều tiết ----------
+ var H=[],hLayer=L.layerGroup().addTo(map),hOn=false,HC='#0e8f8a';
+ function hVis(p){return document.getElementById(p.giaiDoan==='hien-huu'?'h-hh':'h-qh').checked}
+ function hRefresh(){hLayer.clearLayers();var n=0;if(hOn)H.forEach(function(p){if(hVis(p)){hLayer.addLayer(p.g);n++}});document.getElementById('h-n').textContent=hOn?n+'/'+H.length:''}
+ ['h-on','h-hh','h-qh'].forEach(function(id){document.getElementById(id).addEventListener('change',function(){if(id==='h-on')hOn=this.checked;hRefresh()})});
+ function focusH(id){var p=H.filter(function(x){return x.id===id})[0];if(!p)return;if(!hOn){hOn=true;document.getElementById('h-on').checked=true}var c=document.getElementById(p.giaiDoan==='hien-huu'?'h-hh':'h-qh');c.checked=true;hRefresh();closeSide();if(p.shape)map.fitBounds(p.shape.getBounds(),{maxZoom:17,padding:[40,40]});else map.setView(p.ll,Math.max(map.getZoom(),17));setTimeout(function(){p.m.openPopup()},350)}
+ var hReady=fetch('ho-dieu-tiet.json').then(function(r){return r.json()}).then(function(J){
+  H=J.hos;var box=document.getElementById('h-list'),hh=H.filter(function(p){return p.giaiDoan==='hien-huu'}).length;
+  H.forEach(function(p){var qh=p.giaiDoan!=='hien-huu',lab=qh?'Quy hoạch, chưa xây':'Hiện hữu';
+   p.g=L.layerGroup();
+   if(p.poly)p.shape=L.polygon(p.poly,p.hinh==='mat-nuoc'?{color:HC,weight:2,fillColor:HC,fillOpacity:qh?.15:.45,dashArray:qh?'5 4':null,interactive:false}:p.hinh==='khu-qh'?{color:HC,weight:2.5,fillColor:HC,fillOpacity:.1,dashArray:'8 6',interactive:false}:{color:HC,weight:2,fill:true,fillColor:HC,fillOpacity:.08,dashArray:'5 4',interactive:false}).addTo(p.g);
+   p.m=L.circleMarker(p.ll,{radius:7,weight:3,color:qh?HC:'#fff',fillColor:qh?'#fff':HC,fillOpacity:1,dashArray:qh?'3 2':null}).addTo(p.g);
+   p.m.bindTooltip(esc(p.name)+' · '+lab,{direction:'top',offset:[0,-8]});
+   p.m.bindPopup(function(){return '<div class="pp-t">'+esc(p.name)+'</div><span class="pp-b" style="background:'+HC+'">'+lab+'</span><div class="pp-m">'+esc(p.loai)+' · '+esc(p.khuVuc)+(p.thongSo?'<br>'+esc(p.thongSo):'')+nearHtml(p.ll)+'<br><i>Nguồn: '+esc(p.nguon)+'. '+(p.ranh?esc(p.ranh):p.hinh==='cong-vien'?'Đường viền là ranh công viên (OSM), hồ nằm trong công viên.':p.hinh==='diem'?'Vị trí điểm, sai số '+esc(p.saiSo||'')+'.':'Ranh mặt nước theo OpenStreetMap.')+'</i></div><a class="pp-a" href="https://www.google.com/maps/search/?api=1&amp;query='+p.ll[0]+','+p.ll[1]+'" target="_blank" rel="noopener">Chỉ đường (Google Maps) →</a><div class="pp-row">'+linkBtn('h='+p.id)+'</div>'},PO);
+   var b=document.createElement('a');b.href='#h='+p.id;b.className='flt';b.style.cssText='display:block;color:inherit;text-decoration:none';b.textContent=(qh?'◌ ':'● ')+p.name;b.addEventListener('click',function(e){e.preventDefault();focusH(p.id)});box.appendChild(b);
+   idx.push({k:'h='+p.id,t:p.name,s:'Hồ điều tiết · '+lab,n:norm(p.name+' ho dieu tiet chong ngap '+p.khuVuc)})});
+  var cl=document.getElementById('h-cl');document.getElementById('h-cn').textContent='('+J.chuaViTri.length+')';
+  J.chuaViTri.forEach(function(x){var d=document.createElement('p');d.className='note';d.innerHTML='<b>'+esc(x.name)+'</b> · '+(x.giaiDoan==='hien-huu'?'hiện hữu':'quy hoạch, chưa xây')+'<br>'+esc(x.ghiChu)+' <i>('+esc(x.nguon)+')</i>';cl.appendChild(d)});
+  hRefresh()}).catch(function(){document.getElementById('h-n').textContent='không tải được dữ liệu'});
  // ---------- vòng bán kính ----------
  var radLayer=L.layerGroup().addTo(map);
  function radius(key){radLayer.clearLayers();var kv=key.split('='),ll=null,name='';
@@ -593,7 +619,7 @@ html,body{overflow:hidden}
  document.addEventListener('click',function(e){if(!e.target.closest('.search'))qr.hidden=true});
 
  function go(h){var kv=String(h).replace(/^#/,'').split('=');if(kv.length<2)return;
-  if(kv[0]==='p')focusProject(kv[1]);else if(kv[0]==='l')focusLine(kv[1]);else if(kv[0]==='s')focusStation(kv[1]);else if(kv[0]==='q')qReady.then(function(){focusQ(kv[1])});else if(kv[0]==='g')gReady.then(function(){focusG(kv[1])});else if(kv[0]==='c')cReady.then(function(){focusC(kv[1])});else if(kv[0]==='t')tReady.then(function(){focusT(kv[1])})}
+  if(kv[0]==='p')focusProject(kv[1]);else if(kv[0]==='l')focusLine(kv[1]);else if(kv[0]==='s')focusStation(kv[1]);else if(kv[0]==='q')qReady.then(function(){focusQ(kv[1])});else if(kv[0]==='g')gReady.then(function(){focusG(kv[1])});else if(kv[0]==='c')cReady.then(function(){focusC(kv[1])});else if(kv[0]==='t')tReady.then(function(){focusT(kv[1])});else if(kv[0]==='h')hReady.then(function(){focusH(kv[1])})}
  map.getContainer().addEventListener('click',function(e){var a=e.target.closest('a[data-go]');if(a)e.preventDefault()});
 
  // ---------- công cụ trên bản đồ: vị trí của tôi, đo khoảng cách ----------
