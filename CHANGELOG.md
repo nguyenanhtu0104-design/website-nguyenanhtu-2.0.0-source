@@ -2,6 +2,24 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.71.0 · 28/11/2026 — Vành đai 4.5 nối nút giao Chơn Thành; thêm cao tốc Chơn Thành – Đức Hòa
+- **Tú yêu cầu:** Vành đai 4.5 nối vào nút giao của cao tốc TP.HCM – Thủ Dầu Một – Chơn Thành và khép kín với cao tốc Chơn Thành – Đức Hòa.
+- **Vành đai 4.5:** đầu phía bắc kéo tới đúng nút giao Chơn Thành (trên tờ 16, nơi cao tốc TP.HCM – Thủ Dầu Một – Chơn Thành gặp cao tốc CT02); trước đó dừng cách nút giao về phía đông nam. Ghi chú và điểm đầu tuyến viết lại.
+- **Tuyến mới "Cao tốc Chơn Thành – Đức Hòa (đường Hồ Chí Minh)"** (`ccd`, nhóm cao tốc): từ nút giao Chơn Thành qua Trừ Văn Thố, Trảng Bàng, cắt QL22, rồi chéo xuống đông nam qua Hiệp Hòa tới nút giao phía nam Hậu Nghĩa. Dò trên tờ 16 theo đúng lộ trình của đường thật: đối chiếu OpenStreetMap thấy sau QL22, CT02 quy hoạch đi thẳng xuống phía nam (phía tây Đức Hòa, cách đường thật khoảng 9 km), còn đường Chơn Thành – Đức Hòa rẽ về Hậu Nghĩa, nên tuyến bám theo nhánh rẽ này. Lệch so với đường thật trên OpenStreetMap: trung vị khoảng 160 m. Ghi "vẽ ước lượng"; nguồn dự án: Báo Đầu tư, VnEconomy, Kinh tế Sài Gòn.
+
+## 2.70.1 · 28/11/2026 — Sửa hướng tuyến Vành đai 5 và Vành đai 4.5
+- **Lỗi (Tú chỉ ra):** (1) Vành đai 5 đoạn Tân An chạy theo CT1 – CT41 – CT33 thay vì đi thẳng qua Châu Thành; phía đông (Xuân Lộc – Xuyên Mộc) có vòng thừa theo CT01 – 51C. (2) Vành đai 5 qua Phú Mỹ – Bà Rịa – Đất Đỏ – Xuyên Mộc bám QL51/QL55 hiện hữu chạy sát song song. (3) Vành đai 4.5 lệch khỏi dải trên lớp quy hoạch, đoạn từ nút giao cao tốc Long Thành – Hồ Tràm xuống Vành đai 5 lệch tới khoảng 500–800 m và dừng cách nút giao Vành đai 5 khoảng 1,2 km.
+- **Nguyên nhân gốc:** hai tuyến dò trên tờ 07, trong khi lớp hiển thị trên web là tờ 16. Hai tờ cùng khung nhưng **vẽ hướng tuyến khác nhau** (lệch trung vị khoảng 250 m, có đoạn 700–950 m), nên tuyến dò từ tờ 07 không trùng dải trên lớp tờ 16.
+- **Cách sửa:** dò lại **toàn bộ** hai tuyến trên **tờ 16** theo tim dải đường cao tốc, vành đai (chỉ nhận màu viền xanh của dải, loại màu đất nông nghiệp gần giống và nét quốc lộ), trong hành lang hẹp quanh tuyến đã sửa hướng; đi thẳng qua vòng tròn nút giao và nhãn. Vành đai 4.5 nối tới đúng nút giao Vành đai 5. Đã soi từng nút giao và toàn vòng trên tờ 16, không còn chỗ quay ngược.
+- Chiều dài đo trên tuyến vẽ lại: Vành đai 5 khoảng 535 km (trước ghi 650 km), Vành đai 4.5 khoảng 155 km. Không phải số liệu trong hồ sơ; hai tuyến vẫn ghi "vẽ ước lượng".
+
+## Dữ liệu · 28/11/2026 — Thêm 6 hồ điều tiết theo ghim của Tú
+- `ho-dieu-tiet.json` (không đổi mã, không tăng version): **20 hồ** trên bản đồ.
+- **Hiện hữu:** hồ Ông Thiềng, công viên trung tâm Thành phố mới Bình Dương (ranh OpenStreetMap, 10,7 ha).
+- **Quy hoạch, ranh vẽ ước lượng theo tờ 16 tại đúng điểm Tú ghim:** Thủ Thiêm (~12 ha), Thạnh Xuân (~6,6 ha), Tân Tạo (~14,8 ha; mặt hồ trên tờ 16 lệch khoảng 115 m về phía đông so với ghim, trong sai số tờ), Vĩnh Lộc (~176 ha, cạnh Vành đai 3). Gò Vấp: mặt hồ trên tờ 16 nối liền rạch Bến Cát nên vẽ cả khu công viên có hồ (~35 ha); ảnh vệ tinh đã có một ao nhỏ tại điểm ghim. Diện tích đo trên ranh vẽ lại, không phải số liệu hồ sơ.
+- Đã soi từng hồ trên ảnh vệ tinh: các hồ quy hoạch hiện là đất trống, ruộng hoặc đầm, khớp trạng thái "chưa xây".
+- Linh Đông: Tú xác nhận là kênh, bỏ khỏi danh sách. Còn chờ ghim: Gò Cát, Lê Minh Xuân, An Phú, An Phú Đông, An Lạc, Bình Hưng Hòa, công viên Thủ Dầu Một, Hiệp Thành 3, 6 hồ ngầm.
+
 ## 2.70.0 · 28/11/2026 — Lớp "Hồ điều tiết" cạnh lớp Cống ngăn triều
 - Tab **Quy hoạch** thêm nhóm **Hồ điều tiết** ngay dưới Cống ngăn triều: bật/tắt, lọc **Hiện hữu** / **Quy hoạch, đề xuất**, danh sách bấm để bay tới, tìm được trong ô tìm kiếm, link `#h=<id>`. Dữ liệu `assets/tools/ban-do-du-an-hcm/ho-dieu-tiet.json` (hồ nhiều mảng lưu dạng nhiều vòng ranh).
 - **Trên bản đồ (14).** Hiện hữu: Văn Thánh, Hoàng Văn Thụ, Kỳ Hòa, Đại Nhật (Vạn Phúc), hồ ngầm thí điểm Võ Văn Ngân, Hạc (Đông Tăng Long), công viên Gia Định, Tân Vĩnh Hiệp, Từ Vân I–II, Suối Lùng, Bàu Trũng. Quy hoạch: Bàu Cát, Khánh Hội, khu Gò Dưa.
