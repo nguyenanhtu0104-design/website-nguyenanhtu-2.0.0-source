@@ -2,6 +2,9 @@
 
 Quy ước: `2.x.0` = chức năng mới · `2.x.y` = sửa lỗi · Thêm/sửa bài ghi ở mục **Nội dung**, không tăng version.
 
+## 2.71.1 · 28/11/2026 — Vành đai 4.5 đoạn đi chung ĐT996 theo OpenStreetMap
+- **Vành đai 4.5 đi chung ĐT996 (Tú chỉ ra lệch):** đoạn phía nam, từ gần nút giao cao tốc Long Thành – Hồ Tràm xuống Vành đai 5, là ĐT996 hiện hữu; nay lấy đúng hình học ĐT996 trên OpenStreetMap (trước lệch tới khoảng 600 m), kết thúc tại giao điểm với Vành đai 5. **Nguyên tắc (Tú chốt):** tuyến trên bản đồ chạy theo nền bản đồ OpenStreetMap, không theo bản vẽ quy hoạch phủ trên nền; đoạn đi chung đường hiện hữu lấy hình học OSM, đoạn mở mới mới vẽ theo bản đồ quy hoạch.
+
 ## 2.71.0 · 28/11/2026 — Vành đai 4.5 nối nút giao Chơn Thành; thêm cao tốc Chơn Thành – Đức Hòa
 - **Tú yêu cầu:** Vành đai 4.5 nối vào nút giao của cao tốc TP.HCM – Thủ Dầu Một – Chơn Thành và khép kín với cao tốc Chơn Thành – Đức Hòa.
 - **Vành đai 4.5:** đầu phía bắc kéo tới đúng nút giao Chơn Thành (trên tờ 16, nơi cao tốc TP.HCM – Thủ Dầu Một – Chơn Thành gặp cao tốc CT02); trước đó dừng cách nút giao về phía đông nam. Ghi chú và điểm đầu tuyến viết lại.
